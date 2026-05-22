@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Remove .php extension for files
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php [L]
+
+# Redirect to index.php for root
+RewriteRule ^$ index.php [L]

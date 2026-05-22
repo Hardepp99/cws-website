@@ -1,0 +1,61 @@
+{
+  "bundles": [
+    {
+      "id": "starter-website",
+      "label": "Starter Business Website",
+      "summary": "Corporate site up to 8 pages, mobile layout, contact forms, basic SEO setup.",
+      "includes": ["Website design & development", "On-page SEO basics", "30 days post-launch support"]
+    },
+    {
+      "id": "ecommerce-launch",
+      "label": "Ecommerce Launch Pack",
+      "summary": "Online store with catalogue, cart, India-friendly payments, and training for your team.",
+      "includes": ["Store setup (WooCommerce / Shopify)", "Payment & shipping rules", "Product upload assistance"]
+    },
+    {
+      "id": "growth-marketing",
+      "label": "Growth Marketing Bundle",
+      "summary": "SEO foundation plus Google Ads and landing page aligned for lead generation.",
+      "includes": ["SEO audit & fixes", "Google Ads setup", "Conversion-focused landing page"]
+    },
+    {
+      "id": "mobile-mvp",
+      "label": "Mobile App MVP",
+      "summary": "Android or cross-platform app with API backend and admin panel for phase-one launch.",
+      "includes": ["UI/UX for core flows", "App development", "API + basic admin"]
+    },
+    {
+      "id": "website-redesign",
+      "label": "Website Redesign & Speed",
+      "summary": "Modern UI refresh, Core Web Vitals improvement, and content structure cleanup.",
+      "includes": ["UX redesign", "Performance optimisation", "SEO structure update"]
+    },
+    {
+      "id": "training-enrollment",
+      "label": "IT Training Enrollment",
+      "summary": "Job-oriented course inquiry — PHP, Laravel, React, Node.js, or full-stack track.",
+      "includes": ["Course counselling", "Batch schedule", "Fee & placement overview"]
+    }
+  ],
+  "budgetRanges": [
+    { "value": "under-25k", "label": "Under ₹25,000" },
+    { "value": "25k-50k", "label": "₹25,000 – ₹50,000" },
+    { "value": "50k-1l", "label": "₹50,000 – ₹1,00,000" },
+    { "value": "1l-3l", "label": "₹1,00,000 – ₹3,00,000" },
+    { "value": "3l-plus", "label": "₹3,00,000+" },
+    { "value": "not-sure", "label": "Not sure yet — need guidance" }
+  ],
+  "timelines": [
+    { "value": "urgent-2w", "label": "Urgent (within 2 weeks)" },
+    { "value": "1-month", "label": "About 1 month" },
+    { "value": "2-3-months", "label": "2–3 months" },
+    { "value": "flexible", "label": "Flexible / planning stage" }
+  ],
+  "serviceGroupRules": [
+    { "group": "Websites & Online Stores", "patterns": ["website-development", "wordpress", "ecommerce", "shopify", "cms-based", "website-maintenance", "website-redesign"] },
+    { "group": "Marketing & Visibility", "patterns": ["digital-marketing", "seo-services", "ppc-services", "social-media", "graphic-designing", "ui-ux-design"] },
+    { "group": "Apps & Custom Software", "patterns": ["mobile-app", "web-application", "custom-software", "crm-development", "erp-hrm", "desktop-application", "gst-software", "bank-management", "mall-management", "medical-store", "school-management"] },
+    { "group": "Blockchain & Web3", "patterns": ["blockchain", "smart-contract", "exchange-listing"] },
+    { "group": "Branding & Design", "patterns": ["logo-design"] }
+  ]
+}

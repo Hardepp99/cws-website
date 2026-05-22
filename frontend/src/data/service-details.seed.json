@@ -1,0 +1,158 @@
+{
+  "web-application": {
+    "title": "Web Application Development",
+    "heroTitle": "Custom Web Application Development",
+    "heroSubtitle": "Scalable web applications, dashboards, and SaaS products built with modern frameworks for businesses in Chandigarh, Mohali, and Zirakpur.",
+    "priceBadge": "Starting @ ₹49,999",
+    "features": [
+      { "title": "Custom Dashboards", "description": "Role-based admin panels and analytics.", "icon": "fas fa-chart-pie" },
+      { "title": "API Integration", "description": "REST and third-party service integrations.", "icon": "fas fa-plug" },
+      { "title": "Secure Architecture", "description": "Authentication, authorization, and data protection.", "icon": "fas fa-shield-alt" }
+    ],
+    "ctaTitle": "Build Your Web App",
+    "ctaText": "Get a free consultation for your web application project.",
+    "seo": {
+      "title": "Web Application Development | Creative Web Solutions",
+      "description": "Custom web application development company in Chandigarh, Zirakpur, Mohali.",
+      "keywords": "web application development Chandigarh, SaaS development Zirakpur"
+    }
+  },
+  "logo-design": {
+    "title": "Logo Design",
+    "heroTitle": "Professional Logo Design Services",
+    "heroSubtitle": "Memorable brand identities and logo concepts for startups and established businesses.",
+    "priceBadge": "Starting @ ₹4,999",
+    "features": [
+      { "title": "Multiple Concepts", "description": "Unique logo directions based on your brand.", "icon": "fas fa-palette" },
+      { "title": "Vector Files", "description": "Print and digital-ready source files.", "icon": "fas fa-file-image" },
+      { "title": "Brand Guidelines", "description": "Color and usage recommendations.", "icon": "fas fa-book" }
+    ],
+    "seo": {
+      "title": "Logo Design Services | Creative Web Solutions",
+      "description": "Logo design company in Chandigarh and Zirakpur.",
+      "keywords": "logo design Chandigarh, branding Zirakpur"
+    }
+  },
+  "gst-software": {
+    "title": "GST Software",
+    "heroTitle": "GST Billing & Compliance Software",
+    "heroSubtitle": "GST-ready billing, invoicing, and reporting software for Indian businesses.",
+    "priceBadge": "Free Demo Available",
+    "features": [
+      { "title": "GST Invoicing", "description": "Compliant invoices and tax calculations.", "icon": "fas fa-file-invoice" },
+      { "title": "Inventory", "description": "Stock and purchase management.", "icon": "fas fa-boxes" },
+      { "title": "Reports", "description": "GSTR-ready reports and summaries.", "icon": "fas fa-chart-bar" }
+    ],
+    "seo": {
+      "title": "GST Software | Creative Web Solutions",
+      "description": "GST software for businesses in Punjab and India.",
+      "keywords": "GST billing software Punjab"
+    }
+  },
+  "exchange-listing": {
+    "title": "Exchange Listing",
+    "heroTitle": "Cryptocurrency Exchange Listing Services",
+    "heroSubtitle": "Guidance and support for token and project exchange listing requirements.",
+    "features": [
+      { "title": "Documentation", "description": "Listing application preparation.", "icon": "fas fa-file-alt" },
+      { "title": "Compliance", "description": "Technical and legal checklist support.", "icon": "fas fa-balance-scale" },
+      { "title": "Coordination", "description": "Exchange communication assistance.", "icon": "fas fa-handshake" }
+    ],
+    "seo": {
+      "title": "Exchange Listing Services | Creative Web Solutions",
+      "description": "Crypto exchange listing support.",
+      "keywords": "exchange listing services India"
+    }
+  },
+  "website-redesign": {
+    "title": "Website Redesign",
+    "heroTitle": "Website Redesign Services",
+    "heroSubtitle": "Modernize your website with better UX, speed, and conversion-focused design.",
+    "priceBadge": "Starting @ ₹14,999",
+    "features": [
+      { "title": "UI Refresh", "description": "Modern, mobile-first design.", "icon": "fas fa-paint-brush" },
+      { "title": "Speed Optimization", "description": "Faster load times and Core Web Vitals.", "icon": "fas fa-tachometer-alt" },
+      { "title": "SEO Improvements", "description": "Structure and content optimization.", "icon": "fas fa-search" }
+    ],
+    "seo": {
+      "title": "Website Redesign | Creative Web Solutions",
+      "description": "Website redesign company in Chandigarh.",
+      "keywords": "website redesign Chandigarh"
+    }
+  },
+  "desktop-application": {
+    "title": "Desktop Application",
+    "heroTitle": "Desktop Application Development",
+    "heroSubtitle": "Windows and cross-platform desktop software for business workflows.",
+    "features": [
+      { "title": "Offline Ready", "description": "Applications that work without constant internet.", "icon": "fas fa-desktop" },
+      { "title": "Database Integration", "description": "Local and cloud data sync.", "icon": "fas fa-database" },
+      { "title": "Enterprise Features", "description": "Roles, permissions, and reporting.", "icon": "fas fa-building" }
+    ],
+    "seo": {
+      "title": "Desktop Application Development | Creative Web Solutions",
+      "description": "Desktop app development services.",
+      "keywords": "desktop software development India"
+    }
+  },
+  "bank-management": {
+    "title": "Bank Management Software",
+    "heroTitle": "Bank Management System",
+    "heroSubtitle": "Software solutions for banking operations and customer management.",
+    "features": [
+      { "title": "Account Management", "description": "Customer and account workflows.", "icon": "fas fa-university" },
+      { "title": "Reporting", "description": "Operational and compliance reports.", "icon": "fas fa-chart-line" },
+      { "title": "Security", "description": "Access control and audit trails.", "icon": "fas fa-lock" }
+    ],
+    "seo": {
+      "title": "Bank Management Software | Creative Web Solutions",
+      "description": "Bank management system development.",
+      "keywords": "bank management software"
+    }
+  },
+  "mall-management": {
+    "title": "Mall Management System",
+    "heroTitle": "Mall Management Software",
+    "heroSubtitle": "Tenant, billing, and facility management for malls and commercial spaces.",
+    "features": [
+      { "title": "Tenant Management", "description": "Leases, rent, and occupancy tracking.", "icon": "fas fa-store" },
+      { "title": "Billing", "description": "Automated invoicing and payments.", "icon": "fas fa-receipt" },
+      { "title": "Maintenance", "description": "Work orders and facility requests.", "icon": "fas fa-tools" }
+    ],
+    "seo": {
+      "title": "Mall Management System | Creative Web Solutions",
+      "description": "Mall management software development.",
+      "keywords": "mall management software"
+    }
+  },
+  "medical-store-management": {
+    "title": "Medical Store Management",
+    "heroTitle": "Medical Store Management Software",
+    "heroSubtitle": "Inventory, billing, and expiry tracking for pharmacies and medical stores.",
+    "features": [
+      { "title": "Inventory", "description": "Batch, expiry, and stock alerts.", "icon": "fas fa-pills" },
+      { "title": "Billing", "description": "Fast POS and GST invoices.", "icon": "fas fa-cash-register" },
+      { "title": "Reports", "description": "Sales and purchase analytics.", "icon": "fas fa-chart-pie" }
+    ],
+    "seo": {
+      "title": "Medical Store Software | Creative Web Solutions",
+      "description": "Pharmacy management software.",
+      "keywords": "pharmacy software Punjab"
+    }
+  },
+  "school-management-system": {
+    "title": "School Management System",
+    "heroTitle": "School Management Software",
+    "heroSubtitle": "Complete ERP for schools — admissions, fees, attendance, and parent portals.",
+    "features": [
+      { "title": "Student Records", "description": "Admissions and academic history.", "icon": "fas fa-user-graduate" },
+      { "title": "Fee Management", "description": "Online and offline fee collection.", "icon": "fas fa-money-check" },
+      { "title": "Parent Portal", "description": "Attendance and result access for parents.", "icon": "fas fa-users" }
+    ],
+    "seo": {
+      "title": "School Management System | Creative Web Solutions",
+      "description": "School ERP software development.",
+      "keywords": "school management software Chandigarh"
+    }
+  }
+}

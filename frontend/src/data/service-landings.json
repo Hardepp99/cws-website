@@ -1,0 +1,920 @@
+{
+  "website-development-zirakpur": {
+    "slug": "website-development-zirakpur",
+    "service": "Website Development",
+    "pageTitle": "Website Development in Zirakpur | Web Design Company Chandigarh",
+    "pageDescription": "Website Development in Zirakpur with responsive design, SEO-ready structure, fast loading pages, and conversion-focused layouts. We also serve Chandigarh, Mohali, and businesses searching for website development near me.",
+    "pageKeywords": "website development in Zirakpur, website development in Chandigarh, website development in Mohali, website development near me, website developer in Chandigarh, web design company in Mohali",
+    "intro": "We build business websites, landing pages, and scalable corporate websites that help local brands generate more leads from Zirakpur, Chandigarh, and Mohali.",
+    "benefits": [
+      "Business websites",
+      "Corporate websites",
+      "Responsive redesign",
+      "SEO-ready structure",
+      "Lead generation forms",
+      "Fast loading pages"
+    ],
+    "deliverables": [
+      "Custom UI layout",
+      "Mobile responsive pages",
+      "Basic on-page SEO",
+      "Contact and inquiry forms",
+      "Speed optimization",
+      "Launch support"
+    ],
+    "faq": [
+      {
+        "question": "Do you provide website development for local businesses in Zirakpur?",
+        "answer": "Yes. We create service websites, company profiles, and lead generation websites for businesses in Zirakpur, Chandigarh, and Mohali."
+      },
+      {
+        "question": "Will the website be SEO friendly?",
+        "answer": "Yes. Every website is built with clean headings, internal links, crawlable structure, and content blocks designed for search visibility."
+      },
+      {
+        "question": "Can you redesign an old website as well?",
+        "answer": "Yes. We can redesign your current website with a modern UI, better speed, stronger mobile usability, and improved local SEO targeting."
+      }
+    ],
+    "related": [
+      "wordpress-website-zirakpur",
+      "cms-based-website-zirakpur",
+      "website-maintenance-zirakpur"
+    ],
+    "theme": {
+      "start": "#1e3a8a",
+      "mid": "#2563eb",
+      "end": "#3b82f6",
+      "accent": "#93c5fd",
+      "icon": "fas fa-globe",
+      "badge": "Responsive Business Websites"
+    }
+  },
+  "digital-marketing-zirakpur": {
+    "slug": "digital-marketing-zirakpur",
+    "service": "Digital Marketing",
+    "pageTitle": "Digital Marketing in Zirakpur | Digital Marketing Agency Chandigarh",
+    "pageDescription": "Digital Marketing in Zirakpur for businesses that want better reach, better leads, and stronger local visibility. Our team serves Chandigarh, Mohali, and nearby searches for digital marketing near me.",
+    "pageKeywords": "digital marketing in Zirakpur, digital marketing in Chandigarh, digital marketing in Mohali, digital marketing near me, digital marketing agency in Chandigarh, online marketing company in Mohali",
+    "intro": "Our digital marketing campaigns combine SEO, PPC, social media, and landing page strategy to generate inquiries from local and regional search traffic.",
+    "benefits": [
+      "SEO strategy",
+      "Google Ads",
+      "Social media campaigns",
+      "Lead funnels",
+      "Remarketing support",
+      "Performance reporting"
+    ],
+    "deliverables": [
+      "Campaign planning",
+      "Keyword mapping",
+      "Ad copies and creatives",
+      "Landing page suggestions",
+      "Conversion tracking",
+      "Monthly reports"
+    ],
+    "faq": [
+      {
+        "question": "What is included in digital marketing services?",
+        "answer": "We handle SEO, PPC, social media promotion, content planning, conversion tracking, and reporting under one strategy."
+      },
+      {
+        "question": "Do you target Chandigarh and Mohali along with Zirakpur?",
+        "answer": "Yes. Our location-focused campaigns are built for Zirakpur first and can be expanded for Chandigarh, Mohali, and nearby areas."
+      },
+      {
+        "question": "How do you improve ranking and leads?",
+        "answer": "We combine search intent keywords, strong ad and content messaging, better landing pages, and tracking-based optimization to improve results."
+      }
+    ],
+    "related": [
+      "seo-services-zirakpur",
+      "ppc-services-zirakpur",
+      "social-media-marketing-zirakpur"
+    ],
+    "theme": {
+      "start": "#f97316",
+      "mid": "#fb923c",
+      "end": "#1e3a8a",
+      "accent": "#fed7aa",
+      "icon": "fas fa-bullhorn",
+      "badge": "SEO, Ads and Lead Growth"
+    }
+  },
+  "ecommerce-website-zirakpur": {
+    "slug": "ecommerce-website-zirakpur",
+    "service": "Ecommerce Website",
+    "pageTitle": "Ecommerce Website in Zirakpur | Ecommerce Website Company Chandigarh",
+    "pageDescription": "Ecommerce Website in Zirakpur with product management, cart, checkout, payment gateway, and SEO-ready category pages. We also serve Chandigarh, Mohali, and nearby businesses looking for ecommerce website near me.",
+    "pageKeywords": "ecommerce website in Zirakpur, ecommerce website in Chandigarh, ecommerce website in Mohali, ecommerce website near me, ecommerce website company Chandigarh, online store development Mohali",
+    "intro": "We develop ecommerce websites that are easy to manage, mobile friendly, and built to convert visitors into customers across local and regional markets.",
+    "benefits": [
+      "Online store setup",
+      "Category pages",
+      "Secure checkout",
+      "Payment gateway integration",
+      "Inventory-friendly structure",
+      "Mobile shopping experience"
+    ],
+    "deliverables": [
+      "Store design",
+      "Cart and checkout flow",
+      "Product filters",
+      "Shipping setup",
+      "Basic SEO setup",
+      "Admin training"
+    ],
+    "faq": [
+      {
+        "question": "Can you build an ecommerce website for a local retail business?",
+        "answer": "Yes. We create ecommerce websites for retail stores, wholesalers, and direct-to-consumer brands in Zirakpur and nearby locations."
+      },
+      {
+        "question": "Will the ecommerce website support payments?",
+        "answer": "Yes. We integrate secure payment gateways and can configure COD, online payments, shipping, and order notifications."
+      },
+      {
+        "question": "Can the store rank on Google?",
+        "answer": "Yes. We structure product, category, and content pages with crawlable SEO elements that support organic visibility."
+      }
+    ],
+    "related": [
+      "shopify-website-zirakpur",
+      "wordpress-website-zirakpur",
+      "website-maintenance-zirakpur"
+    ],
+    "theme": {
+      "start": "#0f766e",
+      "mid": "#14b8a6",
+      "end": "#0f172a",
+      "accent": "#99f6e4",
+      "icon": "fas fa-cart-shopping",
+      "badge": "Sell Products Online"
+    }
+  },
+  "ui-ux-design-zirakpur": {
+    "slug": "ui-ux-design-zirakpur",
+    "service": "UI/UX Design",
+    "pageTitle": "UI/UX Design in Zirakpur | UI UX Design Company Chandigarh",
+    "pageDescription": "UI/UX Design in Zirakpur for websites, dashboards, and mobile apps. Our team serves Chandigarh, Mohali, and businesses searching for UI UX design near me with user-focused design systems and clear conversion paths.",
+    "pageKeywords": "ui ux design in Zirakpur, ui ux design in Chandigarh, ui ux design in Mohali, ui ux design near me, ui ux design company Chandigarh, user interface design Mohali",
+    "intro": "We design user journeys, wireframes, and polished interfaces that feel modern, intuitive, and conversion driven across web and mobile products.",
+    "benefits": [
+      "Wireframing",
+      "User flow mapping",
+      "Dashboard design",
+      "Website UI design",
+      "App interface design",
+      "Prototype planning"
+    ],
+    "deliverables": [
+      "Design research",
+      "Wireframes",
+      "High fidelity screens",
+      "Design system basics",
+      "Developer handoff",
+      "Revision rounds"
+    ],
+    "faq": [
+      {
+        "question": "Do you design both website and app interfaces?",
+        "answer": "Yes. We design responsive web interfaces, admin panels, and mobile app screens based on user flow and business goals."
+      },
+      {
+        "question": "Can UI/UX design improve conversions?",
+        "answer": "Yes. Better navigation, stronger hierarchy, and clearer calls to action usually improve engagement and inquiry rates."
+      },
+      {
+        "question": "Do you work with existing brand guidelines?",
+        "answer": "Yes. We can follow your current brand system or create a refined visual direction from scratch."
+      }
+    ],
+    "related": [
+      "website-development-zirakpur",
+      "mobile-app-development-zirakpur",
+      "graphic-designing-zirakpur"
+    ],
+    "theme": {
+      "start": "#14b8a6",
+      "mid": "#2dd4bf",
+      "end": "#1e3a8a",
+      "accent": "#ccfbf1",
+      "icon": "fas fa-palette",
+      "badge": "Modern Product Design"
+    }
+  },
+  "custom-software-development-zirakpur": {
+    "slug": "custom-software-development-zirakpur",
+    "service": "Custom Software Development",
+    "pageTitle": "Custom Software Development in Zirakpur | Software Company Chandigarh",
+    "pageDescription": "Custom Software Development in Zirakpur for process automation, business tools, and scalable internal systems. We also serve Chandigarh, Mohali, and nearby searches for custom software development near me.",
+    "pageKeywords": "custom software development in Zirakpur, custom software development in Chandigarh, custom software development in Mohali, custom software development near me, software company Chandigarh, bespoke software Mohali",
+    "intro": "We build tailored software platforms that solve real business workflows, reduce manual effort, and support future scaling.",
+    "benefits": [
+      "Business process automation",
+      "Custom dashboards",
+      "Role-based systems",
+      "Internal workflow tools",
+      "Scalable architecture",
+      "Support and upgrades"
+    ],
+    "deliverables": [
+      "Requirement mapping",
+      "Custom module planning",
+      "User roles and permissions",
+      "Reporting dashboards",
+      "Deployment support",
+      "Maintenance roadmap"
+    ],
+    "faq": [
+      {
+        "question": "What type of custom software do you build?",
+        "answer": "We build business management systems, dashboards, operational tools, customer portals, and automation software based on your workflow."
+      },
+      {
+        "question": "Can you replace Excel or manual processes?",
+        "answer": "Yes. Many custom software projects are built specifically to reduce spreadsheets, repetitive entry, and disconnected tools."
+      },
+      {
+        "question": "Do you provide support after deployment?",
+        "answer": "Yes. We provide updates, issue resolution, and feature improvements after launch."
+      }
+    ],
+    "related": [
+      "crm-development-zirakpur",
+      "erp-hrm-software-zirakpur",
+      "website-maintenance-zirakpur"
+    ],
+    "theme": {
+      "start": "#1e3a8a",
+      "mid": "#2563eb",
+      "end": "#3b82f6",
+      "accent": "#93c5fd",
+      "icon": "fas fa-laptop-code",
+      "badge": "Tailored Business Solutions"
+    }
+  },
+  "crm-development-zirakpur": {
+    "slug": "crm-development-zirakpur",
+    "service": "CRM Development",
+    "pageTitle": "CRM Development in Zirakpur | CRM Software Company Chandigarh",
+    "pageDescription": "CRM Development in Zirakpur for lead management, sales tracking, follow-up automation, and customer records. We also serve Chandigarh, Mohali, and nearby searches for CRM development near me.",
+    "pageKeywords": "crm development in Zirakpur, crm development in Chandigarh, crm development in Mohali, crm development near me, crm software company Chandigarh, lead management software Mohali",
+    "intro": "Our CRM systems help teams manage leads, sales pipelines, follow-ups, customer communication, and team visibility from one dashboard.",
+    "benefits": [
+      "Lead tracking",
+      "Sales pipeline",
+      "Follow-up reminders",
+      "Team dashboards",
+      "Customer history",
+      "Custom reports"
+    ],
+    "deliverables": [
+      "Lead stages",
+      "Inquiry forms",
+      "Task reminders",
+      "Role permissions",
+      "Reporting modules",
+      "Data migration support"
+    ],
+    "faq": [
+      {
+        "question": "Can you build a CRM specific to our sales process?",
+        "answer": "Yes. We customize stages, fields, reports, and workflows around your real sales and service process."
+      },
+      {
+        "question": "Will the CRM support multiple users?",
+        "answer": "Yes. We can configure user roles, departments, and permissions for managers, sales staff, and support teams."
+      },
+      {
+        "question": "Can the CRM be integrated with website inquiries?",
+        "answer": "Yes. We can connect website forms so new leads automatically enter your CRM pipeline."
+      }
+    ],
+    "related": [
+      "custom-software-development-zirakpur",
+      "erp-hrm-software-zirakpur",
+      "website-development-zirakpur"
+    ],
+    "theme": {
+      "start": "#0f766e",
+      "mid": "#10b981",
+      "end": "#34d399",
+      "accent": "#d1fae5",
+      "icon": "fas fa-users-cog",
+      "badge": "Lead and Sales Management"
+    }
+  },
+  "erp-hrm-software-zirakpur": {
+    "slug": "erp-hrm-software-zirakpur",
+    "service": "ERP HRM Software",
+    "pageTitle": "ERP HRM Software in Zirakpur | ERP Company Chandigarh",
+    "pageDescription": "ERP HRM Software in Zirakpur for HR, payroll, attendance, operations, and reporting. We serve Chandigarh, Mohali, and businesses searching for ERP HRM software near me.",
+    "pageKeywords": "erp hrm software in Zirakpur, erp hrm software in Chandigarh, erp hrm software in Mohali, erp hrm software near me, erp company Chandigarh, hrm software Mohali",
+    "intro": "We develop ERP and HRM software to centralize attendance, payroll, employee data, approvals, and department-level reporting.",
+    "benefits": [
+      "Attendance management",
+      "Payroll workflow",
+      "Leave approvals",
+      "Employee records",
+      "Department reports",
+      "Role-based access"
+    ],
+    "deliverables": [
+      "HRM modules",
+      "ERP workflows",
+      "Approval hierarchy",
+      "Reports and exports",
+      "Admin setup",
+      "Post-launch support"
+    ],
+    "faq": [
+      {
+        "question": "Is ERP HRM software useful for small and mid-size companies?",
+        "answer": "Yes. It helps organize operations, HR tasks, and reporting even for growing local businesses with lean teams."
+      },
+      {
+        "question": "Can payroll and attendance be included?",
+        "answer": "Yes. We can include attendance, leave, payroll logic, employee records, and approval workflows."
+      },
+      {
+        "question": "Do you customize modules?",
+        "answer": "Yes. ERP and HRM modules are configured based on your business structure and processes."
+      }
+    ],
+    "related": [
+      "custom-software-development-zirakpur",
+      "crm-development-zirakpur",
+      "website-maintenance-zirakpur"
+    ],
+    "theme": {
+      "start": "#1d4ed8",
+      "mid": "#3b82f6",
+      "end": "#0f766e",
+      "accent": "#bfdbfe",
+      "icon": "fas fa-cogs",
+      "badge": "Operations and HR Control"
+    }
+  },
+  "mobile-app-development-zirakpur": {
+    "slug": "mobile-app-development-zirakpur",
+    "service": "Mobile App Development",
+    "pageTitle": "Mobile App Development in Zirakpur | App Development Company Chandigarh",
+    "pageDescription": "Mobile App Development in Zirakpur for Android, iOS, and cross-platform apps. We also serve Chandigarh, Mohali, and businesses searching for mobile app development near me.",
+    "pageKeywords": "mobile app development in Zirakpur, mobile app development in Chandigarh, mobile app development in Mohali, mobile app development near me, app development company Chandigarh, app developer Mohali",
+    "intro": "We create mobile apps with clean UI, dependable backend integration, and user-friendly journeys for startups, local brands, and service businesses.",
+    "benefits": [
+      "Android apps",
+      "iOS-ready builds",
+      "Cross-platform apps",
+      "API integration",
+      "Admin dashboards",
+      "Launch support"
+    ],
+    "deliverables": [
+      "App planning",
+      "Wireframes",
+      "Core screens",
+      "Backend integration",
+      "Testing support",
+      "Publishing guidance"
+    ],
+    "faq": [
+      {
+        "question": "Do you build Android and iPhone apps?",
+        "answer": "Yes. We build cross-platform and platform-specific solutions depending on budget, features, and launch goals."
+      },
+      {
+        "question": "Can you design the app UI as well?",
+        "answer": "Yes. UI/UX design, app flows, and development can be handled together for a smoother launch."
+      },
+      {
+        "question": "Do you offer app maintenance?",
+        "answer": "Yes. We support app updates, bug fixes, feature additions, and ongoing optimization after release."
+      }
+    ],
+    "related": [
+      "ui-ux-design-zirakpur",
+      "custom-software-development-zirakpur",
+      "website-development-zirakpur"
+    ],
+    "theme": {
+      "start": "#059669",
+      "mid": "#10b981",
+      "end": "#34d399",
+      "accent": "#d1fae5",
+      "icon": "fas fa-mobile-alt",
+      "badge": "Android and iOS Apps"
+    }
+  },
+  "blockchain-development-zirakpur": {
+    "slug": "blockchain-development-zirakpur",
+    "service": "Blockchain Development",
+    "pageTitle": "Blockchain Development in Zirakpur | Blockchain Company Chandigarh",
+    "pageDescription": "Blockchain Development in Zirakpur for token platforms, dApps, and decentralized product builds. We also serve Chandigarh, Mohali, and businesses searching for blockchain development near me.",
+    "pageKeywords": "blockchain development in Zirakpur, blockchain development in Chandigarh, blockchain development in Mohali, blockchain development near me, blockchain company Chandigarh, dapp development Mohali",
+    "intro": "We help businesses and Web3 founders plan blockchain products with the right technical direction, smart integrations, and deployment support.",
+    "benefits": [
+      "dApp planning",
+      "Token platforms",
+      "Wallet integration",
+      "Blockchain architecture",
+      "Deployment support",
+      "Scalable development"
+    ],
+    "deliverables": [
+      "Project discovery",
+      "Architecture guidance",
+      "Smart contract integration",
+      "Frontend linkage",
+      "Testing flow",
+      "Launch support"
+    ],
+    "faq": [
+      {
+        "question": "What blockchain services do you provide?",
+        "answer": "We work on decentralized apps, token platforms, smart contract integrations, and blockchain-enabled product builds."
+      },
+      {
+        "question": "Can you support startup MVPs?",
+        "answer": "Yes. We can help scope an MVP that balances launch speed, usability, and technical feasibility."
+      },
+      {
+        "question": "Do you also handle frontend integration?",
+        "answer": "Yes. We can connect blockchain functionality with user-friendly website or dashboard interfaces."
+      }
+    ],
+    "related": [
+      "smart-contract-development-zirakpur",
+      "custom-software-development-zirakpur",
+      "website-development-zirakpur"
+    ],
+    "theme": {
+      "start": "#1e3a8a",
+      "mid": "#6366f1",
+      "end": "#8b5cf6",
+      "accent": "#ddd6fe",
+      "icon": "fas fa-cubes",
+      "badge": "Web3 Product Development"
+    }
+  },
+  "smart-contract-development-zirakpur": {
+    "slug": "smart-contract-development-zirakpur",
+    "service": "Smart Contract Development",
+    "pageTitle": "Smart Contract Development in Zirakpur | Smart Contract Company Chandigarh",
+    "pageDescription": "Smart Contract Development in Zirakpur for blockchain apps, token logic, and automated on-chain workflows. We also serve Chandigarh, Mohali, and nearby searches for smart contract development near me.",
+    "pageKeywords": "smart contract development in Zirakpur, smart contract development in Chandigarh, smart contract development in Mohali, smart contract development near me, smart contract company Chandigarh, solidity developer Mohali",
+    "intro": "We build and integrate smart contracts for decentralized products that need secure execution, clear token logic, and reliable technical implementation.",
+    "benefits": [
+      "Contract logic planning",
+      "Token contract support",
+      "dApp integration",
+      "Automated workflows",
+      "Testing support",
+      "Deployment guidance"
+    ],
+    "deliverables": [
+      "Requirement analysis",
+      "Contract development",
+      "Frontend integration support",
+      "Test environment setup",
+      "Deployment checklist",
+      "Technical assistance"
+    ],
+    "faq": [
+      {
+        "question": "Do you develop smart contracts for token projects?",
+        "answer": "Yes. We support token logic, custom contract workflows, and Web3 product requirements based on project needs."
+      },
+      {
+        "question": "Can smart contracts be connected with a website or dashboard?",
+        "answer": "Yes. We can connect smart contract actions with frontend interfaces for better usability."
+      },
+      {
+        "question": "Do you help after deployment?",
+        "answer": "Yes. We provide post-deployment technical support and improvement planning when needed."
+      }
+    ],
+    "related": [
+      "blockchain-development-zirakpur",
+      "website-development-zirakpur",
+      "custom-software-development-zirakpur"
+    ],
+    "theme": {
+      "start": "#4338ca",
+      "mid": "#6366f1",
+      "end": "#8b5cf6",
+      "accent": "#ddd6fe",
+      "icon": "fas fa-file-contract",
+      "badge": "Secure Contract Logic"
+    }
+  },
+  "graphic-designing-zirakpur": {
+    "slug": "graphic-designing-zirakpur",
+    "service": "Graphic Designing",
+    "pageTitle": "Graphic Designing in Zirakpur | Graphic Design Company Chandigarh",
+    "pageDescription": "Graphic Designing in Zirakpur for social media creatives, banners, brochures, business branding, and ad visuals. We also serve Chandigarh, Mohali, and businesses searching for graphic designing near me.",
+    "pageKeywords": "graphic designing in Zirakpur, graphic designing in Chandigarh, graphic designing in Mohali, graphic designing near me, graphic design company Chandigarh, creative designing Mohali",
+    "intro": "We design marketing creatives and brand assets that look professional, stay consistent, and support stronger campaign performance.",
+    "benefits": [
+      "Social media creatives",
+      "Business brochures",
+      "Poster and banner design",
+      "Branding support",
+      "Ad creatives",
+      "Print-ready artwork"
+    ],
+    "deliverables": [
+      "Creative concepts",
+      "Brand-aligned visuals",
+      "Ad size variations",
+      "Print and digital exports",
+      "Revision support",
+      "Source file handoff when included"
+    ],
+    "faq": [
+      {
+        "question": "Do you design both digital and print graphics?",
+        "answer": "Yes. We create graphics for social media, advertising, branding, brochures, standees, and print marketing."
+      },
+      {
+        "question": "Can you match our brand style?",
+        "answer": "Yes. We follow your existing colors, fonts, and tone or help refine them where needed."
+      },
+      {
+        "question": "Is graphic design available as a monthly service?",
+        "answer": "Yes. We can support one-time creative work or ongoing monthly design requirements."
+      }
+    ],
+    "related": [
+      "social-media-marketing-zirakpur",
+      "ppc-services-zirakpur",
+      "ui-ux-design-zirakpur"
+    ],
+    "theme": {
+      "start": "#ec4899",
+      "mid": "#f472b6",
+      "end": "#8b5cf6",
+      "accent": "#fbcfe8",
+      "icon": "fas fa-pen-nib",
+      "badge": "Creative Brand Assets"
+    }
+  },
+  "seo-services-zirakpur": {
+    "slug": "seo-services-zirakpur",
+    "service": "SEO Services",
+    "pageTitle": "SEO Services in Zirakpur | SEO Company Chandigarh",
+    "pageDescription": "SEO Services in Zirakpur for local rankings, service page optimization, technical improvements, and content strategy. We also serve Chandigarh, Mohali, and businesses searching for SEO services near me.",
+    "pageKeywords": "seo services in Zirakpur, seo services in Chandigarh, seo services in Mohali, seo services near me, seo company Chandigarh, local seo Mohali",
+    "intro": "We improve crawlability, keyword targeting, internal linking, and location relevance so your business can rank better on Google.",
+    "benefits": [
+      "On-page SEO",
+      "Local SEO targeting",
+      "Keyword mapping",
+      "Technical SEO checks",
+      "Internal linking",
+      "Content optimization"
+    ],
+    "deliverables": [
+      "SEO audit",
+      "Page title mapping",
+      "Meta improvement",
+      "Heading structure",
+      "Keyword-focused content suggestions",
+      "Reporting and recommendations"
+    ],
+    "faq": [
+      {
+        "question": "Do you provide local SEO for Zirakpur businesses?",
+        "answer": "Yes. We optimize pages around location-focused search intent like Zirakpur, Chandigarh, and Mohali service keywords."
+      },
+      {
+        "question": "Can SEO help service pages rank better?",
+        "answer": "Yes. Proper titles, headings, content depth, internal links, and technical cleanup make service pages more crawlable and relevant."
+      },
+      {
+        "question": "Do you also support technical SEO fixes?",
+        "answer": "Yes. We review headings, meta tags, crawl paths, link structure, and page-level optimization opportunities."
+      }
+    ],
+    "related": [
+      "digital-marketing-zirakpur",
+      "ppc-services-zirakpur",
+      "website-development-zirakpur"
+    ],
+    "theme": {
+      "start": "#ea580c",
+      "mid": "#f59e0b",
+      "end": "#1d4ed8",
+      "accent": "#fde68a",
+      "icon": "fas fa-chart-line",
+      "badge": "Rank Better on Google"
+    }
+  },
+  "wordpress-website-zirakpur": {
+    "slug": "wordpress-website-zirakpur",
+    "service": "WordPress Website",
+    "pageTitle": "WordPress Website in Zirakpur | WordPress Developer Chandigarh",
+    "pageDescription": "WordPress Website in Zirakpur for business sites, blogs, landing pages, and service websites. We also serve Chandigarh, Mohali, and nearby searches for WordPress website near me.",
+    "pageKeywords": "wordpress website in Zirakpur, wordpress website in Chandigarh, wordpress website in Mohali, wordpress website near me, wordpress developer Chandigarh, wordpress website company Mohali",
+    "intro": "We build WordPress websites that are easy to update, mobile friendly, and structured for local SEO and lead generation.",
+    "benefits": [
+      "Custom WordPress setup",
+      "Service pages",
+      "Lead forms",
+      "Blog support",
+      "Plugin configuration",
+      "Easy content updates"
+    ],
+    "deliverables": [
+      "Theme-based or custom build",
+      "Page setup",
+      "Contact forms",
+      "Basic SEO setup",
+      "Speed optimization",
+      "Admin guidance"
+    ],
+    "faq": [
+      {
+        "question": "Is WordPress a good option for service businesses?",
+        "answer": "Yes. WordPress is flexible, easy to manage, and well suited for service pages, blogs, and local SEO content."
+      },
+      {
+        "question": "Can you redesign an existing WordPress site?",
+        "answer": "Yes. We can improve structure, design, speed, and conversion flow on your current site."
+      },
+      {
+        "question": "Will the website be easy to manage?",
+        "answer": "Yes. We set up a manageable backend so your team can update content and images without technical complexity."
+      }
+    ],
+    "related": [
+      "website-development-zirakpur",
+      "cms-based-website-zirakpur",
+      "website-maintenance-zirakpur"
+    ],
+    "theme": {
+      "start": "#1d4ed8",
+      "mid": "#3b82f6",
+      "end": "#0f172a",
+      "accent": "#bfdbfe",
+      "icon": "fab fa-wordpress",
+      "badge": "Easy to Manage Websites"
+    }
+  },
+  "shopify-website-zirakpur": {
+    "slug": "shopify-website-zirakpur",
+    "service": "Shopify Website",
+    "pageTitle": "Shopify Website in Zirakpur | Shopify Developer Chandigarh",
+    "pageDescription": "Shopify Website in Zirakpur for modern online stores with secure checkout, product collections, and conversion-focused design. We serve Chandigarh, Mohali, and businesses searching for Shopify website near me.",
+    "pageKeywords": "shopify website in Zirakpur, shopify website in Chandigarh, shopify website in Mohali, shopify website near me, shopify developer Chandigarh, shopify store setup Mohali",
+    "intro": "We build Shopify stores for brands that want easy product management, clean storefronts, and a smoother ecommerce buying journey.",
+    "benefits": [
+      "Shopify store setup",
+      "Theme customization",
+      "Collection pages",
+      "Product page optimization",
+      "Checkout-friendly flow",
+      "App integration support"
+    ],
+    "deliverables": [
+      "Store design",
+      "Theme setup",
+      "Product upload guidance",
+      "Payment and shipping setup",
+      "Basic SEO",
+      "Launch support"
+    ],
+    "faq": [
+      {
+        "question": "Do you create Shopify websites for new businesses?",
+        "answer": "Yes. We help new and growing ecommerce businesses launch Shopify stores with the right structure from the start."
+      },
+      {
+        "question": "Can you customize an existing Shopify theme?",
+        "answer": "Yes. We can refine layout, collections, homepage sections, product pages, and overall user flow."
+      },
+      {
+        "question": "Will the Shopify site support SEO?",
+        "answer": "Yes. We optimize collections, product structure, titles, and content blocks to support search visibility."
+      }
+    ],
+    "related": [
+      "ecommerce-website-zirakpur",
+      "website-maintenance-zirakpur",
+      "graphic-designing-zirakpur"
+    ],
+    "theme": {
+      "start": "#047857",
+      "mid": "#10b981",
+      "end": "#065f46",
+      "accent": "#bbf7d0",
+      "icon": "fas fa-store",
+      "badge": "Conversion Focused Stores"
+    }
+  },
+  "cms-based-website-zirakpur": {
+    "slug": "cms-based-website-zirakpur",
+    "service": "CMS Based Website",
+    "pageTitle": "CMS Based Website in Zirakpur | CMS Website Company Chandigarh",
+    "pageDescription": "CMS Based Website in Zirakpur for easy content updates, service page management, and flexible business websites. We also serve Chandigarh, Mohali, and nearby searches for CMS based website near me.",
+    "pageKeywords": "cms based website in Zirakpur, cms based website in Chandigarh, cms based website in Mohali, cms based website near me, cms website company Chandigarh, content management website Mohali",
+    "intro": "We create CMS-based websites that give your team control over content while maintaining a professional design and SEO-ready structure.",
+    "benefits": [
+      "Editable page content",
+      "Blog and service management",
+      "Scalable structure",
+      "User-friendly backend",
+      "Lead generation pages",
+      "Search-friendly content layout"
+    ],
+    "deliverables": [
+      "CMS setup",
+      "Page templates",
+      "Content sections",
+      "Admin training",
+      "SEO-friendly structure",
+      "Support guidance"
+    ],
+    "faq": [
+      {
+        "question": "What is the advantage of a CMS based website?",
+        "answer": "A CMS based website makes it easier to update text, pages, blog posts, and service content without rebuilding the site."
+      },
+      {
+        "question": "Can you create custom sections in the CMS?",
+        "answer": "Yes. We can create structured sections so content remains easy to edit and consistent."
+      },
+      {
+        "question": "Is it good for SEO content updates?",
+        "answer": "Yes. CMS websites are useful when you need to regularly update service pages, blogs, and keyword-focused content."
+      }
+    ],
+    "related": [
+      "wordpress-website-zirakpur",
+      "website-development-zirakpur",
+      "website-maintenance-zirakpur"
+    ],
+    "theme": {
+      "start": "#1e40af",
+      "mid": "#3b82f6",
+      "end": "#14b8a6",
+      "accent": "#bfdbfe",
+      "icon": "fas fa-file-lines",
+      "badge": "Editable Business Websites"
+    }
+  },
+  "website-maintenance-zirakpur": {
+    "slug": "website-maintenance-zirakpur",
+    "service": "Website Maintenance",
+    "pageTitle": "Website Maintenance in Zirakpur | Website Support Company Chandigarh",
+    "pageDescription": "Website Maintenance in Zirakpur for updates, bug fixes, content changes, backups, and performance care. We also serve Chandigarh, Mohali, and businesses searching for website maintenance near me.",
+    "pageKeywords": "website maintenance in Zirakpur, website maintenance in Chandigarh, website maintenance in Mohali, website maintenance near me, website support company Chandigarh, website update services Mohali",
+    "intro": "We maintain business websites with regular updates, technical fixes, content refreshes, and ongoing support that keeps pages fast and reliable.",
+    "benefits": [
+      "Bug fixes",
+      "Content updates",
+      "Speed checks",
+      "Backup support",
+      "Security-focused maintenance",
+      "Monthly support options"
+    ],
+    "deliverables": [
+      "Update support",
+      "Content edits",
+      "Broken link checks",
+      "Form testing",
+      "Basic performance review",
+      "Maintenance consultation"
+    ],
+    "faq": [
+      {
+        "question": "Do you maintain websites built by other companies?",
+        "answer": "Yes. We can review the current setup and take over maintenance, updates, and support if the site is accessible."
+      },
+      {
+        "question": "What is included in website maintenance?",
+        "answer": "Typical work includes updates, content changes, minor bug fixes, backup checks, and ongoing technical support."
+      },
+      {
+        "question": "Can maintenance improve SEO too?",
+        "answer": "Yes. Routine maintenance helps keep pages accessible, fast, and technically cleaner for search engines."
+      }
+    ],
+    "related": [
+      "website-development-zirakpur",
+      "wordpress-website-zirakpur",
+      "seo-services-zirakpur"
+    ],
+    "theme": {
+      "start": "#334155",
+      "mid": "#475569",
+      "end": "#1d4ed8",
+      "accent": "#cbd5e1",
+      "icon": "fas fa-screwdriver-wrench",
+      "badge": "Support and Ongoing Updates"
+    }
+  },
+  "ppc-services-zirakpur": {
+    "slug": "ppc-services-zirakpur",
+    "service": "PPC Services",
+    "pageTitle": "PPC Services in Zirakpur | Google Ads Company Chandigarh",
+    "pageDescription": "PPC Services in Zirakpur for Google Ads, search campaigns, lead generation, and remarketing. We also serve Chandigarh, Mohali, and businesses searching for PPC services near me.",
+    "pageKeywords": "ppc services in Zirakpur, ppc services in Chandigarh, ppc services in Mohali, ppc services near me, google ads company Chandigarh, paid ads agency Mohali",
+    "intro": "We run PPC campaigns that focus on qualified clicks, better ad relevance, and landing page alignment for stronger inquiry generation.",
+    "benefits": [
+      "Google Ads setup",
+      "Search campaigns",
+      "Remarketing support",
+      "Ad copy planning",
+      "Lead-focused targeting",
+      "Performance reporting"
+    ],
+    "deliverables": [
+      "Keyword research",
+      "Campaign setup",
+      "Ad group planning",
+      "Conversion tracking",
+      "Optimization support",
+      "Monthly reports"
+    ],
+    "faq": [
+      {
+        "question": "Do you run Google Ads for local service businesses?",
+        "answer": "Yes. We create campaigns for local service providers, ecommerce brands, and lead generation businesses."
+      },
+      {
+        "question": "Can PPC work together with SEO?",
+        "answer": "Yes. PPC brings quicker visibility while SEO builds longer-term organic ranking strength."
+      },
+      {
+        "question": "Will you help with landing pages too?",
+        "answer": "Yes. We can guide landing page structure and messaging so paid traffic converts better."
+      }
+    ],
+    "related": [
+      "digital-marketing-zirakpur",
+      "seo-services-zirakpur",
+      "social-media-marketing-zirakpur"
+    ],
+    "theme": {
+      "start": "#b91c1c",
+      "mid": "#ef4444",
+      "end": "#f59e0b",
+      "accent": "#fecaca",
+      "icon": "fas fa-bullseye",
+      "badge": "Google Ads Lead Campaigns"
+    }
+  },
+  "social-media-marketing-zirakpur": {
+    "slug": "social-media-marketing-zirakpur",
+    "service": "Social Media Marketing",
+    "pageTitle": "Social Media Marketing in Zirakpur | Social Media Agency Chandigarh",
+    "pageDescription": "Social Media Marketing in Zirakpur for content planning, creative campaigns, brand awareness, and inquiry generation. We also serve Chandigarh, Mohali, and businesses searching for social media marketing near me.",
+    "pageKeywords": "social media marketing in Zirakpur, social media marketing in Chandigarh, social media marketing in Mohali, social media marketing near me, social media agency Chandigarh, social media management Mohali",
+    "intro": "We manage social media strategy, creative assets, and paid promotion support to help local brands stay visible and generate engagement.",
+    "benefits": [
+      "Content planning",
+      "Creative campaign ideas",
+      "Brand consistency",
+      "Engagement-focused posting",
+      "Paid promotion support",
+      "Monthly content direction"
+    ],
+    "deliverables": [
+      "Content calendar",
+      "Creative brief",
+      "Post captions",
+      "Platform planning",
+      "Campaign support",
+      "Reporting overview"
+    ],
+    "faq": [
+      {
+        "question": "Which platforms do you support for social media marketing?",
+        "answer": "We typically support platforms like Instagram, Facebook, LinkedIn, and other channels based on your audience."
+      },
+      {
+        "question": "Can social media marketing help local businesses?",
+        "answer": "Yes. It improves brand visibility, trust, and engagement, especially when paired with strong local offers and landing pages."
+      },
+      {
+        "question": "Do you create the graphics too?",
+        "answer": "Yes. Social media support can include creative design planning and branded visual assets."
+      }
+    ],
+    "related": [
+      "digital-marketing-zirakpur",
+      "graphic-designing-zirakpur",
+      "ppc-services-zirakpur"
+    ],
+    "theme": {
+      "start": "#7c3aed",
+      "mid": "#a855f7",
+      "end": "#ec4899",
+      "accent": "#e9d5ff",
+      "icon": "fas fa-hashtag",
+      "badge": "Social Reach and Engagement"
+    }
+  }
+}

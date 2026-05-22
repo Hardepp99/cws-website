@@ -1,0 +1,52 @@
+import { notFound } from "next/navigation";
+import { SiteLayout } from "@/components/layout/SiteLayout";
+import { PageDesimentorContent } from "@/components/ui/PageDesimentorContent";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { ContactForm } from "@/components/forms/ContactForm";
+import { getPageBySlug } from "@/lib/wordpress/api";
+import { buildMetadata } from "@/lib/seo/metadata";
+
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata() {
+  const page = await getPageBySlug("contact");
+  if (!page?.seo) return { title: "Contact Us" };
+  return buildMetadata(page.seo, "/contact");
+}
+
+export default async function ContactPage() {
+  const page = await getPageBySlug("contact");
+  if (!page) notFound();
+
+  const hasDesimentor = Boolean(page.desimentor?.sections?.length);
+  const hasContent = Boolean(page.content?.trim()) || hasDesimentor;
+
+  return (
+    <SiteLayout currentPath="/contact">
+      <PageHeader breadcrumb={[{ label: "Home", href: "/" }, { label: page.title }]} />
+      {hasDesimentor ? (
+        <section className="content-page-section pb-0">
+          <div className="container">
+            <PageDesimentorContent title={page.title} desimentor={page.desimentor} showArticleWrapper={false} />
+          </div>
+        </section>
+      ) : null}
+      <section className="content-page-section">
+        <div className="container">
+          <div className="row g-4 align-items-start">
+            {page.content?.trim() ? (
+              <div className="col-lg-5">
+                <PageDesimentorContent title={page.title} html={page.content} />
+              </div>
+            ) : null}
+            <div className={hasContent ? "col-lg-7" : "col-lg-8 mx-auto"}>
+              <div className="p-4 p-lg-5 bg-white rounded-4 border shadow-sm">
+                <ContactForm />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </SiteLayout>
+  );
+}

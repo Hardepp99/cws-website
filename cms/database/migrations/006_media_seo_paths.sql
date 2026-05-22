@@ -1,0 +1,1 @@
+-- Media SEO paths: no schema change; new uploads use Y/m/d + SEO filenames (MediaService).

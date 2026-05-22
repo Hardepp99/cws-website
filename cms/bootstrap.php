@@ -1,0 +1,62 @@
+<?php
+
+declare(strict_types=1);
+
+define('CWS_CMS_ROOT', __DIR__);
+
+$configFile = CWS_CMS_ROOT . '/config.php';
+if (!is_file($configFile)) {
+    $configFile = CWS_CMS_ROOT . '/config.example.php';
+}
+/** @var array<string, mixed> $CWS_CONFIG */
+$CWS_CONFIG = require $configFile;
+
+require_once CWS_CMS_ROOT . '/src/Database.php';
+require_once CWS_CMS_ROOT . '/src/Http.php';
+require_once CWS_CMS_ROOT . '/src/ContentRepository.php';
+require_once CWS_CMS_ROOT . '/src/Auth.php';
+require_once CWS_CMS_ROOT . '/src/AdminAuth.php';
+require_once CWS_CMS_ROOT . '/src/MediaRepository.php';
+require_once CWS_CMS_ROOT . '/src/MediaService.php';
+require_once CWS_CMS_ROOT . '/src/DesimentorRepository.php';
+require_once CWS_CMS_ROOT . '/src/AdminApi.php';
+
+function cws_config(string $key, mixed $default = null): mixed
+{
+    global $CWS_CONFIG;
+    $parts = explode('.', $key);
+    $val = $CWS_CONFIG;
+    foreach ($parts as $part) {
+        if (!is_array($val) || !array_key_exists($part, $val)) {
+            return $default;
+        }
+        $val = $val[$part];
+    }
+    return $val;
+}
+
+function cws_db(): PDO
+{
+    static $pdo = null;
+    if ($pdo instanceof PDO) {
+        return $pdo;
+    }
+    $pdo = Database::connect([
+        'host'     => (string) cws_config('db.host', '127.0.0.1'),
+        'port'     => (int) cws_config('db.port', 3306),
+        'name'     => (string) cws_config('db.name', 'cws_cms'),
+        'user'     => (string) cws_config('db.user', 'root'),
+        'password' => (string) cws_config('db.password', ''),
+        'charset'  => (string) cws_config('db.charset', 'utf8mb4'),
+    ]);
+    return $pdo;
+}
+
+function cws_repo(): ContentRepository
+{
+    static $repo = null;
+    if (!$repo) {
+        $repo = new ContentRepository(cws_db());
+    }
+    return $repo;
+}

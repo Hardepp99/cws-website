@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "./corporate.css";
+@import "./animations.css";
+@import "./home.css";
+
+:root {
+  --primary-color: #0057ff;
+  --secondary-color: #0088ff;
+  --accent-color: #00a86b;
+  --highlight-color: #ff7a00;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+}
+
+/* Bootstrap navbar uses .collapse; Tailwind also defines .collapse { visibility: collapse } */
+@media (min-width: 992px) {
+  .header .navbar-collapse.collapse {
+    visibility: visible;
+  }
+
+  .header .navbar-expand-lg .navbar-collapse {
+    display: flex !important;
+    flex-basis: auto;
+    flex-grow: 1;
+    align-items: center;
+    visibility: visible !important;
+    position: static !important;
+    transform: none !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+
+  .header .navbar-expand-lg .navbar-toggler {
+    display: none !important;
+  }
+
+  .header .navbar-expand-lg .navbar-nav {
+    flex-direction: row;
+    align-items: center;
+  }
+}

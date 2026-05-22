@@ -1,0 +1,77 @@
+{
+  "primary": [
+    { "label": "Home", "href": "/", "icon": "fas fa-home" },
+    {
+      "label": "About",
+      "href": "/about",
+      "icon": "fas fa-info-circle",
+      "children": [
+        { "label": "About Us", "href": "/about", "icon": "fas fa-building" },
+        { "label": "Our Team", "href": "/about#team", "icon": "fas fa-users" },
+        { "label": "Careers", "href": "/about#careers", "icon": "fas fa-briefcase" }
+      ]
+    },
+    {
+      "label": "Services",
+      "href": "/services",
+      "icon": "fas fa-layer-group",
+      "children": [
+        { "label": "Website Development", "href": "/website-development-zirakpur", "icon": "fas fa-globe" },
+        { "label": "Web Application", "href": "/web-application", "icon": "fas fa-window-restore" },
+        { "label": "Mobile App Development", "href": "/mobile-app-development-zirakpur", "icon": "fas fa-mobile-alt" },
+        { "label": "Digital Marketing", "href": "/digital-marketing-zirakpur", "icon": "fas fa-bullhorn" },
+        { "label": "UI/UX Design", "href": "/ui-ux-design-zirakpur", "icon": "fas fa-paint-brush" },
+        { "label": "Blockchain Development", "href": "/blockchain-development-zirakpur", "icon": "fas fa-cubes" }
+      ]
+    },
+    {
+      "label": "Courses & Training",
+      "href": "/courses",
+      "icon": "fas fa-graduation-cap",
+      "children": [
+        { "label": "PHP & Laravel", "href": "/courses#php", "icon": "fab fa-php" },
+        { "label": "React & Node.js", "href": "/courses#react", "icon": "fab fa-react" },
+        { "label": "Full Stack", "href": "/courses#fullstack", "icon": "fas fa-layer-group" }
+      ]
+    },
+    {
+      "label": "Pages",
+      "href": "/portfolio",
+      "icon": "fas fa-folder-open",
+      "children": [
+        { "label": "Portfolio", "href": "/portfolio", "icon": "fas fa-images" },
+        { "label": "Blog", "href": "/blog", "icon": "fas fa-feather-alt" }
+      ]
+    },
+    { "label": "Contact", "href": "/contact", "icon": "fas fa-envelope" }
+  ],
+  "footer": [
+    { "label": "Home", "href": "/", "icon": "fas fa-home" },
+    { "label": "About Us", "href": "/about", "icon": "fas fa-info-circle" },
+    { "label": "Services", "href": "/services", "icon": "fas fa-layer-group" },
+    { "label": "Courses", "href": "/courses", "icon": "fas fa-graduation-cap" },
+    { "label": "Blog", "href": "/blog", "icon": "fas fa-feather-alt" },
+    { "label": "Portfolio", "href": "/portfolio", "icon": "fas fa-images" },
+    { "label": "Contact", "href": "/contact", "icon": "fas fa-envelope" }
+  ],
+  "footer_services": [
+    { "label": "Website Development", "href": "/website-development-zirakpur", "icon": "fas fa-globe" },
+    { "label": "Digital Marketing", "href": "/digital-marketing-zirakpur", "icon": "fas fa-bullhorn" },
+    { "label": "Mobile App Development", "href": "/mobile-app-development-zirakpur", "icon": "fas fa-mobile-alt" },
+    { "label": "Web Applications", "href": "/web-application", "icon": "fas fa-window-restore" },
+    { "label": "UI/UX Design", "href": "/ui-ux-design-zirakpur", "icon": "fas fa-palette" },
+    { "label": "Ecommerce Development", "href": "/ecommerce-website-zirakpur", "icon": "fas fa-cart-shopping" },
+    { "label": "SEO Services", "href": "/seo-services-zirakpur", "icon": "fas fa-chart-line" },
+    { "label": "Blockchain Solutions", "href": "/blockchain-development-zirakpur", "icon": "fas fa-cubes" }
+  ],
+  "footer_products": [
+    { "label": "Custom Software", "href": "/web-application", "icon": "fas fa-puzzle-piece" },
+    { "label": "Corporate Websites", "href": "/website-development-zirakpur", "icon": "fas fa-building" },
+    { "label": "Online Stores", "href": "/ecommerce-website-zirakpur", "icon": "fas fa-store" },
+    { "label": "PHP & Laravel Training", "href": "/courses", "icon": "fas fa-server" },
+    { "label": "React & Node.js Training", "href": "/courses", "icon": "fab fa-react" },
+    { "label": "Full Stack Program", "href": "/courses", "icon": "fas fa-layer-group" },
+    { "label": "IT Courses", "href": "/courses", "icon": "fas fa-book-open" },
+    { "label": "Portfolio", "href": "/portfolio", "icon": "fas fa-briefcase" }
+  ]
+}

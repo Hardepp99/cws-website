@@ -1,0 +1,41 @@
+[
+  {
+    "slug": "web-development-trends-2025",
+    "title": "Web Development Trends 2025: What Indian SMBs Should Prioritise",
+    "excerpt": "Performance, headless CMS, and conversion-focused design — practical trends for Chandigarh and Punjab businesses planning a site refresh.",
+    "date": "2025-01-15",
+    "image": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80",
+    "content": "\n<p>Small and mid-size businesses in Punjab no longer compete only on price — buyers compare websites on mobile speed, clarity of offer, and trust signals before they call. In 2025, three technical choices matter most for that first impression.</p>\n<h2>Performance is part of branding</h2>\n<p>Heavy page builders and unoptimised images still dominate many local sites. Moving to lean templates, modern image formats, and caching routinely improves both rankings and form submissions — especially on 4G connections.</p>\n<h2>Structured content beats one long Services page</h2>\n<p>Separate landings for website development, ecommerce, and marketing in each city you serve give Google clear relevance signals. Internal linking between those pages strengthens your main domain without keyword stuffing.</p>\n<h2>Headless when you need speed and flexibility</h2>\n<p>Marketing teams that publish weekly benefit from decoupled front ends. You keep a fast public site while editors work in a familiar CMS. The upfront cost is higher, but change cycles are cheaper over two to three years.</p>\n<p>Planning a rebuild? <a href=\"/contact\">Talk to our team</a> about scope and timeline.</p>\n",
+    "seo": {
+      "title": "Web Development Trends 2025 | Creative Web Solutions Blog",
+      "description": "Practical web development trends for Indian SMBs: performance, SEO structure, and headless options explained for business owners.",
+      "keywords": "web development trends 2025, website redesign India, headless CMS SMB"
+    }
+  },
+  {
+    "slug": "seo-tips-local-business",
+    "title": "Local SEO Tips for Zirakpur, Chandigarh, and Mohali Businesses",
+    "excerpt": "How to improve Google visibility without spammy tactics — Google Business Profile, location pages, and on-page basics.",
+    "date": "2025-02-01",
+    "image": "https://images.unsplash.com/photo-1432888622747-4eb9a8f2d523?w=800&q=80",
+    "content": "\n<p>Local search is how most service businesses in Tricity acquire leads. You do not need thousands of backlinks on day one — you need consistency between what you claim online and what your site proves.</p>\n<h2>Align your Google Business Profile with your website</h2>\n<p>Categories, service areas, hours, and phone number should match your contact page exactly. Add photos of real work and update posts monthly so the profile looks active.</p>\n<h2>Build location + service pages</h2>\n<p>One page for \"digital marketing in Mohali\" and another for \"website development in Zirakpur\" beats stuffing every city name into a single paragraph. Each page should answer FAQs buyers actually ask.</p>\n<h2>Fix technical blockers first</h2>\n<p>Broken mobile layout, slow LCP, and missing meta descriptions waste ad spend and organic clicks alike. Run a technical audit before scaling content or PPC.</p>\n<p>Need help executing this? See our <a href=\"/seo-services-zirakpur\">SEO services</a> or request a quote via <a href=\"/contact\">contact</a>.</p>\n",
+    "seo": {
+      "title": "Local SEO Tips Zirakpur Chandigarh | Creative Web Solutions",
+      "description": "Local SEO checklist for Punjab businesses: GBP optimisation, location landing pages, and technical fixes before scaling ads.",
+      "keywords": "local SEO Zirakpur, SEO Chandigarh, Google Business Profile Mohali"
+    }
+  },
+  {
+    "slug": "choose-web-development-partner",
+    "title": "How to Choose a Web Development Partner in Punjab",
+    "excerpt": "Questions to ask before signing — scope, ownership, staging access, and post-launch support.",
+    "date": "2025-03-10",
+    "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+    "content": "\n<p>Choosing a vendor is less about the lowest quote and more about risk: who owns the code, how changes are approved, and what happens when you need urgent fixes after launch.</p>\n<h2>Demand a written scope</h2>\n<p>Page list, integrations, content responsibility, timeline, and payment milestones should be documented. Verbal promises do not survive staff turnover on either side.</p>\n<h2>Insist on staging and version control</h2>\n<p>You should review work on a staging URL before production. Source code in a repository you can access (or escrow) prevents lock-in.</p>\n<h2>Clarify SEO and content ownership</h2>\n<p>Some agencies deliver design only; others include metadata, schema, and analytics. Know who writes long-form service copy and who maintains it after go-live.</p>\n<p>Creative Web Solutions uses milestone delivery with training handover. <a href=\"/about\">Read about our process</a>.</p>\n",
+    "seo": {
+      "title": "Choose Web Development Partner Punjab | Creative Web Solutions",
+      "description": "Guide for selecting a web development company in Punjab: scope, staging, code ownership, SEO, and support questions to ask.",
+      "keywords": "web development company Punjab, hire website developer Chandigarh"
+    }
+  }
+]
