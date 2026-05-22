@@ -10,6 +10,7 @@ const BACK: Record<DesimentorEntityType, string> = {
   homepage: "/admin/homepage",
   service_landing: "/admin/landings",
   service: "/admin/services",
+  blog_post: "/admin/blog",
 };
 
 export default function DesimentorEditPage() {
@@ -18,7 +19,7 @@ export default function DesimentorEditPage() {
   const entityId = parseInt(String(params.entityId ?? ""), 10);
   const type = entityType as DesimentorEntityType;
 
-  if (!["page", "homepage", "service_landing", "service"].includes(type) || Number.isNaN(entityId)) {
+  if (!["page", "homepage", "service_landing", "service", "blog_post"].includes(type) || Number.isNaN(entityId)) {
     return <p>Invalid Desimentor route.</p>;
   }
 

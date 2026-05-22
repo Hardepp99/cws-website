@@ -217,10 +217,14 @@ final class ContentRepository
             'page', 'homepage' => 'pages',
             'service' => 'services',
             'service_landing' => 'service_landings',
+            'blog_post' => 'blog_posts',
             default => throw new InvalidArgumentException('Unknown entity type'),
         };
         if (!$this->tableHasDisplayMode($table)) {
-            return;
+            throw new RuntimeException(
+                'display_mode column missing. Run: php cms/scripts/migrate-008.php'
+                . ($entityType === 'blog_post' ? ' and php cms/scripts/migrate-009.php' : '')
+            );
         }
         $stmt = $this->db->prepare("UPDATE {$table} SET display_mode = :m WHERE id = :id");
         $stmt->execute([':m' => $mode, ':id' => $entityId]);
@@ -261,7 +265,7 @@ final class ContentRepository
         if (isset($cache[$table])) {
             return $cache[$table];
         }
-        $allowed = ['pages', 'services', 'service_landings'];
+        $allowed = ['pages', 'services', 'service_landings', 'blog_posts'];
         if (!in_array($table, $allowed, true)) {
             return $cache[$table] = false;
         }
@@ -844,6 +848,12 @@ final class ContentRepository
         return $stmt->fetch() ?: null;
     }
 
+    public function getBlogPostAdminDetail(int $id): ?array
+    {
+        $row = $this->getBlogPostById($id);
+        return $row ? $this->enrichAdminEntityRow($row, 'blog_posts', 'blog_post', $id) : null;
+    }
+
     public function saveBlogPost(int $id, array $data): void
     {
         $slug = $this->uniqueSlug(
@@ -885,6 +895,13 @@ final class ContentRepository
                 ':seo'  => json_encode($data['seo'] ?? [], JSON_UNESCAPED_UNICODE),
                 ':st'   => $data['status'] ?? 'published',
                 ':id'   => $id,
+            ]);
+        }
+        if ($this->tableHasDisplayMode('blog_posts') && array_key_exists('display_mode', $data)) {
+            $dm = $this->db->prepare('UPDATE blog_posts SET display_mode = :dm WHERE id = :id');
+            $dm->execute([
+                ':dm' => $this->normalizeDisplayMode((string) $data['display_mode']),
+                ':id' => $id,
             ]);
         }
     }
@@ -1228,21 +1245,24 @@ final class ContentRepository
     {
         $seo = $this->decodeJson($row['seo']) ?? [];
         $robots = ($seo['robots'] ?? 'index') === 'noindex' ? 'noindex' : 'index';
-        return [
-            'slug'       => $row['slug'],
-            'title'      => $row['title'],
-            'excerpt'    => $row['excerpt'] ?? '',
-            'date'       => $row['published_date'] ?? '',
-            'image'      => $row['featured_image'] ?: null,
-            'content'    => $row['content_html'] ?? '',
-            'categories' => $this->parseBlogCategoriesRow($row),
-            'featured'   => !empty($row['is_featured']),
-            'seo'        => array_merge([
+        $data = [
+            'slug'        => $row['slug'],
+            'title'       => $row['title'],
+            'excerpt'     => $row['excerpt'] ?? '',
+            'date'        => $row['published_date'] ?? '',
+            'image'       => $row['featured_image'] ?: null,
+            'content'     => $row['content_html'] ?? '',
+            'displayMode' => $this->rowDisplayMode($row, 'blog_posts'),
+            'categories'  => $this->parseBlogCategoriesRow($row),
+            'featured'    => !empty($row['is_featured']),
+            'seo'         => array_merge([
                 'title'       => $row['title'],
                 'description' => $row['excerpt'] ?? '',
                 'keywords'    => '',
             ], $seo, ['robots' => $robots]),
         ];
+        $this->attachDesimentor($data, 'blog_post', (int) $row['id']);
+        return $data;
     }
 
     /** @return list<string> */

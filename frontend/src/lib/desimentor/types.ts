@@ -1,4 +1,4 @@
-export type DesimentorEntityType = "page" | "homepage" | "service_landing" | "service";
+export type DesimentorEntityType = "page" | "homepage" | "service_landing" | "service" | "blog_post";
 
 export type ElementStyles = {
   marginTop?: string;

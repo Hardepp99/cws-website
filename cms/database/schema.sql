@@ -129,12 +129,13 @@ CREATE TABLE IF NOT EXISTS blog_posts (
   is_featured TINYINT(1) NOT NULL DEFAULT 0,
   seo JSON,
   status ENUM('published','draft') NOT NULL DEFAULT 'published',
+  display_mode ENUM('classic','elementor') NOT NULL DEFAULT 'classic',
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS desimentor_documents (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  entity_type ENUM('page','homepage','service_landing','service') NOT NULL,
+  entity_type ENUM('page','homepage','service_landing','service','blog_post') NOT NULL,
   entity_id INT UNSIGNED NOT NULL,
   content_json LONGTEXT NOT NULL,
   status ENUM('draft','published') NOT NULL DEFAULT 'draft',

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DesimentorEditLink } from "@/components/admin/DesimentorEditLink";
 import { publishDesimentorDocument } from "@/lib/admin/desimentor-client";
 import { adminFetch } from "@/lib/admin/client";
@@ -38,17 +38,23 @@ export function EntityEditorModePanel({
   const [panelMsg, setPanelMsg] = useState("");
   const [panelErr, setPanelErr] = useState("");
 
+  useEffect(() => {
+    setTab(displayMode);
+  }, [displayMode]);
+
+  function displayModeApiPath(): string {
+    if (entityType === "blog_post") return `/blog/${entityId}/display-mode`;
+    if (entityType === "page" || entityType === "homepage") return `/pages/${entityId}/display-mode`;
+    if (entityType === "service") return `/services/${entityId}/display-mode`;
+    return `/landings/${entityId}/display-mode`;
+  }
+
   async function setLiveMode(mode: DisplayMode) {
     if (isNew || !entityId) return;
     setModeBusy(true);
     setPanelErr("");
     try {
-      const path =
-        entityType === "page" || entityType === "homepage"
-          ? `/pages/${entityId}/display-mode`
-          : entityType === "service"
-            ? `/services/${entityId}/display-mode`
-            : `/landings/${entityId}/display-mode`;
+      const path = displayModeApiPath();
       await adminFetch(path, { method: "PUT", json: { display_mode: mode } });
       onDisplayModeChange(mode);
       setTab(mode);

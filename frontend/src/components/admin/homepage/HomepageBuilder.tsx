@@ -81,9 +81,19 @@ export function HomepageBuilder() {
         title="Homepage sections (legacy builder)"
         desimentor={pageId > 0 ? { entityType: "homepage", entityId: pageId } : undefined}
         actions={
-          <Link href="/admin/homepage" className="page-title-action page-title-action-secondary">
-            Section list
-          </Link>
+          <>
+            {pageId > 0 ? (
+              <Link
+                href={`/admin/site-pages/${pageId}`}
+                className="page-title-action page-title-action-secondary"
+              >
+                Classic ↔ Elementor
+              </Link>
+            ) : null}
+            <Link href="/admin/homepage" className="page-title-action page-title-action-secondary">
+              Section list
+            </Link>
+          </>
         }
       />
       <div className="cms-card">

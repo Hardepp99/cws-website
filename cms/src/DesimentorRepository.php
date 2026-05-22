@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 final class DesimentorRepository
 {
-    private const ENTITY_TYPES = ['page', 'homepage', 'service_landing', 'service'];
+    private const ENTITY_TYPES = ['page', 'homepage', 'service_landing', 'service', 'blog_post'];
 
     public function __construct(private PDO $db) {}
 

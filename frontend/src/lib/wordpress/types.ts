@@ -143,6 +143,8 @@ export interface BlogPost {
   date: string;
   image?: string;
   content?: string;
+  displayMode?: ContentDisplayMode;
+  desimentor?: DesimentorDocument;
   categories?: string[];
   featured?: boolean;
   seo: SeoMeta;

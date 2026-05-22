@@ -109,11 +109,14 @@ export default async function DynamicPage({ params }: PageProps) {
         <section className="content-page-section">
           <div className="container">
             <div className="row g-4 align-items-start">
-              {page.content ? (
+              {page.content || page.desimentor?.sections?.length ? (
                 <div className="col-lg-5">
-                  <ContentArticle title={page.title}>
-                    <RichContent html={page.content} />
-                  </ContentArticle>
+                  <PageDesimentorContent
+                    title={page.title}
+                    displayMode={page.displayMode}
+                    desimentor={page.desimentor}
+                    html={page.content}
+                  />
                 </div>
               ) : (
                 <div className="col-12">

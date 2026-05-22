@@ -4,8 +4,9 @@ import { SiteLayout } from "@/components/layout/SiteLayout";
 import { BlogSidebar } from "@/components/blog/BlogSidebar";
 import { ContentArticle } from "@/components/ui/ContentArticle";
 import { categoryHref, categorySlug as toCategorySlug } from "@/lib/blog/sidebar";
+import { PageBodyContent } from "@/components/ui/PageBodyContent";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { RichContent } from "@/components/ui/RichContent";
+import { resolvePublicBody } from "@/lib/content/display-mode";
 import { getBlogPosts } from "@/lib/wordpress/api";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { articleJsonLd, breadcrumbJsonLd, buildMetadata } from "@/lib/seo/metadata";
@@ -39,6 +40,11 @@ export default async function BlogPostPage({ params }: Props) {
     year: "numeric",
   });
   const categories = post.categories ?? [];
+  const body = resolvePublicBody({
+    displayMode: post.displayMode,
+    content: post.content,
+    desimentor: post.desimentor,
+  });
 
   return (
     <SiteLayout currentPath={`/blog/${slug}`}>
@@ -84,11 +90,17 @@ export default async function BlogPostPage({ params }: Props) {
                     )}
                   </>
                 }
-                excerpt={post.excerpt}
+                excerpt={body.showClassic ? post.excerpt : undefined}
                 image={post.image}
                 variant="blog"
               >
-                {post.content ? <RichContent html={post.content} /> : null}
+                <PageBodyContent
+                  title={post.title}
+                  displayMode={post.displayMode}
+                  content={post.content}
+                  desimentor={post.desimentor}
+                  showArticleWrapper={false}
+                />
               </ContentArticle>
             </main>
             <BlogSidebar posts={posts} currentSlug={slug} />

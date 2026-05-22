@@ -143,8 +143,12 @@ final class AdminApi
         if ($method === 'PUT' && preg_match('#^/pages/(\d+)/display-mode$#', $path, $m)) {
             $body = Http::readJsonBody();
             $mode = (string) ($body['display_mode'] ?? $body['mode'] ?? 'classic');
-            $repo->setDisplayModeForEntity('page', (int) $m[1], $mode);
-            Http::json(['success' => true, 'display_mode' => $mode === 'elementor' ? 'elementor' : 'classic']);
+            try {
+                $repo->setDisplayModeForEntity('page', (int) $m[1], $mode);
+                Http::json(['success' => true, 'display_mode' => $mode === 'elementor' ? 'elementor' : 'classic']);
+            } catch (Throwable $e) {
+                Http::json(['error' => $e->getMessage()], 400);
+            }
         }
 
         if ($method === 'POST' && $path === '/pages') {
@@ -178,8 +182,12 @@ final class AdminApi
         if ($method === 'PUT' && preg_match('#^/landings/(\d+)/display-mode$#', $path, $m)) {
             $body = Http::readJsonBody();
             $mode = (string) ($body['display_mode'] ?? $body['mode'] ?? 'classic');
-            $repo->setDisplayModeForEntity('service_landing', (int) $m[1], $mode);
-            Http::json(['success' => true, 'display_mode' => $mode === 'elementor' ? 'elementor' : 'classic']);
+            try {
+                $repo->setDisplayModeForEntity('service_landing', (int) $m[1], $mode);
+                Http::json(['success' => true, 'display_mode' => $mode === 'elementor' ? 'elementor' : 'classic']);
+            } catch (Throwable $e) {
+                Http::json(['error' => $e->getMessage()], 400);
+            }
         }
 
         if ($method === 'POST' && $path === '/landings') {
@@ -197,13 +205,24 @@ final class AdminApi
         }
 
         if ($method === 'GET' && preg_match('#^/blog/(\d+)$#', $path, $m)) {
-            $post = $repo->getBlogPostById((int) $m[1]);
+            $post = $repo->getBlogPostAdminDetail((int) $m[1]);
             Http::json($post ?: ['error' => 'Not found'], $post ? 200 : 404);
         }
 
         if ($method === 'PUT' && preg_match('#^/blog/(\d+)$#', $path, $m)) {
             $repo->saveBlogPost((int) $m[1], Http::readJsonBody());
             Http::json(['success' => true]);
+        }
+
+        if ($method === 'PUT' && preg_match('#^/blog/(\d+)/display-mode$#', $path, $m)) {
+            $body = Http::readJsonBody();
+            $mode = (string) ($body['display_mode'] ?? $body['mode'] ?? 'classic');
+            try {
+                $repo->setDisplayModeForEntity('blog_post', (int) $m[1], $mode);
+                Http::json(['success' => true, 'display_mode' => $mode === 'elementor' ? 'elementor' : 'classic']);
+            } catch (Throwable $e) {
+                Http::json(['error' => $e->getMessage()], 400);
+            }
         }
 
         if ($method === 'POST' && $path === '/blog') {
@@ -237,8 +256,12 @@ final class AdminApi
         if ($method === 'PUT' && preg_match('#^/services/(\d+)/display-mode$#', $path, $m)) {
             $body = Http::readJsonBody();
             $mode = (string) ($body['display_mode'] ?? $body['mode'] ?? 'classic');
-            $repo->setDisplayModeForEntity('service', (int) $m[1], $mode);
-            Http::json(['success' => true, 'display_mode' => $mode === 'elementor' ? 'elementor' : 'classic']);
+            try {
+                $repo->setDisplayModeForEntity('service', (int) $m[1], $mode);
+                Http::json(['success' => true, 'display_mode' => $mode === 'elementor' ? 'elementor' : 'classic']);
+            } catch (Throwable $e) {
+                Http::json(['error' => $e->getMessage()], 400);
+            }
         }
 
         if ($method === 'POST' && $path === '/services') {

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { EntityEditorModePanel, type DesimentorMeta } from "@/components/admin/EntityEditorModePanel";
 import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { SeoPanel } from "@/components/admin/SeoPanel";
 import { SlugField } from "@/components/admin/SlugField";
@@ -9,6 +10,9 @@ import { WysiwygField } from "@/components/admin/WysiwygField";
 import { WpEditScreen } from "@/components/admin/wp/WpEditScreen";
 import { EMPTY_SEO, parseSeoJson, seoToJson, type AdminSeoData } from "@/lib/admin/seo-types";
 import { adminFetch } from "@/lib/admin/client";
+import { normalizeDisplayMode, type DisplayMode } from "@/lib/content/display-mode";
+
+const EMPTY_META: DesimentorMeta = { hasDocument: false, status: null, sectionCount: 0 };
 
 export function BlogPostForm({ postId, isNew }: { postId?: number; isNew?: boolean }) {
   const router = useRouter();
@@ -21,6 +25,8 @@ export function BlogPostForm({ postId, isNew }: { postId?: number; isNew?: boole
   const [categories, setCategories] = useState("");
   const [isFeatured, setIsFeatured] = useState(false);
   const [status, setStatus] = useState("draft");
+  const [displayMode, setDisplayMode] = useState<DisplayMode>("classic");
+  const [desimentorMeta, setDesimentorMeta] = useState<DesimentorMeta>(EMPTY_META);
   const [seo, setSeo] = useState<AdminSeoData>({ ...EMPTY_SEO });
   const [slugManual, setSlugManual] = useState(false);
   const [msg, setMsg] = useState("");
@@ -51,6 +57,9 @@ export function BlogPostForm({ postId, isNew }: { postId?: number; isNew?: boole
       }
       setIsFeatured(Boolean(row.is_featured));
       setStatus(String(row.status ?? "published"));
+      setDisplayMode(normalizeDisplayMode(String(row.display_mode ?? "classic")));
+      const meta = row.desimentor_meta as DesimentorMeta | undefined;
+      if (meta) setDesimentorMeta(meta);
       const parsed = parseSeoJson(row.seo);
       setSeo({
         ...parsed,
@@ -65,7 +74,7 @@ export function BlogPostForm({ postId, isNew }: { postId?: number; isNew?: boole
     if (!seo.title || seo.title === title) setSeo((s) => ({ ...s, title: v }));
   }
 
-  async function save() {
+  async function saveClassic() {
     setSaving(true);
     setErr("");
     const payload = {
@@ -78,6 +87,7 @@ export function BlogPostForm({ postId, isNew }: { postId?: number; isNew?: boole
       categories: categories.split(",").map((s) => s.trim()).filter(Boolean),
       is_featured: isFeatured,
       status,
+      display_mode: displayMode,
       seo: seoToJson(seo),
     };
     try {
@@ -88,7 +98,7 @@ export function BlogPostForm({ postId, isNew }: { postId?: number; isNew?: boole
         return;
       }
       await adminFetch(`/blog/${postId}`, { method: "PUT", json: payload });
-      setMsg("Post saved.");
+      setMsg("Classic post content saved. Elementor layout is unchanged.");
     } catch (e) {
       setErr(String(e));
     } finally {
@@ -96,16 +106,8 @@ export function BlogPostForm({ postId, isNew }: { postId?: number; isNew?: boole
     }
   }
 
-  return (
-    <WpEditScreen
-      title={isNew ? "Add new post" : title}
-      backHref="/admin/blog"
-      onSave={save}
-      saving={saving}
-      saveLabel={isNew ? "Publish" : "Update"}
-      message={msg}
-      error={err}
-    >
+  const classicPanel = (
+    <>
       <SlugField
         title={title}
         slug={slug}
@@ -117,7 +119,10 @@ export function BlogPostForm({ postId, isNew }: { postId?: number; isNew?: boole
       />
       <label className="cms-label">Excerpt</label>
       <textarea className="cms-textarea" rows={3} value={excerpt} onChange={(e) => setExcerpt(e.target.value)} />
-      <WysiwygField label="Content" value={contentHtml} onChange={setContentHtml} height={400} />
+      <WysiwygField label="Classic content (HTML)" value={contentHtml} onChange={setContentHtml} height={400} />
+      <p className="cms-field-hint">
+        Original HTML content. It stays saved when you build the post with Elementor.
+      </p>
       <MediaPickerField
         label="Featured image"
         value={featuredImage}
@@ -143,6 +148,33 @@ export function BlogPostForm({ postId, isNew }: { postId?: number; isNew?: boole
         <option value="draft">Draft</option>
       </select>
       <SeoPanel seo={seo} onChange={setSeo} contentHtml={contentHtml} slug={slug} pathPrefix="/blog/" />
+    </>
+  );
+
+  return (
+    <WpEditScreen
+      title={isNew ? "Add new post" : title}
+      backHref="/admin/blog"
+      desimentor={
+        !isNew && postId
+          ? { entityType: "blog_post", entityId: postId, label: "Edit with Elementor" }
+          : undefined
+      }
+      onSave={saveClassic}
+      saving={saving}
+      saveLabel={isNew ? "Save post" : "Save classic content"}
+      message={msg}
+      error={err}
+    >
+      <EntityEditorModePanel
+        entityType="blog_post"
+        entityId={postId ?? 0}
+        displayMode={displayMode}
+        desimentorMeta={desimentorMeta}
+        onDisplayModeChange={setDisplayMode}
+        isNew={isNew}
+        classicPanel={classicPanel}
+      />
     </WpEditScreen>
   );
 }
