@@ -66,6 +66,43 @@ final class DesimentorRepository
         return $this->saveDocument($entityType, $entityId, $doc['content'], 'published');
     }
 
+    public function ensureDocument(string $entityType, int $entityId): array
+    {
+        $existing = $this->getDocument($entityType, $entityId, true);
+        if ($existing) {
+            return $existing;
+        }
+        return $this->saveDocument($entityType, $entityId, $this->emptyDocument(), 'draft');
+    }
+
+    public function getAdminMeta(string $entityType, int $entityId): array
+    {
+        if (!$this->tableExists()) {
+            return [
+                'hasDocument'   => false,
+                'status'        => null,
+                'sectionCount'  => 0,
+                'revision'      => 0,
+            ];
+        }
+        $doc = $this->getDocument($entityType, $entityId, true);
+        if (!$doc) {
+            return [
+                'hasDocument'   => false,
+                'status'        => null,
+                'sectionCount'  => 0,
+                'revision'      => 0,
+            ];
+        }
+        $sections = $doc['content']['sections'] ?? [];
+        return [
+            'hasDocument'   => true,
+            'status'        => $doc['status'] ?? 'draft',
+            'sectionCount'  => is_array($sections) ? count($sections) : 0,
+            'revision'      => (int) ($doc['revision'] ?? 1),
+        ];
+    }
+
     public function listTemplates(string $category = 'all'): array
     {
         if (!$this->templatesTableExists()) {

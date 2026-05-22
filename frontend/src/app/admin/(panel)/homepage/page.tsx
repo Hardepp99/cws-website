@@ -4,7 +4,14 @@ import { layoutLabel } from "@/components/admin/homepage/layouts";
 import { DeleteRowButton } from "@/components/admin/wp/DeleteRowButton";
 import { RestoreRowButton } from "@/components/admin/wp/RestoreRowButton";
 import { WpListScreen, WpListTable, WpRowActions } from "@/components/admin/wp/WpListTable";
+import { WpListToolbar } from "@/components/admin/wp/WpListToolbar";
 import { WpStatusViews } from "@/components/admin/wp/WpStatusViews";
+import {
+  HOMEPAGE_SECTION_SORT_OPTIONS,
+  buildListApiQuery,
+  parseListQuery,
+  type AdminListSearchParams,
+} from "@/lib/admin/list-query";
 import { cmsAdminFetch } from "@/lib/admin/server";
 
 type SectionRow = {
@@ -35,29 +42,29 @@ function statusBadge(status: string) {
 export default async function AdminHomepageListPage({
   searchParams,
 }: {
-  searchParams: { page?: string; status?: string };
+  searchParams: AdminListSearchParams;
 }) {
-  const page = Math.max(1, parseInt(searchParams.page || "1", 10) || 1);
   const statusFilter = searchParams.status || "all";
-  const perPage = 10;
+  const q = parseListQuery(searchParams, { sort: "sort_order", order: "asc", perPage: 10 });
+  const listPath = "/admin/homepage";
+  const preserveQuery = { search: q.search || undefined, sort: q.sort, order: q.order };
   let data: ListResponse = {
     items: [],
     total: 0,
     page: 1,
-    perPage,
+    perPage: q.perPage,
     status: statusFilter,
     counts: { all: 0, published: 0, draft: 0, trash: 0 },
   };
   let err = "";
 
   try {
-    const qs = new URLSearchParams({ page: String(page), perPage: String(perPage), status: statusFilter });
-    data = await cmsAdminFetch<ListResponse>(`/homepage/sections/list?${qs}`);
+    data = await cmsAdminFetch<ListResponse>(
+      `/homepage/sections/list?${buildListApiQuery({ ...q, status: statusFilter })}`
+    );
   } catch (e) {
     err = String(e);
   }
-
-  const basePath = `/admin/homepage${statusFilter !== "all" ? `?status=${statusFilter}` : ""}`;
 
   return (
     <AdminShell title="Homepage">
@@ -74,12 +81,30 @@ export default async function AdminHomepageListPage({
           </Link>
         }
       >
-        <WpStatusViews basePath="/admin/homepage" current={statusFilter} counts={data.counts} />
+        <WpStatusViews
+          basePath={listPath}
+          current={statusFilter}
+          counts={data.counts}
+          preserveQuery={preserveQuery}
+        />
         <WpListTable
-          basePath={basePath}
+          listPath={listPath}
+          listQuery={{ ...preserveQuery, status: statusFilter !== "all" ? statusFilter : undefined, perPage: q.perPage }}
           page={data.page}
           perPage={data.perPage}
           total={data.total}
+          toolbar={
+            <WpListToolbar
+              path={listPath}
+              search={q.search}
+              sort={q.sort}
+              order={q.order}
+              sortOptions={HOMEPAGE_SECTION_SORT_OPTIONS}
+              hiddenParams={statusFilter !== "all" ? { status: statusFilter } : {}}
+              searchPlaceholder="Search title, layout, or section content…"
+            />
+          }
+          emptyMessage={q.search ? "No sections match your search." : "No items found."}
           columns={[
             {
               key: "order",

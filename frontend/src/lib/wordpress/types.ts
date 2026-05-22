@@ -81,6 +81,7 @@ export interface ServiceTheme {
 
 export interface ServiceLanding {
   slug: string;
+  displayMode?: ContentDisplayMode;
   service: string;
   pageTitle: string;
   pageDescription: string;
@@ -98,6 +99,7 @@ export interface ServiceLanding {
 
 export interface ServiceDetail {
   slug: string;
+  displayMode?: ContentDisplayMode;
   title: string;
   heroTitle: string;
   heroSubtitle: string;
@@ -121,10 +123,13 @@ export interface HomepageSection {
   [key: string]: unknown;
 }
 
+export type ContentDisplayMode = "classic" | "elementor";
+
 export interface WpPage {
   slug: string;
   title: string;
   content?: string;
+  displayMode?: ContentDisplayMode;
   seo: SeoMeta;
   sections?: HomepageSection[];
   desimentor?: DesimentorDocument;

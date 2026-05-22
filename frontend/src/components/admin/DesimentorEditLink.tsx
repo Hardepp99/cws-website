@@ -4,7 +4,7 @@ import type { DesimentorEntityType } from "@/lib/desimentor/types";
 export function DesimentorEditLink({
   entityType,
   entityId,
-  label = "Edit with Desimentor",
+  label = "Edit with Elementor",
 }: {
   entityType: DesimentorEntityType;
   entityId: number;

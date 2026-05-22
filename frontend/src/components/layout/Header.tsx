@@ -144,7 +144,13 @@ export function Header({ settings, menu, currentPath = "" }: HeaderProps) {
         <nav className="navbar navbar-expand-lg">
           <div className="container">
             <Link className="navbar-brand" href="/">
-              <SiteLogo variant="header" src={settings.logoUrl} priority className="logo-img" />
+              <SiteLogo
+                variant="header"
+                src={settings.logoUrl}
+                priority
+                className="logo-img"
+                dataCustomize="logo-header"
+              />
             </Link>
             <button
               className="navbar-toggler"

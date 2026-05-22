@@ -45,11 +45,13 @@ function FooterSectionTitle({
   iconTone,
   children,
   className = "footer-title",
+  dataCustomize,
 }: {
   icon?: string;
   iconTone: HeroHeadlineTone;
   children: string;
   className?: string;
+  dataCustomize?: string;
 }) {
   const words = children.trim().split(/\s+/).filter(Boolean);
 
@@ -60,7 +62,7 @@ function FooterSectionTitle({
           <i className={`fas ${icon}`} />
         </span>
       ) : null}
-      <span className="footer-title-text">
+      <span className="footer-title-text" data-customize={dataCustomize}>
         {words.map((word, index) => (
           <span key={`${word}-${index}`}>
             {index > 0 ? " " : null}
@@ -100,17 +102,19 @@ function FooterMenuColumn({
   icon,
   iconTone,
   items,
+  titleCustomize,
 }: {
   title: string;
   icon: string;
   iconTone: HeroHeadlineTone;
   items: MenuItem[];
+  titleCustomize?: string;
 }) {
   if (!items.length) return null;
 
   return (
     <div className="footer-widget">
-      <FooterSectionTitle icon={icon} iconTone={iconTone}>
+      <FooterSectionTitle icon={icon} iconTone={iconTone} dataCustomize={titleCustomize}>
         {title}
       </FooterSectionTitle>
       <ul className="footer-links">
@@ -158,15 +162,22 @@ export function Footer({ settings, footerMenu, footerServicesMenu, footerProduct
             <div className="col-lg-4 col-md-6">
               <div className="footer-widget footer-widget--brand">
                 <Link href="/" className="footer-logo">
-                  <SiteLogo variant="footer" src={settings.logoWhiteUrl || settings.logoUrl} className="footer-logo-img" />
+                  <SiteLogo
+                    variant="footer"
+                    src={settings.logoWhiteUrl || settings.logoUrl}
+                    className="footer-logo-img"
+                    dataCustomize="logo-footer"
+                  />
                 </Link>
-                <FooterMulticolorText text={settings.footerText} className="footer-desc footer-desc--multicolor" />
+                <div data-customize="footer-text">
+                  <FooterMulticolorText text={settings.footerText} className="footer-desc footer-desc--multicolor" />
+                </div>
                 {addressLines.length > 0 ? (
                   <div className="footer-address">
                     <span className="footer-contact-icon footer-contact-icon--orange" aria-hidden="true">
                       <i className="fas fa-map-marker-alt" />
                     </span>
-                    <span>
+                    <span data-customize="address-footer">
                       {addressLines.map((line, i) => (
                         <span key={i}>
                           {line}
@@ -185,7 +196,9 @@ export function Footer({ settings, footerMenu, footerServicesMenu, footerProduct
                       <span className="footer-contact-icon footer-contact-icon--green" aria-hidden="true">
                         <i className="fas fa-phone-alt" />
                       </span>
-                      <a href={`tel:${phone.replace(/\s/g, "")}`}>{phone}</a>
+                      <a href={`tel:${phone.replace(/\s/g, "")}`}>
+                        <span data-customize="phone">{phone}</span>
+                      </a>
                     </li>
                   ) : null}
                   {email ? (
@@ -193,23 +206,46 @@ export function Footer({ settings, footerMenu, footerServicesMenu, footerProduct
                       <span className="footer-contact-icon footer-contact-icon--blue" aria-hidden="true">
                         <i className="fas fa-envelope" />
                       </span>
-                      <a href={`mailto:${email}`}>{email}</a>
+                      <a href={`mailto:${email}`}>
+                        <span data-customize="email">{email}</span>
+                      </a>
                     </li>
                   ) : null}
                 </ul>
                 <div className="footer-social">
                   {settings.facebook ? (
-                    <a href={settings.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="footer-social-link footer-social-link--facebook">
+                    <a
+                      href={settings.facebook}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Facebook"
+                      className="footer-social-link footer-social-link--facebook"
+                      data-customize="social-facebook"
+                    >
                       <i className="fab fa-facebook-f" />
                     </a>
                   ) : null}
                   {settings.linkedin ? (
-                    <a href={settings.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="footer-social-link footer-social-link--linkedin">
+                    <a
+                      href={settings.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="LinkedIn"
+                      className="footer-social-link footer-social-link--linkedin"
+                      data-customize="social-linkedin"
+                    >
                       <i className="fab fa-linkedin-in" />
                     </a>
                   ) : null}
                   {settings.instagram ? (
-                    <a href={settings.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="footer-social-link footer-social-link--instagram">
+                    <a
+                      href={settings.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Instagram"
+                      className="footer-social-link footer-social-link--instagram"
+                      data-customize="social-instagram"
+                    >
                       <i className="fab fa-instagram" />
                     </a>
                   ) : null}
@@ -223,6 +259,7 @@ export function Footer({ settings, footerMenu, footerServicesMenu, footerProduct
                 icon="fa-building"
                 iconTone="royal"
                 items={footerMenu}
+                titleCustomize="footer-company-title"
               />
             </div>
 
@@ -232,6 +269,7 @@ export function Footer({ settings, footerMenu, footerServicesMenu, footerProduct
                 icon="fa-layer-group"
                 iconTone="blue"
                 items={footerServicesMenu}
+                titleCustomize="footer-services-title"
               />
             </div>
 
@@ -241,6 +279,7 @@ export function Footer({ settings, footerMenu, footerServicesMenu, footerProduct
                 icon="fa-graduation-cap"
                 iconTone="orange"
                 items={footerProductsMenu}
+                titleCustomize="footer-products-title"
               />
             </div>
           </div>

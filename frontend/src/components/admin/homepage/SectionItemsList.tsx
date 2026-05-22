@@ -15,7 +15,9 @@ import type { SectionRecord } from "./SectionEditor";
 import { useAdminDialog } from "@/components/admin/dialog/AdminDialogProvider";
 import { useHomepageSection } from "./useHomepageSection";
 import { WpListScreen, WpListTable, WpRowActions } from "@/components/admin/wp/WpListTable";
+import { WpListToolbar } from "@/components/admin/wp/WpListToolbar";
 import { WpStatusViews } from "@/components/admin/wp/WpStatusViews";
+import { SECTION_ITEM_SORT_OPTIONS } from "@/lib/admin/list-query";
 import { itemListTitle, normalizeItemStatus } from "@/lib/homepage/item-status";
 
 function statusBadge(status: string) {
@@ -43,11 +45,17 @@ export function SectionItemsList({
   repeaterKey,
   statusFilter = "all",
   page = 1,
+  search = "",
+  sort = "title",
+  order = "asc",
 }: {
   sectionId: number;
   repeaterKey: string;
   statusFilter?: string;
   page?: number;
+  search?: string;
+  sort?: string;
+  order?: "asc" | "desc";
 }) {
   const router = useRouter();
   const { confirm } = useAdminDialog();
@@ -61,18 +69,41 @@ export function SectionItemsList({
   const allItems = section ? getRepeaterItems(section, repeaterKey) : [];
   const counts = countItemsByStatus(allItems);
 
+  const listPath = `/admin/homepage/${sectionId}/items`;
+  const preserveQuery = {
+    key: repeaterKey,
+    search: search || undefined,
+    sort,
+    order,
+  };
+
   const filtered = useMemo(() => {
-    if (statusFilter === "all") return allItems;
-    return allItems.filter((it) => normalizeItemStatus(it.status) === statusFilter);
-  }, [allItems, statusFilter]);
+    let items = allItems;
+    if (statusFilter !== "all") {
+      items = items.filter((it) => normalizeItemStatus(it.status) === statusFilter);
+    }
+    if (search.trim()) {
+      const s = search.trim().toLowerCase();
+      items = items.filter((it) => {
+        const title = itemListTitle(it, repeater?.singular ?? "Item").toLowerCase();
+        return title.includes(s) || JSON.stringify(it).toLowerCase().includes(s);
+      });
+    }
+    const dir = order === "asc" ? 1 : -1;
+    items = [...items].sort((a, b) => {
+      if (sort === "status") {
+        return normalizeItemStatus(a.status).localeCompare(normalizeItemStatus(b.status)) * dir;
+      }
+      return itemListTitle(a, repeater?.singular ?? "Item").localeCompare(
+        itemListTitle(b, repeater?.singular ?? "Item")
+      ) * dir;
+    });
+    return items;
+  }, [allItems, statusFilter, search, sort, order, repeater?.singular]);
 
   const total = filtered.length;
   const offset = (page - 1) * perPage;
   const pageItems = filtered.slice(offset, offset + perPage);
-
-  const basePath = `/admin/homepage/${sectionId}/items?key=${encodeURIComponent(repeaterKey)}${
-    statusFilter !== "all" ? `&status=${statusFilter}` : ""
-  }`;
 
   async function persistItems(nextItems: SectionRecord[]) {
     if (!section || !repeater) return;
@@ -133,15 +164,31 @@ export function SectionItemsList({
       {msg ? <div className="cms-notice">{msg}</div> : null}
       {actionErr ? <div className="cms-notice err">{actionErr}</div> : null}
       <WpStatusViews
-        basePath={`/admin/homepage/${sectionId}/items?key=${encodeURIComponent(repeaterKey)}`}
+        basePath={listPath}
         current={statusFilter}
         counts={counts}
+        preserveQuery={preserveQuery}
       />
       <WpListTable
-        basePath={basePath}
+        listPath={listPath}
+        listQuery={{
+          ...preserveQuery,
+          status: statusFilter !== "all" ? statusFilter : undefined,
+        }}
         page={page}
         perPage={perPage}
         total={total}
+        toolbar={
+          <WpListToolbar
+            path={`${listPath}?key=${encodeURIComponent(repeaterKey)}`}
+            search={search}
+            sort={sort}
+            order={order}
+            sortOptions={SECTION_ITEM_SORT_OPTIONS}
+            hiddenParams={{ key: repeaterKey, ...(statusFilter !== "all" ? { status: statusFilter } : {}) }}
+          />
+        }
+        emptyMessage={search ? "No items match your search." : "No items found."}
         rows={pageItems.map((it) => ({ ...it, id: String(it.id) }))}
         columns={[
           {

@@ -11,10 +11,21 @@ export default function SectionItemsListPage() {
   const key = searchParams.get("key") || "items";
   const status = searchParams.get("status") || "all";
   const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1);
+  const search = searchParams.get("search") || "";
+  const sort = searchParams.get("sort") || "title";
+  const order = searchParams.get("order") === "desc" ? "desc" : "asc";
 
   return (
     <AdminShell title="Section items">
-      <SectionItemsList sectionId={sectionId} repeaterKey={key} statusFilter={status} page={page} />
+      <SectionItemsList
+        sectionId={sectionId}
+        repeaterKey={key}
+        statusFilter={status}
+        page={page}
+        search={search}
+        sort={sort}
+        order={order}
+      />
     </AdminShell>
   );
 }

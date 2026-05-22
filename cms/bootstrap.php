@@ -13,6 +13,7 @@ $CWS_CONFIG = require $configFile;
 
 require_once CWS_CMS_ROOT . '/src/Database.php';
 require_once CWS_CMS_ROOT . '/src/Http.php';
+require_once CWS_CMS_ROOT . '/src/AdminListQuery.php';
 require_once CWS_CMS_ROOT . '/src/ContentRepository.php';
 require_once CWS_CMS_ROOT . '/src/Auth.php';
 require_once CWS_CMS_ROOT . '/src/AdminAuth.php';

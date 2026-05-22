@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { adminListPath } from "@/lib/admin/list-query";
 
 type Counts = { all: number; published: number; draft: number; trash: number };
 
@@ -13,16 +14,23 @@ export function WpStatusViews({
   basePath,
   current,
   counts,
+  preserveQuery = {},
 }: {
   basePath: string;
   current: string;
   counts: Counts;
+  preserveQuery?: Record<string, string | undefined>;
 }) {
   return (
     <ul className="subsubsub">
       {VIEWS.map((v, i) => {
         const n = counts[v.key as keyof Counts] ?? 0;
         const active = current === v.key;
+        const href = adminListPath(basePath, {
+          ...preserveQuery,
+          status: v.key === "all" ? undefined : v.key,
+          page: undefined,
+        });
         return (
           <li key={v.key}>
             {i > 0 ? <span className="sep"> |</span> : null}
@@ -31,7 +39,7 @@ export function WpStatusViews({
                 {v.label} <span className="count">({n})</span>
               </span>
             ) : (
-              <Link href={`${basePath}?status=${v.key}`}>
+              <Link href={href}>
                 {v.label} <span className="count">({n})</span>
               </Link>
             )}

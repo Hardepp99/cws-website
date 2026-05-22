@@ -18,25 +18,36 @@ export default async function ContactPage() {
   const page = await getPageBySlug("contact");
   if (!page) notFound();
 
-  const hasDesimentor = Boolean(page.desimentor?.sections?.length);
-  const hasContent = Boolean(page.content?.trim()) || hasDesimentor;
+  const hasElementor =
+    page.displayMode === "elementor" && Boolean(page.desimentor?.sections?.length);
+  const hasClassic = Boolean(page.content?.trim());
+  const hasContent = hasElementor || hasClassic;
 
   return (
     <SiteLayout currentPath="/contact">
       <PageHeader breadcrumb={[{ label: "Home", href: "/" }, { label: page.title }]} />
-      {hasDesimentor ? (
+      {hasElementor ? (
         <section className="content-page-section pb-0">
           <div className="container">
-            <PageDesimentorContent title={page.title} desimentor={page.desimentor} showArticleWrapper={false} />
+            <PageDesimentorContent
+              title={page.title}
+              displayMode={page.displayMode}
+              desimentor={page.desimentor}
+              showArticleWrapper={false}
+            />
           </div>
         </section>
       ) : null}
       <section className="content-page-section">
         <div className="container">
           <div className="row g-4 align-items-start">
-            {page.content?.trim() ? (
+            {hasClassic ? (
               <div className="col-lg-5">
-                <PageDesimentorContent title={page.title} html={page.content} />
+                <PageDesimentorContent
+                  title={page.title}
+                  displayMode="classic"
+                  html={page.content}
+                />
               </div>
             ) : null}
             <div className={hasContent ? "col-lg-7" : "col-lg-8 mx-auto"}>

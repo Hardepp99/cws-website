@@ -34,6 +34,7 @@ export default async function AboutPage() {
           <div className="corp-container">
             <PageDesimentorContent
               title={page.title}
+              displayMode={page.displayMode}
               desimentor={page.desimentor}
               html={page.content}
             />

@@ -1,7 +1,10 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { AdminPageHeader, type DesimentorHeaderLink } from "@/components/admin/AdminPageHeader";
+import type { ListQueryRecord } from "@/lib/admin/list-query";
 import { WpPagination } from "./WpPagination";
+
+export type WpListQuery = ListQueryRecord & { perPage?: number; page?: number };
 
 export type WpColumn<T> = {
   key: string;
@@ -49,6 +52,9 @@ export function WpListTable<T extends { id: number | string }>({
   page,
   perPage,
   basePath,
+  listPath,
+  listQuery,
+  toolbar,
   emptyMessage = "No items found.",
   rowActions,
   showActions = true,
@@ -58,18 +64,27 @@ export function WpListTable<T extends { id: number | string }>({
   total: number;
   page: number;
   perPage: number;
-  basePath: string;
+  /** Full URL with query string for pagination */
+  basePath?: string;
+  listPath?: string;
+  listQuery?: WpListQuery;
+  toolbar?: React.ReactNode;
   emptyMessage?: string;
   rowActions?: (row: T) => React.ReactNode;
   /** Show actions as first column (default true when rowActions provided) */
   showActions?: boolean;
 }) {
+  const paginationPath = basePath ?? (listPath ? listPath : "/");
+  const paginationProps = listPath
+    ? { listPath, listQuery: { ...listQuery, perPage } }
+    : { basePath: paginationPath };
   const hasActions = showActions && !!rowActions;
   const colSpan = columns.length + (hasActions ? 1 : 0);
 
   return (
     <div className="wp-list-table-wrap">
-      <WpPagination basePath={basePath} page={page} perPage={perPage} total={total} />
+      {toolbar}
+      <WpPagination {...paginationProps} page={page} perPage={perPage} total={total} />
       <div className="wp-list-table-scroll" role="region" aria-label="Content list" tabIndex={0}>
         <table className="wp-list-table widefat striped">
           <thead>
@@ -116,7 +131,7 @@ export function WpListTable<T extends { id: number | string }>({
           </tfoot>
         </table>
       </div>
-      <WpPagination basePath={basePath} page={page} perPage={perPage} total={total} />
+      <WpPagination {...paginationProps} page={page} perPage={perPage} total={total} />
     </div>
   );
 }

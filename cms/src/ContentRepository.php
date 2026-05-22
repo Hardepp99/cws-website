@@ -188,6 +188,92 @@ final class ContentRepository
         return $page ?: null;
     }
 
+    public function getPageAdminDetail(int $id): ?array
+    {
+        $row = $this->getPageById($id);
+        if (!$row) {
+            return null;
+        }
+        $entityType = !empty($row['is_homepage']) ? 'homepage' : 'page';
+        return $this->enrichAdminEntityRow($row, 'pages', $entityType, $id);
+    }
+
+    public function getServiceAdminDetail(int $id): ?array
+    {
+        $row = $this->getServiceById($id);
+        return $row ? $this->enrichAdminEntityRow($row, 'services', 'service', $id) : null;
+    }
+
+    public function getLandingAdminDetail(int $id): ?array
+    {
+        $row = $this->getLandingById($id);
+        return $row ? $this->enrichAdminEntityRow($row, 'service_landings', 'service_landing', $id) : null;
+    }
+
+    public function setDisplayModeForEntity(string $entityType, int $entityId, string $mode): void
+    {
+        $mode = $this->normalizeDisplayMode($mode);
+        $table = match ($entityType) {
+            'page', 'homepage' => 'pages',
+            'service' => 'services',
+            'service_landing' => 'service_landings',
+            default => throw new InvalidArgumentException('Unknown entity type'),
+        };
+        if (!$this->tableHasDisplayMode($table)) {
+            return;
+        }
+        $stmt = $this->db->prepare("UPDATE {$table} SET display_mode = :m WHERE id = :id");
+        $stmt->execute([':m' => $mode, ':id' => $entityId]);
+    }
+
+    private function enrichAdminEntityRow(array $row, string $table, string $entityType, int $entityId): array
+    {
+        $row['display_mode'] = $this->rowDisplayMode($row, $table);
+        if (function_exists('cws_desimentor')) {
+            $row['desimentor_meta'] = cws_desimentor()->getAdminMeta($entityType, $entityId);
+        } else {
+            $row['desimentor_meta'] = [
+                'hasDocument'  => false,
+                'status'       => null,
+                'sectionCount' => 0,
+                'revision'     => 0,
+            ];
+        }
+        return $row;
+    }
+
+    private function normalizeDisplayMode(string $mode): string
+    {
+        return $mode === 'elementor' ? 'elementor' : 'classic';
+    }
+
+    private function rowDisplayMode(array $row, string $table): string
+    {
+        if (!$this->tableHasDisplayMode($table)) {
+            return 'classic';
+        }
+        return $this->normalizeDisplayMode((string) ($row['display_mode'] ?? 'classic'));
+    }
+
+    private function tableHasDisplayMode(string $table): bool
+    {
+        static $cache = [];
+        if (isset($cache[$table])) {
+            return $cache[$table];
+        }
+        $allowed = ['pages', 'services', 'service_landings'];
+        if (!in_array($table, $allowed, true)) {
+            return $cache[$table] = false;
+        }
+        $stmt = $this->db->prepare(
+            'SELECT COUNT(*) AS c FROM information_schema.COLUMNS
+             WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = :t AND COLUMN_NAME = :c'
+        );
+        $stmt->execute([':t' => $table, ':c' => 'display_mode']);
+        $cache[$table] = (int) ($stmt->fetch()['c'] ?? 0) > 0;
+        return $cache[$table];
+    }
+
     public function savePage(int $id, array $data): void
     {
         $row = $this->getPageById($id);
@@ -221,6 +307,13 @@ final class ContentRepository
             $params[':sf'] = $data['seo_focus_keyword'] ?? '';
         }
         $stmt->execute($params);
+        if ($this->tableHasDisplayMode('pages') && array_key_exists('display_mode', $data)) {
+            $dm = $this->db->prepare('UPDATE pages SET display_mode = :dm WHERE id = :id');
+            $dm->execute([
+                ':dm' => $this->normalizeDisplayMode((string) $data['display_mode']),
+                ':id' => $id,
+            ]);
+        }
     }
 
     public function createPage(array $data): int
@@ -243,7 +336,15 @@ final class ContentRepository
             ':sk'     => $data['seo_keywords'] ?? '',
             ':status' => $data['status'] ?? 'draft',
         ]);
-        return (int) $this->db->lastInsertId();
+        $newId = (int) $this->db->lastInsertId();
+        if (function_exists('cws_desimentor')) {
+            try {
+                cws_desimentor()->ensureDocument('page', $newId);
+            } catch (Throwable) {
+                /* optional until migration 007 */
+            }
+        }
+        return $newId;
     }
 
     public function createBlogPost(array $data): int
@@ -308,7 +409,14 @@ final class ContentRepository
             ':seo'    => $data['seo_body_html'] ?? '',
             ':status' => $data['status'] ?? 'draft',
         ]);
-        return (int) $this->db->lastInsertId();
+        $newId = (int) $this->db->lastInsertId();
+        if (function_exists('cws_desimentor')) {
+            try {
+                cws_desimentor()->ensureDocument('service_landing', $newId);
+            } catch (Throwable) {
+            }
+        }
+        return $newId;
     }
 
     public function getHomepageSections(int $pageId): array
@@ -360,8 +468,15 @@ final class ContentRepository
         return $layout === 'seo_rich' ? 'seo_rich_content' : $layout;
     }
 
-    public function listHomepageSectionRows(int $pageId, int $page = 1, int $perPage = 10, string $statusFilter = 'all'): array
-    {
+    public function listHomepageSectionRows(
+        int $pageId,
+        int $page = 1,
+        int $perPage = 10,
+        string $statusFilter = 'all',
+        string $search = '',
+        string $sort = '',
+        string $order = 'asc'
+    ): array {
         $offset = max(0, ($page - 1) * $perPage);
         $where = 'WHERE page_id = :id';
         $params = [':id' => $pageId];
@@ -372,24 +487,34 @@ final class ContentRepository
                 $params[':st'] = $statusFilter;
             }
         }
+        if ($search !== '') {
+            $where .= ' AND (admin_title LIKE :adm_search OR layout LIKE :adm_search OR payload LIKE :adm_search OR CAST(sort_order AS CHAR) LIKE :adm_search)';
+            $params[':adm_search'] = '%' . $search . '%';
+        }
 
         $countStmt = $this->db->prepare("SELECT COUNT(*) AS c FROM homepage_sections {$where}");
         $countStmt->execute($params);
         $total = (int) ($countStmt->fetch()['c'] ?? 0);
+
+        $sortCol = AdminListQuery::sortColumn(
+            $sort,
+            ['sort_order', 'layout', 'status', 'admin_title', 'updated_at'],
+            'sort_order'
+        );
+        $orderSql = AdminListQuery::orderSql($order);
 
         $statusCols = $this->homepageSectionHasStatusColumn()
             ? ', status, admin_title, updated_at'
             : '';
         $stmt = $this->db->prepare(
             "SELECT id, sort_order, layout, payload{$statusCols} FROM homepage_sections {$where}
-             ORDER BY sort_order ASC LIMIT :lim OFFSET :off"
+             ORDER BY {$sortCol} {$orderSql} LIMIT :lim OFFSET :off"
         );
-        $stmt->bindValue(':id', $pageId, PDO::PARAM_INT);
+        foreach ($params as $k => $v) {
+            $stmt->bindValue($k, $v);
+        }
         $stmt->bindValue(':lim', $perPage, PDO::PARAM_INT);
         $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
-        if (isset($params[':st'])) {
-            $stmt->bindValue(':st', $params[':st']);
-        }
         $stmt->execute();
 
         $items = [];
@@ -571,60 +696,144 @@ final class ContentRepository
         }
     }
 
-    public function listPagesAdmin(int $page = 1, int $perPage = 10, bool $excludeHome = true): array
-    {
-        $where = $excludeHome ? 'WHERE is_homepage = 0' : '';
-        $count = (int) $this->db->query("SELECT COUNT(*) AS c FROM pages $where")->fetch()['c'];
+    public function listPagesAdmin(
+        int $page = 1,
+        int $perPage = 10,
+        bool $excludeHome = true,
+        string $search = '',
+        string $sort = '',
+        string $order = 'desc'
+    ): array {
+        $where = $excludeHome ? 'WHERE is_homepage = 0' : 'WHERE 1=1';
+        $params = [];
+        $where .= AdminListQuery::searchWhere(
+            ['title', 'slug', 'template', 'status', 'content_html', 'seo_title', 'seo_description'],
+            $search,
+            $params
+        );
+        $sortCol = AdminListQuery::sortColumn($sort, ['title', 'slug', 'template', 'status', 'updated_at'], 'updated_at');
+        $orderSql = AdminListQuery::orderSql($order);
+
+        $countStmt = $this->db->prepare("SELECT COUNT(*) AS c FROM pages {$where}");
+        $countStmt->execute($params);
+        $count = (int) ($countStmt->fetch()['c'] ?? 0);
         $offset = max(0, ($page - 1) * $perPage);
         $stmt = $this->db->prepare(
-            "SELECT id, slug, title, template, is_homepage, status, updated_at FROM pages $where
-             ORDER BY updated_at DESC LIMIT :lim OFFSET :off"
+            "SELECT id, slug, title, template, is_homepage, status, updated_at FROM pages {$where}
+             ORDER BY {$sortCol} {$orderSql} LIMIT :lim OFFSET :off"
         );
+        foreach ($params as $k => $v) {
+            $stmt->bindValue($k, $v);
+        }
         $stmt->bindValue(':lim', $perPage, PDO::PARAM_INT);
         $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
         $stmt->execute();
+
         return ['items' => $stmt->fetchAll(), 'total' => $count, 'page' => $page, 'perPage' => $perPage];
     }
 
-    public function listLandingsAdmin(int $page = 1, int $perPage = 10): array
-    {
-        $total = (int) $this->db->query('SELECT COUNT(*) AS c FROM service_landings')->fetch()['c'];
+    public function listLandingsAdmin(
+        int $page = 1,
+        int $perPage = 10,
+        string $search = '',
+        string $sort = '',
+        string $order = 'asc'
+    ): array {
+        $where = 'WHERE 1=1';
+        $params = [];
+        $where .= AdminListQuery::searchWhere(
+            ['service_name', 'slug', 'status', 'intro', 'page_title', 'page_description', 'seo_body_html'],
+            $search,
+            $params
+        );
+        $sortCol = AdminListQuery::sortColumn($sort, ['service_name', 'slug', 'status', 'updated_at'], 'service_name');
+        $orderSql = AdminListQuery::orderSql($order);
+
+        $countStmt = $this->db->prepare("SELECT COUNT(*) AS c FROM service_landings {$where}");
+        $countStmt->execute($params);
+        $total = (int) ($countStmt->fetch()['c'] ?? 0);
         $offset = max(0, ($page - 1) * $perPage);
         $stmt = $this->db->prepare(
-            'SELECT id, slug, service_name, status, updated_at FROM service_landings
-             ORDER BY service_name ASC LIMIT :lim OFFSET :off'
+            "SELECT id, slug, service_name, status, updated_at FROM service_landings {$where}
+             ORDER BY {$sortCol} {$orderSql} LIMIT :lim OFFSET :off"
         );
+        foreach ($params as $k => $v) {
+            $stmt->bindValue($k, $v);
+        }
         $stmt->bindValue(':lim', $perPage, PDO::PARAM_INT);
         $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
         $stmt->execute();
+
         return ['items' => $stmt->fetchAll(), 'total' => $total, 'page' => $page, 'perPage' => $perPage];
     }
 
-    public function listFormSubmissionsAdmin(int $page = 1, int $perPage = 20): array
-    {
-        $total = (int) $this->db->query('SELECT COUNT(*) AS c FROM form_submissions')->fetch()['c'];
+    public function listFormSubmissionsAdmin(
+        int $page = 1,
+        int $perPage = 20,
+        string $search = '',
+        string $sort = '',
+        string $order = 'desc'
+    ): array {
+        $where = 'WHERE 1=1';
+        $params = [];
+        $where .= AdminListQuery::searchWhere(['form_type', 'payload'], $search, $params);
+        $sortCol = AdminListQuery::sortColumn($sort, ['form_type', 'created_at', 'is_read'], 'created_at');
+        $orderSql = AdminListQuery::orderSql($order);
+
+        $countStmt = $this->db->prepare("SELECT COUNT(*) AS c FROM form_submissions {$where}");
+        $countStmt->execute($params);
+        $total = (int) ($countStmt->fetch()['c'] ?? 0);
         $offset = max(0, ($page - 1) * $perPage);
         $stmt = $this->db->prepare(
-            'SELECT id, form_type, payload, is_read, created_at FROM form_submissions
-             ORDER BY created_at DESC LIMIT :lim OFFSET :off'
+            "SELECT id, form_type, payload, is_read, created_at FROM form_submissions {$where}
+             ORDER BY {$sortCol} {$orderSql} LIMIT :lim OFFSET :off"
         );
+        foreach ($params as $k => $v) {
+            $stmt->bindValue($k, $v);
+        }
         $stmt->bindValue(':lim', $perPage, PDO::PARAM_INT);
         $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
         $stmt->execute();
+
         return ['items' => $stmt->fetchAll(), 'total' => $total, 'page' => $page, 'perPage' => $perPage];
     }
 
-    public function listBlogPostsAdmin(int $page = 1, int $perPage = 10): array
-    {
-        $total = (int) $this->db->query('SELECT COUNT(*) AS c FROM blog_posts')->fetch()['c'];
+    public function listBlogPostsAdmin(
+        int $page = 1,
+        int $perPage = 10,
+        string $search = '',
+        string $sort = '',
+        string $order = 'desc'
+    ): array {
+        $where = 'WHERE 1=1';
+        $params = [];
+        $where .= AdminListQuery::searchWhere(
+            ['title', 'slug', 'status', 'excerpt', 'content_html'],
+            $search,
+            $params
+        );
+        $sortCol = AdminListQuery::sortColumn(
+            $sort,
+            ['title', 'slug', 'status', 'published_date', 'updated_at'],
+            'published_date'
+        );
+        $orderSql = AdminListQuery::orderSql($order);
+
+        $countStmt = $this->db->prepare("SELECT COUNT(*) AS c FROM blog_posts {$where}");
+        $countStmt->execute($params);
+        $total = (int) ($countStmt->fetch()['c'] ?? 0);
         $offset = max(0, ($page - 1) * $perPage);
         $stmt = $this->db->prepare(
-            'SELECT id, slug, title, status, published_date, updated_at FROM blog_posts
-             ORDER BY published_date DESC LIMIT :lim OFFSET :off'
+            "SELECT id, slug, title, status, published_date, updated_at FROM blog_posts {$where}
+             ORDER BY {$sortCol} {$orderSql} LIMIT :lim OFFSET :off"
         );
+        foreach ($params as $k => $v) {
+            $stmt->bindValue($k, $v);
+        }
         $stmt->bindValue(':lim', $perPage, PDO::PARAM_INT);
         $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
         $stmt->execute();
+
         return ['items' => $stmt->fetchAll(), 'total' => $total, 'page' => $page, 'perPage' => $perPage];
     }
 
@@ -742,6 +951,13 @@ final class ContentRepository
             $params[':slug'] = $slug;
         }
         $stmt->execute($params);
+        if ($this->tableHasDisplayMode('service_landings') && array_key_exists('display_mode', $data)) {
+            $dm = $this->db->prepare('UPDATE service_landings SET display_mode = :dm WHERE id = :id');
+            $dm->execute([
+                ':dm' => $this->normalizeDisplayMode((string) $data['display_mode']),
+                ':id' => $id,
+            ]);
+        }
     }
 
     public function getService(string $slug): ?array
@@ -759,17 +975,38 @@ final class ContentRepository
         return $this->db->query('SELECT id, slug, title, status FROM services ORDER BY title')->fetchAll();
     }
 
-    public function listServicesAdmin(int $page = 1, int $perPage = 10): array
-    {
-        $total = (int) $this->db->query('SELECT COUNT(*) AS c FROM services')->fetch()['c'];
+    public function listServicesAdmin(
+        int $page = 1,
+        int $perPage = 10,
+        string $search = '',
+        string $sort = '',
+        string $order = 'asc'
+    ): array {
+        $where = 'WHERE 1=1';
+        $params = [];
+        $where .= AdminListQuery::searchWhere(
+            ['title', 'slug', 'status', 'hero_title', 'hero_subtitle', 'content_html', 'price_badge'],
+            $search,
+            $params
+        );
+        $sortCol = AdminListQuery::sortColumn($sort, ['title', 'slug', 'status', 'updated_at'], 'title');
+        $orderSql = AdminListQuery::orderSql($order);
+
+        $countStmt = $this->db->prepare("SELECT COUNT(*) AS c FROM services {$where}");
+        $countStmt->execute($params);
+        $total = (int) ($countStmt->fetch()['c'] ?? 0);
         $offset = max(0, ($page - 1) * $perPage);
         $stmt = $this->db->prepare(
-            'SELECT id, slug, title, status, updated_at FROM services
-             ORDER BY title ASC LIMIT :lim OFFSET :off'
+            "SELECT id, slug, title, status, updated_at FROM services {$where}
+             ORDER BY {$sortCol} {$orderSql} LIMIT :lim OFFSET :off"
         );
+        foreach ($params as $k => $v) {
+            $stmt->bindValue($k, $v);
+        }
         $stmt->bindValue(':lim', $perPage, PDO::PARAM_INT);
         $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
         $stmt->execute();
+
         return ['items' => $stmt->fetchAll(), 'total' => $total, 'page' => $page, 'perPage' => $perPage];
     }
 
@@ -806,6 +1043,13 @@ final class ContentRepository
             ':st'  => $data['status'] ?? 'published',
             ':id'  => $id,
         ]);
+        if ($this->tableHasDisplayMode('services') && array_key_exists('display_mode', $data)) {
+            $dm = $this->db->prepare('UPDATE services SET display_mode = :dm WHERE id = :id');
+            $dm->execute([
+                ':dm' => $this->normalizeDisplayMode((string) $data['display_mode']),
+                ':id' => $id,
+            ]);
+        }
     }
 
     public function createService(array $data): int
@@ -828,7 +1072,14 @@ final class ContentRepository
             ':seo'  => json_encode($data['seo'] ?? [], JSON_UNESCAPED_UNICODE),
             ':st'   => $data['status'] ?? 'draft',
         ]);
-        return (int) $this->db->lastInsertId();
+        $newId = (int) $this->db->lastInsertId();
+        if (function_exists('cws_desimentor')) {
+            try {
+                cws_desimentor()->ensureDocument('service', $newId);
+            } catch (Throwable) {
+            }
+        }
+        return $newId;
     }
 
     public function getBlogPosts(): array
@@ -882,11 +1133,12 @@ final class ContentRepository
     private function mapPage(array $page, bool $withSections): array
     {
         $data = [
-            'slug'     => $page['slug'],
-            'title'    => html_entity_decode((string) $page['title'], ENT_QUOTES | ENT_HTML5, 'UTF-8'),
-            'content'  => (string) ($page['content_html'] ?? ''),
-            'template' => $page['template'] ?: 'default',
-            'seo'      => [
+            'slug'         => $page['slug'],
+            'title'        => html_entity_decode((string) $page['title'], ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+            'content'      => (string) ($page['content_html'] ?? ''),
+            'template'     => $page['template'] ?: 'default',
+            'displayMode'  => $this->rowDisplayMode($page, 'pages'),
+            'seo'          => [
                 'title'         => $page['seo_title'] ?: $page['title'],
                 'description'   => $page['seo_description'] ?? '',
                 'keywords'      => $page['seo_keywords'] ?? '',
@@ -909,6 +1161,7 @@ final class ContentRepository
         $theme = $this->decodeJson($row['theme']) ?? [];
         $data = [
             'slug'            => $row['slug'],
+            'displayMode'     => $this->rowDisplayMode($row, 'service_landings'),
             'service'         => $row['service_name'],
             'pageTitle'       => $row['page_title'],
             'pageDescription' => $row['page_description'] ?? '',
@@ -938,6 +1191,7 @@ final class ContentRepository
         $data = [
             'slug'         => $row['slug'],
             'title'        => $row['title'],
+            'displayMode'  => $this->rowDisplayMode($row, 'services'),
             'heroTitle'    => $row['hero_title'] ?: $row['title'],
             'heroSubtitle' => $row['hero_subtitle'] ?? '',
             'priceBadge'   => $row['price_badge'] ?? '',

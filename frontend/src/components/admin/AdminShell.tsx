@@ -16,7 +16,7 @@ const NAV = [
   { href: "/admin/services", label: "Services", icon: "fa-briefcase" },
   { href: "/admin/landings", label: "Service Landings", icon: "fa-layer-group" },
   { href: "/admin/menus", label: "Menus", icon: "fa-bars" },
-  { href: "/admin/settings", label: "Site Settings", icon: "fa-gear" },
+  { href: "/admin/settings", label: "Customize", icon: "fa-sliders" },
   { href: "/admin/pricing", label: "Ask Price", icon: "fa-tag" },
   { href: "/admin/forms", label: "Form Submissions", icon: "fa-inbox" },
 ];

@@ -1,6 +1,13 @@
 import Link from "next/link";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { WpListScreen, WpListTable, WpRowActions } from "@/components/admin/wp/WpListTable";
+import { WpListToolbar } from "@/components/admin/wp/WpListToolbar";
+import {
+  SERVICE_SORT_OPTIONS,
+  buildListApiQuery,
+  parseListQuery,
+  type AdminListSearchParams,
+} from "@/lib/admin/list-query";
 import { cmsAdminFetch } from "@/lib/admin/server";
 
 type Row = {
@@ -21,15 +28,15 @@ type ListResponse = {
 export default async function AdminServicesListPage({
   searchParams,
 }: {
-  searchParams: { page?: string };
+  searchParams: AdminListSearchParams;
 }) {
-  const page = Math.max(1, parseInt(searchParams.page || "1", 10) || 1);
-  const perPage = 10;
-  let data: ListResponse = { items: [], total: 0, page: 1, perPage };
+  const q = parseListQuery(searchParams, { sort: "title", order: "asc", perPage: 10 });
+  const listPath = "/admin/services";
+  let data: ListResponse = { items: [], total: 0, page: 1, perPage: q.perPage };
   let err = "";
 
   try {
-    data = await cmsAdminFetch<ListResponse>(`/services/list?page=${page}&perPage=${perPage}`);
+    data = await cmsAdminFetch<ListResponse>(`/services/list?${buildListApiQuery(q)}`);
   } catch (e) {
     err = String(e);
   }
@@ -44,10 +51,20 @@ export default async function AdminServicesListPage({
         addNewLabel="Add New Service"
       >
         <WpListTable
-          basePath="/admin/services"
+          listPath={listPath}
+          listQuery={{ search: q.search || undefined, sort: q.sort, order: q.order, perPage: q.perPage }}
           page={data.page}
           perPage={data.perPage}
           total={data.total}
+          toolbar={
+            <WpListToolbar
+              path={listPath}
+              search={q.search}
+              sort={q.sort}
+              order={q.order}
+              sortOptions={SERVICE_SORT_OPTIONS}
+            />
+          }
           columns={[
             {
               key: "title",
@@ -75,6 +92,7 @@ export default async function AdminServicesListPage({
               desimentorHref={`/admin/desimentor/service/${r.id}`}
             />
           )}
+          emptyMessage={q.search ? "No services match your search." : "No items found."}
         />
       </WpListScreen>
     </AdminShell>

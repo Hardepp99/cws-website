@@ -13,6 +13,8 @@ export default function AdminMediaPage() {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("created_at");
+  const [order, setOrder] = useState<"asc" | "desc">("desc");
   const [type, setType] = useState("all");
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -28,7 +30,14 @@ export default function AdminMediaPage() {
 
   const load = useCallback(() => {
     setLoading(true);
-    const qs = new URLSearchParams({ page: String(page), perPage: "30", type, search });
+    const qs = new URLSearchParams({
+      page: String(page),
+      perPage: "30",
+      type,
+      search,
+      sort,
+      order,
+    });
     adminFetch<MediaListResponse>(`/media/list?${qs}`)
       .then((d) => {
         setItems(d.items);
@@ -36,7 +45,7 @@ export default function AdminMediaPage() {
       })
       .catch((e) => setErr(String(e)))
       .finally(() => setLoading(false));
-  }, [page, search, type]);
+  }, [page, search, type, sort, order]);
 
   useEffect(() => {
     load();
@@ -112,23 +121,57 @@ export default function AdminMediaPage() {
         <p className="wp-list-desc">{MEDIA_ACCEPT_LABEL}. Safe storage with auto resize. Images support crop & SEO metadata.</p>
       </div>
 
-      <div className="media-toolbar">
-        <input
-          type="search"
-          className="cms-input"
-          placeholder="Search…"
-          value={search}
+      <div className="wp-list-toolbar media-toolbar">
+        <div className="wp-list-toolbar__search">
+          <input
+            type="search"
+            className="cms-input wp-list-toolbar__input"
+            placeholder="Search filename, title, alt text…"
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
+          />
+        </div>
+        <select
+          className="cms-select"
+          value={type}
           onChange={(e) => {
-            setSearch(e.target.value);
+            setType(e.target.value);
             setPage(1);
           }}
-        />
-        <select className="cms-select" value={type} onChange={(e) => { setType(e.target.value); setPage(1); }}>
-          <option value="all">All</option>
+        >
+          <option value="all">All types</option>
           <option value="image">Images</option>
           <option value="audio">Audio</option>
           <option value="video">Video</option>
           <option value="document">PDF</option>
+        </select>
+        <select
+          className="cms-select"
+          value={sort}
+          onChange={(e) => {
+            setSort(e.target.value);
+            setPage(1);
+          }}
+        >
+          <option value="created_at">Upload date</option>
+          <option value="title">Title</option>
+          <option value="original_name">Filename</option>
+          <option value="file_size">File size</option>
+          <option value="media_type">Type</option>
+        </select>
+        <select
+          className="cms-select"
+          value={order}
+          onChange={(e) => {
+            setOrder(e.target.value === "asc" ? "asc" : "desc");
+            setPage(1);
+          }}
+        >
+          <option value="desc">Descending</option>
+          <option value="asc">Ascending</option>
         </select>
       </div>
       {err ? <div className="cms-notice err">{err}</div> : null}

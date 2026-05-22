@@ -1,15 +1,21 @@
 import Link from "next/link";
+import { PageBodyContent } from "@/components/ui/PageBodyContent";
 import { PageContentTitle } from "@/components/ui/PageContentTitle";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { DesimentorRenderer } from "@/components/desimentor/DesimentorRenderer";
-import { RichContent } from "@/components/ui/RichContent";
 import type { ServiceDetail } from "@/lib/wordpress/types";
+import { resolvePublicBody } from "@/lib/content/display-mode";
 
 interface ServiceDetailPageProps {
   data: ServiceDetail;
 }
 
 export function ServiceDetailPage({ data }: ServiceDetailPageProps) {
+  const body = resolvePublicBody({
+    displayMode: data.displayMode,
+    content: data.content,
+    desimentor: data.desimentor,
+  });
+
   return (
     <div className="service-detail-page">
       <PageHeader
@@ -64,18 +70,16 @@ export function ServiceDetailPage({ data }: ServiceDetailPageProps) {
         </section>
       ) : null}
 
-      {data.desimentor?.sections?.length ? (
+      {body.showElementor || body.showClassic ? (
         <section className="content-page-section content-page-section--flush">
-          <DesimentorRenderer document={data.desimentor} />
-        </section>
-      ) : data.content ? (
-        <section className="content-page-section content-page-section--flush">
-          <div className="corp-container">
-            <div className="content-article content-article--page">
-              <div className="content-article__body">
-                <RichContent html={data.content} />
-              </div>
-            </div>
+          <div className={body.showClassic && !body.showElementor ? "corp-container" : undefined}>
+            <PageBodyContent
+              title={data.title}
+              displayMode={data.displayMode}
+              content={data.content}
+              desimentor={data.desimentor}
+              showArticleWrapper={false}
+            />
           </div>
         </section>
       ) : null}

@@ -13,6 +13,8 @@ interface SiteLogoProps {
   className?: string;
   priority?: boolean;
   src?: string;
+  /** Live preview hook for site customizer */
+  dataCustomize?: string;
 }
 
 export function SiteLogo({
@@ -20,6 +22,7 @@ export function SiteLogo({
   className = "",
   priority = false,
   src = CWS_LOGO_PATH,
+  dataCustomize,
 }: SiteLogoProps) {
   const height = HEIGHTS[variant];
   const { width } = logoDimensions(height);
@@ -28,6 +31,7 @@ export function SiteLogo({
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
+      data-customize={dataCustomize}
       src={logoSrc}
       alt="Creative Web Solutions"
       width={width}

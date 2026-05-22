@@ -17,39 +17,70 @@ export function Topbar({ settings }: TopbarProps) {
         <div className="topbar-inner">
           <div className="topbar-contact">
             {phone ? (
-              <a href={`tel:${phone.replace(/\s/g, "")}`} className="topbar-link">
+              <a
+                href={`tel:${phone.replace(/\s/g, "")}`}
+                className="topbar-link"
+                data-customize-phone-wrap=""
+              >
                 <i className="fas fa-phone-alt" aria-hidden="true" />
-                <span>{phone}</span>
+                <span data-customize="phone">{phone}</span>
               </a>
             ) : null}
             {email ? (
-              <a href={`mailto:${email}`} className="topbar-link">
+              <a
+                href={`mailto:${email}`}
+                className="topbar-link"
+                data-customize-email-wrap=""
+              >
                 <i className="fas fa-envelope" aria-hidden="true" />
-                <span className="topbar-email">{email}</span>
+                <span className="topbar-email" data-customize="email">
+                  {email}
+                </span>
               </a>
             ) : null}
           </div>
 
           {addressLine ? (
-            <p className="topbar-address" title={addressLine}>
+            <p className="topbar-address" title={addressLine} data-customize-address-topbar-wrap="">
               <i className="fas fa-map-marker-alt" aria-hidden="true" />
-              <span>{addressLine}</span>
+              <span data-customize="address-topbar">{addressLine}</span>
             </p>
           ) : null}
 
           <div className="topbar-social">
             {settings.facebook ? (
-              <a href={settings.facebook} target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Facebook">
+              <a
+                href={settings.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-link"
+                aria-label="Facebook"
+                data-customize="social-facebook"
+              >
                 <i className="fab fa-facebook-f" />
               </a>
             ) : null}
             {settings.linkedin ? (
-              <a href={settings.linkedin} target="_blank" rel="noopener noreferrer" className="social-link" aria-label="LinkedIn">
+              <a
+                href={settings.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-link"
+                aria-label="LinkedIn"
+                data-customize="social-linkedin"
+              >
                 <i className="fab fa-linkedin-in" />
               </a>
             ) : null}
             {settings.instagram ? (
-              <a href={settings.instagram} target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Instagram">
+              <a
+                href={settings.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-link"
+                aria-label="Instagram"
+                data-customize="social-instagram"
+              >
                 <i className="fab fa-instagram" />
               </a>
             ) : null}

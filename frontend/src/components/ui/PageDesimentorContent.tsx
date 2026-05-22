@@ -1,36 +1,27 @@
-import { DesimentorRenderer } from "@/components/desimentor/DesimentorRenderer";
-import { ContentArticle } from "@/components/ui/ContentArticle";
-import { RichContent } from "@/components/ui/RichContent";
+import { PageBodyContent } from "@/components/ui/PageBodyContent";
 import type { DesimentorDocument } from "@/lib/desimentor/types";
+import type { ContentDisplayMode } from "@/lib/wordpress/types";
 
 export function PageDesimentorContent({
   title,
   desimentor,
   html,
+  displayMode,
   showArticleWrapper = true,
 }: {
   title: string;
   desimentor?: DesimentorDocument;
   html?: string;
+  displayMode?: ContentDisplayMode;
   showArticleWrapper?: boolean;
 }) {
-  const hasDesimentor = Boolean(desimentor?.sections?.length);
-  const hasHtml = Boolean(html?.trim());
-
-  if (!hasDesimentor && !hasHtml) return null;
-
   return (
-    <>
-      {hasDesimentor ? <DesimentorRenderer document={desimentor!} /> : null}
-      {hasHtml ? (
-        showArticleWrapper ? (
-          <ContentArticle title={title}>
-            <RichContent html={html!} />
-          </ContentArticle>
-        ) : (
-          <RichContent html={html!} />
-        )
-      ) : null}
-    </>
+    <PageBodyContent
+      title={title}
+      content={html}
+      desimentor={desimentor}
+      displayMode={displayMode}
+      showArticleWrapper={showArticleWrapper}
+    />
   );
 }

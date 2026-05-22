@@ -3,8 +3,8 @@ import { CtaLink } from "@/components/engagement/CtaLink";
 import { ASK_PRICE_HREF } from "@/lib/ask-price";
 import { PageContentTitle } from "@/components/ui/PageContentTitle";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { DesimentorRenderer } from "@/components/desimentor/DesimentorRenderer";
-import { RichContent } from "@/components/ui/RichContent";
+import { PageBodyContent } from "@/components/ui/PageBodyContent";
+import { resolvePublicBody } from "@/lib/content/display-mode";
 import type { ServiceLanding } from "@/lib/wordpress/types";
 
 function slugToLabel(slug: string): string {
@@ -20,6 +20,11 @@ interface ServiceLandingPageProps {
 }
 
 export function ServiceLandingPage({ data }: ServiceLandingPageProps) {
+  const body = resolvePublicBody({
+    displayMode: data.displayMode,
+    content: data.seoBody,
+    desimentor: data.desimentor,
+  });
   const { theme } = data;
   const style = {
     "--service-start": theme.start,
@@ -83,14 +88,16 @@ export function ServiceLandingPage({ data }: ServiceLandingPageProps) {
         </div>
       </section>
 
-      {data.desimentor?.sections?.length ? (
+      {body.showElementor || body.showClassic ? (
         <section className="service-location-section alt">
-          <DesimentorRenderer document={data.desimentor} />
-        </section>
-      ) : data.seoBody ? (
-        <section className="service-location-section alt">
-          <div className="corp-container service-location-copy">
-            <RichContent html={data.seoBody} className="seo-rich-prose--wide" />
+          <div className={body.showClassic ? "corp-container service-location-copy" : undefined}>
+            <PageBodyContent
+              title={data.pageTitle}
+              displayMode={data.displayMode}
+              content={data.seoBody}
+              desimentor={data.desimentor}
+              showArticleWrapper={false}
+            />
           </div>
         </section>
       ) : null}

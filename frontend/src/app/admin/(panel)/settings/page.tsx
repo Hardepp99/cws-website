@@ -1,12 +1,7 @@
 "use client";
 
-import { AdminShell } from "@/components/admin/AdminShell";
-import { SiteSettingsForm } from "@/components/admin/settings/SiteSettingsForm";
+import { SiteCustomizer } from "@/components/admin/settings/SiteCustomizer";
 
 export default function AdminSettingsPage() {
-  return (
-    <AdminShell title="Site settings">
-      <SiteSettingsForm />
-    </AdminShell>
-  );
+  return <SiteCustomizer />;
 }

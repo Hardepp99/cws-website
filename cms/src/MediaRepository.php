@@ -6,18 +6,32 @@ final class MediaRepository
 {
     public function __construct(private PDO $db) {}
 
-    public function listMedia(int $page = 1, int $perPage = 24, string $type = 'all', string $search = ''): array
-    {
+    public function listMedia(
+        int $page = 1,
+        int $perPage = 24,
+        string $type = 'all',
+        string $search = '',
+        string $sort = '',
+        string $order = 'desc'
+    ): array {
         $where = 'WHERE 1=1';
         $params = [];
         if ($type !== 'all' && in_array($type, ['image', 'audio', 'video', 'document'], true)) {
             $where .= ' AND media_type = :type';
             $params[':type'] = $type;
         }
-        if ($search !== '') {
-            $where .= ' AND (original_name LIKE :q OR title LIKE :q OR alt_text LIKE :q)';
-            $params[':q'] = '%' . $search . '%';
-        }
+        $where .= AdminListQuery::searchWhere(
+            ['original_name', 'title', 'alt_text', 'caption', 'description', 'mime_type'],
+            $search,
+            $params,
+            ':adm_search'
+        );
+        $sortCol = AdminListQuery::sortColumn(
+            $sort,
+            ['created_at', 'title', 'original_name', 'file_size', 'media_type'],
+            'created_at'
+        );
+        $orderSql = AdminListQuery::orderSql($order);
 
         $countStmt = $this->db->prepare("SELECT COUNT(*) AS c FROM media {$where}");
         $countStmt->execute($params);
@@ -25,7 +39,7 @@ final class MediaRepository
 
         $offset = max(0, ($page - 1) * $perPage);
         $stmt = $this->db->prepare(
-            "SELECT * FROM media {$where} ORDER BY created_at DESC LIMIT :lim OFFSET :off"
+            "SELECT * FROM media {$where} ORDER BY {$sortCol} {$orderSql} LIMIT :lim OFFSET :off"
         );
         foreach ($params as $k => $v) {
             $stmt->bindValue($k, $v);

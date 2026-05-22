@@ -35,6 +35,7 @@ final class AdminApi
 
         $pageNum = max(1, (int) ($_GET['page'] ?? 1));
         $perPage = min(50, max(5, (int) ($_GET['perPage'] ?? 10)));
+        $listQ = AdminListQuery::fromRequest();
 
         // Homepage sections (row CRUD)
         if ($method === 'GET' && $path === '/homepage/sections/list') {
@@ -51,7 +52,15 @@ final class AdminApi
                     'counts'  => ['all' => 0, 'published' => 0, 'draft' => 0, 'trash' => 0],
                 ]);
             }
-            Http::json($repo->listHomepageSectionRows($pageId, $pageNum, $perPage, $statusFilter));
+            Http::json($repo->listHomepageSectionRows(
+                $pageId,
+                $pageNum,
+                $perPage,
+                $statusFilter,
+                $listQ['search'],
+                $listQ['sort'],
+                $listQ['order']
+            ));
         }
 
         if ($method === 'GET' && preg_match('#^/homepage/sections/(\d+)$#', $path, $m)) {
@@ -114,7 +123,7 @@ final class AdminApi
 
         // Pages
         if ($method === 'GET' && $path === '/pages/list') {
-            Http::json($repo->listPagesAdmin($pageNum, $perPage, true));
+            Http::json($repo->listPagesAdmin($pageNum, $perPage, true, $listQ['search'], $listQ['sort'], $listQ['order']));
         }
 
         if ($method === 'GET' && $path === '/pages') {
@@ -122,13 +131,20 @@ final class AdminApi
         }
 
         if ($method === 'GET' && preg_match('#^/pages/(\d+)$#', $path, $m)) {
-            $page = $repo->getPageById((int) $m[1]);
+            $page = $repo->getPageAdminDetail((int) $m[1]);
             Http::json($page ?: ['error' => 'Not found'], $page ? 200 : 404);
         }
 
         if ($method === 'PUT' && preg_match('#^/pages/(\d+)$#', $path, $m)) {
             $repo->savePage((int) $m[1], Http::readJsonBody());
             Http::json(['success' => true]);
+        }
+
+        if ($method === 'PUT' && preg_match('#^/pages/(\d+)/display-mode$#', $path, $m)) {
+            $body = Http::readJsonBody();
+            $mode = (string) ($body['display_mode'] ?? $body['mode'] ?? 'classic');
+            $repo->setDisplayModeForEntity('page', (int) $m[1], $mode);
+            Http::json(['success' => true, 'display_mode' => $mode === 'elementor' ? 'elementor' : 'classic']);
         }
 
         if ($method === 'POST' && $path === '/pages') {
@@ -142,7 +158,7 @@ final class AdminApi
 
         // Landings
         if ($method === 'GET' && $path === '/landings/list') {
-            Http::json($repo->listLandingsAdmin($pageNum, $perPage));
+            Http::json($repo->listLandingsAdmin($pageNum, $perPage, $listQ['search'], $listQ['sort'], $listQ['order']));
         }
 
         if ($method === 'GET' && $path === '/landings') {
@@ -150,13 +166,20 @@ final class AdminApi
         }
 
         if ($method === 'GET' && preg_match('#^/landings/(\d+)$#', $path, $m)) {
-            $row = $repo->getLandingById((int) $m[1]);
+            $row = $repo->getLandingAdminDetail((int) $m[1]);
             Http::json($row ?: ['error' => 'Not found'], $row ? 200 : 404);
         }
 
         if ($method === 'PUT' && preg_match('#^/landings/(\d+)$#', $path, $m)) {
             $repo->saveLanding((int) $m[1], Http::readJsonBody());
             Http::json(['success' => true]);
+        }
+
+        if ($method === 'PUT' && preg_match('#^/landings/(\d+)/display-mode$#', $path, $m)) {
+            $body = Http::readJsonBody();
+            $mode = (string) ($body['display_mode'] ?? $body['mode'] ?? 'classic');
+            $repo->setDisplayModeForEntity('service_landing', (int) $m[1], $mode);
+            Http::json(['success' => true, 'display_mode' => $mode === 'elementor' ? 'elementor' : 'classic']);
         }
 
         if ($method === 'POST' && $path === '/landings') {
@@ -170,7 +193,7 @@ final class AdminApi
 
         // Blog
         if ($method === 'GET' && $path === '/blog/list') {
-            Http::json($repo->listBlogPostsAdmin($pageNum, $perPage));
+            Http::json($repo->listBlogPostsAdmin($pageNum, $perPage, $listQ['search'], $listQ['sort'], $listQ['order']));
         }
 
         if ($method === 'GET' && preg_match('#^/blog/(\d+)$#', $path, $m)) {
@@ -194,7 +217,7 @@ final class AdminApi
 
         // Services
         if ($method === 'GET' && $path === '/services/list') {
-            Http::json($repo->listServicesAdmin($pageNum, $perPage));
+            Http::json($repo->listServicesAdmin($pageNum, $perPage, $listQ['search'], $listQ['sort'], $listQ['order']));
         }
 
         if ($method === 'GET' && $path === '/services') {
@@ -202,13 +225,20 @@ final class AdminApi
         }
 
         if ($method === 'GET' && preg_match('#^/services/(\d+)$#', $path, $m)) {
-            $row = $repo->getServiceById((int) $m[1]);
+            $row = $repo->getServiceAdminDetail((int) $m[1]);
             Http::json($row ?: ['error' => 'Not found'], $row ? 200 : 404);
         }
 
         if ($method === 'PUT' && preg_match('#^/services/(\d+)$#', $path, $m)) {
             $repo->saveService((int) $m[1], Http::readJsonBody());
             Http::json(['success' => true]);
+        }
+
+        if ($method === 'PUT' && preg_match('#^/services/(\d+)/display-mode$#', $path, $m)) {
+            $body = Http::readJsonBody();
+            $mode = (string) ($body['display_mode'] ?? $body['mode'] ?? 'classic');
+            $repo->setDisplayModeForEntity('service', (int) $m[1], $mode);
+            Http::json(['success' => true, 'display_mode' => $mode === 'elementor' ? 'elementor' : 'classic']);
         }
 
         if ($method === 'POST' && $path === '/services') {
@@ -305,7 +335,7 @@ final class AdminApi
         }
 
         if ($method === 'GET' && $path === '/forms/list') {
-            Http::json($repo->listFormSubmissionsAdmin($pageNum, $perPage));
+            Http::json($repo->listFormSubmissionsAdmin($pageNum, $perPage, $listQ['search'], $listQ['sort'], $listQ['order']));
         }
 
         if ($method === 'GET' && $path === '/forms') {
@@ -317,10 +347,16 @@ final class AdminApi
 
         if ($method === 'GET' && $path === '/media/list') {
             $type = (string) ($_GET['type'] ?? 'all');
-            $search = trim((string) ($_GET['search'] ?? ''));
             $mPage = max(1, (int) ($_GET['page'] ?? 1));
             $mPer = min(48, max(12, (int) ($_GET['perPage'] ?? 24)));
-            Http::json($mediaRepo->listMedia($mPage, $mPer, $type, $search));
+            Http::json($mediaRepo->listMedia(
+                $mPage,
+                $mPer,
+                $type,
+                $listQ['search'],
+                $listQ['sort'],
+                $listQ['order']
+            ));
         }
 
         if ($method === 'GET' && preg_match('#^/media/(\d+)$#', $path, $m)) {
@@ -397,9 +433,16 @@ final class AdminApi
 
         if ($method === 'POST' && preg_match('#^/desimentor/([a-z_]+)/(\d+)/publish$#', $path, $m)) {
             try {
+                $body = Http::readJsonBody();
+                $document = $dsmt->publish($m[1], (int) $m[2]);
+                $useOnSite = !array_key_exists('useOnSite', $body) || !empty($body['useOnSite']);
+                if ($useOnSite) {
+                    $repo->setDisplayModeForEntity($m[1], (int) $m[2], 'elementor');
+                }
                 Http::json([
-                    'success'  => true,
-                    'document' => $dsmt->publish($m[1], (int) $m[2]),
+                    'success'       => true,
+                    'document'      => $document,
+                    'display_mode'  => $useOnSite ? 'elementor' : null,
                 ]);
             } catch (Throwable $e) {
                 Http::json(['error' => $e->getMessage()], 400);

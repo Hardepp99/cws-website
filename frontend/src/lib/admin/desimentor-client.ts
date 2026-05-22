@@ -26,10 +26,14 @@ export async function saveDesimentorDocument(
   );
 }
 
-export async function publishDesimentorDocument(entityType: DesimentorEntityType, entityId: number) {
-  return adminFetch<{ success: boolean; document: DesimentorDocumentRecord }>(
+export async function publishDesimentorDocument(
+  entityType: DesimentorEntityType,
+  entityId: number,
+  options?: { useOnSite?: boolean }
+) {
+  return adminFetch<{ success: boolean; document: DesimentorDocumentRecord; display_mode?: string }>(
     `/desimentor/${entityType}/${entityId}/publish`,
-    { method: "POST" }
+    { method: "POST", json: { useOnSite: options?.useOnSite ?? true } }
   );
 }
 
