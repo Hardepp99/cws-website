@@ -3,6 +3,7 @@ import { SiteLayout } from "@/components/layout/SiteLayout";
 import { PageDesimentorContent } from "@/components/ui/PageDesimentorContent";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ContactForm } from "@/components/forms/ContactForm";
+import { PageTrustStrip } from "@/components/engagement/PageTrustStrip";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { getPageBySlug } from "@/lib/wordpress/api";
 import { breadcrumbJsonLd, buildMetadata, contactPageJsonLd } from "@/lib/seo/metadata";
@@ -68,6 +69,7 @@ export default async function ContactPage() {
           </div>
         </div>
       </section>
+      <PageTrustStrip />
     </SiteLayout>
   );
 }

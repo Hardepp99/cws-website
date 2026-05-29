@@ -8,8 +8,11 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { RichContent } from "@/components/ui/RichContent";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { EnrollmentForm } from "@/components/forms/EnrollmentForm";
-import { getAllServiceLandings, getContentBySlug } from "@/lib/wordpress/api";
-import { buildMetadata, faqJsonLd } from "@/lib/seo/metadata";
+import { PageConversionBand } from "@/components/engagement/PageConversionBand";
+import { PageTrustStrip } from "@/components/engagement/PageTrustStrip";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { getAllServiceLandings, getContentBySlug, getPageBySlug } from "@/lib/wordpress/api";
+import { breadcrumbJsonLd, buildMetadata, faqJsonLd } from "@/lib/seo/metadata";
 import type { ServiceDetail, ServiceLanding, WpPage } from "@/lib/wordpress/types";
 import Link from "next/link";
 
@@ -182,12 +185,22 @@ export default async function DynamicPage({ params }: PageProps) {
   }
 
   if (slug === "courses") {
+    const coursesPage = await getPageBySlug("courses");
     return (
       <SiteLayout currentPath={`/${slug}`}>
+        <JsonLd
+          data={breadcrumbJsonLd([
+            { name: "Home", url: "/" },
+            { name: coursesPage?.title ?? "Courses", url: "/courses" },
+          ])}
+        />
         <PageHeader breadcrumb={[{ label: "Home", href: "/" }, { label: "Courses" }]} />
         <section className="corp-section corp-section-tight">
           <div className="container">
-            <PageContentTitle title="Courses & Training" />
+            <PageContentTitle title={coursesPage?.title ?? "Courses & Training"} />
+            {coursesPage?.content ? (
+              <RichContent html={coursesPage.content} className="seo-rich-prose mb-4" />
+            ) : null}
             <div className="row justify-content-center">
               <div className="col-lg-8">
                 <div className="p-4 bg-white rounded-4 border shadow-sm">
@@ -197,12 +210,26 @@ export default async function DynamicPage({ params }: PageProps) {
             </div>
           </div>
         </section>
+        <PageTrustStrip />
+        <PageConversionBand
+          title="Questions about batches or fees?"
+          description="Call us or submit the form — we will share schedules for PHP, Laravel, React, and full-stack tracks running from Zirakpur."
+          primaryLabel="Enquire now"
+          primaryHref="/contact"
+          showAskPrice={false}
+        />
       </SiteLayout>
     );
   }
 
   return (
     <SiteLayout currentPath={`/${slug}`}>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", url: "/" },
+          { name: page.title, url: `/${slug}` },
+        ])}
+      />
       <PageHeader breadcrumb={[{ label: "Home", href: "/" }, { label: page.title }]} />
       {page.desimentor?.sections?.length || page.content ? (
         <section className="content-page-section">
@@ -216,6 +243,8 @@ export default async function DynamicPage({ params }: PageProps) {
           </div>
         </section>
       ) : null}
+      <PageTrustStrip />
+      {!["privacy-policy", "terms-conditions"].includes(slug) ? <PageConversionBand /> : null}
     </SiteLayout>
   );
 }

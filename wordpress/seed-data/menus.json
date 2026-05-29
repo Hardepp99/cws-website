@@ -52,7 +52,9 @@
     { "label": "Courses", "href": "/courses", "icon": "fas fa-graduation-cap" },
     { "label": "Blog", "href": "/blog", "icon": "fas fa-feather-alt" },
     { "label": "Portfolio", "href": "/portfolio", "icon": "fas fa-images" },
-    { "label": "Contact", "href": "/contact", "icon": "fas fa-envelope" }
+    { "label": "Contact", "href": "/contact", "icon": "fas fa-envelope" },
+    { "label": "Privacy", "href": "/privacy-policy", "icon": "fas fa-shield-alt" },
+    { "label": "Terms", "href": "/terms-conditions", "icon": "fas fa-file-contract" }
   ],
   "footer_services": [
     { "label": "Website Development", "href": "/website-development-zirakpur", "icon": "fas fa-globe" },

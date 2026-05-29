@@ -98,12 +98,14 @@ if ($pricing) {
 // Pages
 $pagesContent = read_json_file($seedDir . '/pages-content.json') ?? [];
 $pageTitles = [
-    'about'     => 'About Us',
-    'services'  => 'Our Services',
-    'contact'   => 'Contact Us',
-    'blog'      => 'Blog',
-    'portfolio' => 'Portfolio',
-    'courses'   => 'Courses & Training',
+    'about'            => 'About Us',
+    'services'         => 'Our Services',
+    'contact'          => 'Contact Us',
+    'blog'             => 'Blog',
+    'portfolio'        => 'Portfolio',
+    'courses'          => 'Courses & Training',
+    'privacy-policy'   => 'Privacy Policy',
+    'terms-conditions' => 'Terms & Conditions',
 ];
 $db->exec('DELETE FROM homepage_sections');
 $db->exec('DELETE FROM pages');

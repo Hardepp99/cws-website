@@ -4,8 +4,11 @@ import { SiteLayout } from "@/components/layout/SiteLayout";
 import { ContentArticle } from "@/components/ui/ContentArticle";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { RichContent } from "@/components/ui/RichContent";
+import { PageConversionBand } from "@/components/engagement/PageConversionBand";
+import { PageTrustStrip } from "@/components/engagement/PageTrustStrip";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { getAllServiceLandings, getPageBySlug } from "@/lib/wordpress/api";
-import { buildMetadata } from "@/lib/seo/metadata";
+import { breadcrumbJsonLd, buildMetadata } from "@/lib/seo/metadata";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +26,12 @@ export default async function ServicesPage() {
 
   return (
     <SiteLayout currentPath="/services">
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", url: "/" },
+          { name: page.title, url: "/services" },
+        ])}
+      />
       <div className="services-page">
         <PageHeader breadcrumb={[{ label: "Home", href: "/" }, { label: page.title }]} />
 
@@ -67,6 +76,13 @@ export default async function ServicesPage() {
             </div>
           </section>
         )}
+        <PageTrustStrip />
+        <PageConversionBand
+          title="Not sure which service fits?"
+          description="Describe your goal — more leads, online sales, or internal software. We will point you to the right landing page or propose a combined plan."
+          primaryLabel="Get expert advice"
+          primaryHref="/contact"
+        />
       </div>
     </SiteLayout>
   );

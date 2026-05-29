@@ -4,6 +4,7 @@ import { ContentArticle } from "@/components/ui/ContentArticle";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { RichContent } from "@/components/ui/RichContent";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { PageConversionBand } from "@/components/engagement/PageConversionBand";
 import { getPageBySlug, getPortfolioAll, getSiteSettings } from "@/lib/wordpress/api";
 import { breadcrumbJsonLd, buildMetadata, siteUrl } from "@/lib/seo/metadata";
 
@@ -75,6 +76,12 @@ export default async function PortfolioPage() {
             items={items}
             allTabLabel="All work"
             className="portfolio-showcase--page"
+          />
+          <PageConversionBand
+            title="Want results like these for your business?"
+            description="Share your industry and goals — we will suggest a similar approach, timeline, and honest budget range."
+            primaryLabel="Start your project"
+            primaryHref="/contact"
           />
         </div>
       </div>

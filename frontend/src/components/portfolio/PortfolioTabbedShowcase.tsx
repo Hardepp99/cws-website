@@ -78,14 +78,7 @@ export function PortfolioTabbedShowcase({
     };
   }, [updateIndicator]);
 
-  const selectTab = (tabId: string) => {
-    if (tabId === activeTab) return;
-    setActiveTab(tabId);
-  };
-
-  if (!items.length) return null;
-
-  const bindNavigation = (swiper: SwiperType) => {
+  const bindNavigation = useCallback((swiper: SwiperType) => {
     swiperRef.current = swiper;
     const nav = swiper.params.navigation;
     if (!nav || typeof nav === "boolean" || !prevRef.current || !nextRef.current) return;
@@ -94,11 +87,18 @@ export function PortfolioTabbedShowcase({
     swiper.navigation.destroy();
     swiper.navigation.init();
     swiper.navigation.update();
-  };
+  }, []);
 
   useEffect(() => {
     if (swiperRef.current) bindNavigation(swiperRef.current);
-  }, [activeTab, filtered.length]);
+  }, [activeTab, filtered.length, bindNavigation]);
+
+  const selectTab = (tabId: string) => {
+    if (tabId === activeTab) return;
+    setActiveTab(tabId);
+  };
+
+  if (!items.length) return null;
 
   return (
     <div className={`portfolio-showcase ${className}`.trim()}>

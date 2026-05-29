@@ -20,13 +20,6 @@ function setHtml(selector: string, value: string) {
   });
 }
 
-function setAttr(selector: string, attr: string, value: string) {
-  document.querySelectorAll(selector).forEach((el) => {
-    if (value) el.setAttribute(attr, value);
-    else el.removeAttribute(attr);
-  });
-}
-
 function applySettings(settings: Record<string, string>) {
   const primary = settings.primaryColor || "#0057FF";
   const secondary = settings.secondaryColor || "#0088FF";

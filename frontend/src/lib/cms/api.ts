@@ -2,11 +2,7 @@ import { cmsApiEnabled, cmsFetch } from "./client";
 import { decodeHtmlEntities } from "@/lib/text";
 import { emptySiteMenus, emptySiteSettings, normalizeSiteSettings } from "@/lib/wordpress/fallback";
 import type { GmbApiPayload } from "@/lib/gmb/from-api";
-import {
-  capPortfolioHomeItemsByCategory,
-  DEFAULT_PORTFOLIO_HOME_PER_CATEGORY,
-  parsePortfolioHomeMax,
-} from "@/lib/portfolio/home-limit";
+import { capPortfolioHomeItemsByCategory, parsePortfolioHomeMax } from "@/lib/portfolio/home-limit";
 import type { PortfolioHomePayload, PortfolioItem } from "@/lib/wordpress/portfolio-types";
 import type {
   BlogPost,

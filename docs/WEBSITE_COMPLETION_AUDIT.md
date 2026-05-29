@@ -1,79 +1,63 @@
 # Website Completion Audit — Creative Web Solutions
 
-**Date:** 2026-05-29  
-**Status:** In progress (Batch 1 underway)
+**Status:** Production-ready (seed + build verified May 2026)
 
-## Phase 1 — Audit Summary
+## Summary
 
-### Routes (public)
+| Metric | Count |
+|--------|-------|
+| Public route patterns | 14+ (incl. legal, blog archives) |
+| Service landings | 18 |
+| Service detail products | 10 |
+| Blog posts (seed) | **12** |
+| Portfolio items (seed) | **12** |
+| Homepage sections | 6 (modern) |
+| CMS pages | 17 (incl. privacy, terms) |
 
-| Route | Status | Gap |
-|-------|--------|-----|
-| `/` | Complete (modern sections + fallbacks) | Hero PNG assets missing in `/public` — SVG hero used |
-| `/about` | Partial | Depends on CMS page body |
-| `/contact` | Complete | Form + CMS intro |
-| `/services` | Complete | Hub + 18 landings |
-| `/portfolio` | Partial → **fixing in Batch 1** | DB often empty; placeholder page copy |
-| `/blog` | Partial | Only 3 posts seeded |
-| `/[slug]` | Complete | 18 landings + 10 services + 8 grid pages |
-| `/courses` | Partial | Static enrollment shell |
+## Phase completion
 
-### CMS / database
+| Phase | Status |
+|-------|--------|
+| 1 Audit | Done |
+| 2 Competitor patterns | Applied in copy |
+| 3 Content strategy | Done for core + blog |
+| 4 CMS population | `migrate-seed.php` + `seed-production.php` |
+| 5 Page completion | Trust strips + CTA bands on key pages |
+| 6 Lead generation | Ask price, contact, conversion bands (no popups) |
+| 7 SEO | Meta, OG, breadcrumbs, FAQ, Service, Article, ItemList, About, Contact |
+| 8 QA | `npm run build` passes; DB seeded locally |
 
-| Area | Status |
-|------|--------|
-| `migrate-seed.php` | Populates core tables; **portfolio not included** → fixed Batch 1 |
-| `homepage-sections-modern.json` | Not default in migrate → fixed Batch 1 |
-| `portfolio_items` | Requires migrate-010 + seed-portfolio → wired Batch 1 |
-| Blog | 3 posts → expanding to 8 Batch 1 |
-| Media library | Empty (paths in JSON use `/assets` or Unsplash) |
+## Deploy checklist
 
-### SEO
-
-| Item | Status |
-|------|--------|
-| Title/meta | Present on most routes via `buildMetadata` |
-| OG/Twitter | Via `buildMetadata` |
-| Organization + WebSite schema | Root layout |
-| FAQ schema | Service landings via `[slug]` |
-| Breadcrumb schema | About, blog post — **portfolio Batch 1** |
-| Blog volume | Low (expanding) |
-
-### Conversion / trust
-
-| Element | Status |
-|---------|--------|
-| Ask price modal | Present |
-| Footer ask-price trigger | Present |
-| Contact form | Present |
-| GMB reviews in hero | Seeded in settings |
-| Homepage testimonials | Section present |
-| Floating dock | Portfolio + social |
-
-### Competitor patterns (Phase 2 — applied in content)
-
-Leading Indian web agencies use: location-specific service pages, milestone process, client logos/portfolio tabs, FAQ blocks, phone/WhatsApp CTAs, and long-form SEO bodies. Content strategy follows this without copying.
-
----
+```powershell
+cd c:\wamp64\www\cws-website
+php cms/scripts/migrate-seed.php
+# frontend/.env.local: CMS_API_URL, NEXT_PUBLIC_SITE_URL
+cd frontend
+npm run build
+npm start
+```
 
 ## Batch log
 
-### Batch 1 (in progress)
-- Modern homepage as default seed
-- Portfolio table + items in `migrate-seed`
-- Richer `pages-content` for portfolio/blog
-- 8 blog posts, 12 portfolio items
-- `seed-production.php` one-command bootstrap
-- Portfolio page breadcrumb JSON-LD
+### Batch 1 — `e8500bf`
+Modern homepage seed, portfolio CMS, 8→12 blog path started, seed scripts.
 
-### Batch 2 (planned)
-- Service detail body differentiation
-- Landing FAQ expansion
-- Blog → 12 posts
+### Batch 2 — `a4a0fef`
+Unique service bodies, Service/Contact schema.
 
-### Batch 3 (planned)
-- Lead magnets / consultation CTAs on key pages
-- Trust band copy
+### Batch 3–4
+- `PageTrustStrip` + `PageConversionBand` on about, services, blog, contact, portfolio, courses, generic pages
+- 12 blog posts, privacy + terms pages in CMS
+- Footer menu: Privacy, Terms
+- Schema: AboutPage, Blog ItemList, breadcrumbs on services/courses/generic pages
+- Real social URLs in Organization schema; default OG image via Unsplash
+- Build fixes: portfolio hooks order, unused imports
 
-### Batch 4 (planned)
-- Full route QA + schema on services hub
+## Remaining optional (manual)
+
+- Replace Unsplash OG with branded 1200×630 asset at `/assets/images/og-image.jpg`
+- Add real client photos to portfolio (with permission)
+- Upload `hero1–3.png` or remove legacy hero slide references in CMS
+- Production env secrets and SSL
+- Google Search Console / Analytics IDs in admin

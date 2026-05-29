@@ -102,5 +102,57 @@
       "description": "Set up WhatsApp lead capture on your business website: placement, pre-filled messages, and forms without intrusive popups.",
       "keywords": "WhatsApp business website, lead generation India, click to chat website"
     }
+  },
+  {
+    "slug": "wordpress-vs-custom-website-india",
+    "title": "WordPress vs Custom Website: What Makes Sense for Indian SMEs?",
+    "excerpt": "When a theme is enough, when you outgrow plugins, and how to budget for each path.",
+    "date": "2025-06-02",
+    "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
+    "content": "\n<p>WordPress powers a huge share of Indian business sites — for good reason. It is fast to launch, editors know it, and plugins cover common needs. Custom builds enter the picture when integrations, performance, or unique workflows break the template model.</p>\n<h2>Choose WordPress when</h2>\n<p>You need a marketing site, blog, WooCommerce store, or landing pages with manageable complexity. Budget and timeline are tight; you can launch in weeks with the right theme and hosting.</p>\n<h2>Choose custom when</h2>\n<p>You have role-based dashboards, heavy API traffic, or rules plugins cannot enforce cleanly. Long-term TCO may be lower if you avoid plugin conflicts and manual workarounds.</p>\n<p>We deliver both — <a href=\"/website-development-zirakpur\">website development in Zirakpur</a> with honest recommendations. <a href=\"/contact\">Discuss your case</a>.</p>\n",
+    "seo": {
+      "title": "WordPress vs Custom Website India | Creative Web Solutions",
+      "description": "Compare WordPress and custom websites for Indian SMEs: cost, speed, scalability, and when each approach fits.",
+      "keywords": "WordPress vs custom website, SME website India, web development Punjab"
+    }
+  },
+  {
+    "slug": "core-web-vitals-small-business",
+    "title": "Core Web Vitals for Small Business Websites (Plain English Guide)",
+    "excerpt": "LCP, INP, and CLS explained for owners — and fixes that do not require a computer science degree.",
+    "date": "2025-06-12",
+    "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
+    "content": "\n<p>Google's Core Web Vitals sound technical, but they boil down to: does your site load quickly, respond when tapped, and stay stable while loading? Poor scores correlate with fewer enquiries on mobile.</p>\n<h2>Largest Contentful Paint (LCP)</h2>\n<p>How fast the main hero image or headline appears. Fix: compress images, use a decent host, avoid bloated sliders on the homepage.</p>\n<h2>Interaction to Next Paint (INP)</h2>\n<p>How snappy buttons and menus feel. Fix: reduce heavy scripts, defer non-critical JavaScript, test on a real phone.</p>\n<h2>Cumulative Layout Shift (CLS)</h2>\n<p>Content jumping while the page loads — frustrating when users tap the wrong button. Fix: set image dimensions, reserve space for ads and embeds.</p>\n<p>We bake performance checks into every launch. <a href=\"/contact\">Request a speed audit</a>.</p>\n",
+    "seo": {
+      "title": "Core Web Vitals Guide for Small Business | Creative Web Solutions",
+      "description": "Core Web Vitals explained for Indian business owners: LCP, INP, CLS, and practical fixes for mobile leads.",
+      "keywords": "Core Web Vitals India, website speed mobile, LCP INP CLS"
+    }
+  },
+  {
+    "slug": "digital-marketing-budget-punjab",
+    "title": "How Much Should a Punjab SMB Spend on Digital Marketing?",
+    "excerpt": "A practical framework for splitting budget between SEO, ads, and content — without burning cash on vanity metrics.",
+    "date": "2025-06-20",
+    "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=800&q=80",
+    "content": "\n<p>There is no single number — a clinic, manufacturer, and ecommerce brand need different mixes. Start with a monthly cap you can sustain for at least six months; stop-start campaigns rarely compound.</p>\n<h2>Foundation first (month 1–2)</h2>\n<p>Fix website conversion paths, tracking, and Google Business Profile before scaling ads. Otherwise you pay to send traffic to a leaky bucket.</p>\n<h2>Split guidelines</h2>\n<ul>\n<li><strong>Local services:</strong> heavier on SEO + GBP; modest Google Ads for high-intent keywords</li>\n<li><strong>Ecommerce:</strong> product feeds, Meta retargeting, and landing page tests</li>\n<li><strong>B2B:</strong> LinkedIn, case studies, and long-form service pages</li>\n</ul>\n<p>We plan campaigns with clear lead targets. See <a href=\"/digital-marketing-zirakpur\">digital marketing services</a>.</p>\n",
+    "seo": {
+      "title": "Digital Marketing Budget for Punjab SMBs | Creative Web Solutions",
+      "description": "How Indian SMBs should allocate digital marketing budget across SEO, Google Ads, and content for sustainable leads.",
+      "keywords": "digital marketing budget India, marketing spend Punjab, SMB advertising"
+    }
+  },
+  {
+    "slug": "hire-web-developer-checklist",
+    "title": "Checklist Before You Hire a Web Developer in Chandigarh or Zirakpur",
+    "excerpt": "Twelve questions that separate reliable teams from risky quotes — ownership, staging, SEO, and support.",
+    "date": "2025-06-28",
+    "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
+    "content": "\n<p>Hiring on price alone is how projects stall at 80% done. Use this checklist on your first call — good agencies will answer clearly without dodging.</p>\n<h2>Questions to ask</h2>\n<ol>\n<li>Who owns the domain, hosting, and source code after payment?</li>\n<li>Will I get staging links before anything goes live?</li>\n<li>What is included in SEO — metadata only or content structure?</li>\n<li>How are change requests handled after sign-off?</li>\n<li>What support do you offer in the first 30–90 days?</li>\n<li>Can you show a similar project in my industry?</li>\n</ol>\n<p>Creative Web Solutions works milestone-based from Zirakpur with clients across the Tricity. <a href=\"/about\">See how we work</a> or <a href=\"/contact\">request a quote</a>.</p>\n",
+    "seo": {
+      "title": "Hire Web Developer Checklist Chandigarh | Creative Web Solutions",
+      "description": "Checklist for hiring a web developer in Chandigarh or Zirakpur: code ownership, staging, SEO scope, and post-launch support.",
+      "keywords": "hire web developer Chandigarh, website developer Zirakpur checklist"
+    }
   }
 ]

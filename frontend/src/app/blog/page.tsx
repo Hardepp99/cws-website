@@ -5,8 +5,10 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { PageContentTitle } from "@/components/ui/PageContentTitle";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { RichContent } from "@/components/ui/RichContent";
+import { PageConversionBand } from "@/components/engagement/PageConversionBand";
+import { PageTrustStrip } from "@/components/engagement/PageTrustStrip";
 import { getBlogPosts, getPageBySlug } from "@/lib/wordpress/api";
-import { breadcrumbJsonLd, buildMetadata } from "@/lib/seo/metadata";
+import { blogItemListJsonLd, breadcrumbJsonLd, buildMetadata } from "@/lib/seo/metadata";
 
 export const dynamic = "force-dynamic";
 
@@ -25,14 +27,20 @@ export async function generateMetadata() {
 
 export default async function BlogPage() {
   const [posts, page] = await Promise.all([getBlogPosts(), getPageBySlug("blog")]);
+  const listSchema = blogItemListJsonLd(
+    posts.map((p) => ({ title: p.title, slug: p.slug, excerpt: p.excerpt })),
+  );
 
   return (
     <SiteLayout currentPath="/blog">
       <JsonLd
-        data={breadcrumbJsonLd([
-          { name: "Home", url: "/" },
-          { name: "Blog", url: "/blog" },
-        ])}
+        data={[
+          breadcrumbJsonLd([
+            { name: "Home", url: "/" },
+            { name: "Blog", url: "/blog" },
+          ]),
+          ...(listSchema ? [listSchema] : []),
+        ]}
       />
       <PageHeader breadcrumb={[{ label: "Home", href: "/" }, { label: "Blog" }]} />
       <section className="corp-section corp-section-tight">
@@ -62,6 +70,13 @@ export default async function BlogPage() {
           </div>
         </div>
       </section>
+      <PageTrustStrip />
+      <PageConversionBand
+        title="Need help applying this to your business?"
+        description="Our team builds and markets websites across Punjab — ask for a practical plan, not generic advice."
+        primaryLabel="Talk to an expert"
+        primaryHref="/contact"
+      />
     </SiteLayout>
   );
 }

@@ -5,8 +5,10 @@ import { ContentArticle } from "@/components/ui/ContentArticle";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { PageDesimentorContent } from "@/components/ui/PageDesimentorContent";
 import { getPageBySlug } from "@/lib/wordpress/api";
+import { PageConversionBand } from "@/components/engagement/PageConversionBand";
+import { PageTrustStrip } from "@/components/engagement/PageTrustStrip";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbJsonLd, buildMetadata } from "@/lib/seo/metadata";
+import { aboutPageJsonLd, breadcrumbJsonLd, buildMetadata } from "@/lib/seo/metadata";
 
 export const dynamic = "force-dynamic";
 
@@ -23,10 +25,13 @@ export default async function AboutPage() {
   return (
     <SiteLayout currentPath="/about">
       <JsonLd
-        data={breadcrumbJsonLd([
-          { name: "Home", url: "/" },
-          { name: page.title, url: "/about" },
-        ])}
+        data={[
+          breadcrumbJsonLd([
+            { name: "Home", url: "/" },
+            { name: page.title, url: "/about" },
+          ]),
+          aboutPageJsonLd(),
+        ]}
       />
       <PageHeader breadcrumb={[{ label: "Home", href: "/" }, { label: page.title }]} />
       {page.desimentor?.sections?.length || page.content ? (
@@ -56,6 +61,13 @@ export default async function AboutPage() {
           </div>
         </section>
       )}
+      <PageTrustStrip />
+      <PageConversionBand
+        title="Want a team that answers in plain language?"
+        description="Tell us what you are building — website, app, or marketing. We will suggest a realistic path, timeline, and ballpark."
+        primaryLabel="Book a consultation"
+        primaryHref="/contact"
+      />
     </SiteLayout>
   );
 }

@@ -30,7 +30,9 @@ export function buildMetadata(seo: SeoMeta, path = ""): Metadata {
     seo.canonical?.trim() ||
     `${siteUrl}${canonicalPath}`.replace(/([^:]\/)\/+/g, "$1") ||
     siteUrl;
-  const ogImage = seo.ogImage?.trim() || `${siteUrl}/assets/images/og-image.jpg`;
+  const ogImage =
+    seo.ogImage?.trim() ||
+    "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&h=630&q=85";
   const title = seo.title?.trim() || "Creative Web Solutions";
   const description = seo.description?.trim() || defaultDescription;
   const keywords = parseKeywords(seo.keywords) ?? parseKeywords(defaultKeywords);
@@ -91,8 +93,9 @@ export function organizationJsonLd() {
       availableLanguage: ["en", "hi"],
     },
     sameAs: [
-      "https://www.facebook.com/",
-      "https://www.linkedin.com/",
+      "https://www.facebook.com/profile.php?id=61565017048983",
+      "https://www.linkedin.com/company/creative-websolutions/",
+      "https://www.instagram.com/creativeweb_solutions",
     ],
   };
 }
@@ -189,6 +192,36 @@ export function serviceJsonLd(service: {
       { "@type": "AdministrativeArea", name: "Punjab" },
       { "@type": "Country", name: "India" },
     ],
+  };
+}
+
+export function blogItemListJsonLd(
+  posts: { title: string; slug: string; excerpt?: string }[],
+) {
+  if (!posts.length) return null;
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Creative Web Solutions Blog",
+    itemListElement: posts.map((post, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `${siteUrl}/blog/${post.slug}`,
+      name: post.title,
+      description: post.excerpt,
+    })),
+  };
+}
+
+export function aboutPageJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: "About Creative Web Solutions",
+    url: `${siteUrl}/about`,
+    description:
+      "Technology partner for web development, mobile apps, digital marketing, and IT training in Zirakpur, Chandigarh, and Mohali.",
+    mainEntity: organizationJsonLd(),
   };
 }
 

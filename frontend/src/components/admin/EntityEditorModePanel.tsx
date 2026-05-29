@@ -1,12 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { DesimentorEditLink } from "@/components/admin/DesimentorEditLink";
 import { publishDesimentorDocument } from "@/lib/admin/desimentor-client";
 import { adminFetch } from "@/lib/admin/client";
 import type { DesimentorEntityType } from "@/lib/desimentor/types";
-import { normalizeDisplayMode, type DisplayMode } from "@/lib/content/display-mode";
+import type { DisplayMode } from "@/lib/content/display-mode";
 
 export type DesimentorMeta = {
   hasDocument: boolean;
