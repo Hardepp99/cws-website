@@ -15,6 +15,25 @@ export interface SiteSettings {
   footerCompanyTitle?: string;
   footerServicesTitle?: string;
   footerProductsTitle?: string;
+  /** Google Business Profile — Maps listing URL */
+  gmbMapsUrl?: string;
+  gmbPlaceId?: string;
+  gmbPlaceQuery?: string;
+  gmbPlaceName?: string;
+  gmbRating?: string;
+  gmbReviewCount?: string;
+  gmbUseLive?: string;
+  gmbCacheHours?: string;
+  gmbReviewsCachedAt?: string;
+  /** JSON array of GmbReviewRecord — edited in Admin → Settings → Google Business */
+  gmbReviewsJson?: string;
+  /** Homepage portfolio section (local clients) */
+  portfolioBadge?: string;
+  portfolioTitle?: string;
+  portfolioSubtitle?: string;
+  portfolioHomeMax?: string;
+  portfolioCtaLabel?: string;
+  portfolioCtaHref?: string;
 }
 
 export interface SiteMenus {
@@ -118,7 +137,18 @@ export interface HomepageSection {
   title?: string;
   subtitle?: string;
   content?: string;
+  /** auto | light | dark — alternating bands when auto */
+  sectionTheme?: string;
+  section_theme?: string;
+  /** Full-bleed section backdrop (URL); empty uses layout default Unsplash */
+  backdropImage?: string;
+  backdrop_image?: string;
+  /** 0–100 visibility of backdrop photo */
+  backdropStrength?: number | string;
+  backdrop_strength?: number | string;
   slides?: { image?: { url: string } }[];
+  /** Service pills on hero bottom marquee */
+  marqueeItems?: { title?: string; href?: string; letter?: string; status?: string }[];
   items?: Record<string, unknown>[];
   [key: string]: unknown;
 }

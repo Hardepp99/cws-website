@@ -1,8 +1,29 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { WysiwygField } from "@/components/admin/WysiwygField";
+import { SectionAppearanceFields } from "./SectionAppearanceFields";
 import type { SectionRecord } from "./SectionEditor";
+
+function SectionFieldsWrap({
+  layout,
+  section,
+  onChange,
+  children,
+}: {
+  layout: string;
+  section: SectionRecord;
+  onChange: (s: SectionRecord) => void;
+  children: ReactNode;
+}) {
+  return (
+    <div className="cms-section-fields">
+      {children}
+      {layout !== "hero_slider" ? <SectionAppearanceFields section={section} onChange={onChange} /> : null}
+    </div>
+  );
+}
 
 function Field({
   label,
@@ -86,48 +107,59 @@ export function SectionHeaderFields({
           value={String(ctaSecondary.href ?? "")}
           onChange={(v) => set("ctaSecondary", { ...ctaSecondary, href: v })}
         />
+        <MediaPickerField
+          label="Person image (right of slider)"
+          value={String(section.personImage ?? "")}
+          onChange={(v) => set("personImage", v)}
+          mediaFilter="image"
+        />
+        <Field
+          label="Person image alt text"
+          value={String(section.personImageAlt ?? "")}
+          onChange={(v) => set("personImageAlt", v)}
+        />
       </div>
     );
   }
 
   if (layout === "cta" || layout === "contact_preview") {
     return (
-      <div className="cms-section-fields">
+      <SectionFieldsWrap layout={layout} section={section} onChange={onChange}>
         {layout === "contact_preview" ? (
           <Field label="Badge" value={String(section.badge ?? "")} onChange={(v) => set("badge", v)} />
         ) : null}
         <Field label="Title" value={String(section.title ?? "")} onChange={(v) => set("title", v)} />
         <Field label="Subtitle" value={String(section.subtitle ?? "")} onChange={(v) => set("subtitle", v)} type="textarea" />
         <CtaFields section={section} onChange={onChange} />
-      </div>
+      </SectionFieldsWrap>
     );
   }
 
   if (layout === "blog_preview") {
     return (
-      <div className="cms-section-fields">
+      <SectionFieldsWrap layout={layout} section={section} onChange={onChange}>
         <p className="cms-field-hint">Blog posts load from your Blog — set section headings here.</p>
         <Field label="Badge" value={String(section.badge ?? "")} onChange={(v) => set("badge", v)} />
         <Field label="Title" value={String(section.title ?? "")} onChange={(v) => set("title", v)} />
         <Field label="Subtitle" value={String(section.subtitle ?? "")} onChange={(v) => set("subtitle", v)} type="textarea" />
-      </div>
+      </SectionFieldsWrap>
     );
   }
 
   if (layout === "seo_rich") {
     return (
-      <div className="cms-section-fields">
+      <SectionFieldsWrap layout={layout} section={section} onChange={onChange}>
         <Field label="Badge" value={String(section.badge ?? "")} onChange={(v) => set("badge", v)} />
         <Field label="Title" value={String(section.title ?? "")} onChange={(v) => set("title", v)} />
         <Field label="Subtitle (optional)" value={String(section.subtitle ?? "")} onChange={(v) => set("subtitle", v)} type="textarea" />
         <WysiwygField label="Content (HTML)" value={String(section.content ?? "")} onChange={(v) => set("content", v)} height={360} />
-      </div>
+      </SectionFieldsWrap>
     );
   }
 
   if (layout === "about") {
     return (
-      <div className="cms-section-fields">
+      <SectionFieldsWrap layout={layout} section={section} onChange={onChange}>
         <Field label="Badge" value={String(section.badge ?? "")} onChange={(v) => set("badge", v)} />
         <Field label="Title" value={String(section.title ?? "")} onChange={(v) => set("title", v)} />
         <Field label="Subtitle" value={String(section.subtitle ?? "")} onChange={(v) => set("subtitle", v)} type="textarea" />
@@ -139,7 +171,7 @@ export function SectionHeaderFields({
           mediaFilter="image"
         />
         <CtaFields section={section} onChange={onChange} />
-      </div>
+      </SectionFieldsWrap>
     );
   }
 
@@ -161,19 +193,19 @@ export function SectionHeaderFields({
     layout === "courses"
   ) {
     return (
-      <div className="cms-section-fields">
+      <SectionFieldsWrap layout={layout} section={section} onChange={onChange}>
         <Field label="Badge" value={String(section.badge ?? "")} onChange={(v) => set("badge", v)} />
         <Field label="Title" value={String(section.title ?? "")} onChange={(v) => set("title", v)} />
         <Field label="Subtitle" value={String(section.subtitle ?? "")} onChange={(v) => set("subtitle", v)} type="textarea" />
-      </div>
+      </SectionFieldsWrap>
     );
   }
 
   return (
-    <div className="cms-section-fields">
+    <SectionFieldsWrap layout={layout} section={section} onChange={onChange}>
       <Field label="Badge" value={String(section.badge ?? "")} onChange={(v) => set("badge", v)} />
       <Field label="Title" value={String(section.title ?? "")} onChange={(v) => set("title", v)} />
       <Field label="Subtitle" value={String(section.subtitle ?? "")} onChange={(v) => set("subtitle", v)} type="textarea" />
-    </div>
+    </SectionFieldsWrap>
   );
 }

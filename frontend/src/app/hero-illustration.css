@@ -1,0 +1,123 @@
+/* Hero web-builder SVG illustration */
+
+.home-hero__visual .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.hero-web-builder-illus {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(62vh, 520px);
+}
+
+.hero-web-builder-illus__float--a {
+  animation: hero-illus-float 5.5s ease-in-out infinite;
+}
+
+.hero-web-builder-illus__float--b {
+  animation: hero-illus-float 6.2s ease-in-out infinite 0.6s;
+}
+
+.hero-web-builder-illus__float--c {
+  animation: hero-illus-float 5s ease-in-out infinite 1.1s;
+}
+
+.hero-web-builder-illus__float--d {
+  animation: hero-illus-float 4.8s ease-in-out infinite 0.3s;
+}
+
+.hero-web-builder-illus__spark {
+  animation: hero-illus-pulse 2.4s ease-in-out infinite;
+}
+
+.hero-web-builder-illus__spark--b {
+  animation-delay: 0.8s;
+}
+
+.hero-web-builder-illus__spark--c {
+  animation-delay: 1.4s;
+  transform-origin: 54px 332px;
+}
+
+.hero-web-builder-illus__person {
+  animation: hero-illus-person 6s ease-in-out infinite;
+  transform-origin: 210px 340px;
+}
+
+@keyframes hero-illus-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes hero-illus-pulse {
+  0%,
+  100% {
+    opacity: 0.65;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes hero-illus-person {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.home-hero__visual {
+  position: relative;
+  width: min(100%, 400px);
+  aspect-ratio: 420 / 500;
+  max-height: min(62vh, 520px);
+  margin-left: auto;
+}
+
+.home-hero__visual--svg {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.home-hero__visual--svg .hero-web-builder-illus {
+  filter: drop-shadow(0 24px 48px rgba(88, 86, 214, 0.15));
+}
+
+@media (max-width: 991.98px) {
+  .home-hero__visual {
+    width: min(85%, 320px);
+    max-height: min(42vh, 360px);
+    margin: 0 auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-web-builder-illus__float--a,
+  .hero-web-builder-illus__float--b,
+  .hero-web-builder-illus__float--c,
+  .hero-web-builder-illus__float--d,
+  .hero-web-builder-illus__spark,
+  .hero-web-builder-illus__person {
+    animation: none !important;
+  }
+}

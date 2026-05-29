@@ -1324,6 +1324,180 @@ final class ContentRepository
         return trim($slug, '-') ?: 'item';
     }
 
+    public function portfolioTableExists(): bool
+    {
+        return $this->tableExists('portfolio_items');
+    }
+
+    public function listPortfolioAdmin(
+        int $page = 1,
+        int $perPage = 10,
+        string $search = '',
+        string $sort = '',
+        string $order = 'desc'
+    ): array {
+        if (!$this->portfolioTableExists()) {
+            return ['items' => [], 'total' => 0, 'page' => $page, 'perPage' => $perPage];
+        }
+        $where = 'WHERE 1=1';
+        $params = [];
+        $where .= AdminListQuery::searchWhere(
+            ['title', 'client_name', 'location', 'category', 'excerpt', 'status'],
+            $search,
+            $params
+        );
+        $sortCol = AdminListQuery::sortColumn(
+            $sort,
+            ['title', 'client_name', 'location', 'category', 'sort_order', 'status', 'updated_at'],
+            'sort_order'
+        );
+        $orderSql = AdminListQuery::orderSql($order);
+
+        $countStmt = $this->db->prepare("SELECT COUNT(*) AS c FROM portfolio_items {$where}");
+        $countStmt->execute($params);
+        $total = (int) ($countStmt->fetch()['c'] ?? 0);
+        $offset = max(0, ($page - 1) * $perPage);
+        $stmt = $this->db->prepare(
+            "SELECT id, title, client_name, location, category, image, show_on_homepage, sort_order, status, updated_at
+             FROM portfolio_items {$where}
+             ORDER BY {$sortCol} {$orderSql} LIMIT :lim OFFSET :off"
+        );
+        foreach ($params as $k => $v) {
+            $stmt->bindValue($k, $v);
+        }
+        $stmt->bindValue(':lim', $perPage, PDO::PARAM_INT);
+        $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return ['items' => $stmt->fetchAll(), 'total' => $total, 'page' => $page, 'perPage' => $perPage];
+    }
+
+    public function getPortfolioItemById(int $id): ?array
+    {
+        if (!$this->portfolioTableExists()) {
+            return null;
+        }
+        $stmt = $this->db->prepare('SELECT * FROM portfolio_items WHERE id = :id');
+        $stmt->execute([':id' => $id]);
+
+        return $stmt->fetch() ?: null;
+    }
+
+    public function createPortfolioItem(array $data): int
+    {
+        if (!$this->portfolioTableExists()) {
+            throw new RuntimeException('Run php cms/scripts/migrate-010.php first.');
+        }
+        $stmt = $this->db->prepare(
+            'INSERT INTO portfolio_items (title, client_name, location, category, image, href, excerpt, sort_order, show_on_homepage, status)
+             VALUES (:t, :cn, :loc, :cat, :img, :href, :ex, :ord, :home, :st)'
+        );
+        $stmt->execute([
+            ':t'    => (string) ($data['title'] ?? $data['client_name'] ?? 'Project'),
+            ':cn'   => (string) ($data['client_name'] ?? $data['title'] ?? ''),
+            ':loc'  => (string) ($data['location'] ?? ''),
+            ':cat'  => (string) ($data['category'] ?? ''),
+            ':img'  => (string) ($data['image'] ?? ''),
+            ':href' => (string) ($data['href'] ?? ''),
+            ':ex'   => (string) ($data['excerpt'] ?? ''),
+            ':ord'  => (int) ($data['sort_order'] ?? 0),
+            ':home' => !empty($data['show_on_homepage']) ? 1 : 0,
+            ':st'   => ($data['status'] ?? 'published') === 'draft' ? 'draft' : 'published',
+        ]);
+
+        return (int) $this->db->lastInsertId();
+    }
+
+    public function savePortfolioItem(int $id, array $data): void
+    {
+        if (!$this->portfolioTableExists()) {
+            throw new RuntimeException('Run php cms/scripts/migrate-010.php first.');
+        }
+        $stmt = $this->db->prepare(
+            'UPDATE portfolio_items SET title = :t, client_name = :cn, location = :loc, category = :cat,
+             image = :img, href = :href, excerpt = :ex, sort_order = :ord, show_on_homepage = :home, status = :st
+             WHERE id = :id'
+        );
+        $stmt->execute([
+            ':t'    => (string) ($data['title'] ?? ''),
+            ':cn'   => (string) ($data['client_name'] ?? ''),
+            ':loc'  => (string) ($data['location'] ?? ''),
+            ':cat'  => (string) ($data['category'] ?? ''),
+            ':img'  => (string) ($data['image'] ?? ''),
+            ':href' => (string) ($data['href'] ?? ''),
+            ':ex'   => (string) ($data['excerpt'] ?? ''),
+            ':ord'  => (int) ($data['sort_order'] ?? 0),
+            ':home' => !empty($data['show_on_homepage']) ? 1 : 0,
+            ':st'   => ($data['status'] ?? 'published') === 'draft' ? 'draft' : 'published',
+            ':id'   => $id,
+        ]);
+    }
+
+    public function deletePortfolioItem(int $id): void
+    {
+        if (!$this->portfolioTableExists()) {
+            return;
+        }
+        $stmt = $this->db->prepare('DELETE FROM portfolio_items WHERE id = :id');
+        $stmt->execute([':id' => $id]);
+    }
+
+    /** Published homepage items — at most $perCategoryLimit per category (global sort order). */
+    public function getPortfolioForHomepage(int $perCategoryLimit = 5): array
+    {
+        if (!$this->portfolioTableExists()) {
+            return [];
+        }
+        $perCategoryLimit = max(1, min(24, $perCategoryLimit));
+        $stmt = $this->db->query(
+            "SELECT * FROM portfolio_items
+             WHERE status = 'published' AND show_on_homepage = 1
+             ORDER BY sort_order ASC, id DESC"
+        );
+        $rows = $stmt->fetchAll();
+        $counts = [];
+        $result = [];
+        foreach ($rows as $row) {
+            $cat = trim((string) ($row['category'] ?? ''));
+            $n = $counts[$cat] ?? 0;
+            if ($n >= $perCategoryLimit) {
+                continue;
+            }
+            $counts[$cat] = $n + 1;
+            $result[] = $this->mapPortfolioItem($row);
+        }
+
+        return $result;
+    }
+
+    public function getAllPortfolioPublished(): array
+    {
+        if (!$this->portfolioTableExists()) {
+            return [];
+        }
+        $stmt = $this->db->query(
+            "SELECT * FROM portfolio_items WHERE status = 'published'
+             ORDER BY sort_order ASC, id DESC"
+        );
+
+        return array_map(fn ($row) => $this->mapPortfolioItem($row), $stmt->fetchAll());
+    }
+
+    private function mapPortfolioItem(array $row): array
+    {
+        return [
+            'id'          => (int) $row['id'],
+            'title'       => (string) $row['title'],
+            'clientName'  => (string) ($row['client_name'] ?? ''),
+            'location'    => (string) ($row['location'] ?? ''),
+            'category'    => (string) ($row['category'] ?? ''),
+            'image'       => (string) ($row['image'] ?? ''),
+            'href'        => (string) ($row['href'] ?? ''),
+            'excerpt'     => (string) ($row['excerpt'] ?? ''),
+            'showOnHomepage' => !empty($row['show_on_homepage']),
+        ];
+    }
+
     public function trackPageView(string $path, string $slug = ''): void
     {
         if (!$this->tableExists('page_views')) {
@@ -1346,6 +1520,9 @@ final class ContentRepository
             'blog'       => (int) $this->db->query('SELECT COUNT(*) FROM blog_posts')->fetchColumn(),
             'landings'   => (int) $this->db->query('SELECT COUNT(*) FROM service_landings')->fetchColumn(),
             'services'   => (int) $this->db->query('SELECT COUNT(*) FROM services')->fetchColumn(),
+            'portfolio'  => $this->portfolioTableExists()
+                ? (int) $this->db->query('SELECT COUNT(*) FROM portfolio_items')->fetchColumn()
+                : 0,
             'sections'   => (int) $this->db->query('SELECT COUNT(*) FROM homepage_sections')->fetchColumn(),
             'published'  => (int) $this->db->query(
                 "SELECT (
@@ -1531,6 +1708,182 @@ final class ContentRepository
             }
             $slug = $base . '-' . $n++;
         }
+    }
+
+    public function getGmbPublicPayload(): array
+    {
+        $settings = $this->getSiteSettings();
+        if ($this->gmbUseLiveEnabled($settings) && GmbPlacesClient::fromConfig() !== null) {
+            if ($this->gmbCacheExpired($settings)) {
+                try {
+                    $settings = $this->syncGmbFromGoogle($settings);
+                } catch (Throwable $e) {
+                    error_log('[GMB sync] ' . $e->getMessage());
+                }
+            }
+        }
+
+        return $this->formatGmbPublicPayload($settings);
+    }
+
+    /**
+     * @param array<string, mixed> $settings
+     * @return array<string, mixed>
+     */
+    public function syncGmbFromGoogle(array $settings = []): array
+    {
+        $client = GmbPlacesClient::fromConfig();
+        if ($client === null) {
+            throw new RuntimeException('Add google.places_api_key in cms/config.php (Places API enabled).');
+        }
+
+        if ($settings === []) {
+            $settings = $this->getSiteSettings();
+        }
+
+        $placeId = trim((string) ($settings['gmbPlaceId'] ?? ''));
+        if ($placeId === '') {
+            $query = trim((string) ($settings['gmbPlaceQuery'] ?? 'Creative Web Solutions Zirakpur Punjab'));
+            $placeId = $client->findPlaceId($query) ?? '';
+            if ($placeId === '') {
+                throw new RuntimeException('Could not find Google Place ID. Set gmbPlaceId in Settings → Google Business.');
+            }
+        }
+
+        $details = $client->getPlaceDetails($placeId);
+        $previous = $this->decodeGmbReviewsList($settings['gmbReviewsJson'] ?? '');
+        $reviews = $this->mergeGoogleReviewsIntoSettings($details['reviews'], $previous);
+
+        $count = $details['userRatingCount'];
+        $settings['gmbPlaceId'] = $details['placeId'];
+        $settings['gmbUseLive'] = '1';
+        $settings['gmbRating'] = $details['rating'] > 0 ? (string) round($details['rating'], 1) : ($settings['gmbRating'] ?? '4.9');
+        $settings['gmbReviewCount'] = $count > 0 ? (string) $count : ($settings['gmbReviewCount'] ?? '0');
+        if (!empty($details['mapsUrl'])) {
+            $settings['gmbMapsUrl'] = $details['mapsUrl'];
+        }
+        if (!empty($details['name'])) {
+            $settings['gmbPlaceName'] = $details['name'];
+        }
+        $settings['gmbReviewsJson'] = json_encode($reviews, JSON_UNESCAPED_UNICODE);
+        $settings['gmbReviewsCachedAt'] = gmdate('c');
+
+        $this->saveSiteSettings($settings);
+
+        return $settings;
+    }
+
+    private function gmbUseLiveEnabled(array $settings): bool
+    {
+        $flag = $settings['gmbUseLive'] ?? '1';
+
+        return $flag !== '0' && $flag !== 'false' && $flag !== '';
+    }
+
+    private function gmbCacheExpired(array $settings): bool
+    {
+        $cachedAt = strtotime((string) ($settings['gmbReviewsCachedAt'] ?? ''));
+        $hours = max(1, (int) ($settings['gmbCacheHours'] ?? 12));
+        if ($cachedAt <= 0) {
+            return true;
+        }
+
+        return (time() - $cachedAt) > ($hours * 3600);
+    }
+
+    /** @return list<array<string, mixed>> */
+    private function decodeGmbReviewsList(string|array|null $raw): array
+    {
+        if (is_array($raw)) {
+            return $raw;
+        }
+        if (!is_string($raw) || trim($raw) === '') {
+            return [];
+        }
+        $decoded = json_decode($raw, true);
+
+        return is_array($decoded) ? $decoded : [];
+    }
+
+    /**
+     * @param list<array{author: string, rating: int, text: string, ago: string, time: int}> $fromGoogle
+     * @param list<array<string, mixed>> $previous
+     * @return list<array<string, mixed>>
+     */
+    private function mergeGoogleReviewsIntoSettings(array $fromGoogle, array $previous): array
+    {
+        $prevById = [];
+        foreach ($previous as $p) {
+            if (!is_array($p)) {
+                continue;
+            }
+            $id = (string) ($p['id'] ?? '');
+            if ($id !== '') {
+                $prevById[$id] = $p;
+            }
+        }
+
+        $out = [];
+        foreach ($fromGoogle as $r) {
+            $id = 'google-' . substr(md5($r['author'] . '|' . ($r['time'] ?: $r['text'])), 0, 12);
+            $prev = $prevById[$id] ?? null;
+            $show = true;
+            if ($prev !== null && array_key_exists('showOnHomepage', $prev)) {
+                $show = !empty($prev['showOnHomepage']);
+            }
+            $out[] = [
+                'id'             => $id,
+                'author'         => $r['author'],
+                'text'           => $r['text'],
+                'rating'         => min(5, max(1, $r['rating'])),
+                'ago'            => $r['ago'],
+                'showOnHomepage' => $show,
+                'source'         => 'google',
+            ];
+        }
+
+        return $out;
+    }
+
+    /** @param array<string, mixed> $settings */
+    private function formatGmbPublicPayload(array $settings): array
+    {
+        $reviews = [];
+        foreach ($this->decodeGmbReviewsList($settings['gmbReviewsJson'] ?? '') as $i => $r) {
+            if (!is_array($r)) {
+                continue;
+            }
+            if (isset($r['showOnHomepage']) && !$r['showOnHomepage']) {
+                continue;
+            }
+            $author = trim((string) ($r['author'] ?? ''));
+            $text = trim((string) ($r['text'] ?? ''));
+            if ($author === '' || $text === '') {
+                continue;
+            }
+            $reviews[] = [
+                'id'     => (string) ($r['id'] ?? 'gmb-' . $i),
+                'author' => $author,
+                'text'   => $text,
+                'rating' => min(5, max(1, (int) ($r['rating'] ?? 5))),
+                'ago'    => (string) ($r['ago'] ?? ''),
+            ];
+        }
+
+        $count = (string) ($settings['gmbReviewCount'] ?? '');
+        if ($count !== '' && !str_contains($count, '+')) {
+            $count .= '+';
+        }
+
+        return [
+            'mapsUrl'     => (string) ($settings['gmbMapsUrl'] ?? ''),
+            'placeName'   => (string) ($settings['gmbPlaceName'] ?? ''),
+            'rating'      => (float) ($settings['gmbRating'] ?? 0),
+            'reviewCount' => $count,
+            'reviews'     => $reviews,
+            'cachedAt'    => (string) ($settings['gmbReviewsCachedAt'] ?? ''),
+            'live'        => $this->gmbUseLiveEnabled($settings) && GmbPlacesClient::fromConfig() !== null,
+        ];
     }
 
     private function defaultSettings(): array

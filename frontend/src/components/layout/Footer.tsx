@@ -138,27 +138,12 @@ export function Footer({ settings, footerMenu, footerServicesMenu, footerProduct
   const phone = settings.phone ?? "";
   const email = settings.email ?? "";
   const year = new Date().getFullYear();
-  const footerPages = footerMenu.length > 0 ? footerMenu : LEGAL_LINKS;
-
   return (
     <footer className="footer">
-      <div className="footer-pages-bar">
-        <div className="container footer-content">
-          <nav aria-label="Site pages">
-            <ul className="footer-pages-list">
-              {footerPages.map((item) => (
-                <li key={`${item.href}-${item.label}`}>
-                  <Link href={item.href}>{item.label}</Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-      </div>
-
-      <div className="footer-top">
-        <div className="container footer-content">
-          <div className="row g-4 g-lg-5">
+      <div className="container">
+        <div className="footer-top">
+          <div className="footer-content">
+            <div className="row g-4 g-lg-4">
             <div className="col-lg-4 col-md-6">
               <div className="footer-widget footer-widget--brand">
                 <Link href="/" className="footer-logo">
@@ -282,13 +267,13 @@ export function Footer({ settings, footerMenu, footerServicesMenu, footerProduct
                 titleCustomize="footer-products-title"
               />
             </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="footer-bottom">
-        <div className="container footer-content">
-          <p className="footer-copyright">
+        <div className="footer-bottom">
+          <div className="footer-content">
+            <p className="footer-copyright">
             &copy; {year}{" "}
             <span className="footer-tone-word footer-tone-word--blue">Creative</span>{" "}
             <span className="footer-tone-word footer-tone-word--green">Web</span>{" "}
@@ -297,13 +282,13 @@ export function Footer({ settings, footerMenu, footerServicesMenu, footerProduct
             <span className="footer-tone-word footer-tone-word--slate">All</span>{" "}
             <span className="footer-tone-word footer-tone-word--royal">Rights</span>{" "}
             <span className="footer-tone-word footer-tone-word--blue">Reserved</span>.
-          </p>
+            </p>
+          </div>
         </div>
-      </div>
 
-      <div className="footer-legal-strip">
-        <div className="container footer-content footer-legal-strip-inner">
-          <nav aria-label="Legal">
+        <div className="footer-legal-strip">
+          <div className="footer-content footer-legal-strip-inner">
+            <nav aria-label="Legal">
             <ul className="footer-bottom-links">
               {LEGAL_LINKS.map((item) => (
                 <li key={item.href}>
@@ -334,6 +319,7 @@ export function Footer({ settings, footerMenu, footerServicesMenu, footerProduct
                 )
               )}
             </div>
+          </div>
           </div>
         </div>
       </div>

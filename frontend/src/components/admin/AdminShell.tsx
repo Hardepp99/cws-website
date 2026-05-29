@@ -13,6 +13,7 @@ const NAV = [
   { href: "/admin/homepage", label: "Homepage", icon: "fa-house" },
   { href: "/admin/site-pages", label: "Pages", icon: "fa-file-lines" },
   { href: "/admin/blog", label: "Blog", icon: "fa-newspaper" },
+  { href: "/admin/portfolio", label: "Portfolio", icon: "fa-folder-open" },
   { href: "/admin/services", label: "Services", icon: "fa-briefcase" },
   { href: "/admin/landings", label: "Service Landings", icon: "fa-layer-group" },
   { href: "/admin/menus", label: "Menus", icon: "fa-bars" },

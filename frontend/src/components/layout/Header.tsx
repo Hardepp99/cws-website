@@ -90,6 +90,7 @@ export function Header({ settings, menu, currentPath = "" }: HeaderProps) {
 
     setMobileNavAnchor();
     window.addEventListener("resize", setMobileNavAnchor);
+    window.addEventListener("cws:promo-offer-dismissed", setMobileNavAnchor);
     const ro =
       typeof ResizeObserver !== "undefined"
         ? new ResizeObserver(() => setMobileNavAnchor())
@@ -113,6 +114,7 @@ export function Header({ settings, menu, currentPath = "" }: HeaderProps) {
       observer.disconnect();
       overlay.removeEventListener("click", closeFromOverlay);
       window.removeEventListener("resize", setMobileNavAnchor);
+      window.removeEventListener("cws:promo-offer-dismissed", setMobileNavAnchor);
       ro?.disconnect();
       document.documentElement.style.removeProperty("--mobile-nav-sheet-top");
       document.documentElement.style.removeProperty("--mobile-overlay-top");

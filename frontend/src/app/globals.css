@@ -5,6 +5,14 @@
 @import "./corporate.css";
 @import "./animations.css";
 @import "./home.css";
+@import "./home-apple.css";
+@import "./glass-bubbles.css";
+@import "./apple-theme.css";
+@import "./home-section-bands.css";
+@import "./cws-modal-apple.css";
+@import "./portfolio-showcase.css";
+@import "./hero-illustration.css";
+@import "./testimonials-apple.css";
 
 :root {
   --primary-color: #0057ff;

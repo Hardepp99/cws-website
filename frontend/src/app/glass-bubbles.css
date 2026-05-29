@@ -1,0 +1,121 @@
+/* Watery cursor bubbles — visible trail, does not block clicks or content */
+
+.cws-glass-bubble-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 10300;
+  pointer-events: none;
+  overflow: hidden;
+  mix-blend-mode: normal;
+}
+
+.cws-glass-bubble {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform, opacity, filter;
+  border: 1px solid color-mix(in srgb, var(--bubble-tint, rgba(120, 200, 255, 0.6)) 35%, rgba(255, 255, 255, 0.5));
+  box-shadow:
+    0 0 12px color-mix(in srgb, var(--bubble-tint, rgba(120, 200, 255, 0.5)) 28%, transparent),
+    inset 0 1px 8px rgba(255, 255, 255, 0.35);
+  background: radial-gradient(
+    circle at 32% 28%,
+    color-mix(in srgb, var(--bubble-tint, rgba(120, 200, 255, 0.65)) 55%, rgba(255, 255, 255, 0.25)) 0%,
+    color-mix(in srgb, var(--bubble-tint, rgba(120, 200, 255, 0.5)) 32%, transparent) 38%,
+    color-mix(in srgb, var(--bubble-tint, rgba(120, 200, 255, 0.35)) 12%, transparent) 62%,
+    transparent 78%
+  );
+  backdrop-filter: blur(6px) saturate(1.15);
+  -webkit-backdrop-filter: blur(6px) saturate(1.15);
+  opacity: 0;
+  filter: blur(0.2px);
+  animation: cws-glass-bubble-life var(--bubble-duration, 1.2s) ease-out forwards;
+}
+
+.cws-glass-bubble--lead {
+  animation-name: cws-glass-bubble-life-lead;
+}
+
+.cws-glass-bubble--trail {
+  border-width: 0.5px;
+  box-shadow:
+    0 0 8px color-mix(in srgb, var(--bubble-tint, rgba(120, 200, 255, 0.45)) 22%, transparent),
+    inset 0 0 6px rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation-name: cws-glass-bubble-life-trail;
+}
+
+@keyframes cws-glass-bubble-life-lead {
+  0% {
+    opacity: 0;
+    transform: scale(0.35) translateY(0);
+    filter: blur(1px);
+  }
+  18% {
+    opacity: 0.52;
+    transform: scale(1) translateY(0);
+    filter: blur(0.2px);
+  }
+  55% {
+    opacity: 0.34;
+    transform: scale(1.05) translateY(calc(var(--bubble-drift, -8px) * 0.45));
+    filter: blur(0.4px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(var(--bubble-scale-end, 1.2)) translateY(var(--bubble-drift, -8px));
+    filter: blur(2px);
+  }
+}
+
+@keyframes cws-glass-bubble-life-trail {
+  0% {
+    opacity: 0;
+    transform: scale(0.4) translateY(0);
+    filter: blur(0.8px);
+  }
+  25% {
+    opacity: 0.38;
+    transform: scale(0.95) translateY(0);
+    filter: blur(0.15px);
+  }
+  70% {
+    opacity: 0.16;
+    transform: scale(1.02) translateY(calc(var(--bubble-drift, -6px) * 0.5));
+    filter: blur(0.6px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(var(--bubble-scale-end, 1.12)) translateY(var(--bubble-drift, -6px));
+    filter: blur(1.5px);
+  }
+}
+
+/* Legacy single animation name fallback */
+@keyframes cws-glass-bubble-life {
+  0% {
+    opacity: 0;
+    transform: scale(0.35) translateY(0);
+  }
+  20% {
+    opacity: 0.45;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.1) translateY(var(--bubble-drift, -8px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cws-glass-bubble-layer {
+    display: none !important;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .cws-glass-bubble-layer {
+    display: none !important;
+  }
+}

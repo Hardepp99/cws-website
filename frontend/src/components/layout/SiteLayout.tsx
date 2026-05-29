@@ -1,5 +1,7 @@
 import { CWS_BRAND } from "@/lib/site-brand";
+import { GlassBubbleCursor } from "@/components/effects/GlassBubbleCursor";
 import { SiteFloatWidgets } from "@/components/engagement/SiteFloatWidgets";
+import { FooterAskPriceTrigger } from "@/components/engagement/FooterAskPriceTrigger";
 import { SitePromoQuote } from "@/components/engagement/SitePromoQuote";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
@@ -45,6 +47,8 @@ export async function SiteLayout({ children, currentPath = "/" }: SiteLayoutProp
         footerServicesMenu={menus.footerServices}
         footerProductsMenu={menus.footerProducts}
       />
+      <FooterAskPriceTrigger />
+      <GlassBubbleCursor />
       <SiteFloatWidgets settings={settings} />
       <SiteScripts />
     </>

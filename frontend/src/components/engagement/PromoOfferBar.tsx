@@ -2,10 +2,11 @@
 
 interface PromoOfferBarProps {
   onAskPriceClick: () => void;
+  onDismiss: () => void;
   phone?: string;
 }
 
-export function PromoOfferBar({ onAskPriceClick, phone }: PromoOfferBarProps) {
+export function PromoOfferBar({ onAskPriceClick, onDismiss, phone }: PromoOfferBarProps) {
   const tel = phone?.replace(/\s/g, "") || "+917015969967";
 
   return (
@@ -23,6 +24,14 @@ export function PromoOfferBar({ onAskPriceClick, phone }: PromoOfferBarProps) {
           <a href={`tel:${tel}`} className="promo-offer-btn promo-offer-btn--call">
             Call now
           </a>
+          <button
+            type="button"
+            className="promo-offer-close"
+            onClick={onDismiss}
+            aria-label="Dismiss offer for this visit"
+          >
+            <i className="fas fa-times" aria-hidden="true" />
+          </button>
         </div>
       </div>
     </div>

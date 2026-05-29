@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { ServicesMarqueeStrip } from "@/components/sections/ServicesMarqueeStrip";
 import { Reveal } from "@/components/ui/Reveal";
+import { filterTrustItemsNotInHeroStats } from "@/lib/homepage/dedupe-trust-items";
 import { filterPublishedItems } from "@/lib/homepage/item-status";
 import type { HomepageSection } from "@/lib/wordpress/types";
 
@@ -35,8 +37,16 @@ type Item = {
   status?: string;
 };
 
-export function TrustBadgesSection({ section }: { section: HomepageSection }) {
-  const items = filterPublishedItems((section.items as Item[]) || []);
+export function TrustBadgesSection({
+  section,
+  heroStats,
+}: {
+  section: HomepageSection;
+  heroStats?: { count?: number; label?: string; status?: string }[];
+}) {
+  const published = filterPublishedItems((section.items as Item[]) || []);
+  const heroPublished = filterPublishedItems(heroStats || []);
+  const items = filterTrustItemsNotInHeroStats(published, heroPublished);
   return (
     <section className="home-trust corp-section corp-section-alt">
       <div className="corp-container">
@@ -59,19 +69,12 @@ export function TrustBadgesSection({ section }: { section: HomepageSection }) {
   );
 }
 
+/** @deprecated Marquee lives on hero bottom — use ServicesMarqueeStrip via HeroSlider */
 export function ServicesMarqueeSection({ section }: { section: HomepageSection }) {
   const items = filterPublishedItems((section.items as Item[]) || []);
-  const doubled = [...items, ...items];
   return (
-    <section className="home-marquee" aria-label="Services">
-      <div className="home-marquee-track">
-        {doubled.map((item, i) => (
-          <Link key={`${item.title}-${i}`} href={item.href || "/services"} className="home-marquee-pill">
-            <span className="home-marquee-letter">{item.letter || item.title?.charAt(0)}</span>
-            <span>{item.title}</span>
-          </Link>
-        ))}
-      </div>
+    <section className="home-marquee corp-section" aria-label="Services">
+      <ServicesMarqueeStrip items={items} />
     </section>
   );
 }

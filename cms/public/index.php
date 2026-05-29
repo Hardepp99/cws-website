@@ -35,6 +35,9 @@ try {
     if ($method === 'GET' && $path === '/settings') {
         Http::json($repo->getSiteSettings());
     }
+    if ($method === 'GET' && $path === '/gmb') {
+        Http::json($repo->getGmbPublicPayload());
+    }
     if ($method === 'GET' && $path === '/menus') {
         Http::json($repo->getMenus());
     }
@@ -62,6 +65,24 @@ try {
     }
     if ($method === 'GET' && $path === '/blog') {
         Http::json($repo->getBlogPosts());
+    }
+    if ($method === 'GET' && $path === '/portfolio') {
+        Http::json($repo->getAllPortfolioPublished());
+    }
+    if ($method === 'GET' && $path === '/portfolio/home') {
+        $settings = $repo->getSiteSettings();
+        $maxPerCategory = max(1, min(24, (int) ($settings['portfolioHomeMax'] ?? 5)));
+        Http::json([
+            'items' => $repo->getPortfolioForHomepage($maxPerCategory),
+            'settings' => [
+                'badge' => (string) ($settings['portfolioBadge'] ?? 'Local work'),
+                'title' => (string) ($settings['portfolioTitle'] ?? 'Clients we have worked with'),
+                'subtitle' => (string) ($settings['portfolioSubtitle'] ?? ''),
+                'ctaLabel' => (string) ($settings['portfolioCtaLabel'] ?? 'View all work'),
+                'ctaHref' => (string) ($settings['portfolioCtaHref'] ?? '/portfolio'),
+                'maxPerCategory' => $maxPerCategory,
+            ],
+        ]);
     }
 
     if ($method === 'GET' && preg_match('#^/desimentor/([a-z_]+)/(\d+)$#', $path, $m)) {

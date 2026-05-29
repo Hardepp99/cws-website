@@ -104,7 +104,8 @@ export const defaultHomepageSections: HomepageSection[] = [
     title: "Technology partner for ambitious businesses",
     subtitle:
       "Creative Web Solutions combines product thinking, engineering discipline, and marketing expertise. From corporate websites to custom applications, we help teams launch faster and operate with confidence.",
-    image: "/assets/images/hero2.png",
+    image:
+      "/assets/images/about-office.jpg",
     features: [
       { title: "Expert Team", description: "15+ years of experience delivering scalable solutions" },
       { title: "Support", description: "Quick and reliable assistance whenever you need it" },

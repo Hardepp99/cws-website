@@ -6,8 +6,7 @@ import {
   findBundle,
   parsePricingSelection,
 } from "@/lib/pricing-form";
-import type { PricingOptions } from "@/lib/wordpress/types";
-import type { SiteSettings } from "@/lib/wordpress/types";
+import type { PricingOptions, SiteSettings } from "@/lib/wordpress/types";
 
 interface AskPriceModalProps {
   open: boolean;
@@ -18,6 +17,7 @@ interface AskPriceModalProps {
 
 export function AskPriceModal({ open, onClose, settings, pricingOptions }: AskPriceModalProps) {
   const titleId = useId();
+  const [visible, setVisible] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -34,10 +34,15 @@ export function AskPriceModal({ open, onClose, settings, pricingOptions }: AskPr
   }, [selection, pricingOptions.bundles]);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      setVisible(false);
+      return;
+    }
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    const frame = requestAnimationFrame(() => setVisible(true));
     return () => {
+      cancelAnimationFrame(frame);
       document.body.style.overflow = prev;
     };
   }, [open]);
@@ -48,6 +53,15 @@ export function AskPriceModal({ open, onClose, settings, pricingOptions }: AskPr
       setErrorMessage("");
     }
   }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
 
   if (!open) return null;
 
@@ -60,12 +74,7 @@ export function AskPriceModal({ open, onClose, settings, pricingOptions }: AskPr
     setStatus("loading");
     setErrorMessage("");
 
-    const serviceInterest = buildPricingInterestSummary(
-      selection,
-      pricingOptions,
-      budget,
-      timeline
-    );
+    const serviceInterest = buildPricingInterestSummary(selection, pricingOptions, budget, timeline);
     const { kind, id } = parsePricingSelection(selection);
 
     try {
@@ -110,40 +119,55 @@ export function AskPriceModal({ open, onClose, settings, pricingOptions }: AskPr
   const hasServices = pricingOptions.serviceGroups.some((g) => g.options.length > 0);
 
   return (
-    <div className="cws-modal-root" role="presentation">
+    <div
+      className={`cws-modal-root cws-modal-root--apple${visible ? " is-visible" : ""}`}
+      role="presentation"
+    >
       <button type="button" className="cws-modal-backdrop" aria-label="Close dialog" onClick={onClose} />
-      <div className="cws-modal-dialog cws-modal-dialog--pricing" role="dialog" aria-modal="true" aria-labelledby={titleId}>
+      <div
+        className="cws-modal-dialog cws-modal-dialog--pricing cws-modal--apple"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+      >
         <div className="cws-modal-header">
-          <h2 id={titleId} className="cws-modal-title">
-            Request pricing
-          </h2>
+          <div>
+            <p className="cws-modal-eyebrow">Get a quote</p>
+            <h2 id={titleId} className="cws-modal-title">
+              Request pricing
+            </h2>
+          </div>
           <button type="button" className="cws-modal-close" onClick={onClose} aria-label="Close">
             <i className="fas fa-times" aria-hidden="true" />
           </button>
         </div>
+
         {status === "success" ? (
-          <div className="cws-modal-body">
-            <p className="mb-0 text-success fw-semibold">
-              Thank you! We&apos;ll send a tailored estimate to {settings.email || "our team"} and may call you on the
-              number provided.
+          <div className="cws-modal-body cws-modal-success">
+            <div className="cws-modal-success-icon" aria-hidden="true">
+              <i className="fas fa-check" />
+            </div>
+            <p>
+              Thank you! We&apos;ll send a tailored estimate
+              {settings.email ? ` to ${settings.email}` : ""} and may call you on the number you provided.
             </p>
-            <button type="button" className="btn btn-primary-custom btn-sm mt-3" onClick={onClose}>
-              Close
+            <button type="button" className="cws-modal-btn cws-modal-btn--primary" onClick={onClose}>
+              Done
             </button>
           </div>
         ) : (
           <form className="cws-modal-body" onSubmit={handleSubmit}>
-            <p className="cws-modal-lead text-muted small mb-3">
-              Pick a ready-made package or a single service — add budget and timeline so we can quote faster.
+            <p className="cws-modal-lead">
+              Pick a package or service — add budget and timeline so we can quote faster.
             </p>
 
-            <div className="mb-2">
-              <label className="form-label small fw-semibold" htmlFor="ask-selection">
-                Package or service <span className="text-danger">*</span>
+            <div className="cws-modal-field">
+              <label className="cws-modal-label" htmlFor="ask-selection">
+                Package or service <span className="cws-modal-required">*</span>
               </label>
               <select
                 id="ask-selection"
-                className="form-select form-select-sm"
+                className="cws-modal-select"
                 required
                 value={selection}
                 onChange={(e) => setSelection(e.target.value)}
@@ -168,15 +192,15 @@ export function AskPriceModal({ open, onClose, settings, pricingOptions }: AskPr
                             </option>
                           ))}
                         </optgroup>
-                      ) : null
+                      ) : null,
                     )
                   : null}
               </select>
               {selectedBundle ? (
-                <div className="ask-price-hint mt-2">
-                  <p className="small mb-1 text-muted">{selectedBundle.summary}</p>
+                <div className="ask-price-hint">
+                  <p className="mb-1">{selectedBundle.summary}</p>
                   {selectedBundle.includes?.length ? (
-                    <ul className="small mb-0 ps-3 text-muted">
+                    <ul className="mb-0 ps-3">
                       {selectedBundle.includes.map((line) => (
                         <li key={line}>{line}</li>
                       ))}
@@ -186,18 +210,18 @@ export function AskPriceModal({ open, onClose, settings, pricingOptions }: AskPr
               ) : null}
             </div>
 
-            <div className="row g-2 mb-2">
-              <div className="col-md-6">
-                <label className="form-label small fw-semibold" htmlFor="ask-budget">
+            <div className="cws-modal-row">
+              <div className="cws-modal-field">
+                <label className="cws-modal-label" htmlFor="ask-budget">
                   Approx. budget
                 </label>
                 <select
                   id="ask-budget"
-                  className="form-select form-select-sm"
+                  className="cws-modal-select"
                   value={budget}
                   onChange={(e) => setBudget(e.target.value)}
                 >
-                  <option value="">Select range (optional)</option>
+                  <option value="">Optional</option>
                   {pricingOptions.budgetRanges.map((o) => (
                     <option key={o.value} value={o.value}>
                       {o.label}
@@ -205,17 +229,17 @@ export function AskPriceModal({ open, onClose, settings, pricingOptions }: AskPr
                   ))}
                 </select>
               </div>
-              <div className="col-md-6">
-                <label className="form-label small fw-semibold" htmlFor="ask-timeline">
-                  When do you need it?
+              <div className="cws-modal-field">
+                <label className="cws-modal-label" htmlFor="ask-timeline">
+                  Timeline
                 </label>
                 <select
                   id="ask-timeline"
-                  className="form-select form-select-sm"
+                  className="cws-modal-select"
                   value={timeline}
                   onChange={(e) => setTimeline(e.target.value)}
                 >
-                  <option value="">Select timeline (optional)</option>
+                  <option value="">Optional</option>
                   {pricingOptions.timelines.map((o) => (
                     <option key={o.value} value={o.value}>
                       {o.label}
@@ -225,42 +249,43 @@ export function AskPriceModal({ open, onClose, settings, pricingOptions }: AskPr
               </div>
             </div>
 
-            <div className="mb-2">
-              <label className="form-label small fw-semibold" htmlFor="ask-name">
-                Full name <span className="text-danger">*</span>
+            <div className="cws-modal-field">
+              <label className="cws-modal-label" htmlFor="ask-name">
+                Full name <span className="cws-modal-required">*</span>
               </label>
               <input
                 id="ask-name"
-                className="form-control form-control-sm"
+                className="cws-modal-input"
                 required
                 autoComplete="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
-            <div className="row g-2 mb-2">
-              <div className="col-md-6">
-                <label className="form-label small fw-semibold" htmlFor="ask-email">
-                  Email <span className="text-danger">*</span>
+
+            <div className="cws-modal-row">
+              <div className="cws-modal-field">
+                <label className="cws-modal-label" htmlFor="ask-email">
+                  Email <span className="cws-modal-required">*</span>
                 </label>
                 <input
                   id="ask-email"
                   type="email"
-                  className="form-control form-control-sm"
+                  className="cws-modal-input"
                   required
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
-              <div className="col-md-6">
-                <label className="form-label small fw-semibold" htmlFor="ask-phone">
-                  Phone / WhatsApp <span className="text-danger">*</span>
+              <div className="cws-modal-field">
+                <label className="cws-modal-label" htmlFor="ask-phone">
+                  Phone / WhatsApp <span className="cws-modal-required">*</span>
                 </label>
                 <input
                   id="ask-phone"
                   type="tel"
-                  className="form-control form-control-sm"
+                  className="cws-modal-input"
                   required
                   autoComplete="tel"
                   value={phone}
@@ -269,29 +294,32 @@ export function AskPriceModal({ open, onClose, settings, pricingOptions }: AskPr
                 />
               </div>
             </div>
-            <div className="mb-3">
-              <label className="form-label small fw-semibold" htmlFor="ask-msg">
+
+            <div className="cws-modal-field">
+              <label className="cws-modal-label" htmlFor="ask-msg">
                 Anything else? (optional)
               </label>
               <textarea
                 id="ask-msg"
-                className="form-control form-control-sm"
-                rows={2}
+                className="cws-modal-textarea"
+                rows={3}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder="e.g. number of pages, integrations, preferred call time"
+                placeholder="Pages, integrations, preferred call time…"
               />
             </div>
-            {status === "error" ? (
-              <p className="text-danger small mb-2" role="alert">
+
+            {status === "error" && errorMessage ? (
+              <p className="cws-modal-alert cws-modal-alert--error" role="alert">
                 {errorMessage}
               </p>
             ) : null}
-            <div className="d-flex gap-2 justify-content-end flex-wrap">
-              <button type="button" className="btn btn-outline-secondary btn-sm" onClick={onClose}>
+
+            <div className="cws-modal-actions">
+              <button type="button" className="cws-modal-btn cws-modal-btn--secondary" onClick={onClose}>
                 Cancel
               </button>
-              <button type="submit" className="btn btn-primary-custom btn-sm" disabled={status === "loading"}>
+              <button type="submit" className="cws-modal-btn cws-modal-btn--primary" disabled={status === "loading"}>
                 {status === "loading" ? "Sending…" : "Get my quote"}
               </button>
             </div>

@@ -53,6 +53,8 @@ export function emptySection(layout: string): Record<string, unknown> {
       ctaPrimary: { label: "Ask price", href: "#ask-price" },
       ctaSecondary: { label: "Our services", href: "/services" },
       slides: [{ image: { url: "/assets/images/hero1.png" } }],
+      personImage: "",
+      personImageAlt: "Team member",
       stats: [],
     };
   }

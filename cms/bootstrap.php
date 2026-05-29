@@ -11,6 +11,11 @@ if (!is_file($configFile)) {
 /** @var array<string, mixed> $CWS_CONFIG */
 $CWS_CONFIG = require $configFile;
 
+$placesKey = getenv('GOOGLE_PLACES_API_KEY');
+if ($placesKey && empty($CWS_CONFIG['google']['places_api_key'])) {
+    $CWS_CONFIG['google']['places_api_key'] = $placesKey;
+}
+
 require_once CWS_CMS_ROOT . '/src/Database.php';
 require_once CWS_CMS_ROOT . '/src/Http.php';
 require_once CWS_CMS_ROOT . '/src/AdminListQuery.php';
@@ -20,6 +25,7 @@ require_once CWS_CMS_ROOT . '/src/AdminAuth.php';
 require_once CWS_CMS_ROOT . '/src/MediaRepository.php';
 require_once CWS_CMS_ROOT . '/src/MediaService.php';
 require_once CWS_CMS_ROOT . '/src/DesimentorRepository.php';
+require_once CWS_CMS_ROOT . '/src/GmbPlacesClient.php';
 require_once CWS_CMS_ROOT . '/src/AdminApi.php';
 
 function cws_config(string $key, mixed $default = null): mixed

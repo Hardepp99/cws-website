@@ -234,6 +234,35 @@ final class AdminApi
             Http::json(['success' => true, 'id' => $id]);
         }
 
+        // Portfolio (local clients)
+        if ($method === 'GET' && $path === '/portfolio/list') {
+            Http::json($repo->listPortfolioAdmin($pageNum, $perPage, $listQ['search'], $listQ['sort'], $listQ['order']));
+        }
+
+        if ($method === 'GET' && preg_match('#^/portfolio/(\d+)$#', $path, $m)) {
+            $row = $repo->getPortfolioItemById((int) $m[1]);
+            Http::json($row ?: ['error' => 'Not found'], $row ? 200 : 404);
+        }
+
+        if ($method === 'POST' && $path === '/portfolio') {
+            $body = Http::readJsonBody();
+            if (empty($body['title']) && empty($body['client_name'])) {
+                Http::json(['error' => 'Client or project title is required'], 400);
+            }
+            $id = $repo->createPortfolioItem($body);
+            Http::json(['success' => true, 'id' => $id]);
+        }
+
+        if ($method === 'PUT' && preg_match('#^/portfolio/(\d+)$#', $path, $m)) {
+            $repo->savePortfolioItem((int) $m[1], Http::readJsonBody());
+            Http::json(['success' => true]);
+        }
+
+        if ($method === 'DELETE' && preg_match('#^/portfolio/(\d+)$#', $path, $m)) {
+            $repo->deletePortfolioItem((int) $m[1]);
+            Http::json(['success' => true]);
+        }
+
         // Services
         if ($method === 'GET' && $path === '/services/list') {
             Http::json($repo->listServicesAdmin($pageNum, $perPage, $listQ['search'], $listQ['sort'], $listQ['order']));
@@ -281,6 +310,24 @@ final class AdminApi
         if ($method === 'PUT' && $path === '/settings') {
             $repo->saveSiteSettings(Http::readJsonBody());
             Http::json(['success' => true]);
+        }
+
+        if ($method === 'POST' && $path === '/gmb/sync') {
+            try {
+                $settings = $repo->syncGmbFromGoogle();
+                Http::json([
+                    'success'  => true,
+                    'payload'  => $repo->getGmbPublicPayload(),
+                    'settings' => [
+                        'gmbPlaceId'         => $settings['gmbPlaceId'] ?? '',
+                        'gmbReviewsCachedAt' => $settings['gmbReviewsCachedAt'] ?? '',
+                        'gmbRating'          => $settings['gmbRating'] ?? '',
+                        'gmbReviewCount'     => $settings['gmbReviewCount'] ?? '',
+                    ],
+                ]);
+            } catch (Throwable $e) {
+                Http::json(['error' => $e->getMessage()], 400);
+            }
         }
 
         // Menus

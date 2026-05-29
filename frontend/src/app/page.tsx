@@ -1,6 +1,8 @@
 import { DesimentorRenderer } from "@/components/desimentor/DesimentorRenderer";
 import { SectionRenderer } from "@/components/sections/SectionRenderer";
 import { SiteLayout } from "@/components/layout/SiteLayout";
+import { CWS_MODERN_HOMEPAGE_SECTIONS } from "@/data/cws-homepage-modern-sections";
+import { resolveHomepageSections } from "@/lib/homepage/resolve-homepage-sections";
 import { getHomepage } from "@/lib/wordpress/api";
 import { normalizeDisplayMode } from "@/lib/content/display-mode";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -17,7 +19,9 @@ export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const page = await getHomepage();
-  const sections = page?.sections || [];
+  const allSections =
+    page?.sections && page.sections.length > 0 ? page.sections : CWS_MODERN_HOMEPAGE_SECTIONS;
+  const sections = resolveHomepageSections(allSections);
 
   const mode = normalizeDisplayMode(page?.displayMode);
   const hasDesimentor = Boolean(page?.desimentor?.sections?.length);
@@ -29,7 +33,7 @@ export default async function HomePage() {
       <div className="home-page">
         {showElementor ? <DesimentorRenderer document={page!.desimentor!} /> : null}
         {showSections && sections.length > 0 ? (
-          <SectionRenderer sections={sections} />
+          <SectionRenderer sections={sections} allSections={allSections} />
         ) : !showSections && !showElementor ? (
           <section className="corp-section">
             <div className="corp-container text-center py-5">

@@ -1,27 +1,46 @@
 import Link from "next/link";
 import Image from "next/image";
 import { SiteLayout } from "@/components/layout/SiteLayout";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { PageContentTitle } from "@/components/ui/PageContentTitle";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { getBlogPosts } from "@/lib/wordpress/api";
-import { buildMetadata } from "@/lib/seo/metadata";
+import { RichContent } from "@/components/ui/RichContent";
+import { getBlogPosts, getPageBySlug } from "@/lib/wordpress/api";
+import { breadcrumbJsonLd, buildMetadata } from "@/lib/seo/metadata";
 
-export const metadata = buildMetadata({
-  title: "Blog | Creative Web Solutions",
-  description: "Tech news, web development tips, and digital marketing insights.",
-}, "/blog");
+export const dynamic = "force-dynamic";
 
-export const revalidate = 60;
+export async function generateMetadata() {
+  const page = await getPageBySlug("blog");
+  if (page?.seo?.title) return buildMetadata(page.seo, "/blog");
+  return buildMetadata(
+    {
+      title: "Blog | Web, SEO & Digital Strategy | Creative Web Solutions",
+      description:
+        "Practical guides on websites, local SEO, ecommerce, and digital marketing for Indian businesses.",
+    },
+    "/blog",
+  );
+}
 
 export default async function BlogPage() {
-  const posts = await getBlogPosts();
+  const [posts, page] = await Promise.all([getBlogPosts(), getPageBySlug("blog")]);
 
   return (
     <SiteLayout currentPath="/blog">
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", url: "/" },
+          { name: "Blog", url: "/blog" },
+        ])}
+      />
       <PageHeader breadcrumb={[{ label: "Home", href: "/" }, { label: "Blog" }]} />
       <section className="corp-section corp-section-tight">
         <div className="container">
-          <PageContentTitle title="Our Blog" />
+          <PageContentTitle title={page?.title ?? "Our Blog"} />
+          {page?.content ? (
+            <RichContent html={page.content} className="seo-rich-prose mb-4" />
+          ) : null}
           <div className="row g-4">
             {posts.map((post) => (
               <div key={post.slug} className="col-lg-4 col-md-6">

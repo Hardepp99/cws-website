@@ -1,0 +1,686 @@
+/**
+ * Site-wide Apple.com typography, buttons, and content rhythm.
+ * Imported in globals.css; also copied to public/assets/css/apple-theme.css
+ * (loaded after style.css in layout.tsx). Re-copy when you edit this file.
+ */
+
+:root {
+  --apple-text: #1d1d1f;
+  --apple-text-secondary: #6e6e73;
+  --apple-text-tertiary: #86868b;
+  --apple-link: #0066cc;
+  --apple-link-hover: #0077ed;
+  --apple-bg: #f5f5f7;
+  --apple-surface: #ffffff;
+  --apple-border: rgba(0, 0, 0, 0.08);
+  --apple-btn-fill: #1d1d1f;
+  --apple-btn-fill-hover: #333336;
+  --apple-btn-blue: #0071e3;
+  --apple-btn-blue-hover: #0077ed;
+  --apple-radius-pill: 980px;
+  --apple-text-base: 1.0625rem;
+  --apple-text-small: 0.875rem;
+  --apple-text-caption: 0.75rem;
+  --apple-leading: 1.47059;
+  --apple-tracking-tight: -0.022em;
+  --apple-tracking-headline: -0.035em;
+
+  /* Align legacy tokens */
+  --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-body);
+  --font-display-tall: var(--font-body);
+}
+
+/* —— Base typography —— */
+body {
+  font-family: var(--font-body) !important;
+  font-size: var(--apple-text-base);
+  line-height: var(--apple-leading);
+  color: var(--apple-text) !important;
+  letter-spacing: -0.011em;
+}
+
+main.site-main {
+  color: var(--apple-text);
+}
+
+p,
+.section-description,
+.section-subtitle,
+.corp-section p,
+.service-card p,
+.why-card p,
+.process-card p,
+.testimonial-card p,
+.blog-card p,
+.lead,
+.text-muted {
+  font-size: var(--apple-text-base);
+  line-height: var(--apple-leading);
+  color: var(--apple-text-secondary);
+}
+
+small,
+.form-text,
+.caption {
+  font-size: var(--apple-text-small);
+  color: var(--apple-text-tertiary);
+}
+
+a:not(.btn):not(.home-hero__btn):not(.home-btn):not(.nav-link):not(.social-link):not(
+    .footer-social-link
+  ):not(.home-marquee-pill):not(.topbar-link) {
+  color: var(--apple-link);
+  text-decoration: none;
+}
+
+a:not(.btn):not(.home-hero__btn):not(.home-btn):not(.nav-link):not(.social-link):not(
+    .footer-social-link
+  ):not(.home-marquee-pill):not(.topbar-link):not(.promo-offer-btn):not(
+    .portfolio-showcase__view-all
+  ):not(.portfolio-showcase__nav):hover {
+  text-decoration: underline;
+  color: var(--apple-link-hover);
+}
+
+/* CTA buttons — never show link underline on hover */
+.home-btn,
+.home-btn:hover,
+.home-btn:focus-visible,
+.home-hero__btn,
+.home-hero__btn:hover,
+.home-hero__btn:focus-visible,
+.home-about__cta,
+.home-about__cta:hover,
+.home-about__cta:focus-visible,
+.btn,
+.btn:hover,
+.btn:focus-visible,
+.btn-cta,
+.btn-cta:hover,
+.btn-cta:focus-visible,
+.promo-offer-btn,
+.promo-offer-btn:hover,
+.promo-offer-btn:focus-visible,
+.portfolio-showcase__view-all,
+.portfolio-showcase__view-all:hover,
+.portfolio-showcase__nav,
+.portfolio-showcase__nav:hover {
+  text-decoration: none !important;
+}
+
+/* —— Headings (single SF stack, Apple weights) —— */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.section-title,
+.page-header-content h1,
+.page-header-title,
+.hero-pro-title,
+.home-page .home-section-head h2,
+.home-section-head h2,
+.corp-section-head h2 {
+  font-family: var(--font-body) !important;
+  font-weight: 600 !important;
+  color: var(--apple-text) !important;
+  letter-spacing: var(--apple-tracking-headline);
+  line-height: 1.08;
+}
+
+h1,
+.page-header-content h1,
+.page-header-title {
+  font-size: clamp(2rem, 5vw, 3.5rem) !important;
+  font-weight: 600 !important;
+}
+
+h2,
+.section-title,
+.home-page .home-section-head h2,
+.home-section-head h2 {
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem) !important;
+  font-weight: 600 !important;
+}
+
+h3,
+.service-card h3,
+.why-card h3,
+.process-card h3,
+.home-service-card h3,
+.home-portfolio-item__name {
+  font-size: 1.3125rem !important;
+  font-weight: 600 !important;
+  letter-spacing: var(--apple-tracking-tight);
+  line-height: 1.15;
+  color: var(--apple-text) !important;
+}
+
+h4,
+h5,
+h6 {
+  font-size: 1.0625rem !important;
+  font-weight: 600 !important;
+  letter-spacing: var(--apple-tracking-tight);
+  color: var(--apple-text) !important;
+}
+
+.home-page .home-section-head h2::after,
+.section-title::after,
+.services-section .section-title::after,
+.testimonials-section .section-title::after,
+.why-section-home .section-title::after {
+  display: none !important;
+}
+
+.section-subtitle,
+.home-page .home-section-head p,
+.home-section-head p,
+.corp-section-head p {
+  font-size: var(--apple-text-base) !important;
+  line-height: var(--apple-leading) !important;
+  color: var(--apple-text-secondary) !important;
+  font-weight: 400 !important;
+  max-width: 42rem;
+}
+
+/* Eyebrows / badges — Apple subtle pill */
+.section-badge,
+.home-eyebrow,
+.home-page .home-eyebrow {
+  font-family: var(--font-body) !important;
+  font-size: var(--apple-text-caption) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: none !important;
+  color: var(--apple-text-secondary) !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+  border: none !important;
+  padding: 4px 10px !important;
+  border-radius: var(--apple-radius-pill) !important;
+}
+
+.home-page .home-eyebrow .dot {
+  display: none;
+}
+
+/* —— Buttons — unified pill system —— */
+.btn,
+.btn-primary-custom,
+.btn-green-custom,
+.btn-accent-custom,
+.btn-cta,
+.btn-cta-navbar,
+.home-btn--primary,
+.home-hero__btn--primary {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.35rem;
+  font-family: var(--font-body) !important;
+  font-size: var(--apple-text-base) !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
+  line-height: 1.2 !important;
+  padding: 0.55rem 1.35rem !important;
+  border-radius: var(--apple-radius-pill) !important;
+  border: none !important;
+  background: var(--apple-btn-fill) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    color 0.2s ease !important;
+}
+
+.btn-primary-custom:hover,
+.btn-green-custom:hover,
+.btn-accent-custom:hover,
+.btn-cta:hover,
+.btn-cta-navbar:hover,
+.home-btn--primary:hover,
+.home-hero__btn--primary:hover {
+  background: var(--apple-btn-fill-hover) !important;
+  color: #fff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12) !important;
+}
+
+.btn-outline-custom,
+.btn-outline,
+.home-hero__btn--ghost,
+.home-btn:not(.home-btn--primary),
+.cta-section .btn-light,
+.home-cta-band .home-hero__btn--ghost {
+  background: transparent !important;
+  color: var(--apple-link) !important;
+  border: 1px solid var(--apple-border) !important;
+  box-shadow: none !important;
+}
+
+.btn-outline-custom:hover,
+.btn-outline:hover,
+.home-hero__btn--ghost:hover,
+.home-btn:not(.home-btn--primary):hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+  color: var(--apple-link-hover) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  transform: none;
+  box-shadow: none !important;
+}
+
+/* Small buttons */
+.btn-sm.btn-primary-custom,
+.btn-sm.btn-outline-custom,
+.btn.btn-sm {
+  font-size: var(--apple-text-small) !important;
+  padding: 0.4rem 1rem !important;
+}
+
+/* Nav CTA — compact Apple blue option */
+.header .btn-cta-navbar.btn-cta {
+  font-size: var(--apple-text-small) !important;
+  padding: 0.45rem 1rem !important;
+  background: var(--apple-btn-blue) !important;
+}
+
+.header .btn-cta-navbar.btn-cta:hover {
+  background: var(--apple-btn-blue-hover) !important;
+}
+
+/* Nav links */
+.nav-link,
+.navbar-nav .nav-link {
+  font-family: var(--font-body) !important;
+  font-size: var(--apple-text-small) !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.01em;
+  color: var(--apple-text) !important;
+}
+
+.nav-link:hover,
+.navbar-nav .nav-link:hover {
+  color: var(--apple-text) !important;
+}
+
+/* Service links */
+.service-link,
+.home-service-card .service-link,
+.home-type-link {
+  font-size: var(--apple-text-small) !important;
+  font-weight: 500 !important;
+  color: var(--apple-link) !important;
+}
+
+/* Hero headline */
+.home-hero__title,
+.hero-pro-title {
+  font-family: var(--font-body) !important;
+  font-weight: 600 !important;
+  letter-spacing: var(--apple-tracking-headline) !important;
+  color: var(--apple-text) !important;
+}
+
+.home-hero__eyebrow {
+  font-size: var(--apple-text-small) !important;
+  color: var(--apple-text-secondary) !important;
+}
+
+/* Stats / numbers */
+.hero-pro-stat-num,
+.stat-number {
+  font-family: var(--font-body) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.03em;
+}
+
+/* Breadcrumbs */
+.breadcrumb-nav,
+.breadcrumb-item {
+  font-size: var(--apple-text-small);
+  color: var(--apple-text-tertiary);
+}
+
+/* Forms — Apple-like inputs */
+.form-control,
+.form-select,
+.cms-input,
+.cms-textarea {
+  font-family: var(--font-body);
+  font-size: var(--apple-text-base);
+  border-radius: 12px;
+  border-color: var(--apple-border);
+  color: var(--apple-text);
+}
+
+.form-label,
+label {
+  font-size: var(--apple-text-small);
+  font-weight: 500;
+  color: var(--apple-text);
+  letter-spacing: -0.01em;
+}
+
+/* CTA dark band */
+.cta-section h2,
+.home-cta-band h2 {
+  font-weight: 600 !important;
+  letter-spacing: var(--apple-tracking-headline) !important;
+}
+
+/* Remove gradient text on marketing headings */
+.gradient-text {
+  background: none !important;
+  -webkit-text-fill-color: var(--apple-text) !important;
+  color: var(--apple-text) !important;
+}
+
+/* Bootstrap defaults → Apple */
+.btn-primary {
+  background: var(--apple-btn-fill) !important;
+  border-color: var(--apple-btn-fill) !important;
+  border-radius: var(--apple-radius-pill) !important;
+  font-weight: 500 !important;
+}
+
+.btn-primary:hover {
+  background: var(--apple-btn-fill-hover) !important;
+  border-color: var(--apple-btn-fill-hover) !important;
+}
+
+.btn-outline-primary {
+  color: var(--apple-link) !important;
+  border-color: var(--apple-border) !important;
+  border-radius: var(--apple-radius-pill) !important;
+}
+
+/* Footer — site max-width content, no card border */
+.site-footer,
+.footer {
+  font-family: var(--font-body);
+  background: var(--cws-footer-bg, #1d1d1f) !important;
+  color: #f5f5f7 !important;
+  border: none !important;
+}
+
+.footer-top,
+.footer-bottom,
+.footer-legal-strip {
+  background: transparent !important;
+  border: none !important;
+}
+
+.footer-desc,
+.footer-widget p,
+.footer-contact a,
+.footer-links a,
+.footer-copyright,
+.footer-bottom-links a {
+  color: rgba(255, 255, 255, 0.82) !important;
+}
+
+.footer-links a:hover,
+.footer-contact a:hover,
+.footer-bottom-links a:hover {
+  color: #7ec8ff !important;
+}
+
+.footer-title-text {
+  color: #f5f5f7 !important;
+}
+
+.footer-tone-word--white {
+  color: #ffffff !important;
+}
+
+.footer-tone-word--blue {
+  color: #5bc4ff !important;
+}
+
+.footer-tone-word--royal {
+  color: #7eb8ff !important;
+}
+
+.footer-tone-word--slate {
+  color: #a1a1a6 !important;
+}
+
+.footer-tone-word--green {
+  color: #5dd879 !important;
+}
+
+.footer-tone-word--orange {
+  color: #ffb366 !important;
+}
+
+.footer-title-icon {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.footer-link-icon--blue {
+  background: rgba(0, 113, 227, 0.2) !important;
+  color: #5bc4ff !important;
+}
+
+.footer-link-icon--royal {
+  background: rgba(88, 86, 214, 0.22) !important;
+  color: #9d9aff !important;
+}
+
+.footer-link-icon--green {
+  background: rgba(52, 199, 89, 0.2) !important;
+  color: #5dd879 !important;
+}
+
+.footer-link-icon--orange {
+  background: rgba(255, 149, 0, 0.22) !important;
+  color: #ffb366 !important;
+}
+
+.footer-link-icon--slate {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #d2d2d7 !important;
+}
+
+.footer-contact-icon--blue {
+  color: #5bc4ff !important;
+}
+
+.footer-contact-icon--green {
+  color: #5dd879 !important;
+}
+
+.footer-contact-icon--orange {
+  color: #ffb366 !important;
+}
+
+.footer-social-link {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  color: #f5f5f7 !important;
+}
+
+.footer-social-link:hover {
+  background: rgba(255, 255, 255, 0.16) !important;
+  color: #fff !important;
+}
+
+.footer-payments-label {
+  color: #a1a1a6 !important;
+}
+
+.site-footer h4,
+.site-footer h5,
+.footer h4,
+.footer h5 {
+  font-weight: 600;
+  letter-spacing: var(--apple-tracking-tight);
+  color: #f5f5f7 !important;
+}
+
+/* Homepage process — kill legacy style.css gradients / spinners */
+.home-page .home-process.process-section::before {
+  display: none !important;
+}
+
+/* Testimonials — white Apple cards, dark copy (overrides legacy style.css) */
+.home-page .testimonials-section,
+.home-page .home-testimonials {
+  background: transparent !important;
+}
+
+.home-page .testimonials-section::before,
+.home-page .testimonials-section::after {
+  display: none !important;
+  content: none !important;
+}
+
+.home-page .testimonials-section .testimonial-card,
+.home-page .home-testimonials .testimonial-card {
+  background: #fff !important;
+  color: #1d1d1f !important;
+  border-style: solid !important;
+}
+
+.home-page .testimonial-card__text,
+.home-page .testimonial-card__name,
+.home-page .testimonials-section .testimonial-card p,
+.home-page .testimonials-section .testimonial-card h4 {
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+}
+
+/* Homepage service grid — override legacy style.css gradients */
+.home-page .services-section .service-card.home-service-card {
+  background: #fff !important;
+  border: none !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04) !important;
+}
+
+.home-page .services-section .service-card.home-service-card::before,
+.home-page .services-section .service-card.home-service-card::after,
+.home-page .services-section .home-service-card .service-icon::before {
+  display: none !important;
+  animation: none !important;
+}
+
+.home-page .services-section .home-service-card .service-icon {
+  background-image: none !important;
+}
+
+.home-page .services-section .home-service-card:hover .service-icon {
+  background-image: none !important;
+}
+
+/* Homepage dark bands — light text (overrides apple-text above; also in public copy) */
+.home-page .home-section-band--dark,
+.home-page .home-section-band--dark .home-section-band__content {
+  color: #e8e8ed !important;
+}
+
+.home-page .home-section-band--dark:not([data-layout="process"]) .home-section-head h2,
+.home-page .home-section-band--dark .section-title,
+.home-page .home-section-band--dark .home-portfolio .home-section-head h2,
+.home-page .home-section-band--dark .testimonials-section .home-section-head h2,
+.home-page .home-section-band--dark .home-services .home-section-head h2,
+.home-page .home-section-band--dark .home-cta-band h2 {
+  color: #f5f5f7 !important;
+}
+
+.home-page .home-section-band--dark .home-services .home-service-card.service-card h3 {
+  color: #1d1d1f !important;
+}
+
+.home-page .home-section-band--dark :is(
+    .home-section-head p:not(.home-process__subtitle),
+    .section-subtitle,
+    .home-portfolio .home-section-head p,
+    .testimonials-section .home-section-head p,
+    .home-cta-band p
+  ) {
+  color: #a1a1a6 !important;
+}
+
+.home-page .home-section-band--dark .home-eyebrow,
+.home-page .home-section-band--dark .section-badge {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #e8eef6 !important;
+}
+
+.home-page .home-section-band[data-layout="process"] .home-process .home-process__title,
+.home-page .home-section-band[data-layout="process"] .home-process .home-section-head h2,
+.home-page .home-process .home-section-head h2.home-process__title {
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+}
+
+.home-page .home-section-band[data-layout="process"] .home-process .home-process__subtitle,
+.home-page .home-process .home-section-head p.home-process__subtitle {
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
+}
+
+.home-page .home-process .home-process__step {
+  background: #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.65) !important;
+}
+
+.home-page .home-process .home-process__step .home-process__step-title,
+.home-page .home-section-band--dark .home-process__step h3 {
+  color: #1d1d1f !important;
+}
+
+.home-page .home-process .home-process__step .home-process__step-desc,
+.home-page .home-section-band--dark .home-process__step p {
+  color: #6e6e73 !important;
+}
+
+.home-page .home-process .home-process__step[data-tone="blue"] .home-process__index {
+  color: #0071e3 !important;
+}
+
+.home-page .home-process .home-process__step[data-tone="purple"] .home-process__index {
+  color: #5856d6 !important;
+}
+
+.home-page .home-process .home-process__step[data-tone="green"] .home-process__index {
+  color: #34c759 !important;
+}
+
+.home-page .home-process .home-process__step[data-tone="orange"] .home-process__index {
+  color: #ff9500 !important;
+}
+
+/* Dark-band CTAs — white pill primary, outlined ghost (homepage) */
+.home-page .home-section-band--dark .home-btn--primary,
+.home-page .home-section-band--dark .home-hero__btn--primary,
+.home-page .home-section-band--dark .portfolio-showcase__view-all {
+  background: #fff !important;
+  color: #1d1d1f !important;
+  border: none !important;
+}
+
+.home-page .home-section-band--dark .home-hero__btn--ghost {
+  background: transparent !important;
+  color: #2997ff !important;
+  border: 1px solid rgba(255, 255, 255, 0.38) !important;
+}
+
+.home-page .home-section-band--light .home-hero__btn--ghost {
+  background: #1d1d1f !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary-custom:hover,
+  .btn-cta:hover,
+  .home-hero__btn--primary:hover {
+    transform: none !important;
+  }
+}

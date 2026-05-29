@@ -1,0 +1,417 @@
+/* Homepage alternating light / dark bands + backdrop images */
+
+.home-section-band {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.home-section-band--light {
+  background-color: #f5f5f7;
+  color: #1d1d1f;
+}
+
+.home-section-band--dark {
+  background-color: #1d1d1f;
+  color: #f5f5f7;
+}
+
+.home-section-band__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(1.02);
+}
+
+.home-section-band__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.home-section-band--light .home-section-band__scrim {
+  background: linear-gradient(
+    180deg,
+    rgba(245, 245, 247, 0.94) 0%,
+    rgba(245, 245, 247, 0.9) 50%,
+    rgba(245, 245, 247, 0.96) 100%
+  );
+}
+
+.home-section-band--dark .home-section-band__scrim {
+  background: linear-gradient(
+    180deg,
+    rgba(29, 29, 31, 0.93) 0%,
+    rgba(29, 29, 31, 0.88) 50%,
+    rgba(29, 29, 31, 0.94) 100%
+  );
+}
+
+/* How we work — optional Mac hero photo (light band uses softer overlay below) */
+.home-section-band[data-layout="process"] .home-section-band__backdrop {
+  background-position: center 42%;
+  background-size: cover;
+}
+
+.home-section-band--dark[data-layout="process"] .home-section-band__scrim {
+  opacity: 0.78 !important;
+  background: linear-gradient(
+    105deg,
+    rgba(29, 29, 31, 0.92) 0%,
+    rgba(29, 29, 31, 0.62) 28%,
+    rgba(29, 29, 31, 0.58) 72%,
+    rgba(29, 29, 31, 0.9) 100%
+  );
+}
+
+.home-section-band--light[data-layout="process"] .home-section-band__backdrop {
+  opacity: 0.45 !important;
+  background-position: center 42%;
+}
+
+.home-section-band--light[data-layout="process"] .home-section-band__scrim {
+  opacity: 0.9 !important;
+  background: linear-gradient(
+    180deg,
+    rgba(245, 245, 247, 0.94) 0%,
+    rgba(245, 245, 247, 0.88) 45%,
+    rgba(245, 245, 247, 0.96) 100%
+  );
+}
+
+.home-section-band__content {
+  position: relative;
+  z-index: 2;
+}
+
+/* Inner sections: transparent so band + backdrop show through */
+.home-page .home-section-band section.corp-section,
+.home-page .home-section-band .home-about,
+.home-page .home-section-band .process-section,
+.home-page .home-section-band .testimonials-section,
+.home-page .home-section-band .home-services,
+.home-page .home-section-band .home-portfolio,
+.home-page .home-section-band .home-cta-band,
+.home-page .home-section-band .cta-section {
+  background: transparent !important;
+  border-block-color: transparent !important;
+}
+
+/* —— Dark bands: all section copy light (cards keep their own contrast) —— */
+.home-page .home-section-band--dark {
+  color: #e8e8ed;
+}
+
+.home-page .home-section-band--dark .home-section-band__content {
+  color: #e8e8ed;
+}
+
+/* Section headings only — not process (How we work head stays dark on photo scrim) */
+.home-page .home-section-band--dark:not([data-layout="process"]) .home-section-head h2,
+.home-page .home-section-band--dark .section-title,
+.home-page .home-section-band--dark .home-portfolio .home-section-head h2,
+.home-page .home-section-band--dark .testimonials-section .home-section-head h2,
+.home-page .home-section-band--dark .home-services .home-section-head h2,
+.home-page .home-section-band--dark .home-cta-band h2,
+.home-page .home-section-band--dark .cta-section.home-cta-band h2 {
+  color: #f5f5f7 !important;
+}
+
+/* Process step cards: always dark Apple text on white surface */
+.home-page .home-section-band--dark .home-process__step .home-process__step-title,
+.home-page .home-section-band--dark .home-process__step h3 {
+  color: #1d1d1f !important;
+}
+
+.home-page .home-section-band--dark .home-process__step .home-process__step-desc,
+.home-page .home-section-band--dark .home-process__step p {
+  color: #6e6e73 !important;
+}
+
+.home-page .home-section-band--dark :is(
+    .home-section-head p:not(.home-process__subtitle),
+    .section-subtitle,
+    .section-description,
+    .home-portfolio .home-section-head p,
+    .testimonials-section .home-section-head p,
+    .home-cta-band p,
+    .cta-section p
+  ) {
+  color: #a1a1a6 !important;
+}
+
+.home-page .home-section-band--dark .home-eyebrow,
+.home-page .home-section-band--dark .section-badge {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #e8eef6 !important;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.home-page .home-section-band--dark a:not(.home-btn):not(.btn):not(.home-hero__btn):not(.home-marquee-pill):not(
+    .home-service-card a
+  ):not(.testimonial-card a):not(.home-portfolio-item) {
+  color: #7ec8ff !important;
+}
+
+.home-page .home-section-band--dark a:not(.home-btn):not(.btn):not(.home-hero__btn):not(.home-marquee-pill):not(
+    .home-service-card a
+  ):not(.testimonial-card a):not(.home-portfolio-item):hover {
+  color: #a8d8ff !important;
+}
+
+.home-page .home-section-band--dark .text-muted,
+.home-page .home-section-band--dark .small {
+  color: #a1a1a6 !important;
+}
+
+/* CTA on dark band — keep readable, no extra navy block */
+.home-section-band--dark .home-cta-band,
+.home-section-band--dark .cta-section.home-cta-band {
+  background: transparent !important;
+}
+
+.home-section-band--light .home-cta-band,
+.home-section-band--light .cta-section.home-cta-band {
+  background: transparent !important;
+  color: #1d1d1f;
+}
+
+.home-section-band--light .home-cta-band h2,
+.home-section-band--light .cta-section.home-cta-band h2 {
+  color: #1d1d1f !important;
+}
+
+.home-section-band--light .home-cta-band p {
+  color: #6e6e73 !important;
+}
+
+.home-section-band--light .home-cta-band .home-hero__btn--ghost {
+  background: #1d1d1f;
+  color: #fff;
+}
+
+.home-section-band--light .home-cta-band .home-hero__btn--ghost:hover {
+  background: #333336;
+  color: #fff;
+}
+
+/* —— White boxes on dark bands: always dark text (Mac device colors on accents) —— */
+.home-section-band--dark .home-service-card.service-card,
+.home-section-band--dark .home-process__step,
+.home-section-band--dark .testimonial-card,
+.home-section-band--dark .portfolio-apple-card {
+  background: #fff !important;
+  color: #1d1d1f !important;
+}
+
+.home-section-band--dark .home-service-card.service-card {
+  border: none !important;
+}
+
+.home-section-band--dark .home-process__step,
+.home-section-band--dark .testimonial-card,
+.home-section-band--dark .portfolio-apple-card {
+  border-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+.home-page .home-section-band--dark .home-services .home-service-card.service-card h3,
+.home-section-band--dark .home-service-card h3,
+.home-section-band--dark .home-service-card p,
+.home-section-band--dark .home-service-card .service-link,
+.home-section-band--dark .testimonial-card p,
+.home-section-band--dark .testimonial-card h4,
+.home-section-band--dark .testimonial-card strong,
+.home-section-band--dark .portfolio-apple-card__title,
+.home-section-band--dark .portfolio-apple-card__desc {
+  color: #1d1d1f !important;
+}
+
+.home-section-band--dark .home-service-card p,
+.home-section-band--dark .testimonial-card span,
+.home-section-band--dark .portfolio-apple-card__meta,
+.home-section-band--dark .portfolio-apple-card__desc {
+  color: #6e6e73 !important;
+}
+
+.home-section-band--dark .portfolio-apple-card__eyebrow {
+  color: #bf4800 !important;
+}
+
+.home-section-band--dark .testimonial-card span {
+  color: #6e6e73 !important;
+}
+
+/* Testimonial Mac accent stripes */
+.home-section-band--dark .testimonials-section .row > div:nth-child(3n + 1) .testimonial-card {
+  border-top: 3px solid #0071e3 !important;
+}
+
+.home-section-band--dark .testimonials-section .row > div:nth-child(3n + 2) .testimonial-card {
+  border-top: 3px solid #5856d6 !important;
+}
+
+.home-section-band--dark .testimonials-section .row > div:nth-child(3n) .testimonial-card {
+  border-top: 3px solid #34c759 !important;
+}
+
+.home-section-band--dark .home-portfolio-item {
+  background: #f5f5f7 !important;
+}
+
+/* Portfolio card text stays dark on light card surface */
+.home-page .home-section-band--dark .home-portfolio-item__name,
+.home-page .home-section-band--dark .home-portfolio-item__excerpt,
+.home-page .home-section-band--dark .home-portfolio-item__cat {
+  color: #1d1d1f !important;
+}
+
+.home-page .home-section-band--dark .home-portfolio-item__loc {
+  color: #0071e3 !important;
+}
+
+/* CTA on dark band */
+.home-page .home-section-band--dark .home-cta-band h2,
+.home-page .home-section-band--dark .cta-section.home-cta-band h2 {
+  color: #f5f5f7 !important;
+}
+
+.home-page .home-section-band--dark .home-cta-band p,
+.home-page .home-section-band--dark .cta-section.home-cta-band p {
+  color: #a1a1a6 !important;
+}
+
+/* —— Light bands: headings + Apple blue primary CTA —— */
+.home-page .home-section-band--light .home-section-head h2,
+.home-page .home-section-band--light .home-about__title,
+.home-page .home-section-band--light .home-cta-band h2,
+.home-page .home-section-band--light .cta-section.home-cta-band h2 {
+  color: #1d1d1f !important;
+}
+
+.home-page .home-section-band--light .home-section-head p,
+.home-page .home-section-band--light .home-about__lead,
+.home-page .home-section-band--light .home-cta-band p,
+.home-page .home-section-band--light .cta-section.home-cta-band p {
+  color: #6e6e73 !important;
+}
+
+.home-page .home-section-band--light .home-eyebrow,
+.home-page .home-section-band--light .section-badge {
+  background: rgba(0, 0, 0, 0.05) !important;
+  color: #6e6e73 !important;
+  border: none !important;
+}
+
+.home-page .home-section-band--light .home-btn--primary,
+.home-page .home-section-band--light .home-hero__btn--primary {
+  background: #0071e3 !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+.home-page .home-section-band--light .home-btn--primary:hover,
+.home-page .home-section-band--light .home-hero__btn--primary:hover {
+  background: #0077ed !important;
+  color: #fff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 113, 227, 0.28) !important;
+}
+
+.home-page .home-section-band--light .home-hero__btn--ghost,
+.home-page .home-section-band--light .home-btn:not(.home-btn--primary) {
+  background: #1d1d1f !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+.home-page .home-section-band--light .home-hero__btn--ghost:hover,
+.home-page .home-section-band--light .home-btn:not(.home-btn--primary):hover {
+  background: #333336 !important;
+  color: #fff !important;
+  transform: translateY(-1px);
+}
+
+/* —— Dark bands: light headings + high-contrast buttons —— */
+.home-page .home-section-band--dark .home-btn--primary,
+.home-page .home-section-band--dark .home-hero__btn--primary,
+.home-page .home-section-band--dark .portfolio-showcase__view-all {
+  background: #fff !important;
+  color: #1d1d1f !important;
+  border: none !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2) !important;
+}
+
+.home-page .home-section-band--dark .home-btn--primary:hover,
+.home-page .home-section-band--dark .home-hero__btn--primary:hover,
+.home-page .home-section-band--dark .portfolio-showcase__view-all:hover {
+  background: #f5f5f7 !important;
+  color: #1d1d1f !important;
+  transform: translateY(-1px);
+}
+
+.home-page .home-section-band--dark .home-hero__btn--ghost,
+.home-page .home-section-band--dark .home-btn:not(.home-btn--primary):not(.portfolio-apple-card__btn) {
+  background: transparent !important;
+  color: #2997ff !important;
+  border: 1px solid rgba(255, 255, 255, 0.38) !important;
+}
+
+.home-page .home-section-band--dark .home-hero__btn--ghost:hover,
+.home-page .home-section-band--dark .home-btn:not(.home-btn--primary):not(.portfolio-apple-card__btn):hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #7ec8ff !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Portfolio card CTA stays blue on white cards */
+.home-page .home-section-band--dark .portfolio-apple-card__btn {
+  background: transparent !important;
+  color: #0071e3 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.home-page .home-section-band--dark .portfolio-apple-card__btn:hover {
+  background: rgba(0, 113, 227, 0.08) !important;
+  color: #0077ed !important;
+}
+
+/* Inner sections must not paint over band backdrops */
+.home-page .home-section-band .testimonials-section {
+  background: transparent !important;
+}
+
+/* How we work — always dark headings (light band + Mac photo scrim) */
+.home-page .home-section-band[data-layout="process"] .home-process .home-process__title,
+.home-page .home-section-band[data-layout="process"] .home-process .home-section-head h2,
+.home-page .home-process.process-section .home-process__title,
+.home-page .home-process.process-section .home-section-head h2.home-process__title {
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+}
+
+.home-page .home-section-band[data-layout="process"] .home-process .home-process__subtitle,
+.home-page .home-section-band[data-layout="process"] .home-process .home-section-head p,
+.home-page .home-process.process-section .home-process__subtitle,
+.home-page .home-process.process-section .home-section-head p.home-process__subtitle {
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
+}
+
+.home-page .home-section-band[data-layout="process"] .home-process .home-process__eyebrow,
+.home-page .home-process.process-section .home-process__eyebrow {
+  background: rgba(0, 0, 0, 0.05) !important;
+  color: #6e6e73 !important;
+  border: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-section-band__backdrop {
+    transform: none;
+  }
+}

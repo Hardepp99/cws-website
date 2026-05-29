@@ -105,6 +105,11 @@ export async function getContentBySlug(slug: string): Promise<ResolvedContent | 
     return { type: "page", data: home };
   }
 
+  const page = await getPageBySlug(normalized);
+  if (page) {
+    return { type: "page", data: page };
+  }
+
   const landing = await getServiceLanding(normalized);
   if (landing) {
     return { type: "service_landing", data: landing };
@@ -113,11 +118,6 @@ export async function getContentBySlug(slug: string): Promise<ResolvedContent | 
   const service = await getServiceDetail(normalized);
   if (service) {
     return { type: "service", data: service };
-  }
-
-  const page = await getPageBySlug(normalized);
-  if (page) {
-    return { type: "page", data: page };
   }
 
   return null;

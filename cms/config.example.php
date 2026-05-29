@@ -18,4 +18,8 @@ return [
     'cors_origins'   => ['http://localhost:3000', 'http://127.0.0.1:3000'],
     'upload_dir'     => __DIR__ . '/uploads',
     'upload_url'     => '/cws-website/cms/uploads',
+    /** Google Cloud → Places API key (for live GMB reviews on homepage) */
+    'google'         => [
+        'places_api_key' => '', // or set env GOOGLE_PLACES_API_KEY
+    ],
 ];

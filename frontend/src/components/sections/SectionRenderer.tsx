@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { CtaLink } from "@/components/engagement/CtaLink";
 import Image from "next/image";
@@ -9,14 +10,32 @@ import {
   GuaranteesSection,
   IndustriesSection,
   PricingPackagesSection,
-  ServicesMarqueeSection,
   TechStackSection,
   TrustBadgesSection,
   WebsiteTypesSection,
 } from "@/components/sections/HomeExtendedSections";
+import { HomeAboutSection } from "@/components/sections/HomeAboutSection";
+import { HomeProcessSection } from "@/components/sections/HomeProcessSection";
+import { HomeTestimonialsSection } from "@/components/sections/HomeTestimonialsSection";
+import { ServiceGridCard, type ServiceGridItem } from "@/components/sections/ServiceGridCard";
+import { HomepageSectionShell } from "@/components/sections/HomepageSectionShell";
+import { LocalPortfolioSection } from "@/components/sections/LocalPortfolioSection";
+import {
+  isHeroLayout,
+  resolveSectionBackdrop,
+  resolveSectionBackdropStrength,
+  resolveSectionTheme,
+} from "@/lib/homepage/section-appearance";
+import { gmbConfigFromApiPayload } from "@/lib/gmb/from-api";
+import { gmbConfigFromSiteSettings } from "@/lib/gmb/resolve";
+import {
+  DEFAULT_SERVICES_GRID_SUBTITLE,
+  enrichServiceGridItems,
+} from "@/lib/homepage/service-grid-defaults";
+import { resolveHeroMarqueeItems } from "@/lib/homepage/hero-marquee";
 import { filterPublishedItems } from "@/lib/homepage/item-status";
 import type { HomepageSection } from "@/lib/wordpress/types";
-import { getBlogPosts } from "@/lib/wordpress/api";
+import { getBlogPosts, getGmbLive, getPortfolioHome, getSiteSettings } from "@/lib/wordpress/api";
 
 function cardVariant(index: number): RevealVariant {
   const variants: RevealVariant[] = ["fade-up", "zoom-in", "slide-left", "slide-right"];
@@ -25,59 +44,117 @@ function cardVariant(index: number): RevealVariant {
 
 interface SectionRendererProps {
   sections: HomepageSection[];
+  /** Full CMS list (includes services_marquee for hero strip data). */
+  allSections?: HomepageSection[];
 }
 
-export async function SectionRenderer({ sections }: SectionRendererProps) {
-  const posts = await getBlogPosts();
+export async function SectionRenderer({ sections, allSections }: SectionRendererProps) {
+  const [posts, siteSettings, portfolioHome, gmbLive] = await Promise.all([
+    getBlogPosts(),
+    getSiteSettings(),
+    getPortfolioHome(),
+    getGmbLive(),
+  ]);
+  const gmb = gmbConfigFromApiPayload(gmbLive) ?? gmbConfigFromSiteSettings(siteSettings);
+  const heroSection = sections.find((s) => s.acfFcLayout === "hero_slider");
+  const heroStats = (heroSection?.stats as { count?: number; label?: string; status?: string }[]) || [];
+  const heroMarqueeItems = resolveHeroMarqueeItems(sections, heroSection, allSections ?? sections);
+
+  let bandIndex = 0;
 
   return (
     <>
       {sections.map((section, index) => {
-        const key = `${section.acfFcLayout}-${index}`;
-        switch (section.acfFcLayout) {
+        const layout = section.acfFcLayout;
+        if (layout === "services_marquee") return null;
+
+        const key = `${layout}-${index}`;
+        let node: ReactNode = null;
+
+        switch (layout) {
           case "hero_slider":
-            return <HeroSlider key={key} section={section} />;
+            node = <HeroSlider section={section} gmb={gmb} marqueeItems={heroMarqueeItems} />;
+            break;
           case "trust_badges":
-            return <TrustBadgesSection key={key} section={section} />;
-          case "services_marquee":
-            return <ServicesMarqueeSection key={key} section={section} />;
+            node = <TrustBadgesSection section={section} heroStats={heroStats} />;
+            break;
           case "industries":
-            return <IndustriesSection key={key} section={section} />;
+            node = <IndustriesSection section={section} />;
+            break;
           case "website_types":
-            return <WebsiteTypesSection key={key} section={section} />;
+            node = <WebsiteTypesSection section={section} />;
+            break;
           case "tech_stack":
-            return <TechStackSection key={key} section={section} />;
+            node = <TechStackSection section={section} />;
+            break;
           case "pricing_packages":
-            return <PricingPackagesSection key={key} section={section} />;
+            node = <PricingPackagesSection section={section} />;
+            break;
           case "guarantees":
-            return <GuaranteesSection key={key} section={section} />;
+            node = <GuaranteesSection section={section} />;
+            break;
           case "faq":
-            return <FaqSection key={key} section={section} />;
+            node = <FaqSection section={section} />;
+            break;
           case "about":
-            return <AboutSection key={key} section={section} />;
+            node = <HomeAboutSection section={section} />;
+            break;
           case "why_codify":
-            return <WhyCodifySection key={key} section={section} />;
+            node = <WhyCodifySection section={section} />;
+            break;
           case "process":
-            return <ProcessSection key={key} section={section} />;
+            node = <HomeProcessSection section={section} />;
+            break;
           case "services_grid":
-            return <ServicesGridSection key={key} section={section} />;
+            node = <ServicesGridSection section={section} />;
+            break;
           case "courses":
-            return <CoursesSection key={key} section={section} />;
+            node = <CoursesSection section={section} />;
+            break;
           case "portfolio":
-            return <PortfolioPreviewSection key={key} section={section} />;
+            node = <LocalPortfolioSection section={section} portfolio={portfolioHome} />;
+            break;
           case "blog_preview":
-            return <BlogPreviewSection key={key} section={section} posts={posts} />;
+            node = <BlogPreviewSection section={section} posts={posts} />;
+            break;
           case "testimonials":
-            return <TestimonialsSection key={key} section={section} />;
+            node = <HomeTestimonialsSection section={section} />;
+            break;
           case "cta":
-            return <CtaSection key={key} section={section} />;
+            node = <CtaSection section={section} />;
+            break;
           case "contact_preview":
-            return <ContactPreviewSection key={key} section={section} />;
+            node = <ContactPreviewSection section={section} />;
+            break;
           case "seo_rich":
-            return <SeoRichSection key={key} section={section} />;
+            node = <SeoRichSection section={section} />;
+            break;
           default:
-            return null;
+            node = null;
         }
+
+        if (!node) return null;
+
+        if (isHeroLayout(layout)) {
+          return <div key={key}>{node}</div>;
+        }
+
+        const theme = resolveSectionTheme(section, bandIndex);
+        const backdropUrl = resolveSectionBackdrop(section);
+        const backdropStrength = resolveSectionBackdropStrength(section, theme);
+        bandIndex += 1;
+
+        return (
+          <HomepageSectionShell
+            key={key}
+            theme={theme}
+            backdropUrl={backdropUrl}
+            backdropStrength={backdropStrength}
+            layout={layout}
+          >
+            {node}
+          </HomepageSectionShell>
+        );
       })}
     </>
   );
@@ -119,76 +196,6 @@ function HomeSectionHead({
   );
 }
 
-function AboutSection({ section }: { section: HomepageSection }) {
-  const features = filterPublishedItems(
-    (section.features as { title: string; description: string; status?: string }[]) || []
-  );
-  const title = (section.title as string) || "Technology partner for ambitious businesses";
-  const titleParts = title.split(" ");
-  const highlight = titleParts.length > 3 ? titleParts.slice(-2).join(" ") : "";
-  const mainTitle = highlight ? titleParts.slice(0, -2).join(" ") : title;
-
-  return (
-    <section className="about-section about-section-home corp-section" id="about">
-      <div className="container">
-        <div className="row align-items-center g-4">
-          <div className="col-lg-6">
-            <Reveal variant="slide-left">
-            <div className="about-image">
-              <Image
-                src={(section.image as string) || "/assets/images/hero2.png"}
-                alt="Creative Web Solutions team"
-                width={600}
-                height={500}
-                className="grid-img main-img"
-              />
-              <div className="experience-badge">
-                <span className="years">15+</span>
-                <span className="text">Years experience</span>
-              </div>
-            </div>
-            </Reveal>
-          </div>
-          <div className="col-lg-6">
-            <Reveal variant="slide-right" delay={80}>
-            <div className="about-content">
-              <HomeSectionHead badge={section.badge as string} center={false} />
-              <h2 className="section-title text-start" style={{ fontSize: "1.5rem" }}>
-                {mainTitle}
-                {highlight ? (
-                  <>
-                    {" "}
-                    <span className="gradient-text">{highlight}</span>
-                  </>
-                ) : null}
-              </h2>
-              <p className="section-description">{section.subtitle}</p>
-              <div className="about-features">
-                {features.map((f) => (
-                  <div key={f.title} className="feature-item">
-                    <div className="feature-icon">
-                      <i className="fas fa-check-circle" />
-                    </div>
-                    <div className="feature-text">
-                      <h4>{f.title}</h4>
-                      <p>{f.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <Link href={(section.ctaHref as string) || "/about"} className="btn btn-primary-custom mt-3">
-                {(section.ctaLabel as string) || "About our company"}
-                <i className="fas fa-arrow-right ms-2" />
-              </Link>
-            </div>
-            </Reveal>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function WhyCodifySection({ section }: { section: HomepageSection }) {
   const cards = filterPublishedItems(
     (section.cards as { icon: string; title: string; description: string; number: string; status?: string }[]) || []
@@ -218,66 +225,34 @@ function WhyCodifySection({ section }: { section: HomepageSection }) {
   );
 }
 
-function ProcessSection({ section }: { section: HomepageSection }) {
-  const steps = filterPublishedItems(
-    (section.steps as { icon: string; title: string; description: string; status?: string }[]) || []
-  );
-  return (
-    <section className="process-section corp-section" id="process">
-      <div className="container">
-        <HomeSectionHead badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
-        <div className="row g-3">
-          {steps.map((step, i) => (
-            <div key={step.title} className="col-lg-3 col-md-6">
-              <Reveal variant="fade-up" delay={i * 60}>
-              <div className="process-card">
-                <div className="process-number">{String(i + 1).padStart(2, "0")}</div>
-                <div className="process-icon">
-                  <i className={step.icon} />
-                </div>
-                <h3>{step.title}</h3>
-                <p>{step.description}</p>
-              </div>
-              </Reveal>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function ServicesGridSection({ section }: { section: HomepageSection }) {
-  const services = filterPublishedItems(
-    (section.items as { title: string; desc: string; href: string; icon: string; status?: string }[]) || []
+  const services = enrichServiceGridItems(
+    filterPublishedItems((section.items as ServiceGridItem[]) || []),
   );
   if (!services.length) return null;
 
+  const rawSubtitle = (section.subtitle as string)?.trim();
+  const subtitle =
+    rawSubtitle && rawSubtitle !== "Design, engineering, and growth — one team, clear delivery."
+      ? rawSubtitle
+      : DEFAULT_SERVICES_GRID_SUBTITLE;
+
   return (
     <section className="services-section home-services corp-section" id="services">
-      <div className="container">
-        <HomeSectionHead badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
-        <div className="row g-3">
+      <div className="corp-container">
+        <HomeSectionHead badge={section.badge as string} title={section.title as string} subtitle={subtitle} />
+        <div className="row g-3 home-services__grid">
           {services.map((s, i) => (
-            <div key={s.href} className="col-lg-4 col-md-6">
+            <div key={`${s.href}-${s.title}-${i}`} className="col-lg-4 col-md-6">
               <Reveal variant={i % 2 === 0 ? "slide-left" : "slide-right"} delay={i * 50}>
-              <div className="service-card home-service-card">
-                <div className="service-icon">
-                  <i className={s.icon} />
-                </div>
-                <h3>{s.title}</h3>
-                <p>{s.desc}</p>
-                <Link href={s.href} className="service-link">
-                  Learn more <i className="fas fa-arrow-right ms-1" />
-                </Link>
-              </div>
+                <ServiceGridCard item={s} />
               </Reveal>
             </div>
           ))}
         </div>
         <Reveal variant="zoom-in" delay={200}>
         <div className="text-center mt-4">
-          <Link href="/services" className="btn btn-primary-custom btn-sm">
+          <Link href="/services" className="home-btn home-btn--primary">
             All services
           </Link>
         </div>
@@ -315,38 +290,6 @@ function CoursesSection({ section }: { section: HomepageSection }) {
         <div className="text-center mt-4">
           <Link href="/courses" className="btn btn-outline-custom btn-sm">
             Course details
-          </Link>
-        </div>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
-function PortfolioPreviewSection({ section }: { section: HomepageSection }) {
-  const items = filterPublishedItems(
-    (section.portfolioItems as { title: string; image: string; href?: string; status?: string }[]) || []
-  );
-  if (!items.length) return null;
-
-  return (
-    <section className="portfolio-section corp-section corp-section-alt" id="portfolio">
-      <div className="container">
-        <HomeSectionHead badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
-        <div className="home-portfolio-grid mb-4">
-          {items.map((item, i) => (
-            <Reveal key={item.title} variant={cardVariant(i)} delay={i * 100}>
-            <Link href={item.href || "/portfolio"} className="home-portfolio-item text-decoration-none">
-              <Image src={item.image} alt={item.title} width={400} height={300} />
-              <span>{item.title}</span>
-            </Link>
-            </Reveal>
-          ))}
-        </div>
-        <Reveal variant="fade-up">
-        <div className="text-center">
-          <Link href="/portfolio" className="btn btn-primary-custom btn-sm">
-            View portfolio
           </Link>
         </div>
         </Reveal>
@@ -399,38 +342,10 @@ function BlogPreviewSection({
   );
 }
 
-function TestimonialsSection({ section }: { section: HomepageSection }) {
-  const items = filterPublishedItems(
-    (section.testimonials as { name: string; text: string; role: string; status?: string }[]) || []
-  );
-  if (!items.length) return null;
-
-  return (
-    <section className="testimonials-section corp-section" id="testimonials">
-      <div className="container">
-        <HomeSectionHead badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
-        <div className="row g-3">
-          {items.map((t, i) => (
-            <div key={t.name} className="col-lg-4 col-md-6">
-              <Reveal variant="zoom-in" delay={i * 100}>
-              <div className="testimonial-card">
-                <p>&ldquo;{t.text}&rdquo;</p>
-                <h4>{t.name}</h4>
-                <span>{t.role}</span>
-              </div>
-              </Reveal>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function CtaSection({ section }: { section: HomepageSection }) {
   return (
-    <section className="cta-section">
-      <div className="container text-center">
+    <section className="cta-section home-cta-band">
+      <div className="corp-container text-center">
         <Reveal variant="fade-up">
           <h2>{section.title}</h2>
         </Reveal>
@@ -438,7 +353,7 @@ function CtaSection({ section }: { section: HomepageSection }) {
           <p>{section.subtitle}</p>
         </Reveal>
         <Reveal variant="zoom-in" delay={240}>
-          <CtaLink href={(section.ctaHref as string) || "/contact"} className="btn btn-light btn-sm px-4">
+          <CtaLink href={(section.ctaHref as string) || "/contact"} className="home-hero__btn home-hero__btn--ghost">
             {(section.ctaLabel as string) || "Contact us"}
           </CtaLink>
         </Reveal>

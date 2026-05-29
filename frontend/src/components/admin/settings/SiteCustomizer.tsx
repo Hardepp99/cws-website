@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { GmbSettingsEditor } from "@/components/admin/settings/GmbSettingsEditor";
 import { SiteCustomizerControl } from "@/components/admin/settings/SiteCustomizerControl";
 import { adminFetch } from "@/lib/admin/client";
 import {
-  ALL_SETTINGS_FIELDS,
+  GMB_REVIEWS_JSON_KEY,
   SITE_SETTINGS_SECTIONS,
   emptySettingsFromFields,
 } from "@/lib/admin/site-settings-sections";
@@ -42,8 +43,12 @@ export function SiteCustomizer() {
     adminFetch<Settings>("/settings")
       .then((d) => {
         const flat = emptySettingsFromFields();
-        for (const f of ALL_SETTINGS_FIELDS) {
-          flat[f.key] = String((d as Settings)[f.key] ?? "");
+        for (const key of Object.keys(flat)) {
+          const fromApi = (d as Settings)[key];
+          flat[key] = fromApi != null && fromApi !== "" ? String(fromApi) : flat[key];
+        }
+        for (const [key, val] of Object.entries(d)) {
+          if (typeof val === "string" && !(key in flat)) flat[key] = val;
         }
         setData(flat);
         setSaved(flat);
@@ -165,6 +170,18 @@ export function SiteCustomizer() {
                       onChange={(v) => updateField(field.key, v)}
                     />
                   ))}
+                  {section.id === "gmb" ? (
+                    <GmbSettingsEditor
+                      mapsUrl={data.gmbMapsUrl ?? ""}
+                      cachedAt={data.gmbReviewsCachedAt ?? ""}
+                      useLive={data.gmbUseLive ?? "1"}
+                      reviewsJson={data[GMB_REVIEWS_JSON_KEY] ?? ""}
+                      onReviewsJsonChange={(json) => updateField(GMB_REVIEWS_JSON_KEY, json)}
+                      onSettingsPatch={(patch) => {
+                        setData((prev) => ({ ...prev, ...patch }));
+                      }}
+                    />
+                  ) : null}
                 </div>
               </>
             ) : null}

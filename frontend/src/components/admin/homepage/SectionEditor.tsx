@@ -1,5 +1,6 @@
 "use client";
 
+import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { WysiwygField } from "@/components/admin/WysiwygField";
 import { isGridLayout } from "./layouts";
 
@@ -218,6 +219,24 @@ export function SectionEditor({
             + Add slide
           </button>
         </div>
+        <p className="cms-field-hint">
+          Google reviews and Maps link are managed in{" "}
+          <a href="/admin/settings" target="_blank" rel="noopener noreferrer">
+            Admin → Settings → Google Business
+          </a>
+          . Choose which reviews appear on the homepage there.
+        </p>
+        <MediaPickerField
+          label="Person image (right of slider)"
+          value={String(section.personImage ?? "")}
+          onChange={(v) => set("personImage", v)}
+          mediaFilter="image"
+        />
+        <Field
+          label="Person image alt text"
+          value={String(section.personImageAlt ?? "")}
+          onChange={(v) => set("personImageAlt", v)}
+        />
         <div className="cms-repeater">
           <label className="cms-label">Stats</label>
           {stats.map((st, i) => (
@@ -355,37 +374,24 @@ export function SectionEditor({
   }
 
   if (layout === "portfolio") {
-    const items = (section.portfolioItems as SectionRecord[]) || [];
     return (
       <div className="cms-section-fields">
+        <p className="cms-field-hint">
+          Client projects are managed in{" "}
+          <a href="/admin/portfolio" target="_blank" rel="noopener noreferrer">
+            Admin → Portfolio
+          </a>
+          . Section limits &amp; defaults:{" "}
+          <a href="/admin/settings" target="_blank" rel="noopener noreferrer">
+            Settings → Portfolio section
+          </a>
+          .
+        </p>
         <Field label="Badge" value={String(section.badge ?? "")} onChange={(v) => set("badge", v)} />
         <Field label="Title" value={String(section.title ?? "")} onChange={(v) => set("title", v)} />
         <Field label="Subtitle" value={String(section.subtitle ?? "")} onChange={(v) => set("subtitle", v)} type="textarea" />
-        <div className="cms-repeater">
-          <label className="cms-label">Portfolio items</label>
-          {items.map((p, i) => (
-            <div key={i} className="cms-repeater-row">
-              <Field label="Title" value={String(p.title ?? "")} onChange={(v) => {
-                const next = [...items];
-                next[i] = { ...p, title: v };
-                set("portfolioItems", next);
-              }} />
-              <Field label="Image URL" value={String(p.image ?? "")} onChange={(v) => {
-                const next = [...items];
-                next[i] = { ...p, image: v };
-                set("portfolioItems", next);
-              }} />
-              <Field label="Link" value={String(p.href ?? "")} onChange={(v) => {
-                const next = [...items];
-                next[i] = { ...p, href: v };
-                set("portfolioItems", next);
-              }} />
-            </div>
-          ))}
-          <button type="button" className="cms-btn cms-btn-ghost" onClick={() => set("portfolioItems", [...items, { title: "", image: "", href: "/portfolio" }])}>
-            + Add item
-          </button>
-        </div>
+        <Field label="Button label" value={String(section.ctaLabel ?? "")} onChange={(v) => set("ctaLabel", v)} />
+        <Field label="Button link" value={String(section.ctaHref ?? "")} onChange={(v) => set("ctaHref", v)} />
       </div>
     );
   }

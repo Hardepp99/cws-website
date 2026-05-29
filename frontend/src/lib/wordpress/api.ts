@@ -41,3 +41,12 @@ export async function getBlogPosts() {
 export async function getBlogPost(slug: string) {
   return cmsApiEnabled() ? cms.getBlogPost(slug) : wp.getBlogPost(slug);
 }
+export async function getPortfolioHome() {
+  return cms.getPortfolioHome();
+}
+export async function getPortfolioAll() {
+  return cms.getPortfolioAll();
+}
+export async function getGmbLive() {
+  return cms.getGmbLive();
+}

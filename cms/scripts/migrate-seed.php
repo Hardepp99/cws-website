@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 $root = dirname(__DIR__, 2);
 require_once dirname(__DIR__) . '/bootstrap.php';
+require_once __DIR__ . '/service-grid-page-content.php';
 
 $schemaFile = dirname(__DIR__) . '/database/schema.sql';
 $sql = file_get_contents($schemaFile);
@@ -125,7 +126,10 @@ $ins->execute([
 ]);
 $homeId = (int) $db->lastInsertId();
 
-$sections = read_json_file($seedDir . '/homepage-sections.json');
+$sections = read_json_file($seedDir . '/homepage-sections-modern.json');
+if (!is_array($sections)) {
+    $sections = read_json_file($seedDir . '/homepage-sections.json');
+}
 if (is_array($sections)) {
     $repo->saveHomepageSections($homeId, $sections);
     echo 'Homepage sections: ' . count($sections) . "\n";
@@ -146,6 +150,28 @@ foreach ($pageTitles as $slug => $title) {
         ':status' => 'published',
     ]);
     echo "Page: $slug\n";
+}
+
+// Homepage services grid → full site pages (classic + Elementor in admin)
+$gridLandings = read_json_file($root . '/frontend/src/data/service-landings.json') ?? [];
+$gridSeoBodies = read_json_file($seedDir . '/landing-seo-bodies.json') ?? [];
+foreach (cws_service_grid_slugs() as $gridSlug) {
+    if (!isset($gridLandings[$gridSlug]) || !is_array($gridLandings[$gridSlug])) {
+        continue;
+    }
+    $row = cws_service_grid_page_row($gridSlug, $gridLandings[$gridSlug], $gridSeoBodies[$gridSlug] ?? []);
+    $ins->execute([
+        ':slug'   => $row['slug'],
+        ':title'  => $row['title'],
+        ':content'=> $row['content_html'],
+        ':tpl'    => $row['template'],
+        ':st'     => $row['seo_title'],
+        ':sd'     => $row['seo_description'],
+        ':sk'     => $row['seo_keywords'],
+        ':home'   => 0,
+        ':status' => $row['status'],
+    ]);
+    echo "Service grid page: {$row['slug']}\n";
 }
 
 // Service landings
@@ -227,6 +253,35 @@ foreach ($posts as $post) {
     ]);
 }
 echo 'Blog posts: ' . count($posts) . "\n";
+
+// Portfolio table (migration 010) + items
+$migration010 = dirname(__DIR__) . '/database/migrations/010_portfolio_items.sql';
+if (is_file($migration010)) {
+    $m10 = file_get_contents($migration010);
+    foreach (array_filter(array_map('trim', explode(';', $m10))) as $stmt) {
+        if ($stmt !== '') {
+            try {
+                $db->exec($stmt);
+            } catch (PDOException $e) {
+                if (!str_contains($e->getMessage(), 'already exists')) {
+                    echo 'Portfolio migration warn: ' . $e->getMessage() . "\n";
+                }
+            }
+        }
+    }
+}
+$portfolioRows = read_json_file($seedDir . '/portfolio-items.json');
+if (is_array($portfolioRows) && $repo->portfolioTableExists()) {
+    $db->exec('DELETE FROM portfolio_items');
+    foreach ($portfolioRows as $row) {
+        if (is_array($row)) {
+            $repo->createPortfolioItem($row);
+        }
+    }
+    echo 'Portfolio items: ' . count($portfolioRows) . "\n";
+} else {
+    echo "Portfolio: skipped (table missing or no seed JSON)\n";
+}
 
 echo "\n=== CWS CMS migration complete ===\n";
 echo "API: " . cws_config('cms_public_url') . "/api/v1/homepage\n";

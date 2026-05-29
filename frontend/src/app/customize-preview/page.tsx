@@ -1,13 +1,14 @@
 import { SectionRenderer } from "@/components/sections/SectionRenderer";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { CustomizePreviewListener } from "@/components/customize/CustomizePreviewListener";
+import { resolveHomepageSections } from "@/lib/homepage/resolve-homepage-sections";
 import { getHomepage } from "@/lib/wordpress/api";
 
 export const dynamic = "force-dynamic";
 
 export default async function CustomizePreviewPage() {
   const page = await getHomepage();
-  const sections = page?.sections ?? [];
+  const sections = resolveHomepageSections(page?.sections ?? []);
 
   return (
     <>

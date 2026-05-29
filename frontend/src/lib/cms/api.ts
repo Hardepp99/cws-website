@@ -1,6 +1,13 @@
 import { cmsApiEnabled, cmsFetch } from "./client";
 import { decodeHtmlEntities } from "@/lib/text";
 import { emptySiteMenus, emptySiteSettings, normalizeSiteSettings } from "@/lib/wordpress/fallback";
+import type { GmbApiPayload } from "@/lib/gmb/from-api";
+import {
+  capPortfolioHomeItemsByCategory,
+  DEFAULT_PORTFOLIO_HOME_PER_CATEGORY,
+  parsePortfolioHomeMax,
+} from "@/lib/portfolio/home-limit";
+import type { PortfolioHomePayload, PortfolioItem } from "@/lib/wordpress/portfolio-types";
 import type {
   BlogPost,
   MenuItem,
@@ -82,14 +89,14 @@ export async function getContentBySlug(slug: string): Promise<ResolvedContent | 
     return { type: "page", data: home };
   }
 
+  const page = await getPageBySlug(normalized);
+  if (page) return { type: "page", data: page };
+
   const landing = await getServiceLanding(normalized);
   if (landing) return { type: "service_landing", data: landing };
 
   const service = await getServiceDetail(normalized);
   if (service) return { type: "service", data: service };
-
-  const page = await getPageBySlug(normalized);
-  if (page) return { type: "page", data: page };
 
   return null;
 }
@@ -106,6 +113,54 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
 export async function getBlogPost(slug: string): Promise<BlogPost | null> {
   const posts = await getBlogPosts();
   return posts.find((p) => p.slug === slug) ?? null;
+}
+
+export async function getGmbLive(): Promise<GmbApiPayload | null> {
+  return cmsFetch<GmbApiPayload>("/api/v1/gmb");
+}
+
+export async function getPortfolioHome(): Promise<PortfolioHomePayload> {
+  const settings = await getSiteSettings();
+  const maxPerCategory = parsePortfolioHomeMax(settings.portfolioHomeMax);
+  const portfolioSettings = {
+    badge: settings.portfolioBadge ?? "Local work",
+    title: settings.portfolioTitle ?? "Explore the line-up.",
+    subtitle: settings.portfolioSubtitle ?? "Websites, stores, and campaigns for businesses across the Tricity.",
+    ctaLabel: settings.portfolioCtaLabel ?? "View all work",
+    ctaHref: settings.portfolioCtaHref ?? "/portfolio",
+    maxPerCategory,
+  };
+
+  try {
+    const data = await cmsFetch<PortfolioHomePayload>("/api/v1/portfolio/home");
+    if (data?.items?.length) {
+      return {
+        items: capPortfolioHomeItemsByCategory(data.items, maxPerCategory),
+        settings: { ...portfolioSettings, ...data.settings, maxPerCategory },
+      };
+    }
+  } catch {
+    /* CMS offline */
+  }
+
+  const { PORTFOLIO_FALLBACK_ITEMS } = await import("@/data/portfolio-fallback");
+  const homeItems = PORTFOLIO_FALLBACK_ITEMS.filter((i) => i.showOnHomepage !== false);
+
+  return {
+    items: capPortfolioHomeItemsByCategory(homeItems, maxPerCategory),
+    settings: portfolioSettings,
+  };
+}
+
+export async function getPortfolioAll(): Promise<PortfolioItem[]> {
+  const { PORTFOLIO_FALLBACK_ITEMS } = await import("@/data/portfolio-fallback");
+  try {
+    const items = await cmsFetch<PortfolioItem[]>("/api/v1/portfolio");
+    if (items?.length) return items;
+  } catch {
+    /* CMS offline */
+  }
+  return PORTFOLIO_FALLBACK_ITEMS;
 }
 
 export function isCmsActive(): boolean {

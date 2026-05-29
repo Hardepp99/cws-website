@@ -32,6 +32,17 @@ export function getSectionRepeaters(layout: string): SectionRepeaterDef[] {
     tone: "blue",
   });
 
+  const serviceGridItem = (): SectionRecord => ({
+    ...draft(),
+    title: "",
+    desc: "",
+    href: "",
+    image: "",
+    imageUrl: "",
+    icon: "fas fa-check",
+    tone: "blue",
+  });
+
   const gridFields: RepeaterFieldDef[] = [
     { key: "title", label: "Title" },
     { key: "desc", label: "Description", type: "textarea" },
@@ -40,9 +51,29 @@ export function getSectionRepeaters(layout: string): SectionRepeaterDef[] {
     { key: "tone", label: "Tone (green, blue, orange, royal)" },
   ];
 
+  const serviceGridFields: RepeaterFieldDef[] = [
+    { key: "image", label: "Card image (top)", type: "media", mediaFilter: "image" },
+    { key: "title", label: "Title" },
+    { key: "desc", label: "Description", type: "textarea" },
+    { key: "href", label: "Link" },
+    { key: "icon", label: "Fallback icon (if no image)", hint: "Font Awesome class" },
+    { key: "tone", label: "Accent (blue, green, pink, orange, grey)" },
+  ];
+
+  if (layout === "services_grid") {
+    return [
+      {
+        key: "items",
+        label: "Services",
+        singular: "Service",
+        fields: serviceGridFields,
+        emptyItem: serviceGridItem,
+      },
+    ];
+  }
+
   if (
     layout === "trust_badges" ||
-    layout === "services_grid" ||
     layout === "industries" ||
     layout === "website_types" ||
     layout === "tech_stack" ||
@@ -67,6 +98,17 @@ export function getSectionRepeaters(layout: string): SectionRepeaterDef[] {
 
   if (layout === "hero_slider") {
     return [
+      {
+        key: "marqueeItems",
+        label: "Bottom marquee (service pills)",
+        singular: "Marquee item",
+        fields: [
+          { key: "title", label: "Title" },
+          { key: "href", label: "Link" },
+          { key: "letter", label: "Letter badge" },
+        ],
+        emptyItem: () => ({ ...draft(), title: "", href: "/services", letter: "" }),
+      },
       {
         key: "headlineParts",
         label: "Headline words",
@@ -235,7 +277,7 @@ export function writeRepeaterFieldValue(
     return { ...item, image: { url: value }, imageUrl: value };
   }
   if (field.key === "image" && field.type === "media") {
-    return { ...item, image: value };
+    return { ...item, image: value, imageUrl: value };
   }
   if (field.key === "desc") {
     return { ...item, desc: value, description: value };

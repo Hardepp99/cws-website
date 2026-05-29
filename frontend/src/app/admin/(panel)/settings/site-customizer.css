@@ -1,3 +1,89 @@
+/* GMB reviews editor (Site Settings → Google Business) */
+.gmb-settings-editor {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #dcdcde;
+}
+
+.gmb-settings-editor__toolbar {
+  margin-bottom: 1rem;
+}
+
+.gmb-settings-editor__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.gmb-settings-editor__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: min(52vh, 480px);
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.gmb-settings-editor__card {
+  background: #fff;
+  border: 1px solid #dcdcde;
+  border-radius: 4px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gmb-settings-editor__card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-bottom: 4px;
+}
+
+.gmb-settings-editor__show {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 12px;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.gmb-settings-editor__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.gmb-settings-editor__card--readonly .gmb-settings-editor__text {
+  margin: 0.35rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: #424245;
+}
+
+.gmb-settings-editor__rating {
+  font-size: 0.75rem;
+  color: #c89200;
+  margin-left: 0.35rem;
+}
+
+.gmb-settings-editor__ago {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.6875rem;
+  color: #86868b;
+}
+
+@media (max-width: 480px) {
+  .gmb-settings-editor__row {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* WordPress Customizer–style site settings UI */
 
 .site-customizer {
