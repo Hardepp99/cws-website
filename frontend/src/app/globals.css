@@ -22,6 +22,13 @@
   --secondary-color: #0088ff;
   --accent-color: #00a86b;
   --highlight-color: #ff7a00;
+  --cws-h1: 1.375rem;
+  --cws-h2: 1.1875rem;
+  --cws-h3: 1.0625rem;
+  --cws-h4: 1rem;
+  --cws-h5: 0.9375rem;
+  --cws-h6: 0.875rem;
+  --cws-blog-title: 1.3125rem;
 }
 
 html {
@@ -61,4 +68,169 @@ body {
     flex-direction: row;
     align-items: center;
   }
+}
+
+/* Member & community — CWS buttons (apple .btn uses ink fill + can clash with Bootstrap) */
+.site-main .btn.btn-primary,
+.site-main a.btn.btn-primary,
+.site-main button.btn.btn-primary {
+  background: linear-gradient(135deg, #0057ff 0%, #0088ff 100%) !important;
+  border: none !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(0, 87, 255, 0.22) !important;
+}
+
+.site-main .btn.btn-primary:hover,
+.site-main .btn.btn-primary:focus-visible,
+.site-main a.btn.btn-primary:hover,
+.site-main a.btn.btn-primary:focus-visible,
+.site-main button.btn.btn-primary:hover,
+.site-main button.btn.btn-primary:focus-visible {
+  background: #0057ff !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.site-main .btn.btn-outline-primary,
+.site-main a.btn.btn-outline-primary,
+.site-main button.btn.btn-outline-primary {
+  background: transparent !important;
+  border: 2px solid var(--cws-royal, #0057ff) !important;
+  color: var(--cws-royal, #0057ff) !important;
+  box-shadow: none !important;
+}
+
+.site-main .btn.btn-outline-primary:hover,
+.site-main .btn.btn-outline-primary:focus-visible,
+.site-main a.btn.btn-outline-primary:hover,
+.site-main a.btn.btn-outline-primary:focus-visible,
+.site-main button.btn.btn-outline-primary:hover,
+.site-main button.btn.btn-outline-primary:focus-visible {
+  background: var(--cws-royal, #0057ff) !important;
+  border-color: var(--cws-royal, #0057ff) !important;
+  color: #ffffff !important;
+}
+
+.site-main .account-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Heading scale (after Tailwind — wins cascade) */
+.site-main h1:not(.home-hero__title):not(.hero-pro-title),
+.site-main .content-article__title,
+.site-main .blog-archive-page__title,
+.site-main .page-content-title__heading,
+.site-main .community-page__title,
+.blog-layout h1,
+.inner-page-elementor h1,
+.inner-page-elementor h1.dsmt-heading,
+.inner-page-elementor .dsmt-heading.h1 {
+  font-family: var(--font-body) !important;
+  font-size: var(--cws-blog-title) !important;
+  font-weight: 600 !important;
+  line-height: 1.3 !important;
+  letter-spacing: -0.02em !important;
+  color: #0a1e5e !important;
+  text-transform: none !important;
+  text-shadow: none !important;
+  animation: none !important;
+  margin-top: 0;
+}
+
+.site-main h2:not(.home-hero__title):not(.dsmt-slider-title),
+.site-main .section-title,
+.inner-page-elementor h2,
+.inner-page-elementor h2.dsmt-heading,
+.inner-page-elementor .dsmt-heading.h2,
+.blog-layout h2,
+.blog-archive__card-body h2,
+.blog-archive__item h2,
+.seo-rich-prose h2,
+.content-article__body .seo-rich-prose--article h2 {
+  font-family: var(--font-body) !important;
+  font-size: var(--cws-h2) !important;
+  font-weight: 600 !important;
+  line-height: 1.35 !important;
+  letter-spacing: -0.015em !important;
+  color: #0a1e5e !important;
+  text-transform: none !important;
+  text-shadow: none !important;
+}
+
+.site-main h3,
+.blog-layout h3,
+.inner-page-elementor h3,
+.inner-page-elementor .dsmt-heading.h3,
+.seo-rich-prose h3,
+.content-article__body .seo-rich-prose--article h3 {
+  font-family: var(--font-body) !important;
+  font-size: var(--cws-h3) !important;
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+  color: #1d2327 !important;
+}
+
+.site-main h4,
+.blog-layout h4,
+.inner-page-elementor h4,
+.seo-rich-prose h4,
+.content-article__body .seo-rich-prose--article h4 {
+  font-family: var(--font-body) !important;
+  font-size: var(--cws-h4) !important;
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+  color: #334155 !important;
+}
+
+.site-main h5,
+.blog-layout h5,
+.seo-rich-prose h5 {
+  font-family: var(--font-body) !important;
+  font-size: var(--cws-h5) !important;
+  font-weight: 600 !important;
+  line-height: 1.45 !important;
+  color: #334155 !important;
+}
+
+.site-main h6,
+.blog-layout h6,
+.seo-rich-prose h6 {
+  font-family: var(--font-body) !important;
+  font-size: var(--cws-h6) !important;
+  font-weight: 600 !important;
+  line-height: 1.45 !important;
+  color: #475569 !important;
+}
+
+.seo-rich-prose h1,
+.content-article__body .seo-rich-prose--article h1,
+.content-article__body .seo-rich-prose h1 {
+  font-size: var(--cws-h2) !important;
+  margin: 1.5rem 0 0.65rem !important;
+}
+
+.blog-archive__card-body h2 {
+  font-size: 1.0625rem !important;
+  line-height: 1.35 !important;
+  margin: 0.35rem 0 0.5rem !important;
+}
+
+.blog-sidebar__title {
+  font-size: 0.8125rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.blog-comments__title,
+.page-faq .section-title {
+  font-size: var(--cws-h2) !important;
+}
+
+.home-page .home-section-head h2,
+.home-section-head h2 {
+  font-size: clamp(1.35rem, 2.4vw, 1.75rem) !important;
 }

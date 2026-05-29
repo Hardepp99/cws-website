@@ -8,6 +8,7 @@ import { SeoPanel } from "@/components/admin/SeoPanel";
 import { SlugField } from "@/components/admin/SlugField";
 import { WysiwygField } from "@/components/admin/WysiwygField";
 import { WpEditScreen } from "@/components/admin/wp/WpEditScreen";
+import { CmsFieldCounter, CmsLabelRow } from "@/components/admin/CmsFieldCounter";
 import { FaqEditorField } from "@/components/admin/FaqEditorField";
 import { EMPTY_SEO, parseSeoJson, seoToJson, type AdminSeoData } from "@/lib/admin/seo-types";
 import { parseFaqsFromAdminRow } from "@/lib/admin/parse-faqs";
@@ -124,8 +125,8 @@ export function BlogPostForm({ postId, isNew }: { postId?: number; isNew?: boole
         onSlugManualChange={setSlugManual}
         urlPrefix="/blog/"
       />
-      <label className="cms-label">Excerpt</label>
-      <textarea className="cms-textarea" rows={3} value={excerpt} onChange={(e) => setExcerpt(e.target.value)} />
+      <CmsLabelRow counter={<CmsFieldCounter value={excerpt} max={160} />}>Excerpt</CmsLabelRow>
+      <textarea className="cms-textarea" rows={2} value={excerpt} onChange={(e) => setExcerpt(e.target.value)} />
       <WysiwygField label="Classic content (HTML)" value={contentHtml} onChange={setContentHtml} height={400} />
       <p className="cms-field-hint">
         Original HTML content. It stays saved when you build the post with Desimentor.

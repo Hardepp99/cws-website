@@ -8,6 +8,7 @@ import { Header } from "./Header";
 import { PastelSectionsInit } from "./PastelSectionsInit";
 import { Preloader } from "./Preloader";
 import { SiteScripts } from "./SiteScripts";
+import { MemberSessionProvider } from "@/components/member/MemberSessionProvider";
 import { SiteMapsProvider } from "./SiteMapsContext";
 import { Topbar } from "./Topbar";
 import { resolveGmbMapsUrl } from "@/lib/gmb/resolve";
@@ -28,6 +29,7 @@ export async function SiteLayout({ children, currentPath = "/" }: SiteLayoutProp
   const gmbMapsUrl = resolveGmbMapsUrl(settings);
 
   return (
+    <MemberSessionProvider>
     <SiteMapsProvider mapsUrl={gmbMapsUrl}>
       <style
         dangerouslySetInnerHTML={{
@@ -60,5 +62,6 @@ export async function SiteLayout({ children, currentPath = "/" }: SiteLayoutProp
       <SiteFloatWidgets settings={settings} />
       <SiteScripts />
     </SiteMapsProvider>
+    </MemberSessionProvider>
   );
 }

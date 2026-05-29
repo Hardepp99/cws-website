@@ -55,19 +55,27 @@
 
 .inner-page-elementor .dsmt-heading.h1,
 .inner-page-elementor h1.dsmt-heading {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
-  font-weight: 700;
-  line-height: 1.15;
+  font-size: 1.3125rem;
+  font-weight: 600;
+  line-height: 1.3;
   color: #0f172a;
   margin: 0 0 0.75rem;
 }
 
 .inner-page-elementor .dsmt-heading.h2,
 .inner-page-elementor h2.dsmt-heading {
-  font-size: clamp(1.35rem, 3vw, 1.75rem);
-  font-weight: 700;
+  font-size: 1.1875rem;
+  font-weight: 600;
   color: #0f172a;
   margin: 0 0 0.5rem;
+}
+
+.inner-page-elementor .dsmt-heading.h3,
+.inner-page-elementor h3.dsmt-heading {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 0.4rem;
 }
 
 .inner-page-elementor .dsmt-section-sub {

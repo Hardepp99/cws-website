@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef } from "react";
+import { CmsFieldCounter } from "@/components/admin/CmsFieldCounter";
 
 type Editor = { getContent: () => string; on: (e: string, cb: () => void) => void };
 
@@ -74,7 +75,10 @@ export function WysiwygField({ label, value, onChange, height = 300 }: WysiwygFi
 
   return (
     <div className="cms-wysiwyg-wrap">
-      <label className="cms-label">{label}</label>
+      <label className="cms-label cms-label--row">
+        <span>{label}</span>
+        <CmsFieldCounter value={value} mode="both" stripHtml />
+      </label>
       <textarea id={id} className="cms-wysiwyg-target" defaultValue={value} />
     </div>
   );

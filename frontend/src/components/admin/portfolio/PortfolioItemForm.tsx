@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { CmsFieldCounter, CmsLabelRow } from "@/components/admin/CmsFieldCounter";
 import { FaqEditorField } from "@/components/admin/FaqEditorField";
 import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { SlugField } from "@/components/admin/SlugField";
@@ -146,8 +147,8 @@ export function PortfolioItemForm({ itemId, isNew }: { itemId?: number; isNew?: 
       />
       <p className="cms-field-hint">Shown on the project page as &quot;Visit live site&quot; — cards always link to the detail page.</p>
 
-      <label className="cms-label">Short summary (card + SEO)</label>
-      <textarea className="cms-textarea" rows={3} value={excerpt} onChange={(e) => setExcerpt(e.target.value)} />
+      <CmsLabelRow counter={<CmsFieldCounter value={excerpt} max={160} />}>Short summary (card + SEO)</CmsLabelRow>
+      <textarea className="cms-textarea" rows={2} value={excerpt} onChange={(e) => setExcerpt(e.target.value)} />
 
       <WysiwygField label="Project details (full page)" value={content} onChange={setContent} height={360} />
 

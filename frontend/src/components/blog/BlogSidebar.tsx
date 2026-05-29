@@ -23,14 +23,21 @@ export function BlogSidebar({
   currentSlug,
   calendarYear,
   calendarMonth,
+  showFeatured = true,
+  searchQuery,
+  onSearchChange,
 }: {
   posts: BlogPost[];
   currentSlug?: string;
   calendarYear?: number;
   calendarMonth?: number;
+  /** Hide on main blog index (archive hub has its own layout). */
+  showFeatured?: boolean;
+  searchQuery?: string;
+  onSearchChange?: (query: string) => void;
 }) {
-  const featured = getFeaturedPosts(posts, 5, currentSlug);
-  const recent = getRecentPosts(posts, 5, currentSlug);
+  const featured = showFeatured ? getFeaturedPosts(posts, 5, currentSlug) : [];
+  const recent = getRecentPosts(posts, 8, currentSlug);
   const categories = getBlogCategories(posts);
 
   const postForCal = currentSlug ? posts.find((p) => p.slug === currentSlug) : undefined;
@@ -44,6 +51,40 @@ export function BlogSidebar({
 
   return (
     <aside className="blog-sidebar" aria-label="Blog sidebar">
+      {onSearchChange ? (
+        <section className="blog-sidebar__widget">
+          <h2 className="blog-sidebar__title">Search</h2>
+          <label className="visually-hidden" htmlFor="blog-sidebar-search">
+            Search articles
+          </label>
+          <input
+            id="blog-sidebar-search"
+            type="search"
+            className="blog-sidebar__search"
+            placeholder="Search articles…"
+            value={searchQuery ?? ""}
+            onChange={(e) => onSearchChange(e.target.value)}
+            autoComplete="off"
+          />
+        </section>
+      ) : null}
+
+      {categories.length > 0 ? (
+        <section className="blog-sidebar__widget">
+          <h2 className="blog-sidebar__title">Categories</h2>
+          <ul className="blog-sidebar__cats">
+            {categories.map((cat) => (
+              <li key={cat.slug}>
+                <Link href={categoryHref(cat.slug)}>
+                  {cat.name}
+                  <span className="blog-sidebar__count">{cat.count}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
       {featured.length > 0 ? (
         <section className="blog-sidebar__widget">
           <h2 className="blog-sidebar__title">Featured</h2>
@@ -83,22 +124,6 @@ export function BlogSidebar({
                   className={post.slug === currentSlug ? "is-active" : undefined}
                 >
                   {post.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
-
-      {categories.length > 0 ? (
-        <section className="blog-sidebar__widget">
-          <h2 className="blog-sidebar__title">Categories</h2>
-          <ul className="blog-sidebar__cats">
-            {categories.map((cat) => (
-              <li key={cat.slug}>
-                <Link href={categoryHref(cat.slug)}>
-                  {cat.name}
-                  <span className="blog-sidebar__count">{cat.count}</span>
                 </Link>
               </li>
             ))}

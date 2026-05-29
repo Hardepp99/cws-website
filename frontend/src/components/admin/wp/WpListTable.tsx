@@ -47,7 +47,7 @@ export function WpListScreen({
 
 export function WpListTable<T extends { id: number | string }>({
   columns,
-  rows,
+  rows = [],
   total,
   page,
   perPage,
@@ -60,7 +60,7 @@ export function WpListTable<T extends { id: number | string }>({
   showActions = true,
 }: {
   columns: WpColumn<T>[];
-  rows: T[];
+  rows?: T[];
   total: number;
   page: number;
   perPage: number;
@@ -80,6 +80,7 @@ export function WpListTable<T extends { id: number | string }>({
     : { basePath: paginationPath };
   const hasActions = showActions && !!rowActions;
   const colSpan = columns.length + (hasActions ? 1 : 0);
+  const safeRows = rows ?? [];
 
   return (
     <div className="wp-list-table-wrap">
@@ -100,12 +101,12 @@ export function WpListTable<T extends { id: number | string }>({
             </tr>
           </thead>
           <tbody>
-            {rows.length === 0 ? (
+            {safeRows.length === 0 ? (
               <tr className="no-items">
                 <td colSpan={colSpan}>{emptyMessage}</td>
               </tr>
             ) : (
-              rows.map((row) => (
+              safeRows.map((row) => (
                 <tr key={row.id}>
                   {hasActions ? (
                     <td className="column-actions column-actions-first">{rowActions(row)}</td>

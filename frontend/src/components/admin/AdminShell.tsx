@@ -26,9 +26,18 @@ const NAV_BASE = [
 
 const NAV_ADMIN_ONLY = [
   { href: "/admin/users", label: "Users", icon: "fa-users" },
+  { href: "/admin/members", label: "Members", icon: "fa-user-group" },
+  { href: "/admin/community", label: "Community", icon: "fa-comments" },
+  { href: "/admin/forums", label: "Forums", icon: "fa-message" },
 ] as const;
 
 function navIsActive(pathname: string, href: string): boolean {
+  if (href === "/admin/community") {
+    return pathname.startsWith("/admin/community") || pathname.startsWith("/admin/forums");
+  }
+  if (href === "/admin/forums") {
+    return pathname.startsWith("/admin/forums");
+  }
   return pathname === href || (href !== "/admin" && pathname.startsWith(href));
 }
 

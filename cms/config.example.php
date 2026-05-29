@@ -31,6 +31,8 @@ return [
     'upload_dir'     => __DIR__ . '/uploads',
     'upload_url'     => '/cws-website/cms/uploads',
     'google'         => [
-        'places_api_key' => '',
+        'places_api_key'   => '',
+        /** Google Sign-In (members) — OAuth 2.0 Web client ID */
+        'oauth_client_id'  => '',
     ],
 ];

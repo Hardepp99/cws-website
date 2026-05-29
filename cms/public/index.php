@@ -125,6 +125,151 @@ try {
         Http::json(['ok' => true]);
     }
 
+    $community = cws_community();
+
+    // —— Member auth (public) ——
+    if ($method === 'POST' && $path === '/member/register') {
+        $body = Http::readJsonBody();
+        if (($body['password'] ?? '') !== ($body['confirmPassword'] ?? $body['confirm_password'] ?? '')) {
+            Http::json(['success' => false, 'message' => 'Passwords do not match.'], 400);
+        }
+        try {
+            Http::json(MemberAuth::register(
+                (string) ($body['email'] ?? ''),
+                (string) ($body['password'] ?? ''),
+                (string) ($body['displayName'] ?? $body['name'] ?? ''),
+            ));
+        } catch (InvalidArgumentException $e) {
+            Http::json(['success' => false, 'message' => $e->getMessage()], 400);
+        }
+    }
+
+    if ($method === 'POST' && $path === '/member/login') {
+        $body = Http::readJsonBody();
+        $result = MemberAuth::login((string) ($body['email'] ?? ''), (string) ($body['password'] ?? ''));
+        if (!$result) {
+            Http::json(['success' => false, 'message' => 'Invalid email or password.'], 401);
+        }
+        Http::json($result);
+    }
+
+    if ($method === 'POST' && $path === '/member/google') {
+        $body = Http::readJsonBody();
+        $result = MemberAuth::loginWithGoogle((string) ($body['credential'] ?? $body['idToken'] ?? ''));
+        if (!$result) {
+            Http::json(['success' => false, 'message' => 'Google sign-in failed.'], 401);
+        }
+        Http::json($result);
+    }
+
+    if ($method === 'POST' && $path === '/member/logout') {
+        $auth = MemberAuth::authorizationHeader();
+        if (preg_match('/Bearer\s+(\S+)/i', $auth, $m)) {
+            MemberAuth::revoke($m[1]);
+        }
+        Http::json(['success' => true]);
+    }
+
+    if ($method === 'GET' && $path === '/member/me') {
+        $member = MemberAuth::requireMember();
+        Http::json(['success' => true, 'member' => $member]);
+    }
+
+    if ($method === 'GET' && $path === '/member/contributions') {
+        $member = MemberAuth::requireMember();
+        Http::json($community->getMemberContributions((int) $member['id']));
+    }
+
+    if ($method === 'GET' && $path === '/member/blog') {
+        $member = MemberAuth::requireMember();
+        Http::json(['items' => $community->getMemberContributions((int) $member['id'])['blogPosts']]);
+    }
+
+    if ($method === 'POST' && $path === '/member/blog') {
+        $member = MemberAuth::requireMember();
+        $body = Http::readJsonBody();
+        if (empty($body['title'])) {
+            Http::json(['error' => 'Title is required'], 400);
+        }
+        $id = $community->createMemberBlogPost((int) $member['id'], $body);
+        Http::json(['success' => true, 'id' => $id, 'status' => 'pending_review']);
+    }
+
+    if ($method === 'GET' && preg_match('#^/member/blog/(\d+)$#', $path, $m)) {
+        $member = MemberAuth::requireMember();
+        $post = $community->getMemberBlogPost((int) $member['id'], (int) $m[1]);
+        Http::json($post ?: ['error' => 'Not found'], $post ? 200 : 404);
+    }
+
+    if ($method === 'PUT' && preg_match('#^/member/blog/(\d+)$#', $path, $m)) {
+        $member = MemberAuth::requireMember();
+        $community->updateMemberBlogPost((int) $member['id'], (int) $m[1], Http::readJsonBody());
+        Http::json(['success' => true, 'status' => 'pending_review']);
+    }
+
+    if ($method === 'GET' && preg_match('#^/blog/([a-z0-9][a-z0-9-]*)/comments$#', $path, $m)) {
+        $postId = $community->getBlogPostIdBySlug($m[1]);
+        if (!$postId) {
+            Http::json(['error' => 'Post not found'], 404);
+        }
+        $viewer = MemberAuth::optionalMember();
+        Http::json($community->listApprovedComments($postId, $viewer ? (int) $viewer['id'] : null));
+    }
+
+    if ($method === 'POST' && preg_match('#^/blog/([a-z0-9][a-z0-9-]*)/comments$#', $path, $m)) {
+        $member = MemberAuth::requireMember();
+        $postId = $community->getBlogPostIdBySlug($m[1]);
+        if (!$postId) {
+            Http::json(['error' => 'Post not found'], 404);
+        }
+        $body = Http::readJsonBody();
+        Http::json($community->createBlogComment($postId, (int) $member['id'], (string) ($body['body'] ?? '')));
+    }
+
+    if ($method === 'GET' && $path === '/community/forums') {
+        Http::json($community->listForumsPublic());
+    }
+
+    if ($method === 'GET' && preg_match('#^/community/forums/([a-z0-9][a-z0-9-]*)$#', $path, $m) && !isset($segments[3])) {
+        $forum = $community->getForumBySlug($m[1]);
+        if (!$forum) {
+            Http::json(['error' => 'Not found'], 404);
+        }
+        $page = max(1, (int) ($_GET['page'] ?? 1));
+        $per = min(50, max(5, (int) ($_GET['perPage'] ?? 20)));
+        Http::json(['forum' => $forum, ...$community->listForumTopicsPublic((int) $forum['id'], $page, $per)]);
+    }
+
+    if ($method === 'GET' && preg_match('#^/community/forums/([a-z0-9][a-z0-9-]*)/([a-z0-9][a-z0-9-]*)$#', $path, $m)) {
+        $forum = $community->getForumBySlug($m[1]);
+        if (!$forum) {
+            Http::json(['error' => 'Not found'], 404);
+        }
+        $topic = $community->getTopicPublic((int) $forum['id'], $m[2]);
+        Http::json($topic ? ['forum' => $forum, 'topic' => $topic] : ['error' => 'Not found'], $topic ? 200 : 404);
+    }
+
+    if ($method === 'POST' && $path === '/community/forums') {
+        $member = MemberAuth::requireMember();
+        Http::json($community->createForum((int) $member['id'], Http::readJsonBody()));
+    }
+
+    if ($method === 'POST' && preg_match('#^/community/forums/([a-z0-9][a-z0-9-]*)/topics$#', $path, $m)) {
+        $member = MemberAuth::requireMember();
+        $forum = $community->getForumBySlug($m[1]);
+        if (!$forum) {
+            Http::json(['error' => 'Forum not found'], 404);
+        }
+        Http::json($community->createTopic((int) $forum['id'], (int) $member['id'], Http::readJsonBody()));
+    }
+
+    if ($method === 'POST' && preg_match('#^/community/topics/(\d+)/replies$#', $path, $m)) {
+        $member = MemberAuth::requireMember();
+        $body = Http::readJsonBody();
+        $parent = isset($body['parentId']) ? (int) $body['parentId'] : null;
+        Http::json($community->createReply((int) $m[1], (int) $member['id'], (string) ($body['body'] ?? ''), $parent));
+    }
+
     Http::json(['error' => 'Not found', 'path' => $path], 404);
 } catch (Throwable $e) {
     Http::json(['error' => 'Server error', 'message' => $e->getMessage()], 500);

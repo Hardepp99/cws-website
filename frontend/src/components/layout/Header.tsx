@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SiteLogo } from "@/components/ui/SiteLogo";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { MemberAuthNav, MemberAuthNavMobileFooter } from "@/components/member/MemberAuthNav";
 import { openAskPriceModal } from "@/lib/ask-price";
 import type { MenuItem, SiteSettings } from "@/lib/wordpress/types";
 
@@ -306,14 +307,22 @@ export function Header({ settings, menu, currentPath = "" }: HeaderProps) {
                   )
                 )}
               </ul>
-              <button
-                type="button"
-                className="btn-cta btn-cta-navbar"
-                onClick={openAskPriceModal}
-              >
-                <i className="fas fa-tags" aria-hidden="true" />
-                <span>Ask price</span>
-              </button>
+              <div className="navbar-actions">
+                <button
+                  type="button"
+                  className="btn-cta btn-cta-navbar"
+                  onClick={openAskPriceModal}
+                >
+                  <i className="fas fa-tags" aria-hidden="true" />
+                  <span>Ask price</span>
+                </button>
+                <div className="d-none d-lg-flex">
+                  <MemberAuthNav />
+                </div>
+              </div>
+              <div className="d-lg-none">
+                <MemberAuthNavMobileFooter />
+              </div>
             </div>
           </div>
         </nav>

@@ -1,5 +1,6 @@
 "use client";
 
+import { CmsFieldCounter, CmsLabelRow } from "@/components/admin/CmsFieldCounter";
 import type { FaqItem } from "@/lib/wordpress/types";
 
 type FaqEditorFieldProps = {
@@ -49,14 +50,14 @@ export function FaqEditorField({
                   Remove
                 </button>
               </div>
-              <label className="cms-label">Question</label>
+              <CmsLabelRow counter={<CmsFieldCounter value={item.question} mode="both" />}>Question</CmsLabelRow>
               <input
                 className="cms-input"
                 value={item.question}
                 onChange={(e) => updateItem(index, { question: e.target.value })}
                 placeholder="e.g. How long does a website take?"
               />
-              <label className="cms-label">Answer</label>
+              <CmsLabelRow counter={<CmsFieldCounter value={item.answer} mode="both" />}>Answer</CmsLabelRow>
               <textarea
                 className="cms-textarea"
                 rows={3}

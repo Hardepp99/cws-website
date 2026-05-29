@@ -20,6 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
         <link rel="stylesheet" href="/assets/css/style.css" />
         <link rel="stylesheet" href="/assets/css/apple-theme.css" />
+        <link rel="stylesheet" href="/assets/css/community.css" />
         <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
         <script
           type="application/ld+json"

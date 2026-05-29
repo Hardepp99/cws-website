@@ -27,6 +27,10 @@ $placesKey = getenv('GOOGLE_PLACES_API_KEY');
 if ($placesKey && empty($CWS_CONFIG['google']['places_api_key'])) {
     $CWS_CONFIG['google']['places_api_key'] = $placesKey;
 }
+$googleOauthId = getenv('GOOGLE_OAUTH_CLIENT_ID');
+if ($googleOauthId && empty($CWS_CONFIG['google']['oauth_client_id'])) {
+    $CWS_CONFIG['google']['oauth_client_id'] = $googleOauthId;
+}
 
 // Composer autoloader (for PHPMailer and future libraries)
 $composerAutoload = CWS_CMS_ROOT . '/vendor/autoload.php';
@@ -48,6 +52,8 @@ require_once CWS_CMS_ROOT . '/src/DesimentorRepository.php';
 require_once CWS_CMS_ROOT . '/src/GmbPlacesClient.php';
 require_once CWS_CMS_ROOT . '/src/SmtpMailer.php';
 require_once CWS_CMS_ROOT . '/src/CrmInbox.php';
+require_once CWS_CMS_ROOT . '/src/MemberAuth.php';
+require_once CWS_CMS_ROOT . '/src/CommunityRepository.php';
 require_once CWS_CMS_ROOT . '/src/AdminApi.php';
 
 function cws_config(string $key, mixed $default = null): mixed

@@ -21,9 +21,12 @@ export function parseListQuery(
   sp: AdminListSearchParams,
   defaults: { sort: string; order?: ListOrder; perPage?: number }
 ): ParsedListQuery {
+  const defaultPerPage = defaults.perPage ?? 10;
+  const perPage = Math.min(50, Math.max(5, parseInt(sp.perPage || String(defaultPerPage), 10) || defaultPerPage));
+
   return {
     page: Math.max(1, parseInt(sp.page || "1", 10) || 1),
-    perPage: defaults.perPage ?? 10,
+    perPage,
     search: (sp.search ?? "").trim(),
     sort: sp.sort || defaults.sort,
     order: sp.order === "asc" ? "asc" : (defaults.order ?? "desc"),

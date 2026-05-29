@@ -7,6 +7,7 @@ import { PageConversionBand } from "@/components/engagement/PageConversionBand";
 import { PageTrustStrip } from "@/components/engagement/PageTrustStrip";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { resolvePublicBody } from "@/lib/content/display-mode";
+import { normalizeFaqItems } from "@/lib/faq/normalize";
 import { getAllServiceLandings, getPageBySlug } from "@/lib/wordpress/api";
 import { breadcrumbJsonLd, buildMetadata } from "@/lib/seo/metadata";
 

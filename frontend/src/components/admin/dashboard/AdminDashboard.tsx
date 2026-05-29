@@ -48,9 +48,9 @@ export function AdminDashboard() {
     <div className="gsc-dashboard">
       <div className="gsc-dash-header">
         <div>
-          <h1 className="gsc-dash-title">
+          <p className="gsc-dash-title" role="heading" aria-level={1}>
             {user?.displayName ? `Hello, ${user.displayName}` : "Dashboard"}
-          </h1>
+          </p>
           <p className="gsc-dash-sub">
             Last 28 days · {stats.hasAnalytics ? "Live page views from your site" : "Run migration 002 for page view tracking"}
           </p>
@@ -91,7 +91,7 @@ export function AdminDashboard() {
 
       <div className="gsc-grid-2">
         <div className="cms-card gsc-panel">
-          <h2>Traffic (28 days)</h2>
+          <h2 className="gsc-panel__heading">Traffic (28 days)</h2>
           {stats.performance.length === 0 ? (
             <p className="gsc-empty">No view data yet. Browse the public site to collect stats.</p>
           ) : (
@@ -110,7 +110,7 @@ export function AdminDashboard() {
         </div>
 
         <div className="cms-card gsc-panel">
-          <h2>Content index</h2>
+          <h2 className="gsc-panel__heading">Content index</h2>
           <ul className="gsc-index-list">
             <li><span>Published URLs</span><strong>{stats.counts.published}</strong></li>
             <li><span>Drafts</span><strong>{stats.counts.drafts}</strong></li>
@@ -126,7 +126,7 @@ export function AdminDashboard() {
 
       <div className="gsc-grid-2">
         <div className="cms-card gsc-panel">
-          <h2>Top pages</h2>
+          <h2 className="gsc-panel__heading">Top pages</h2>
           {stats.topPages.length === 0 ? (
             <p className="gsc-empty">No page data yet.</p>
           ) : (
@@ -152,7 +152,7 @@ export function AdminDashboard() {
         </div>
 
         <div className="cms-card gsc-panel">
-          <h2>SEO recommendations</h2>
+          <h2 className="gsc-panel__heading">SEO recommendations</h2>
           {stats.seoIssues.length === 0 ? (
             <p className="gsc-empty good">No critical SEO issues detected.</p>
           ) : (
@@ -173,7 +173,7 @@ export function AdminDashboard() {
       </div>
 
       <div className="cms-card gsc-panel">
-        <h2>Recent conversions</h2>
+        <h2 className="gsc-panel__heading">Recent conversions</h2>
         <table className="gsc-data-table">
           <thead>
             <tr>
@@ -196,7 +196,7 @@ export function AdminDashboard() {
       </div>
 
       <div className="cms-card gsc-quick-links">
-        <h2>Quick edit</h2>
+        <h2 className="gsc-panel__heading">Quick edit</h2>
         <div className="gsc-quick-grid">
           <Link href="/admin/homepage">Homepage sections</Link>
           <Link href="/admin/site-pages">Pages</Link>

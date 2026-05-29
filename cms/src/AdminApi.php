@@ -34,10 +34,19 @@ final class AdminApi
 
         AdminActivityLog::registerMutationHook($currentUser, $method, $path);
 
-        // —— Admin-only: users & SMTP ——
-        if (str_starts_with($path, '/users') || str_starts_with($path, '/crm/smtp')) {
+        // —— Admin-only: users, members, community moderation, SMTP ——
+        if (
+            str_starts_with($path, '/users')
+            || str_starts_with($path, '/members')
+            || str_starts_with($path, '/blog-comments')
+            || str_starts_with($path, '/community')
+            || str_starts_with($path, '/forums')
+            || str_starts_with($path, '/crm/smtp')
+        ) {
             AdminAuth::requireAdmin($currentUser);
         }
+
+        $community = cws_community();
 
         if ($method === 'GET' && $path === '/users/list') {
             Http::json(AdminUsers::listAll());
@@ -282,6 +291,123 @@ final class AdminApi
             }
             $id = $repo->createBlogPost($body);
             Http::json(['success' => true, 'id' => $id]);
+        }
+
+        if ($method === 'PUT' && preg_match('#^/blog/(\d+)/moderate$#', $path, $m)) {
+            $body = Http::readJsonBody();
+            $community->moderateMemberBlog((int) $m[1], (string) ($body['status'] ?? 'published'));
+            Http::json(['success' => true]);
+        }
+
+        // Site members
+        if ($method === 'GET' && $path === '/members/list') {
+            $search = trim((string) ($_GET['q'] ?? $_GET['search'] ?? ''));
+            $status = (string) ($_GET['status'] ?? 'all');
+            Http::json($community->listMembers($pageNum, $perPage, $search, $status));
+        }
+
+        if ($method === 'GET' && preg_match('#^/members/(\d+)$#', $path, $m)) {
+            $row = $community->getMemberAdmin((int) $m[1]);
+            Http::json($row ?: ['error' => 'Not found'], $row ? 200 : 404);
+        }
+
+        if ($method === 'PUT' && preg_match('#^/members/(\d+)$#', $path, $m)) {
+            Http::json(['success' => true, 'member' => $community->updateMemberAdmin((int) $m[1], Http::readJsonBody())]);
+        }
+
+        if ($method === 'DELETE' && preg_match('#^/members/(\d+)$#', $path, $m)) {
+            $community->deleteMemberAdmin((int) $m[1]);
+            Http::json(['success' => true]);
+        }
+
+        if ($method === 'GET' && $path === '/blog-comments/list') {
+            $status = (string) ($_GET['status'] ?? 'all');
+            $search = trim((string) ($_GET['q'] ?? $_GET['search'] ?? ''));
+            Http::json($community->listBlogCommentsAdmin($pageNum, $perPage, $status, $search));
+        }
+
+        if ($method === 'GET' && preg_match('#^/blog-comments/(\d+)$#', $path, $m)) {
+            $row = $community->getBlogCommentAdmin((int) $m[1]);
+            Http::json($row ?: ['error' => 'Not found'], $row ? 200 : 404);
+        }
+
+        if ($method === 'PUT' && preg_match('#^/blog-comments/(\d+)$#', $path, $m)) {
+            $body = Http::readJsonBody();
+            $community->moderateBlogComment((int) $m[1], (string) ($body['status'] ?? 'approved'));
+            Http::json(['success' => true]);
+        }
+
+        if ($method === 'DELETE' && preg_match('#^/blog-comments/(\d+)$#', $path, $m)) {
+            $community->deleteBlogCommentAdmin((int) $m[1]);
+            Http::json(['success' => true]);
+        }
+
+        if ($method === 'GET' && $path === '/community/moderation-counts') {
+            Http::json($community->countPendingModeration());
+        }
+
+        if ($method === 'GET' && $path === '/community/forum-topics/list') {
+            $status = (string) ($_GET['status'] ?? 'all');
+            $search = trim((string) ($_GET['q'] ?? $_GET['search'] ?? ''));
+            Http::json($community->listForumTopicsAdmin($pageNum, $perPage, $status, $search));
+        }
+
+        if ($method === 'GET' && preg_match('#^/community/forum-topics/(\d+)$#', $path, $m)) {
+            $row = $community->getForumTopicAdmin((int) $m[1]);
+            Http::json($row ?: ['error' => 'Not found'], $row ? 200 : 404);
+        }
+
+        if ($method === 'PUT' && preg_match('#^/community/forum-topics/(\d+)$#', $path, $m)) {
+            $body = Http::readJsonBody();
+            $community->moderateForumTopic((int) $m[1], (string) ($body['status'] ?? 'published'));
+            Http::json(['success' => true]);
+        }
+
+        if ($method === 'GET' && $path === '/community/forum-replies/list') {
+            $status = (string) ($_GET['status'] ?? 'all');
+            $search = trim((string) ($_GET['q'] ?? $_GET['search'] ?? ''));
+            Http::json($community->listForumRepliesAdmin($pageNum, $perPage, $status, $search));
+        }
+
+        if ($method === 'GET' && preg_match('#^/community/forum-replies/(\d+)$#', $path, $m)) {
+            $row = $community->getForumReplyAdmin((int) $m[1]);
+            Http::json($row ?: ['error' => 'Not found'], $row ? 200 : 404);
+        }
+
+        if ($method === 'PUT' && preg_match('#^/community/forum-replies/(\d+)$#', $path, $m)) {
+            $body = Http::readJsonBody();
+            $community->moderateForumReply((int) $m[1], (string) ($body['status'] ?? 'approved'));
+            Http::json(['success' => true]);
+        }
+
+        if ($method === 'GET' && $path === '/forums/list') {
+            $search = trim((string) ($_GET['q'] ?? $_GET['search'] ?? ''));
+            $status = (string) ($_GET['status'] ?? 'all');
+            Http::json($community->listForumsAdmin($pageNum, $perPage, $search, $status));
+        }
+
+        if ($method === 'GET' && preg_match('#^/forums/(\d+)$#', $path, $m)) {
+            $row = $community->getForumAdmin((int) $m[1]);
+            Http::json($row ?: ['error' => 'Not found'], $row ? 200 : 404);
+        }
+
+        if ($method === 'POST' && $path === '/forums') {
+            Http::json(['success' => true, 'forum' => $community->createForumAdmin(Http::readJsonBody())]);
+        }
+
+        if ($method === 'PUT' && preg_match('#^/forums/(\d+)$#', $path, $m)) {
+            Http::json(['success' => true, 'forum' => $community->updateForumAdmin((int) $m[1], Http::readJsonBody())]);
+        }
+
+        if ($method === 'DELETE' && preg_match('#^/forums/(\d+)$#', $path, $m)) {
+            $community->deleteForumAdmin((int) $m[1]);
+            Http::json(['success' => true]);
+        }
+
+        if ($method === 'GET' && $path === '/community/member-blogs/list') {
+            $status = (string) ($_GET['status'] ?? 'all');
+            $search = trim((string) ($_GET['q'] ?? $_GET['search'] ?? ''));
+            Http::json($community->listMemberBlogsAdmin($pageNum, $perPage, $status, $search));
         }
 
         // Portfolio (local clients)

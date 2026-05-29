@@ -1,5 +1,6 @@
 "use client";
 
+import { CmsFieldCounter, CmsLabelRow } from "@/components/admin/CmsFieldCounter";
 import { slugify } from "@/lib/admin/slugify";
 
 export function SlugField({
@@ -33,9 +34,9 @@ export function SlugField({
 
   return (
     <div className="cms-slug-block">
-      <label className="cms-label">{titleLabel}</label>
+      <CmsLabelRow counter={<CmsFieldCounter value={title} mode="both" />}>{titleLabel}</CmsLabelRow>
       <input className="cms-input" value={title} onChange={(e) => handleTitle(e.target.value)} />
-      <label className="cms-label">URL slug</label>
+      <CmsLabelRow counter={<CmsFieldCounter value={slug} unit="characters" />}>URL slug</CmsLabelRow>
       <p className="cms-field-hint">
         Auto-generated from title. Edit slug only if you need a custom URL.
       </p>
