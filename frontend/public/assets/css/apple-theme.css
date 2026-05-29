@@ -111,7 +111,10 @@ a:not(.btn):not(.home-hero__btn):not(.home-btn):not(.nav-link):not(.social-link)
 .portfolio-showcase__view-all,
 .portfolio-showcase__view-all:hover,
 .portfolio-showcase__nav,
-.portfolio-showcase__nav:hover {
+.portfolio-showcase__nav:hover,
+.portfolio-capsule__tab,
+.portfolio-capsule__tab:hover,
+.portfolio-capsule__tab:focus-visible {
   text-decoration: none !important;
 }
 

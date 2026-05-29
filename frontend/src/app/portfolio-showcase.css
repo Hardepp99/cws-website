@@ -28,10 +28,10 @@
 
 .portfolio-capsule__indicator {
   position: absolute;
-  top: 6px;
-  bottom: 6px;
   left: 0;
+  top: 0;
   width: 0;
+  height: 0;
   border-radius: 980px;
   background: #1d1d1f;
   box-shadow:
@@ -39,12 +39,14 @@
     0 0 0 1px rgba(0, 0, 0, 0.04);
   pointer-events: none;
   z-index: 0;
-  will-change: left, width;
+  will-change: left, top, width, height;
+  box-sizing: border-box;
 }
 
 .portfolio-capsule__tab {
   position: relative;
   z-index: 1;
+  flex-shrink: 0;
   border: none;
   background: transparent;
   color: #1d1d1f;
@@ -53,11 +55,34 @@
   font-weight: 500;
   letter-spacing: -0.018em;
   line-height: 1.2;
-  padding: 0.65rem 1.35rem;
+  padding: 0.55rem 1.15rem;
   border-radius: 980px;
   cursor: pointer;
   white-space: nowrap;
   transition: color 0.38s cubic-bezier(0.32, 0.72, 0, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Portfolio page: single-row scroll — keeps indicator pill tab-sized */
+.portfolio-capsule-wrap--scroll {
+  justify-content: flex-start;
+  max-width: 100%;
+}
+
+.portfolio-capsule--scroll {
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.portfolio-capsule--scroll::-webkit-scrollbar {
+  display: none;
 }
 
 .portfolio-capsule__tab:hover:not(.is-active) {
@@ -369,15 +394,19 @@
   color: #6e6e73;
 }
 
-/* Full portfolio page */
-.portfolio-page__hero {
-  text-align: center;
-  padding: clamp(2rem, 5vw, 3rem) 0 0.5rem;
-  max-width: 40rem;
-  margin: 0 auto;
+/* Full portfolio page — showcase first (matches homepage light band) */
+.portfolio-page__showcase-band {
+  padding: clamp(1.5rem, 4vw, 2.5rem) 0 clamp(2.5rem, 6vw, 3.5rem);
+  background: #f5f5f7;
 }
 
-.portfolio-page__hero h1 {
+.portfolio-page__showcase-head {
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.portfolio-page__showcase-head h1 {
   margin: 0 0 0.65rem;
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 600;
@@ -385,15 +414,45 @@
   color: #1d1d1f;
 }
 
-.portfolio-page__hero p {
+.portfolio-page__showcase-head p {
   margin: 0;
   font-size: 1.0625rem;
   line-height: 1.5;
   color: #6e6e73;
 }
 
-.portfolio-page__showcase {
-  padding: 1rem 0 clamp(3rem, 7vw, 4.5rem);
+.portfolio-page__showcase-band .portfolio-capsule-wrap {
+  margin-bottom: clamp(1.5rem, 3.5vw, 2.25rem);
+}
+
+.portfolio-page .portfolio-capsule {
+  padding: 5px;
+}
+
+.portfolio-page .portfolio-capsule__tab {
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+}
+
+@media (min-width: 768px) {
+  .portfolio-page .portfolio-capsule__tab {
+    font-size: 0.9375rem;
+    padding: 0.55rem 1.15rem;
+  }
+}
+
+/* Tab hover/active — mirror homepage light-band portfolio capsule */
+.home-page .home-section-band--light .portfolio-capsule__tab:hover:not(.is-active),
+.portfolio-page .portfolio-capsule__tab:hover:not(.is-active) {
+  color: #424245;
+}
+
+.portfolio-page__footer {
+  padding-bottom: clamp(3rem, 7vw, 4.5rem);
+}
+
+.portfolio-page .inner-page-elementor {
+  padding-top: 0;
 }
 
 @media (min-width: 992px) {

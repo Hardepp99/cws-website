@@ -59,6 +59,23 @@ export default async function PortfolioPage() {
       />
       <PageHeader breadcrumb={[{ label: "Home", href: "/" }, { label: "Portfolio" }]} />
       <div className="portfolio-page">
+        <section
+          className="portfolio-page__showcase-band home-section-band home-section-band--light"
+          aria-labelledby="portfolio-showcase-heading"
+        >
+          <div className="corp-container">
+            <header className="home-section-head home-section-head--center portfolio-page__showcase-head">
+              <h1 id="portfolio-showcase-heading">{title}</h1>
+              {subtitle ? <p>{subtitle}</p> : null}
+            </header>
+            <PortfolioTabbedShowcase
+              items={items}
+              allTabLabel="All work"
+              className="portfolio-showcase--page home-portfolio-showcase"
+            />
+          </div>
+        </section>
+
         {page ? (
           <ElementorPageBody
             title={page.title ?? title}
@@ -66,20 +83,9 @@ export default async function PortfolioPage() {
             content={page.content}
             desimentor={page.desimentor}
           />
-        ) : (
-          <div className="corp-container">
-            <header className="portfolio-page__hero">
-              <h1>{title}</h1>
-              {subtitle ? <p>{subtitle}</p> : null}
-            </header>
-          </div>
-        )}
-        <div className="corp-container">
-          <PortfolioTabbedShowcase
-            items={items}
-            allTabLabel="All work"
-            className="portfolio-showcase--page"
-          />
+        ) : null}
+
+        <div className="corp-container portfolio-page__footer">
           <PageConversionBand
             title="Want results like these for your business?"
             description="Share your industry and goals — we will suggest a similar approach, timeline, and honest budget range."

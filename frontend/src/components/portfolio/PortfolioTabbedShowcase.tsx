@@ -33,7 +33,7 @@ export function PortfolioTabbedShowcase({
 }: PortfolioTabbedShowcaseProps) {
   const tabs = useMemo(() => buildPortfolioTabs(items, allTabLabel), [items, allTabLabel]);
   const [activeTab, setActiveTab] = useState("all");
-  const [indicator, setIndicator] = useState({ left: 0, width: 0, ready: false });
+  const [indicator, setIndicator] = useState({ left: 0, top: 0, width: 0, height: 0, ready: false });
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
   const swiperRef = useRef<SwiperType | null>(null);
@@ -53,18 +53,28 @@ export function PortfolioTabbedShowcase({
     const capsule = capsuleRef.current;
     const tab = tabRefs.current[activeTab];
     if (!capsule || !tab) return;
-    const c = capsule.getBoundingClientRect();
-    const t = tab.getBoundingClientRect();
     setIndicator({
-      left: t.left - c.left,
-      width: t.width,
+      left: tab.offsetLeft,
+      top: tab.offsetTop,
+      width: tab.offsetWidth,
+      height: tab.offsetHeight,
       ready: true,
     });
   }, [activeTab]);
 
+  const prevTabRef = useRef(activeTab);
+
   useLayoutEffect(() => {
     updateIndicator();
-  }, [updateIndicator, tabs]);
+    if (prevTabRef.current !== activeTab && isPageGrid) {
+      tabRefs.current[activeTab]?.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
+    }
+    prevTabRef.current = activeTab;
+  }, [activeTab, updateIndicator, isPageGrid, tabs.length]);
 
   useEffect(() => {
     const capsule = capsuleRef.current;
@@ -102,16 +112,23 @@ export function PortfolioTabbedShowcase({
 
   return (
     <div className={`portfolio-showcase ${className}`.trim()}>
-      <div className="portfolio-capsule-wrap">
-        <div ref={capsuleRef} className="portfolio-capsule" role="tablist" aria-label="Filter portfolio">
+      <div className={`portfolio-capsule-wrap${isPageGrid ? " portfolio-capsule-wrap--scroll" : ""}`}>
+        <div
+          ref={capsuleRef}
+          className={`portfolio-capsule${isPageGrid ? " portfolio-capsule--scroll" : ""}`}
+          role="tablist"
+          aria-label="Filter portfolio"
+        >
           <span
             className="portfolio-capsule__indicator"
             aria-hidden="true"
             style={{
               left: indicator.left,
+              top: indicator.top,
               width: indicator.width,
+              height: indicator.height,
               opacity: indicator.ready ? 1 : 0,
-              transition: `left 0.48s ${APPLE_EASE}, width 0.48s ${APPLE_EASE}, opacity 0.25s ease`,
+              transition: `left 0.48s ${APPLE_EASE}, top 0.48s ${APPLE_EASE}, width 0.48s ${APPLE_EASE}, height 0.48s ${APPLE_EASE}, opacity 0.25s ease`,
             }}
           />
           {tabs.map((tab) => (
@@ -123,6 +140,9 @@ export function PortfolioTabbedShowcase({
               type="button"
               role="tab"
               aria-selected={activeTab === tab.id}
+              aria-controls={`portfolio-panel-${tab.id}`}
+              id={`portfolio-tab-${tab.id}`}
+              tabIndex={activeTab === tab.id ? 0 : -1}
               className={`portfolio-capsule__tab${activeTab === tab.id ? " is-active" : ""}`}
               onClick={() => selectTab(tab.id)}
             >
@@ -132,7 +152,14 @@ export function PortfolioTabbedShowcase({
         </div>
       </div>
 
-      <div className="portfolio-showcase__panel" key={activeTab} role="tabpanel" aria-live="polite">
+      <div
+        className="portfolio-showcase__panel"
+        key={activeTab}
+        id={`portfolio-panel-${activeTab}`}
+        role="tabpanel"
+        aria-labelledby={`portfolio-tab-${activeTab}`}
+        aria-live="polite"
+      >
         {filtered.length > 0 ? (
           isPageGrid ? (
             <div className="portfolio-showcase__track portfolio-showcase__track--grid">
