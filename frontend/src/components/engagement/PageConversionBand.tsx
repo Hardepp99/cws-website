@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { Reveal } from "@/components/ui/Reveal";
 
 type PageConversionBandProps = {
   title?: string;
@@ -21,24 +24,26 @@ export function PageConversionBand({
   showAskPrice = true,
 }: PageConversionBandProps) {
   return (
-    <section className="cta-section page-conversion-band">
+    <Reveal variant="fade-up">
+      <section className="cta-section page-conversion-band">
       <div className="corp-container text-center">
         <h2>{title}</h2>
         <p>{description}</p>
         <div className="page-conversion-band__actions">
-          <Link href={primaryHref} className="btn btn-light btn-sm px-4">
+          <Link href={primaryHref} className="btn btn-primary-custom btn-sm px-4">
             {primaryLabel}
           </Link>
           {showAskPrice ? (
-            <a href="#ask-price" className="btn btn-outline-light btn-sm px-4">
+            <a href="#ask-price" className="btn btn-green-custom btn-sm px-4">
               Ask price
             </a>
           ) : null}
-          <a href={secondaryHref} className="btn btn-outline-light btn-sm px-4">
+          <a href={secondaryHref} className="btn btn-outline-custom btn-sm px-4">
             {secondaryLabel}
           </a>
         </div>
       </div>
-    </section>
+      </section>
+    </Reveal>
   );
 }

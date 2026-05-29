@@ -26,7 +26,7 @@ export function resolvePublicBody(input: PageBodyInput): {
     return {
       mode,
       showElementor: hasElementor,
-      showClassic: false,
+      showClassic: !hasElementor && hasClassic,
     };
   }
   return {

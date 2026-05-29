@@ -44,73 +44,88 @@ export function ServiceDetailPage({ data }: ServiceDetailPageProps) {
         ]}
       />
 
-      <section className="service-detail-intro">
-        <div className="corp-container">
-          <PageContentTitle title={data.heroTitle || data.title} subtitle={data.heroSubtitle} />
-          {data.priceBadge ? (
-            <span className="service-detail-price-badge">{data.priceBadge}</span>
-          ) : null}
-          <div className="corp-intro-actions">
-            <Link href="/contact" className="btn btn-primary-custom btn-sm">
-              Get a quote
-            </Link>
-            <a href="tel:+917015969967" className="btn btn-outline-custom btn-sm">
-              Call +91-7015969967
-            </a>
-          </div>
+      {body.showElementor ? (
+        <div className="inner-page-elementor">
+          <PageBodyContent
+            title={data.title}
+            displayMode={data.displayMode}
+            content={data.content}
+            desimentor={data.desimentor}
+            showArticleWrapper={false}
+          />
         </div>
-      </section>
-
-      {data.features?.length > 0 ? (
-        <section className="service-detail-section service-detail-section--alt">
-          <div className="corp-container">
-            <div className="service-detail-section-head text-center">
-              <span className="section-badge section-badge--growth">Why choose us</span>
-              <h2 className="section-title mt-2">Key features</h2>
-              <p className="section-subtitle">
-                What you get with our {data.title.toLowerCase()} service.
-              </p>
+      ) : (
+        <>
+          <section className="service-detail-intro">
+            <div className="corp-container">
+              <PageContentTitle title={data.heroTitle || data.title} subtitle={data.heroSubtitle} />
+              {data.priceBadge ? (
+                <span className="service-detail-price-badge">{data.priceBadge}</span>
+              ) : null}
+              <div className="corp-intro-actions">
+                <Link href="/contact" className="btn btn-primary-custom btn-sm">
+                  Get a quote
+                </Link>
+                <a href="tel:+917015969967" className="btn btn-outline-custom btn-sm">
+                  Call +91-7015969967
+                </a>
+              </div>
             </div>
-            <div className="row g-3 g-md-4">
-              {data.features.map((feature) => (
-                <div key={feature.title} className="col-lg-4 col-md-6">
-                  <article className="service-detail-feature-card h-100">
-                    <div className="service-detail-feature-icon" aria-hidden="true">
-                      <i className={feature.icon || "fas fa-check"} />
-                    </div>
-                    <h3>{feature.title}</h3>
-                    <p>{feature.description}</p>
-                  </article>
+          </section>
+
+          {data.features?.length > 0 ? (
+            <section className="service-detail-section service-detail-section--alt">
+              <div className="corp-container">
+                <div className="service-detail-section-head text-center">
+                  <span className="section-badge section-badge--growth">Why choose us</span>
+                  <h2 className="section-title mt-2">Key features</h2>
                 </div>
-              ))}
+                <div className="row g-3 g-md-4">
+                  {data.features.map((feature) => (
+                    <div key={feature.title} className="col-lg-4 col-md-6">
+                      <article className="service-detail-feature-card h-100">
+                        <div className="service-detail-feature-icon" aria-hidden="true">
+                          <i className={feature.icon || "fas fa-check"} />
+                        </div>
+                        <h3>{feature.title}</h3>
+                        <p>{feature.description}</p>
+                      </article>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          ) : null}
+
+          {body.showClassic ? (
+            <section className="content-page-section">
+              <div className="corp-container">
+                <PageBodyContent
+                  title={data.title}
+                  displayMode="classic"
+                  content={data.content}
+                  showArticleWrapper={false}
+                />
+              </div>
+            </section>
+          ) : null}
+
+          <section className="cta-section service-detail-cta">
+            <div className="corp-container text-center">
+              <h2>{data.ctaTitle || "Start Your Project"}</h2>
+              <p>{data.ctaText || "Contact us for expert solutions tailored to your business."}</p>
+              <div className="page-conversion-band__actions">
+                <Link href="/contact" className="btn btn-primary-custom btn-sm px-4">
+                  Contact Us
+                </Link>
+                <a href="#ask-price" className="btn btn-green-custom btn-sm px-4">
+                  Ask price
+                </a>
+              </div>
             </div>
-          </div>
-        </section>
-      ) : null}
-
-      {body.showElementor || body.showClassic ? (
-        <section className="content-page-section content-page-section--flush">
-          <div className={body.showClassic && !body.showElementor ? "corp-container" : undefined}>
-            <PageBodyContent
-              title={data.title}
-              displayMode={data.displayMode}
-              content={data.content}
-              desimentor={data.desimentor}
-              showArticleWrapper={false}
-            />
-          </div>
-        </section>
-      ) : null}
-
-      <section className="cta-section service-detail-cta">
-        <div className="corp-container text-center">
-          <h2>{data.ctaTitle || "Start Your Project"}</h2>
-          <p>{data.ctaText || "Contact us for expert solutions tailored to your business."}</p>
-          <Link href="/contact" className="btn btn-light btn-sm px-4">
-            Contact Us
-          </Link>
-        </div>
-      </section>
+          </section>
+        </>
+      )}
     </div>
   );
 }

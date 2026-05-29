@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import nextDynamic from "next/dynamic";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { ContentArticle } from "@/components/ui/ContentArticle";
+import { ElementorPageBody } from "@/components/pages/ElementorPageBody";
 import { PageDesimentorContent } from "@/components/ui/PageDesimentorContent";
 import { PageContentTitle } from "@/components/ui/PageContentTitle";
 import { PageHeader } from "@/components/ui/PageHeader";
@@ -198,8 +199,13 @@ export default async function DynamicPage({ params }: PageProps) {
         <section className="corp-section corp-section-tight">
           <div className="container">
             <PageContentTitle title={coursesPage?.title ?? "Courses & Training"} />
-            {coursesPage?.content ? (
-              <RichContent html={coursesPage.content} className="seo-rich-prose mb-4" />
+            {coursesPage ? (
+              <ElementorPageBody
+                title={coursesPage.title}
+                displayMode={coursesPage.displayMode}
+                content={coursesPage.content}
+                desimentor={coursesPage.desimentor}
+              />
             ) : null}
             <div className="row justify-content-center">
               <div className="col-lg-8">
@@ -231,18 +237,12 @@ export default async function DynamicPage({ params }: PageProps) {
         ])}
       />
       <PageHeader breadcrumb={[{ label: "Home", href: "/" }, { label: page.title }]} />
-      {page.desimentor?.sections?.length || page.content ? (
-        <section className="content-page-section">
-          <div className="corp-container">
-            <PageDesimentorContent
-              title={page.title}
-              displayMode={page.displayMode}
-              desimentor={page.desimentor}
-              html={page.content}
-            />
-          </div>
-        </section>
-      ) : null}
+      <ElementorPageBody
+        title={page.title}
+        displayMode={page.displayMode}
+        content={page.content}
+        desimentor={page.desimentor}
+      />
       <PageTrustStrip />
       {!["privacy-policy", "terms-conditions"].includes(slug) ? <PageConversionBand /> : null}
     </SiteLayout>

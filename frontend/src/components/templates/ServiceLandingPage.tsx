@@ -1,9 +1,6 @@
 import Link from "next/link";
-import { CtaLink } from "@/components/engagement/CtaLink";
-import { ASK_PRICE_HREF } from "@/lib/ask-price";
-import { PageContentTitle } from "@/components/ui/PageContentTitle";
-import { PageHeader } from "@/components/ui/PageHeader";
 import { PageBodyContent } from "@/components/ui/PageBodyContent";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { resolvePublicBody } from "@/lib/content/display-mode";
 import type { ServiceLanding } from "@/lib/wordpress/types";
 
@@ -42,110 +39,41 @@ export function ServiceLandingPage({ data }: ServiceLandingPageProps) {
           { label: data.service },
         ]}
       />
-      <section className="service-location-hero">
-        <div className="corp-container">
-          <PageContentTitle title={data.pageTitle.split("|")[0].trim()} />
-          <div className="row align-items-start g-4">
-            <div className="col-lg-7">
-              <span className="service-location-kicker">
-                <i className={theme.icon} /> {theme.badge}
-              </span>
+
+      {body.showElementor ? (
+        <div className="inner-page-elementor">
+          <PageBodyContent
+            title={data.pageTitle}
+            displayMode={data.displayMode}
+            content={data.seoBody}
+            desimentor={data.desimentor}
+            showArticleWrapper={false}
+          />
+        </div>
+      ) : (
+        <>
+          <section className="service-location-hero">
+            <div className="corp-container">
+              <h1 className="page-content-title">{data.pageTitle.split("|")[0].trim()}</h1>
               <p className="service-location-lead">{data.intro}</p>
-              <div className="corp-intro-actions">
-                <CtaLink href={ASK_PRICE_HREF} className="btn btn-primary-custom btn-sm">
-                  Ask price
-                </CtaLink>
-                <a href="tel:+917015969967" className="btn btn-outline-custom btn-sm">
-                  Call +91-7015969967
-                </a>
-              </div>
             </div>
-            <div className="col-lg-5">
-              <div className="service-location-preview">
-                <div className="service-location-preview-window">
-                  <span className="service-location-preview-dot red" />
-                  <span className="service-location-preview-dot yellow" />
-                  <span className="service-location-preview-dot green" />
-                </div>
-                <pre className="service-location-preview-code">{`// ${data.service}\nconst locations = [\n  'Zirakpur',\n  'Chandigarh',\n  'Mohali'\n];`}</pre>
+          </section>
+          {body.showClassic ? (
+            <section className="service-location-section alt">
+              <div className="corp-container service-location-copy">
+                <PageBodyContent
+                  title={data.pageTitle}
+                  displayMode="classic"
+                  content={data.seoBody}
+                  showArticleWrapper={false}
+                />
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
+            </section>
+          ) : null}
+        </>
+      )}
 
-      <section className="service-location-section">
-        <div className="corp-container service-location-copy">
-          <h3>Benefits of {data.service}</h3>
-          <p className="lead-copy">{data.intro}</p>
-          <ul className="service-location-benefits">
-            {data.benefits.map((b) => (
-              <li key={b}>
-                <i className="fas fa-check-circle" /> {b}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {body.showElementor || body.showClassic ? (
-        <section className="service-location-section alt">
-          <div className={body.showClassic ? "corp-container service-location-copy" : undefined}>
-            <PageBodyContent
-              title={data.pageTitle}
-              displayMode={data.displayMode}
-              content={data.seoBody}
-              desimentor={data.desimentor}
-              showArticleWrapper={false}
-            />
-          </div>
-        </section>
-      ) : null}
-
-      <section className="service-location-section alt">
-        <div className="corp-container">
-          <div className="service-location-block">
-            <div className="service-location-block-header">
-              <h3>What You Get</h3>
-              <p>Deliverables included with our {data.service.toLowerCase()} services.</p>
-            </div>
-            <ul className="service-location-deliverables">
-              {data.deliverables.map((d) => (
-                <li key={d}>
-                  <i className="fas fa-check" /> {d}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section className="service-location-section">
-        <div className="corp-container">
-          <h3 className="mb-3">Frequently Asked Questions</h3>
-          <div className="accordion" id="serviceFaq">
-            {data.faq.map((item, i) => (
-              <div className="accordion-item" key={item.question}>
-                <h4 className="accordion-header">
-                  <button
-                    className="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target={`#faq-${i}`}
-                  >
-                    {item.question}
-                  </button>
-                </h4>
-                <div id={`faq-${i}`} className="accordion-collapse collapse" data-bs-parent="#serviceFaq">
-                  <div className="accordion-body">{item.answer}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {data.related.length > 0 && (
+      {data.related.length > 0 ? (
         <section className="service-location-section alt">
           <div className="corp-container">
             <h3 className="mb-3">Related Services</h3>
@@ -161,17 +89,7 @@ export function ServiceLandingPage({ data }: ServiceLandingPageProps) {
             </div>
           </div>
         </section>
-      )}
-
-      <section className="cta-section">
-        <div className="corp-container text-center">
-          <h2>Ready for {data.service}?</h2>
-          <p>Contact Creative Web Solutions for a free consultation in Zirakpur, Chandigarh, and Mohali.</p>
-          <Link href="/contact" className="btn btn-primary-custom btn-sm">
-            Contact Us
-          </Link>
-        </div>
-      </section>
+      ) : null}
     </div>
   );
 }

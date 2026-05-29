@@ -1,8 +1,7 @@
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { PortfolioTabbedShowcase } from "@/components/portfolio/PortfolioTabbedShowcase";
-import { ContentArticle } from "@/components/ui/ContentArticle";
+import { ElementorPageBody } from "@/components/pages/ElementorPageBody";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { RichContent } from "@/components/ui/RichContent";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { PageConversionBand } from "@/components/engagement/PageConversionBand";
 import { getPageBySlug, getPortfolioAll, getSiteSettings } from "@/lib/wordpress/api";
@@ -60,18 +59,22 @@ export default async function PortfolioPage() {
       />
       <PageHeader breadcrumb={[{ label: "Home", href: "/" }, { label: "Portfolio" }]} />
       <div className="portfolio-page">
+        {page ? (
+          <ElementorPageBody
+            title={page.title ?? title}
+            displayMode={page.displayMode}
+            content={page.content}
+            desimentor={page.desimentor}
+          />
+        ) : (
+          <div className="corp-container">
+            <header className="portfolio-page__hero">
+              <h1>{title}</h1>
+              {subtitle ? <p>{subtitle}</p> : null}
+            </header>
+          </div>
+        )}
         <div className="corp-container">
-          <header className="portfolio-page__hero">
-            <h1>{title}</h1>
-            {subtitle ? <p>{subtitle}</p> : null}
-          </header>
-          {page?.content ? (
-            <section className="content-page-section portfolio-page__intro">
-              <ContentArticle title="">
-                <RichContent html={page.content} className="seo-rich-prose" />
-              </ContentArticle>
-            </section>
-          ) : null}
           <PortfolioTabbedShowcase
             items={items}
             allTabLabel="All work"

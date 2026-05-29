@@ -1,14 +1,19 @@
 import { notFound } from "next/navigation";
 import { SiteLayout } from "@/components/layout/SiteLayout";
-import { PageDesimentorContent } from "@/components/ui/PageDesimentorContent";
+import { ContactPageView } from "@/components/contact/ContactPageView";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { ContactForm } from "@/components/forms/ContactForm";
 import { PageTrustStrip } from "@/components/engagement/PageTrustStrip";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { getPageBySlug } from "@/lib/wordpress/api";
+import { googleMapsEmbedUrl } from "@/lib/contact/maps-embed";
+import { gmbConfigFromSiteSettings } from "@/lib/gmb/resolve";
+import { getPageBySlug, getSiteSettings } from "@/lib/wordpress/api";
 import { breadcrumbJsonLd, buildMetadata, contactPageJsonLd } from "@/lib/seo/metadata";
+import "./contact-page.css";
 
 export const dynamic = "force-dynamic";
+
+const DEFAULT_INTRO =
+  "Share your project goals — we respond within one business day with practical next steps. For urgent enquiries, call or WhatsApp the number below.";
 
 export async function generateMetadata() {
   const page = await getPageBySlug("contact");
@@ -17,13 +22,15 @@ export async function generateMetadata() {
 }
 
 export default async function ContactPage() {
-  const page = await getPageBySlug("contact");
+  const [page, settings] = await Promise.all([getPageBySlug("contact"), getSiteSettings()]);
   if (!page) notFound();
 
-  const hasElementor =
-    page.displayMode === "elementor" && Boolean(page.desimentor?.sections?.length);
-  const hasClassic = Boolean(page.content?.trim());
-  const hasContent = hasElementor || hasClassic;
+  const gmb = gmbConfigFromSiteSettings(settings);
+  const mapsEmbedUrl = googleMapsEmbedUrl(gmb.mapsUrl, gmb.placeName);
+
+  const intro =
+    page.seo?.description?.trim() ||
+    "Share your project goals — we respond within one business day with practical next steps and a ballpark scope.";
 
   return (
     <SiteLayout currentPath="/contact">
@@ -37,38 +44,15 @@ export default async function ContactPage() {
         ]}
       />
       <PageHeader breadcrumb={[{ label: "Home", href: "/" }, { label: page.title }]} />
-      {hasElementor ? (
-        <section className="content-page-section pb-0">
-          <div className="container">
-            <PageDesimentorContent
-              title={page.title}
-              displayMode={page.displayMode}
-              desimentor={page.desimentor}
-              showArticleWrapper={false}
-            />
-          </div>
-        </section>
-      ) : null}
-      <section className="content-page-section">
-        <div className="container">
-          <div className="row g-4 align-items-start">
-            {hasClassic ? (
-              <div className="col-lg-5">
-                <PageDesimentorContent
-                  title={page.title}
-                  displayMode="classic"
-                  html={page.content}
-                />
-              </div>
-            ) : null}
-            <div className={hasContent ? "col-lg-7" : "col-lg-8 mx-auto"}>
-              <div className="p-4 p-lg-5 bg-white rounded-4 border shadow-sm">
-                <ContactForm />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ContactPageView
+        title={page.title}
+        intro={intro || DEFAULT_INTRO}
+        settings={settings}
+        mapsEmbedUrl={mapsEmbedUrl}
+        placeName={gmb.placeName}
+        rating={String(gmb.rating)}
+        reviewCount={gmb.reviewCount}
+      />
       <PageTrustStrip />
     </SiteLayout>
   );

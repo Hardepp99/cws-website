@@ -186,7 +186,7 @@ main.site-main:has(> .home-page) {
 }
 
 .home-hero-gmb__maps-link:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .home-hero-gmb__score {

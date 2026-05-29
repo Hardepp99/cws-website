@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { ContentArticle } from "@/components/ui/ContentArticle";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { PageDesimentorContent } from "@/components/ui/PageDesimentorContent";
+import { ElementorPageBody } from "@/components/pages/ElementorPageBody";
 import { getPageBySlug } from "@/lib/wordpress/api";
 import { PageConversionBand } from "@/components/engagement/PageConversionBand";
 import { PageTrustStrip } from "@/components/engagement/PageTrustStrip";
@@ -34,18 +34,13 @@ export default async function AboutPage() {
         ]}
       />
       <PageHeader breadcrumb={[{ label: "Home", href: "/" }, { label: page.title }]} />
-      {page.desimentor?.sections?.length || page.content ? (
-        <section className="content-page-section">
-          <div className="corp-container">
-            <PageDesimentorContent
-              title={page.title}
-              displayMode={page.displayMode}
-              desimentor={page.desimentor}
-              html={page.content}
-            />
-          </div>
-        </section>
-      ) : (
+      <ElementorPageBody
+        title={page.title}
+        displayMode={page.displayMode}
+        content={page.content}
+        desimentor={page.desimentor}
+      />
+      {!page.content && !page.desimentor?.sections?.length ? (
         <section className="content-page-section">
           <div className="corp-container">
             <ContentArticle title={page.title}>
@@ -60,7 +55,7 @@ export default async function AboutPage() {
             </ContentArticle>
           </div>
         </section>
-      )}
+      ) : null}
       <PageTrustStrip />
       <PageConversionBand
         title="Want a team that answers in plain language?"

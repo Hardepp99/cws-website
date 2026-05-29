@@ -29,7 +29,7 @@ export function Reveal({
     if (!el) return;
 
     if (trigger === "load") {
-      const t = window.setTimeout(() => setVisible(true), 50);
+      const t = window.setTimeout(() => setVisible(true), Math.min(delay, 80) + 16);
       return () => clearTimeout(t);
     }
 
@@ -40,12 +40,12 @@ export function Reveal({
           observer.disconnect();
         }
       },
-      { threshold: 0.1, rootMargin: "0px 0px -32px 0px" }
+      { threshold: 0.06, rootMargin: "0px 0px -16px 0px" }
     );
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [trigger]);
+  }, [trigger, delay]);
 
   return (
     <div

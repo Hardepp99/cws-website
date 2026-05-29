@@ -1,12 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteLayout } from "@/components/layout/SiteLayout";
-import { ContentArticle } from "@/components/ui/ContentArticle";
-import { PageHeader } from "@/components/ui/PageHeader";
-import { RichContent } from "@/components/ui/RichContent";
+import { ElementorPageBody } from "@/components/pages/ElementorPageBody";
 import { PageConversionBand } from "@/components/engagement/PageConversionBand";
 import { PageTrustStrip } from "@/components/engagement/PageTrustStrip";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { resolvePublicBody } from "@/lib/content/display-mode";
 import { getAllServiceLandings, getPageBySlug } from "@/lib/wordpress/api";
 import { breadcrumbJsonLd, buildMetadata } from "@/lib/seo/metadata";
 
@@ -23,6 +22,11 @@ export default async function ServicesPage() {
   if (!page) notFound();
 
   const landings = await getAllServiceLandings();
+  const body = resolvePublicBody({
+    displayMode: page.displayMode,
+    content: page.content,
+    desimentor: page.desimentor,
+  });
 
   return (
     <SiteLayout currentPath="/services">
@@ -33,21 +37,24 @@ export default async function ServicesPage() {
         ])}
       />
       <div className="services-page">
-        <PageHeader breadcrumb={[{ label: "Home", href: "/" }, { label: page.title }]} />
-
-        {page.content ? (
-          <section className="content-page-section">
-            <div className="corp-container">
-              <ContentArticle title={page.title}>
-                <RichContent html={page.content} />
-              </ContentArticle>
-            </div>
-          </section>
-        ) : null}
+        <ElementorPageBody
+          title={page.title}
+          displayMode={page.displayMode}
+          content={page.content}
+          desimentor={page.desimentor}
+        />
 
         {landings.length > 0 ? (
           <section className="corp-section corp-section-alt corp-section-tight">
             <div className="corp-container">
+              {!body.showElementor ? (
+                <header className="services-page__list-head text-center mb-4">
+                  <h2 className="section-title">Service landings by intent</h2>
+                  <p className="section-subtitle">
+                    Location-focused pages for Zirakpur, Chandigarh, Mohali, and India-wide search.
+                  </p>
+                </header>
+              ) : null}
               <div className="row g-3 g-md-4">
                 {landings.map((s) => (
                   <div key={s.slug} className="col-lg-4 col-md-6">
@@ -67,20 +74,12 @@ export default async function ServicesPage() {
               </div>
             </div>
           </section>
-        ) : (
-          <section className="content-page-section">
-            <div className="corp-container">
-              <ContentArticle title={page.title}>
-                <p className="content-article__empty">Add service landings in the admin.</p>
-              </ContentArticle>
-            </div>
-          </section>
-        )}
+        ) : null}
         <PageTrustStrip />
         <PageConversionBand
           title="Not sure which service fits?"
-          description="Describe your goal — more leads, online sales, or internal software. We will point you to the right landing page or propose a combined plan."
-          primaryLabel="Get expert advice"
+          description="Tell us your goal — website, app, marketing, or training. We will point you to the right landing and a realistic quote."
+          primaryLabel="Contact us"
           primaryHref="/contact"
         />
       </div>

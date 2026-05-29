@@ -1,4 +1,5 @@
 import { PageBodyContent } from "@/components/ui/PageBodyContent";
+import { resolvePublicBody } from "@/lib/content/display-mode";
 import type { DesimentorDocument } from "@/lib/desimentor/types";
 import type { ContentDisplayMode } from "@/lib/wordpress/types";
 
@@ -15,13 +16,15 @@ export function PageDesimentorContent({
   displayMode?: ContentDisplayMode;
   showArticleWrapper?: boolean;
 }) {
+  const { showElementor } = resolvePublicBody({ displayMode, content: html, desimentor });
+
   return (
     <PageBodyContent
       title={title}
       content={html}
       desimentor={desimentor}
       displayMode={displayMode}
-      showArticleWrapper={showArticleWrapper}
+      showArticleWrapper={showElementor ? false : showArticleWrapper}
     />
   );
 }
