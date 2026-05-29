@@ -1,4 +1,5 @@
 import { AdminDialogLayout } from "@/components/admin/dialog/AdminDialogLayout";
+import { AdminSessionProvider } from "@/components/admin/AdminSessionProvider";
 import { AdminThemeStyles } from "@/components/admin/AdminThemeStyles";
 import "../admin.css";
 
@@ -11,7 +12,9 @@ export default function AdminPanelLayout({ children }: { children: React.ReactNo
   return (
     <>
       <AdminThemeStyles />
-      <AdminDialogLayout>{children}</AdminDialogLayout>
+      <AdminSessionProvider>
+        <AdminDialogLayout>{children}</AdminDialogLayout>
+      </AdminSessionProvider>
     </>
   );
 }

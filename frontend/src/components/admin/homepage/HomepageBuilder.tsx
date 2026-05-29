@@ -87,7 +87,7 @@ export function HomepageBuilder() {
                 href={`/admin/site-pages/${pageId}`}
                 className="page-title-action page-title-action-secondary"
               >
-                Classic ↔ Elementor
+                Classic ↔ Desimentor
               </Link>
             ) : null}
             <Link href="/admin/homepage" className="page-title-action page-title-action-secondary">

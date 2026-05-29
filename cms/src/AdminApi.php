@@ -23,18 +23,68 @@ final class AdminApi
             Http::json(['success' => true]);
         }
 
-        AdminAuth::requireUser();
+        $currentUser = AdminAuth::requireUser();
+        $userId = (int) $currentUser['id'];
+        $pageNum = max(1, (int) ($_GET['page'] ?? 1));
+        $perPage = min(50, max(5, (int) ($_GET['perPage'] ?? 10)));
 
         if ($method === 'GET' && $path === '/me') {
-            Http::json(['ok' => true]);
+            Http::json(['success' => true, ...AdminAuth::publicProfile($currentUser)]);
+        }
+
+        AdminActivityLog::registerMutationHook($currentUser, $method, $path);
+
+        // —— Admin-only: users & SMTP ——
+        if (str_starts_with($path, '/users') || str_starts_with($path, '/crm/smtp')) {
+            AdminAuth::requireAdmin($currentUser);
+        }
+
+        if ($method === 'GET' && $path === '/users/list') {
+            Http::json(AdminUsers::listAll());
+        }
+
+        if ($method === 'GET' && preg_match('#^/users/(\d+)$#', $path, $m)) {
+            $row = AdminUsers::getById((int) $m[1]);
+            Http::json($row ?: ['error' => 'Not found'], $row ? 200 : 404);
+        }
+
+        if ($method === 'POST' && $path === '/users') {
+            Http::json(['success' => true, 'user' => AdminUsers::create($currentUser, Http::readJsonBody())]);
+        }
+
+        if ($method === 'PUT' && preg_match('#^/users/(\d+)$#', $path, $m)) {
+            Http::json([
+                'success' => true,
+                'user'    => AdminUsers::update($currentUser, (int) $m[1], Http::readJsonBody()),
+            ]);
+        }
+
+        if ($method === 'DELETE' && preg_match('#^/users/(\d+)$#', $path, $m)) {
+            AdminUsers::delete($currentUser, (int) $m[1]);
+            Http::json(['success' => true]);
+        }
+
+        if ($method === 'GET' && $path === '/activity/list') {
+            $isAdmin = ($currentUser['role'] ?? '') === 'admin';
+            $filterUser = null;
+            if (!$isAdmin) {
+                $filterUser = $userId;
+            } elseif (isset($_GET['userId']) && $_GET['userId'] !== '' && $_GET['userId'] !== 'all') {
+                $filterUser = (int) $_GET['userId'];
+            }
+            $search = trim((string) ($_GET['q'] ?? $_GET['search'] ?? ''));
+            $task = trim((string) ($_GET['task'] ?? ''));
+            Http::json([
+                ...AdminActivityLog::list($pageNum, $perPage, $filterUser, $search, $task),
+                'scope'         => $isAdmin ? ($filterUser ? 'user' : 'all') : 'self',
+                'canViewOthers' => $isAdmin,
+            ]);
         }
 
         if ($method === 'GET' && $path === '/dashboard/stats') {
             Http::json($repo->getAdminDashboardStats());
         }
 
-        $pageNum = max(1, (int) ($_GET['page'] ?? 1));
-        $perPage = min(50, max(5, (int) ($_GET['perPage'] ?? 10)));
         $listQ = AdminListQuery::fromRequest();
 
         // Homepage sections (row CRUD)
@@ -410,6 +460,77 @@ final class AdminApi
 
         if ($method === 'GET' && $path === '/forms') {
             Http::json($repo->getFormSubmissions(100));
+        }
+
+        $crm = cws_crm();
+
+        if ($method === 'GET' && $path === '/crm/stats') {
+            Http::json($crm->getStats());
+        }
+
+        if ($method === 'GET' && $path === '/crm/contacts') {
+            $contactSearch = trim((string) ($_GET['q'] ?? $_GET['search'] ?? ''));
+            Http::json($crm->listContacts($contactSearch));
+        }
+
+        if ($method === 'GET' && $path === '/crm/inbox') {
+            $folder = (string) ($_GET['folder'] ?? 'inbox');
+            $category = (string) ($_GET['category'] ?? 'all');
+            $search = trim((string) ($_GET['q'] ?? $_GET['search'] ?? ''));
+            $unread = isset($_GET['unread']) && ($_GET['unread'] === '1' || $_GET['unread'] === 'true');
+            if ($folder === 'sent') {
+                Http::json($crm->listSent($pageNum, min(50, max(10, $perPage)), $search));
+            } else {
+                Http::json($crm->listInbox($pageNum, min(50, max(10, $perPage)), $folder, $category, $search, $unread));
+            }
+        }
+
+        if ($method === 'GET' && preg_match('#^/crm/messages/(\d+)$#', $path, $m)) {
+            $detail = $crm->getMessage((int) $m[1]);
+            Http::json($detail ?: ['error' => 'Not found'], $detail ? 200 : 404);
+        }
+
+        if ($method === 'PATCH' && preg_match('#^/crm/messages/(\d+)$#', $path, $m)) {
+            try {
+                Http::json($crm->patchMessage((int) $m[1], Http::readJsonBody()) ?? ['error' => 'Not found']);
+            } catch (Throwable $e) {
+                Http::json(['error' => $e->getMessage()], 400);
+            }
+        }
+
+        if ($method === 'POST' && $path === '/crm/compose') {
+            try {
+                Http::json($crm->compose(Http::readJsonBody(), $userId));
+            } catch (Throwable $e) {
+                Http::json(['error' => $e->getMessage()], 400);
+            }
+        }
+
+        if ($method === 'POST' && preg_match('#^/crm/messages/(\d+)/reply$#', $path, $m)) {
+            try {
+                Http::json($crm->reply((int) $m[1], Http::readJsonBody(), $userId));
+            } catch (Throwable $e) {
+                Http::json(['error' => $e->getMessage()], 400);
+            }
+        }
+
+        if ($method === 'GET' && $path === '/crm/smtp') {
+            Http::json($crm->getSmtpSettings());
+        }
+
+        if ($method === 'PUT' && $path === '/crm/smtp') {
+            $crm->saveSmtpSettings(Http::readJsonBody());
+            Http::json(['success' => true]);
+        }
+
+        if ($method === 'POST' && $path === '/crm/smtp/test') {
+            try {
+                $body = Http::readJsonBody();
+                $crm->testSmtp(isset($body['to']) ? (string) $body['to'] : null);
+                Http::json(['success' => true, 'message' => 'Test email sent.']);
+            } catch (Throwable $e) {
+                Http::json(['error' => $e->getMessage()], 400);
+            }
         }
 
         $media = cws_media();

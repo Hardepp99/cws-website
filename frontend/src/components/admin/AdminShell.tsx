@@ -4,10 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useAdminSession } from "@/components/admin/AdminSessionProvider";
 import { adminLogout } from "@/lib/admin/client";
-import { CWS_LOGO_LIGHT_PATH } from "@/lib/site-brand";
+import { CWS_LOGO_PATH, logoDimensions } from "@/lib/site-brand";
 
-const NAV = [
+const NAV_BASE = [
   { href: "/admin", label: "Dashboard", icon: "fa-gauge-high" },
   { href: "/admin/media", label: "Media", icon: "fa-images" },
   { href: "/admin/homepage", label: "Homepage", icon: "fa-house" },
@@ -19,8 +20,13 @@ const NAV = [
   { href: "/admin/menus", label: "Menus", icon: "fa-bars" },
   { href: "/admin/settings", label: "Customize", icon: "fa-sliders" },
   { href: "/admin/pricing", label: "Ask Price", icon: "fa-tag" },
-  { href: "/admin/forms", label: "Form Submissions", icon: "fa-inbox" },
-];
+  { href: "/admin/forms", label: "Inbox", icon: "fa-inbox" },
+  { href: "/admin/activity", label: "Activity", icon: "fa-clock-rotate-left" },
+] as const;
+
+const NAV_ADMIN_ONLY = [
+  { href: "/admin/users", label: "Users", icon: "fa-users" },
+] as const;
 
 function navIsActive(pathname: string, href: string): boolean {
   return pathname === href || (href !== "/admin" && pathname.startsWith(href));
@@ -35,7 +41,10 @@ export function AdminShell({
 }) {
   const pathname = usePathname();
   const router = useRouter();
+  const { user, isAdmin } = useAdminSession();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const logo = logoDimensions(52);
+  const nav = isAdmin ? [...NAV_BASE, ...NAV_ADMIN_ONLY] : [...NAV_BASE];
   const [profileOpen, setProfileOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
 
@@ -79,7 +88,7 @@ export function AdminShell({
   }
 
   return (
-    <div className={`cms-admin-root${sidebarOpen ? " cms-admin-root--nav-open" : ""}`}>
+    <div className={`cms-admin-root cms-admin-root--apple${sidebarOpen ? " cms-admin-root--nav-open" : ""}`}>
       <button
         type="button"
         className="cms-admin-overlay"
@@ -93,12 +102,18 @@ export function AdminShell({
         id="cms-admin-sidebar"
         aria-label="Admin navigation"
       >
-        <div className="cms-admin-brand">
-          <Image src={CWS_LOGO_LIGHT_PATH} alt="Creative Web Solutions" width={160} height={40} priority />
-          <span>Content Manager</span>
+        <div className="cms-admin-brand cms-admin-brand--center">
+          <Image
+            src={CWS_LOGO_PATH}
+            alt="Creative Web Solutions"
+            width={logo.width}
+            height={logo.height}
+            priority
+            className="cms-admin-brand__logo"
+          />
         </div>
         <nav className="cms-admin-nav">
-          {NAV.map((item) => (
+          {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -142,7 +157,9 @@ export function AdminShell({
               <span className="cms-admin-profile-avatar" aria-hidden="true">
                 <i className="fa-solid fa-user" />
               </span>
-              <span className="cms-admin-profile-label">Admin</span>
+              <span className="cms-admin-profile-label">
+                {user?.displayName || "Admin"}
+              </span>
               <i className={`fa-solid fa-chevron-down cms-admin-profile-caret${profileOpen ? " is-open" : ""}`} aria-hidden="true" />
             </button>
             {profileOpen ? (

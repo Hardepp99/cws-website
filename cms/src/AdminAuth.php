@@ -6,9 +6,11 @@ final class AdminAuth
 {
     public static function login(string $username, string $password): ?array
     {
-        $stmt = cws_db()->prepare('SELECT id, password_hash, display_name FROM users WHERE username = :u LIMIT 1');
+        $stmt = cws_db()->prepare(
+            'SELECT id, username, password_hash, display_name, role FROM users WHERE username = :u LIMIT 1'
+        );
         $stmt->execute([':u' => $username]);
-        $user = $stmt->fetch();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
         if (!$user || !password_verify($password, $user['password_hash'])) {
             return null;
         }
@@ -18,10 +20,23 @@ final class AdminAuth
             'INSERT INTO admin_sessions (token, user_id, expires_at) VALUES (:t, :u, :e)'
         );
         $ins->execute([':t' => $token, ':u' => $user['id'], ':e' => $expires]);
+
+        $profile = self::mapUser($user);
+        AdminActivityLog::record(
+            $profile,
+            'auth.login',
+            'POST',
+            '/login',
+            'Signed in to the admin panel',
+            ['hint' => 'Opened a new admin session.', 'task' => 'auth'],
+        );
+
         return [
-            'token'        => $token,
-            'displayName'  => $user['display_name'],
-            'userId'       => (int) $user['id'],
+            'token'       => $token,
+            'displayName' => $profile['display_name'],
+            'userId'      => (int) $profile['id'],
+            'username'    => $profile['username'],
+            'role'        => $profile['role'],
         ];
     }
 
@@ -45,6 +60,20 @@ final class AdminAuth
 
     public static function revoke(string $token): void
     {
+        $userId = self::userIdFromToken($token);
+        if ($userId) {
+            $user = self::getUserById($userId);
+            if ($user) {
+                AdminActivityLog::record(
+                    $user,
+                    'auth.logout',
+                    'POST',
+                    '/logout',
+                    'Signed out of the admin panel',
+                    ['hint' => 'Ended the admin session.', 'task' => 'auth'],
+                );
+            }
+        }
         cws_db()->prepare('DELETE FROM admin_sessions WHERE token = :t')->execute([':t' => $token]);
     }
 
@@ -70,12 +99,62 @@ final class AdminAuth
         return '';
     }
 
-    public static function requireUser(): int
+    /** @return array{id:int,username:string,display_name:string,role:string} */
+    public static function requireUser(): array
     {
         $userId = self::validateBearer(self::authorizationHeader());
         if (!$userId) {
             Http::json(['error' => 'Unauthorized'], 401);
         }
-        return $userId;
+        $user = self::getUserById($userId);
+        if (!$user) {
+            Http::json(['error' => 'Unauthorized'], 401);
+        }
+        return $user;
+    }
+
+    /** @param array{id:int,username:string,display_name:string,role:string} $user */
+    public static function requireAdmin(array $user): void
+    {
+        if (($user['role'] ?? '') !== 'admin') {
+            Http::json(['error' => 'Forbidden — admin role required'], 403);
+        }
+    }
+
+    /** @return array{id:int,username:string,display_name:string,role:string}|null */
+    public static function getUserById(int $id): ?array
+    {
+        $stmt = cws_db()->prepare(
+            'SELECT id, username, display_name, role FROM users WHERE id = :id LIMIT 1'
+        );
+        $stmt->execute([':id' => $id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? self::mapUser($row) : null;
+    }
+
+    /** @return array{userId:int,username:string,displayName:string,role:string} */
+    public static function publicProfile(array $user): array
+    {
+        return [
+            'userId'      => (int) $user['id'],
+            'username'    => (string) $user['username'],
+            'displayName' => (string) $user['display_name'],
+            'role'        => (string) $user['role'],
+        ];
+    }
+
+    /** @param array<string, mixed> $row */
+    private static function mapUser(array $row): array
+    {
+        $role = (string) ($row['role'] ?? 'user');
+        if ($role !== 'admin') {
+            $role = 'user';
+        }
+        return [
+            'id'            => (int) $row['id'],
+            'username'      => (string) $row['username'],
+            'display_name'  => (string) $row['display_name'],
+            'role'          => $role,
+        ];
     }
 }

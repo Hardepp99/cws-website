@@ -14,6 +14,19 @@
   overflow: hidden;
 }
 
+.cms-admin-root--apple {
+  background: var(--admin-mac-bg, #f5f5f7);
+  color: var(--admin-mac-ink, #1d1d1f);
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Text",
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
 .cms-admin-sidebar {
   position: fixed;
   left: 0;
@@ -31,10 +44,39 @@
   z-index: 100;
 }
 
+.cms-admin-root--apple .cms-admin-sidebar {
+  width: 252px;
+  background: var(--admin-sidebar-bg, rgba(255, 255, 255, 0.78));
+  backdrop-filter: var(--admin-glass, blur(20px) saturate(180%));
+  -webkit-backdrop-filter: var(--admin-glass, blur(20px) saturate(180%));
+  border-right: 1px solid var(--admin-mac-line, rgba(0, 0, 0, 0.08));
+  box-shadow: none;
+  color: var(--admin-mac-ink, #1d1d1f);
+}
+
 .cms-admin-brand {
   padding: 20px 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   text-align: center;
+}
+
+.cms-admin-root--apple .cms-admin-brand {
+  padding: 22px 18px 16px;
+  border-bottom: 1px solid var(--admin-mac-line, rgba(0, 0, 0, 0.08));
+}
+
+.cms-admin-brand--center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.cms-admin-brand__logo {
+  width: auto !important;
+  max-width: 200px;
+  height: 52px !important;
+  object-fit: contain;
 }
 
 .cms-admin-brand img {
@@ -54,10 +96,26 @@
   opacity: 0.85;
 }
 
+.cms-admin-root--apple .cms-admin-brand span {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--admin-mac-muted, #6e6e73);
+  opacity: 1;
+}
+
 .cms-admin-nav {
   flex: 1;
   padding: 8px 0 16px;
   overflow: hidden;
+}
+
+.cms-admin-root--apple .cms-admin-nav {
+  padding: 10px 12px 18px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .cms-admin-nav a {
@@ -73,6 +131,21 @@
   transition: background 0.15s ease, border-color 0.15s ease;
 }
 
+.cms-admin-root--apple .cms-admin-nav a {
+  margin-bottom: 2px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border-left: none;
+  color: var(--admin-mac-ink, #1d1d1f);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  transition:
+    background 0.32s var(--admin-ease, cubic-bezier(0.32, 0.72, 0, 1)),
+    color 0.32s var(--admin-ease, cubic-bezier(0.32, 0.72, 0, 1)),
+    box-shadow 0.32s var(--admin-ease, cubic-bezier(0.32, 0.72, 0, 1));
+}
+
 .cms-admin-nav a i {
   width: 18px;
   text-align: center;
@@ -81,15 +154,47 @@
   flex-shrink: 0;
 }
 
+.cms-admin-root--apple .cms-admin-nav a i {
+  width: 20px;
+  font-size: 15px;
+  color: var(--admin-mac-muted, #6e6e73);
+  opacity: 1;
+  transition: color 0.32s var(--admin-ease, cubic-bezier(0.32, 0.72, 0, 1));
+}
+
 .cms-admin-nav a:hover {
   background: rgba(255, 255, 255, 0.08);
   color: #fff;
+}
+
+.cms-admin-root--apple .cms-admin-nav a:hover:not(.active) {
+  background: var(--admin-sidebar-hover, rgba(0, 0, 0, 0.05));
+  color: var(--admin-sidebar-link-hover, #aeaeb2);
+}
+
+.cms-admin-root--apple .cms-admin-nav a:hover:not(.active) i {
+  color: var(--admin-sidebar-link-hover, #aeaeb2);
 }
 
 .cms-admin-nav a.active {
   background: rgba(0, 88, 255, 0.25);
   border-left-color: var(--admin-green, #00a86b);
   color: #fff;
+}
+
+.cms-admin-root--apple .cms-admin-nav a.active,
+.cms-admin-root--apple .cms-admin-nav a.active:hover,
+.cms-admin-root--apple .cms-admin-nav a.active:visited {
+  background: var(--admin-sidebar-active, #1d1d1f);
+  color: #fff !important;
+  box-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+.cms-admin-root--apple .cms-admin-nav a.active i,
+.cms-admin-root--apple .cms-admin-nav a.active:hover i {
+  color: #fff !important;
 }
 
 .cms-admin-main {
@@ -101,6 +206,10 @@
   height: 100vh;
   max-height: 100vh;
   overflow: hidden;
+}
+
+.cms-admin-root--apple .cms-admin-main {
+  margin-left: 252px;
 }
 
 .cms-admin-topbar {
@@ -115,6 +224,14 @@
   box-shadow: 0 1px 0 rgba(10, 30, 94, 0.04);
   z-index: 50;
   min-height: 56px;
+}
+
+.cms-admin-root--apple .cms-admin-topbar {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: var(--admin-glass, blur(20px) saturate(180%));
+  -webkit-backdrop-filter: var(--admin-glass, blur(20px) saturate(180%));
+  border-bottom: 1px solid var(--admin-mac-line, rgba(0, 0, 0, 0.08));
+  box-shadow: none;
 }
 
 .cms-admin-topbar-start {
@@ -140,6 +257,12 @@
   letter-spacing: -0.01em;
 }
 
+.cms-admin-root--apple .cms-admin-topbar-title {
+  font-weight: 600;
+  color: var(--admin-mac-ink, #1d1d1f);
+  letter-spacing: -0.02em;
+}
+
 .cms-admin-topbar-page {
   font-size: 0.8125rem;
   font-weight: 500;
@@ -148,6 +271,10 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.cms-admin-root--apple .cms-admin-topbar-page {
+  color: var(--admin-mac-muted, #6e6e73);
 }
 
 .cms-admin-topbar-end {
@@ -177,6 +304,18 @@
   color: var(--admin-royal, #0057ff);
 }
 
+.cms-admin-root--apple .cms-admin-menu-toggle {
+  border-color: var(--admin-mac-line, rgba(0, 0, 0, 0.08));
+  border-radius: 10px;
+  color: var(--admin-mac-ink, #1d1d1f);
+}
+
+.cms-admin-root--apple .cms-admin-menu-toggle:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.12);
+  color: var(--admin-mac-ink, #1d1d1f);
+}
+
 .cms-admin-overlay {
   display: none;
   position: fixed;
@@ -190,6 +329,12 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease;
+}
+
+.cms-admin-root--apple .cms-admin-overlay {
+  background: rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .cms-admin-profile-btn {
@@ -208,10 +353,23 @@
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+.cms-admin-root--apple .cms-admin-profile-btn {
+  border-color: var(--admin-mac-line, rgba(0, 0, 0, 0.08));
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--admin-mac-ink, #1d1d1f);
+  font-weight: 500;
+}
+
 .cms-admin-profile-btn:hover,
 .cms-admin-profile-btn[aria-expanded="true"] {
   border-color: var(--admin-royal, #0057ff);
   box-shadow: 0 0 0 3px rgba(0, 87, 255, 0.12);
+}
+
+.cms-admin-root--apple .cms-admin-profile-btn:hover,
+.cms-admin-root--apple .cms-admin-profile-btn[aria-expanded="true"] {
+  border-color: rgba(0, 0, 0, 0.14);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
 .cms-admin-profile-avatar {
@@ -224,6 +382,11 @@
   background: var(--admin-gradient, linear-gradient(135deg, #0088ff, #0057ff));
   color: #fff;
   font-size: 14px;
+}
+
+.cms-admin-root--apple .cms-admin-profile-avatar {
+  background: var(--admin-sidebar-active, #1d1d1f);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
 }
 
 .cms-admin-profile-label {
@@ -251,6 +414,15 @@
   border-radius: 10px;
   box-shadow: 0 12px 32px rgba(10, 30, 94, 0.14);
   z-index: 120;
+}
+
+.cms-admin-root--apple .cms-admin-profile-menu {
+  border: 1px solid var(--admin-mac-line, rgba(0, 0, 0, 0.08));
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14);
+  backdrop-filter: var(--admin-glass, blur(20px) saturate(180%));
+  -webkit-backdrop-filter: var(--admin-glass, blur(20px) saturate(180%));
+  background: rgba(255, 255, 255, 0.92);
 }
 
 .cms-admin-profile-menu a,
@@ -304,6 +476,12 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* Summernote dialogs above admin chrome */
+.note-modal,
+.note-modal-backdrop {
+  z-index: 1200 !important;
 }
 
 .cms-admin-content {
@@ -481,24 +659,33 @@
   text-decoration: none;
 }
 
-/* Login page */
+/* Login page — Apple-style shell (matches admin sidebar) */
 .cms-login-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background: var(--admin-gradient);
+  background: var(--admin-mac-bg, #f5f5f7);
   position: relative;
   overflow: hidden;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Text",
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 .cms-login-page::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 20% 30%, rgba(0, 168, 107, 0.2), transparent 45%),
-    radial-gradient(circle at 80% 70%, rgba(255, 122, 0, 0.12), transparent 40%);
+  background:
+    radial-gradient(circle at 18% 22%, rgba(0, 87, 255, 0.06), transparent 42%),
+    radial-gradient(circle at 82% 78%, rgba(0, 168, 107, 0.05), transparent 40%);
   pointer-events: none;
 }
 
@@ -510,15 +697,31 @@
 }
 
 .cms-login-box {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.92);
   padding: 36px 32px 32px;
-  border-radius: 16px;
-  box-shadow: 0 20px 50px rgba(10, 30, 94, 0.25);
+  border-radius: 20px;
+  border: 1px solid var(--admin-mac-line, rgba(0, 0, 0, 0.08));
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.1);
+  backdrop-filter: var(--admin-glass, blur(20px) saturate(180%));
+  -webkit-backdrop-filter: var(--admin-glass, blur(20px) saturate(180%));
 }
 
 .cms-login-logo {
   text-align: center;
   margin-bottom: 20px;
+}
+
+.cms-login-logo--center {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.cms-login-logo__img {
+  width: auto !important;
+  max-width: min(100%, 280px);
+  height: 56px !important;
+  object-fit: contain;
 }
 
 .cms-login-logo img {
@@ -790,7 +993,7 @@
   margin: 0;
 }
 
-/* Classic vs Elementor page editor */
+/* Classic vs Desimentor page editor */
 .entity-editor-mode {
   margin-bottom: 20px;
   border: 1px solid #c3c4c7;
@@ -830,7 +1033,7 @@
 }
 
 .entity-editor-mode__badge--elementor {
-  background: linear-gradient(135deg, #92003b 0%, #c41e5a 100%);
+  background: #1d1d1f;
   color: #fff;
 }
 
@@ -956,13 +1159,15 @@
 }
 
 .row-action-btn--desimentor {
-  color: #92003b;
-  border-color: rgba(146, 0, 59, 0.35);
+  background: #1d1d1f;
+  color: #fff !important;
+  border-color: #1d1d1f;
 }
 
 .row-action-btn--desimentor:hover {
-  background: rgba(146, 0, 59, 0.08);
-  color: #92003b;
+  background: #333336;
+  color: #fff !important;
+  border-color: #333336;
 }
 
 .wp-heading-inline {
@@ -1069,16 +1274,18 @@
   background: #fff;
 }
 
+.wp-list-table .column-actions,
 .wp-list-table .column-actions-first {
   width: 1%;
-  min-width: 150px;
-  max-width: 220px;
+  min-width: max-content;
+  max-width: none;
   white-space: nowrap;
   vertical-align: middle;
   position: sticky;
   left: 0;
   z-index: 2;
   box-shadow: 2px 0 6px rgba(0, 0, 0, 0.06);
+  padding: 8px 10px;
 }
 
 .wp-list-table thead .column-actions-first {
@@ -1092,13 +1299,13 @@
 
 .wp-list-table .row-title {
   font-weight: 600;
-  color: var(--admin-royal, #0057ff);
+  color: var(--admin-mac-ink, #1d1d1f);
   text-decoration: none;
   word-break: break-word;
 }
 
 .wp-list-table .row-title:hover {
-  color: var(--admin-navy, #0a1e5e);
+  color: #424245;
 }
 
 .wp-list-table tr.no-items td {
@@ -1108,63 +1315,82 @@
   white-space: normal;
 }
 
-/* Action buttons — first column */
+/* Action buttons — first column, single horizontal row */
+.row-actions.row-actions-buttons,
 .row-actions-buttons {
-  display: flex;
-  flex-wrap: wrap;
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   align-items: center;
+  justify-content: flex-start;
   gap: 6px;
+  max-width: none;
 }
 
-.row-action-btn {
+.row-action-btn,
+button.row-action-btn {
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  padding: 5px 10px;
+  min-height: 30px;
+  padding: 6px 12px;
   font-size: 12px;
   font-weight: 600;
   line-height: 1.2;
-  border-radius: 4px;
+  border-radius: 8px;
   text-decoration: none !important;
-  border: 1px solid transparent;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   cursor: pointer;
   white-space: nowrap;
   font-family: inherit;
+  box-sizing: border-box;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
 .row-action-btn--edit {
-  background: #e8f0fe;
-  color: #1967d2 !important;
-  border-color: #aecbfa;
+  background: #fff;
+  color: #1d1d1f !important;
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .row-action-btn--edit:hover {
-  background: #d2e3fc;
+  background: #f5f5f7;
+  border-color: rgba(0, 0, 0, 0.18);
+  color: #1d1d1f !important;
 }
 
 .row-action-btn--view {
-  background: #f1f3f4;
-  color: #3c4043 !important;
-  border-color: #dadce0;
+  background: #f5f5f7;
+  color: #1d1d1f !important;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.row-action-btn--view:hover {
+  background: #e8e8ed;
+  color: #1d1d1f !important;
 }
 
 .row-action-btn--delete {
-  background: #fce8e6;
-  color: #c5221f !important;
-  border-color: #f5c2c0;
+  background: #fff5f5;
+  color: #b42318 !important;
+  border-color: rgba(180, 35, 24, 0.25);
 }
 
 .row-action-btn--delete:hover:not(:disabled) {
-  background: #f9dedc;
+  background: #fee4e2;
+  border-color: rgba(180, 35, 24, 0.35);
+  color: #912018 !important;
 }
 
 .row-action-btn:disabled {
-  opacity: 0.6;
+  opacity: 0.55;
   cursor: not-allowed;
-}
-
-.row-action-btn-wrap {
-  display: inline-flex;
 }
 
 .wp-list-toolbar {
@@ -1312,14 +1538,28 @@
 }
 
 .row-action-btn--restore {
-  color: #2271b1;
+  background: #ecfdf3;
+  color: #027a48 !important;
+  border-color: rgba(2, 122, 72, 0.28);
 }
 
-.row-action-btn-wrap {
+.row-action-btn--restore:hover:not(:disabled) {
+  background: #d1fadf;
+  border-color: rgba(2, 122, 72, 0.4);
+  color: #05603a !important;
+}
+
+/* Generic tables (users, activity) — same action row */
+.cms-table .column-actions,
+.cms-table td:last-child:has(.row-actions-buttons) {
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.cms-table .row-actions-buttons {
   display: inline-flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  align-items: center;
+  flex-wrap: nowrap;
+  gap: 6px;
 }
 
 .section-repeater-nav {
@@ -1925,13 +2165,158 @@
 
 .gsc-dash-header {
   margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cms-dash-datetime-wrap {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.cms-live-datetime {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--admin-mac-ink, #1d1d1f);
+  font-variant-numeric: tabular-nums;
+}
+
+.cms-dash-admin-links {
+  margin: 6px 0 0;
+  font-size: 0.8125rem;
+}
+
+.cms-dash-admin-links a {
+  color: var(--admin-royal, #0057ff);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.cms-users-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cms-role-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 980px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cms-role-badge--admin {
+  background: #1d1d1f;
+  color: #fff;
+}
+
+.cms-role-badge--user {
+  background: #e8e8ed;
+  color: #424245;
+}
+
+.cms-activity-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+  margin-top: 16px;
+}
+
+.cms-activity-search {
+  flex: 1;
+  min-width: 200px;
+}
+
+.cms-activity-search input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.cms-activity-filter {
+  min-width: 160px;
+  margin: 0;
+}
+
+.cms-activity-task {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.06);
+  color: #1d1d1f;
+  white-space: nowrap;
+}
+
+.cms-activity-verb {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.cms-activity-summary {
+  font-size: 13px;
+  color: #424245;
+  margin-top: 2px;
+}
+
+.cms-activity-hint {
+  font-size: 13px;
+  color: #6e6e73;
+  line-height: 1.45;
+  max-width: 320px;
+}
+
+.cms-activity-table .cms-activity-time {
+  white-space: nowrap;
+  font-size: 12px;
+  color: #6e6e73;
+}
+
+.cms-activity-code {
+  font-size: 11px;
+  background: #f5f5f7;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.cms-activity-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 16px;
+  font-size: 13px;
+  color: #6e6e73;
 }
 
 .gsc-dash-title {
   margin: 0;
-  font-size: 22px;
-  font-weight: 400;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   color: #202124;
+}
+
+.cms-admin-root--apple .gsc-dash-title {
+  color: var(--admin-mac-ink, #1d1d1f);
 }
 
 .gsc-dash-sub {
@@ -1969,8 +2354,9 @@
 
 .gsc-metric-value {
   display: block;
-  font-size: 24px;
-  font-weight: 400;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   color: #202124;
 }
 
@@ -1994,11 +2380,18 @@
   }
 }
 
-.gsc-panel h2 {
-  margin: 0 0 16px;
-  font-size: 16px;
-  font-weight: 500;
+.gsc-panel h2,
+.gsc-quick-links h2 {
+  margin: 0 0 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   color: #202124;
+}
+
+.cms-admin-root--apple .gsc-panel h2,
+.cms-admin-root--apple .gsc-quick-links h2 {
+  color: var(--admin-mac-ink, #1d1d1f);
 }
 
 .gsc-chart {
@@ -2151,8 +2544,16 @@
     box-shadow: 4px 0 24px rgba(10, 30, 94, 0.2);
   }
 
+  .cms-admin-root--apple .cms-admin-sidebar {
+    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.12);
+  }
+
   .cms-admin-sidebar.is-open {
     transform: translateX(0);
+  }
+
+  .cms-admin-root--apple .cms-admin-main {
+    margin-left: 0;
   }
 
   .cms-admin-nav {
@@ -2216,17 +2617,18 @@
   }
 
   .wp-list-table .column-actions-first {
-    min-width: 130px;
+    min-width: max-content;
   }
 
   .row-actions-buttons {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-wrap: nowrap;
+    gap: 5px;
   }
 
   .row-action-btn {
-    width: 100%;
-    justify-content: center;
+    padding: 5px 9px;
+    font-size: 11px;
+    min-height: 28px;
   }
 
   .gsc-metrics {
@@ -2263,4 +2665,63 @@
 
 .gsc-data-table {
   min-width: 280px;
+}
+
+/* Ink links in admin — no blue text (exclude action pills) */
+.cms-admin-root--apple .cms-table a:not(.row-action-btn),
+.cms-admin-root--apple .wp-list-table a.row-title,
+.cms-admin-root--apple .wp-list-table a:not(.row-action-btn),
+.cms-admin-root--apple .wp-pagination a,
+.cms-admin-root--apple .cms-dash-admin-links a,
+.cms-admin-root--apple .entity-editor-mode a,
+.cms-admin-root--apple .gsc-panel a:not(.row-action-btn) {
+  color: var(--admin-mac-ink, #1d1d1f) !important;
+  font-weight: 600;
+}
+
+.cms-admin-root--apple .cms-table a:not(.row-action-btn):hover,
+.cms-admin-root--apple .wp-list-table a.row-title:hover,
+.cms-admin-root--apple .wp-list-table a:not(.row-action-btn):hover,
+.cms-admin-root--apple .cms-dash-admin-links a:hover,
+.cms-admin-root--apple .gsc-panel a:not(.row-action-btn):hover {
+  color: #424245 !important;
+}
+
+.cms-admin-root--apple .row-action-btn--edit {
+  background: #fff !important;
+  color: #1d1d1f !important;
+}
+
+.cms-admin-root--apple .row-action-btn--desimentor {
+  background: #1d1d1f !important;
+  color: #fff !important;
+}
+
+.cms-admin-root--apple .cms-admin-profile-menu a:hover {
+  color: var(--admin-mac-ink, #1d1d1f) !important;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.cms-admin-root--apple .cms-btn-ghost {
+  color: var(--admin-mac-ink, #1d1d1f) !important;
+  border-color: var(--admin-mac-line, rgba(0, 0, 0, 0.12)) !important;
+}
+
+.cms-admin-root--apple .desimentor-edit-link {
+  color: #fff !important;
+}
+
+/* Sidebar nav — active white, hover light grey (override ink link rules) */
+.cms-admin-root--apple .cms-admin-nav a.active,
+.cms-admin-root--apple .cms-admin-nav a.active:hover,
+.cms-admin-root--apple .cms-admin-nav a.active:visited {
+  color: #fff !important;
+}
+
+.cms-admin-root--apple .cms-admin-nav a:hover:not(.active) {
+  color: var(--admin-sidebar-link-hover, #aeaeb2) !important;
+}
+
+.cms-admin-root--apple .cms-admin-nav a:hover:not(.active) i {
+  color: var(--admin-sidebar-link-hover, #aeaeb2) !important;
 }

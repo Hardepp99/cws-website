@@ -155,9 +155,9 @@
 
 .portfolio-showcase__nav:hover:not(:disabled) {
   background: #fff;
-  color: #0071e3;
+  color: #1d1d1f;
   transform: scale(1.06);
-  box-shadow: 0 6px 18px rgba(0, 113, 227, 0.18);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
 }
 
 .portfolio-showcase__nav:disabled,
@@ -296,7 +296,7 @@
   border-radius: 980px;
   background: transparent;
   border: none;
-  color: #0071e3;
+  color: #1d1d1f;
   font-size: 0.9375rem;
   font-weight: 500;
   text-decoration: none;
@@ -306,8 +306,17 @@
 }
 
 .portfolio-apple-card__btn:hover {
-  background: rgba(0, 113, 227, 0.08);
-  color: #0077ed;
+  background: rgba(0, 0, 0, 0.06);
+  color: #1d1d1f;
+}
+
+.home-section-band--dark .portfolio-apple-card__btn {
+  color: #fff;
+}
+
+.home-section-band--dark .portfolio-apple-card__btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
 }
 
 .portfolio-showcase__empty {
@@ -381,7 +390,7 @@
 
 .home-section-band--dark .portfolio-showcase__nav:hover:not(:disabled) {
   background: #fff;
-  color: #0071e3;
+  color: #1d1d1f;
 }
 
 .home-section-band--light .portfolio-showcase__nav {

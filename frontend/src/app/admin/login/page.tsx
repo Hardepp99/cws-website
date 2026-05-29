@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { adminLogin } from "@/lib/admin/client";
-import { CWS_LOGO_PATH } from "@/lib/site-brand";
+import { CWS_LOGO_PATH, logoDimensions } from "@/lib/site-brand";
 
 function LoginForm() {
   const router = useRouter();
@@ -29,14 +29,22 @@ function LoginForm() {
     router.refresh();
   }
 
+  const logo = logoDimensions(56);
+
   return (
     <div className="cms-login-wrap">
       <form className="cms-login-box" onSubmit={onSubmit}>
-        <div className="cms-login-logo">
-          <Image src={CWS_LOGO_PATH} alt="Creative Web Solutions" width={200} height={52} priority />
+        <div className="cms-login-logo cms-login-logo--center">
+          <Image
+            src={CWS_LOGO_PATH}
+            alt="Creative Web Solutions"
+            width={logo.width}
+            height={logo.height}
+            priority
+            className="cms-login-logo__img"
+          />
         </div>
-        <h1>Content Manager</h1>
-        <p className="cms-login-sub">Sign in to edit your website — pages, homepage, menus, and leads.</p>
+        <p className="cms-login-sub">Sign in to manage your website — pages, homepage, menus, and leads.</p>
         {error ? <div className="cms-notice err">{error}</div> : null}
         <label className="cms-label">Username</label>
         <input

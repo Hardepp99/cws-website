@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
   username VARCHAR(60) NOT NULL UNIQUE,
   password_hash VARCHAR(255) NOT NULL,
   display_name VARCHAR(100) NOT NULL DEFAULT 'Admin',
-  role ENUM('admin','editor') NOT NULL DEFAULT 'admin',
+  role ENUM('admin','user') NOT NULL DEFAULT 'user',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
@@ -162,6 +162,22 @@ CREATE TABLE IF NOT EXISTS admin_sessions (
   expires_at DATETIME NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS admin_activity_log (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id INT UNSIGNED NOT NULL,
+  username VARCHAR(60) NOT NULL DEFAULT '',
+  action VARCHAR(64) NOT NULL,
+  method VARCHAR(10) NOT NULL DEFAULT '',
+  path VARCHAR(255) NOT NULL DEFAULT '',
+  summary VARCHAR(500) NOT NULL DEFAULT '',
+  meta_json JSON NULL,
+  ip_address VARCHAR(45) NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_activity_created (created_at DESC),
+  INDEX idx_activity_user (user_id, created_at DESC),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS page_views (
   id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,

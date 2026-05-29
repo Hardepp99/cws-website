@@ -88,7 +88,7 @@ export function DesimentorEditor({
     <div className="desimentor-editor">
       <header className="desimentor-topbar">
         <div className="desimentor-topbar-brand">
-          <span>Elementor</span> — {entityLabel}
+          <span>Desimentor</span> — {entityLabel}
           <span className="desimentor-topbar-note">Classic content is preserved separately</span>
         </div>
         <DesimentorDeviceSwitcher />

@@ -155,13 +155,13 @@
 .home-page .home-section-band--dark a:not(.home-btn):not(.btn):not(.home-hero__btn):not(.home-marquee-pill):not(
     .home-service-card a
   ):not(.testimonial-card a):not(.home-portfolio-item) {
-  color: #7ec8ff !important;
+  color: rgba(255, 255, 255, 0.88) !important;
 }
 
 .home-page .home-section-band--dark a:not(.home-btn):not(.btn):not(.home-hero__btn):not(.home-marquee-pill):not(
     .home-service-card a
   ):not(.testimonial-card a):not(.home-portfolio-item):hover {
-  color: #a8d8ff !important;
+  color: #fff !important;
 }
 
 .home-page .home-section-band--dark .text-muted,

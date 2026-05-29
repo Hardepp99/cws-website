@@ -81,7 +81,7 @@ export function SitePageForm({ pageId, isNew }: { pageId?: number; isNew?: boole
         return;
       }
       await adminFetch(`/pages/${pageId}`, { method: "PUT", json: payload });
-      setMsg("Classic content saved. Elementor layout is unchanged.");
+      setMsg("Classic content saved. Desimentor layout is unchanged.");
     } catch (e) {
       setErr(String(e));
     } finally {
@@ -112,7 +112,7 @@ export function SitePageForm({ pageId, isNew }: { pageId?: number; isNew?: boole
       </select>
       <WysiwygField label="Classic content (HTML)" value={contentHtml} onChange={setContentHtml} />
       <p className="cms-field-hint">
-        This is the original classic content. It is preserved when you edit with Elementor.
+        This is the original classic content. It is preserved when you edit with Desimentor.
       </p>
       <SeoPanel seo={seo} onChange={setSeo} contentHtml={contentHtml} slug={slug} pathPrefix="/" />
     </>
@@ -124,7 +124,7 @@ export function SitePageForm({ pageId, isNew }: { pageId?: number; isNew?: boole
       backHref="/admin/site-pages"
       desimentor={
         !isNew && pageId
-          ? { entityType: "page", entityId: pageId, label: "Edit with Elementor" }
+          ? { entityType: "page", entityId: pageId }
           : undefined
       }
       onSave={saveClassic}
@@ -135,7 +135,7 @@ export function SitePageForm({ pageId, isNew }: { pageId?: number; isNew?: boole
     >
       {showWelcome && !isNew ? (
         <div className="cms-notice entity-editor-welcome">
-          Page created. Use <strong>Classic editor</strong> for HTML, or <strong>Elementor</strong> for a visual layout.
+          Page created. Use <strong>Classic editor</strong> for HTML, or <strong>Desimentor</strong> for a visual layout.
           Both are saved separately — switch the live version anytime.
         </div>
       ) : null}

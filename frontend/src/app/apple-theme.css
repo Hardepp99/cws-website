@@ -8,15 +8,15 @@
   --apple-text: #1d1d1f;
   --apple-text-secondary: #6e6e73;
   --apple-text-tertiary: #86868b;
-  --apple-link: #0066cc;
-  --apple-link-hover: #0077ed;
+  --apple-link: #1d1d1f;
+  --apple-link-hover: #424245;
   --apple-bg: #f5f5f7;
   --apple-surface: #ffffff;
   --apple-border: rgba(0, 0, 0, 0.08);
   --apple-btn-fill: #1d1d1f;
   --apple-btn-fill-hover: #333336;
-  --apple-btn-blue: #0071e3;
-  --apple-btn-blue-hover: #0077ed;
+  --apple-btn-blue: #1d1d1f;
+  --apple-btn-blue-hover: #333336;
   --apple-radius-pill: 980px;
   --apple-text-base: 1.0625rem;
   --apple-text-small: 0.875rem;
@@ -266,7 +266,7 @@ h6 {
 .cta-section .btn-outline-custom,
 .home-cta-band .home-hero__btn--ghost {
   background: transparent !important;
-  color: var(--apple-link) !important;
+  color: var(--apple-text) !important;
   border: 1px solid var(--apple-border) !important;
   box-shadow: none !important;
 }
@@ -276,7 +276,7 @@ h6 {
 .home-hero__btn--ghost:hover,
 .home-btn:not(.home-btn--primary):hover {
   background: rgba(0, 0, 0, 0.04) !important;
-  color: var(--apple-link-hover) !important;
+  color: var(--apple-text) !important;
   border-color: rgba(0, 0, 0, 0.12) !important;
   transform: none;
   box-shadow: none !important;
@@ -290,15 +290,17 @@ h6 {
   padding: 0.4rem 1rem !important;
 }
 
-/* Nav CTA — compact Apple blue option */
+/* Nav CTA — ink pill (not blue) */
 .header .btn-cta-navbar.btn-cta {
   font-size: var(--apple-text-small) !important;
   padding: 0.45rem 1rem !important;
-  background: var(--apple-btn-blue) !important;
+  background: var(--apple-btn-fill) !important;
+  color: #fff !important;
 }
 
 .header .btn-cta-navbar.btn-cta:hover {
-  background: var(--apple-btn-blue-hover) !important;
+  background: var(--apple-btn-fill-hover) !important;
+  color: #fff !important;
 }
 
 /* Nav links */
@@ -322,7 +324,13 @@ h6 {
 .home-type-link {
   font-size: var(--apple-text-small) !important;
   font-weight: 500 !important;
-  color: var(--apple-link) !important;
+  color: var(--apple-text) !important;
+}
+
+.service-link:hover,
+.home-service-card .service-link:hover,
+.home-type-link:hover {
+  color: var(--apple-link-hover) !important;
 }
 
 /* Hero headline */
@@ -696,8 +704,32 @@ label {
 
 .home-page .home-section-band--dark .home-hero__btn--ghost {
   background: transparent !important;
-  color: #2997ff !important;
+  color: #fff !important;
   border: 1px solid rgba(255, 255, 255, 0.38) !important;
+}
+
+.home-page .home-section-band--dark .home-hero__btn--ghost:hover {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Dark surfaces — links & text buttons white, not blue */
+.home-page .home-section-band--dark a:not(.btn):not(.home-btn):not(.home-hero__btn):not(.nav-link):not(
+    .home-service-card a
+  ):not(.testimonial-card a):not(.portfolio-apple-card__btn) {
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+.home-page .home-section-band--dark a:not(.btn):not(.home-btn):not(.home-hero__btn):not(.nav-link):hover {
+  color: #fff !important;
+}
+
+.footer a:not(.btn):not(.footer-social-link) {
+  color: rgba(255, 255, 255, 0.82) !important;
+}
+
+.footer a:not(.btn):not(.footer-social-link):hover {
+  color: #fff !important;
 }
 
 .home-page .home-section-band--light .home-hero__btn--ghost {

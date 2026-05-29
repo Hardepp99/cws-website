@@ -14,6 +14,8 @@ php C:\wamp64\www\cws-website\cms\scripts\migrate-seed.php
 
 Default admin login: **admin** / **CwsAdmin@2026** (override with env `CWS_ADMIN_PASSWORD`).
 
+**Roles:** `admin` (full access, user management, activity log) and `user` (content only — cannot create users or view activity). Passwords are stored hashed with PHP `password_hash()`.
+
 3. URLs:
 
 | Service | URL |

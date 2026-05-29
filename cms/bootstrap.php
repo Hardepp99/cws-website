@@ -21,11 +21,15 @@ require_once CWS_CMS_ROOT . '/src/Http.php';
 require_once CWS_CMS_ROOT . '/src/AdminListQuery.php';
 require_once CWS_CMS_ROOT . '/src/ContentRepository.php';
 require_once CWS_CMS_ROOT . '/src/Auth.php';
+require_once CWS_CMS_ROOT . '/src/AdminActivityLog.php';
 require_once CWS_CMS_ROOT . '/src/AdminAuth.php';
+require_once CWS_CMS_ROOT . '/src/AdminUsers.php';
 require_once CWS_CMS_ROOT . '/src/MediaRepository.php';
 require_once CWS_CMS_ROOT . '/src/MediaService.php';
 require_once CWS_CMS_ROOT . '/src/DesimentorRepository.php';
 require_once CWS_CMS_ROOT . '/src/GmbPlacesClient.php';
+require_once CWS_CMS_ROOT . '/src/SmtpMailer.php';
+require_once CWS_CMS_ROOT . '/src/CrmInbox.php';
 require_once CWS_CMS_ROOT . '/src/AdminApi.php';
 
 function cws_config(string $key, mixed $default = null): mixed

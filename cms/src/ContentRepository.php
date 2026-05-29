@@ -1128,13 +1128,7 @@ final class ContentRepository
 
     public function saveFormSubmission(string $type, array $payload): void
     {
-        $stmt = $this->db->prepare(
-            'INSERT INTO form_submissions (form_type, payload) VALUES (:t, :p)'
-        );
-        $stmt->execute([
-            ':t' => $type,
-            ':p' => json_encode($payload, JSON_UNESCAPED_UNICODE),
-        ]);
+        cws_crm()->saveInbound($type, $payload);
     }
 
     public function getFormSubmissions(int $limit = 50): array

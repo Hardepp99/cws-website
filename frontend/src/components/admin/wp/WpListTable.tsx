@@ -164,7 +164,7 @@ export function WpRowActions({
           View
         </Link>
       ) : null}
-      {deleteAction ? <span className="row-action-btn-wrap">{deleteAction}</span> : null}
+      {deleteAction}
     </div>
   );
 }

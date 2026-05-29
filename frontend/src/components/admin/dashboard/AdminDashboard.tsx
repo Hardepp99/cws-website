@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { LiveDateTime } from "@/components/admin/dashboard/LiveDateTime";
+import { useAdminSession } from "@/components/admin/AdminSessionProvider";
 import { adminFetch } from "@/lib/admin/client";
 
 type Stats = {
@@ -22,6 +24,7 @@ type Stats = {
 };
 
 export function AdminDashboard() {
+  const { user, isAdmin } = useAdminSession();
   const [stats, setStats] = useState<Stats | null>(null);
   const [err, setErr] = useState("");
 
@@ -44,10 +47,24 @@ export function AdminDashboard() {
   return (
     <div className="gsc-dashboard">
       <div className="gsc-dash-header">
-        <h1 className="gsc-dash-title">Performance</h1>
-        <p className="gsc-dash-sub">
-          Last 28 days · {stats.hasAnalytics ? "Live page views from your site" : "Run migration 002 for page view tracking"}
-        </p>
+        <div>
+          <h1 className="gsc-dash-title">
+            {user?.displayName ? `Hello, ${user.displayName}` : "Dashboard"}
+          </h1>
+          <p className="gsc-dash-sub">
+            Last 28 days · {stats.hasAnalytics ? "Live page views from your site" : "Run migration 002 for page view tracking"}
+          </p>
+        </div>
+        <div className="cms-dash-datetime-wrap">
+          <LiveDateTime />
+          {isAdmin ? (
+            <p className="cms-dash-admin-links">
+              <Link href="/admin/users">Users</Link>
+              <span aria-hidden="true"> · </span>
+              <Link href="/admin/activity">Activity log</Link>
+            </p>
+          ) : null}
+        </div>
       </div>
 
       <div className="gsc-metrics">

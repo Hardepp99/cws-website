@@ -98,7 +98,7 @@ export function BlogPostForm({ postId, isNew }: { postId?: number; isNew?: boole
         return;
       }
       await adminFetch(`/blog/${postId}`, { method: "PUT", json: payload });
-      setMsg("Classic post content saved. Elementor layout is unchanged.");
+      setMsg("Classic post content saved. Desimentor layout is unchanged.");
     } catch (e) {
       setErr(String(e));
     } finally {
@@ -121,7 +121,7 @@ export function BlogPostForm({ postId, isNew }: { postId?: number; isNew?: boole
       <textarea className="cms-textarea" rows={3} value={excerpt} onChange={(e) => setExcerpt(e.target.value)} />
       <WysiwygField label="Classic content (HTML)" value={contentHtml} onChange={setContentHtml} height={400} />
       <p className="cms-field-hint">
-        Original HTML content. It stays saved when you build the post with Elementor.
+        Original HTML content. It stays saved when you build the post with Desimentor.
       </p>
       <MediaPickerField
         label="Featured image"
@@ -157,7 +157,7 @@ export function BlogPostForm({ postId, isNew }: { postId?: number; isNew?: boole
       backHref="/admin/blog"
       desimentor={
         !isNew && postId
-          ? { entityType: "blog_post", entityId: postId, label: "Edit with Elementor" }
+          ? { entityType: "blog_post", entityId: postId }
           : undefined
       }
       onSave={saveClassic}

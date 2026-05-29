@@ -58,6 +58,11 @@ export async function PUT(request: NextRequest, ctx: RouteCtx) {
   return proxy(request, path);
 }
 
+export async function PATCH(request: NextRequest, ctx: RouteCtx) {
+  const { path } = await ctx.params;
+  return proxy(request, path);
+}
+
 export async function POST(request: NextRequest, ctx: RouteCtx) {
   const { path } = await ctx.params;
   return proxy(request, path);

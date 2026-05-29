@@ -12,7 +12,7 @@ export type PageBodyInput = {
   desimentor?: DesimentorDocument;
 };
 
-/** Which body to show on the public site (classic HTML vs Elementor layout). */
+/** Which body to show on the public site (classic HTML vs Desimentor layout). */
 export function resolvePublicBody(input: PageBodyInput): {
   mode: DisplayMode;
   showElementor: boolean;

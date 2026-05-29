@@ -1,4 +1,4 @@
-/* Inner pages — Desimentor / Elementor output (homepage-quality bands) */
+/* Inner pages — Desimentor output (homepage-quality bands) */
 .inner-page-elementor {
   width: 100%;
 }
@@ -104,7 +104,7 @@
 }
 
 .inner-page-elementor .seo-rich-prose a {
-  color: var(--primary-color, #0057ff);
+  color: #1d1d1f;
   font-weight: 600;
 }
 

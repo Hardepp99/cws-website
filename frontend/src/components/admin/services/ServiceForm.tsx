@@ -128,7 +128,7 @@ export function ServiceForm({ serviceId, isNew }: { serviceId?: number; isNew?: 
     <WpEditScreen
       title={isNew ? "Add new service" : title}
       backHref="/admin/services"
-      desimentor={!isNew && serviceId ? { entityType: "service", entityId: serviceId, label: "Edit with Elementor" } : undefined}
+      desimentor={!isNew && serviceId ? { entityType: "service", entityId: serviceId } : undefined}
       onSave={saveClassic}
       saving={saving}
       saveLabel={isNew ? "Save service" : "Save classic content"}

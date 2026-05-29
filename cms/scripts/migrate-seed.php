@@ -64,13 +64,37 @@ function read_json_file(string $path): mixed
     return json_decode(file_get_contents($path), true);
 }
 
-// Admin user
+// Migration 011 — user roles + activity log
+$migration011 = dirname(__DIR__) . '/database/migrations/011_admin_users_activity.sql';
+if (is_file($migration011)) {
+    $m11 = file_get_contents($migration011);
+    foreach (array_filter(array_map('trim', explode(';', $m11))) as $stmt) {
+        if ($stmt !== '') {
+            try {
+                $db->exec($stmt);
+            } catch (PDOException $e) {
+                echo 'Migration 011 warn: ' . $e->getMessage() . "\n";
+            }
+        }
+    }
+}
+
+// Ensure default admin (preserve other users)
 $adminPass = getenv('CWS_ADMIN_PASSWORD') ?: 'CwsAdmin@2026';
 $hash = password_hash($adminPass, PASSWORD_DEFAULT);
-$db->exec('DELETE FROM users');
-$stmt = $db->prepare('INSERT INTO users (username, password_hash, display_name, role) VALUES (:u, :p, :d, :r)');
-$stmt->execute([':u' => 'admin', ':p' => $hash, ':d' => 'Administrator', ':r' => 'admin']);
-echo "Admin user: admin / $adminPass\n";
+$check = $db->prepare('SELECT id FROM users WHERE username = :u LIMIT 1');
+$check->execute([':u' => 'admin']);
+if ($check->fetch()) {
+    $upd = $db->prepare(
+        'UPDATE users SET password_hash = :p, display_name = :d, role = :r WHERE username = :u'
+    );
+    $upd->execute([':p' => $hash, ':d' => 'Administrator', ':r' => 'admin', ':u' => 'admin']);
+    echo "Admin user updated: admin / $adminPass\n";
+} else {
+    $stmt = $db->prepare('INSERT INTO users (username, password_hash, display_name, role) VALUES (:u, :p, :d, :r)');
+    $stmt->execute([':u' => 'admin', ':p' => $hash, ':d' => 'Administrator', ':r' => 'admin']);
+    echo "Admin user created: admin / $adminPass\n";
+}
 
 // Site settings
 $settings = read_json_file($seedDir . '/site-settings.json');

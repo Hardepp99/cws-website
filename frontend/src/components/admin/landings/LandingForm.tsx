@@ -131,7 +131,7 @@ export function LandingForm({ landingId, isNew }: { landingId?: number; isNew?: 
     <WpEditScreen
       title={isNew ? "Add service landing" : serviceName}
       backHref="/admin/landings"
-      desimentor={!isNew && landingId ? { entityType: "service_landing", entityId: landingId, label: "Edit with Elementor" } : undefined}
+      desimentor={!isNew && landingId ? { entityType: "service_landing", entityId: landingId } : undefined}
       onSave={saveClassic}
       saving={saving}
       saveLabel={isNew ? "Save landing" : "Save classic content"}

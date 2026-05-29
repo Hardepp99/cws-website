@@ -10,7 +10,7 @@ type ElementorPageBodyProps = {
   desimentor?: DesimentorDocument;
 };
 
-/** Renders CMS Elementor (Desimentor) layout full-width, or classic HTML in a container. */
+/** Renders CMS Desimentor layout full-width, or classic HTML in a container. */
 export function ElementorPageBody({
   title,
   displayMode,
