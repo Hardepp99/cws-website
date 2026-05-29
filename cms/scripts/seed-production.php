@@ -14,6 +14,7 @@ $optionalMigrations = [
     'cms/scripts/migrate-002.php',
     'cms/scripts/migrate-003.php',
     'cms/scripts/migrate-005.php',
+    'cms/scripts/migrate-007.php',
     'cms/scripts/migrate-008.php',
     'cms/scripts/migrate-009.php',
     'cms/scripts/migrate-010.php',
@@ -24,6 +25,8 @@ $required = [
     'cms/scripts/migrate-seed.php',
     'cms/scripts/seed-gmb-settings.php',
 ];
+
+/** migrate-seed.php runs Desimentor seeding when tables exist (migrate-007). */
 
 echo "=== CWS production seed ===\n\n";
 

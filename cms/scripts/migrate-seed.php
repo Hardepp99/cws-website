@@ -285,6 +285,9 @@ if (is_array($portfolioRows) && $repo->portfolioTableExists()) {
     echo "Portfolio: skipped (table missing or no seed JSON)\n";
 }
 
+require_once __DIR__ . '/seed-desimentor-content.php';
+cws_seed_desimentor_content($db, $repo, $seedDir);
+
 echo "\n=== CWS CMS migration complete ===\n";
 echo "API: " . cws_config('cms_public_url') . "/api/v1/homepage\n";
 echo "Admin: http://localhost" . cws_config('admin_path') . "\n";
