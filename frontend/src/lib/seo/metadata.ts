@@ -152,6 +152,7 @@ export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
 }
 
 export function faqJsonLd(faq: { question: string; answer: string }[]) {
+  if (!faq?.length) return null;
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -160,5 +161,44 @@ export function faqJsonLd(faq: { question: string; answer: string }[]) {
       name: item.question,
       acceptedAnswer: { "@type": "Answer", text: item.answer },
     })),
+  };
+}
+
+export function serviceJsonLd(service: {
+  name: string;
+  description: string;
+  path: string;
+}) {
+  const url = service.path.startsWith("http") ? service.path : `${siteUrl}${service.path.startsWith("/") ? service.path : `/${service.path}`}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: service.name,
+    description: service.description,
+    url,
+    provider: {
+      "@type": "Organization",
+      name: "Creative Web Solutions",
+      url: siteUrl,
+      telephone: "+91-7015969967",
+    },
+    areaServed: [
+      { "@type": "City", name: "Zirakpur" },
+      { "@type": "City", name: "Chandigarh" },
+      { "@type": "City", name: "Mohali" },
+      { "@type": "AdministrativeArea", name: "Punjab" },
+      { "@type": "Country", name: "India" },
+    ],
+  };
+}
+
+export function contactPageJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: "Contact Creative Web Solutions",
+    url: `${siteUrl}/contact`,
+    description: "Request a website, app, or marketing quote from Creative Web Solutions in Zirakpur.",
+    mainEntity: organizationJsonLd(),
   };
 }

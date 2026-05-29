@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { PageBodyContent } from "@/components/ui/PageBodyContent";
 import { PageContentTitle } from "@/components/ui/PageContentTitle";
 import { PageHeader } from "@/components/ui/PageHeader";
 import type { ServiceDetail } from "@/lib/wordpress/types";
 import { resolvePublicBody } from "@/lib/content/display-mode";
+import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seo/metadata";
 
 interface ServiceDetailPageProps {
   data: ServiceDetail;
@@ -16,8 +18,24 @@ export function ServiceDetailPage({ data }: ServiceDetailPageProps) {
     desimentor: data.desimentor,
   });
 
+  const path = `/${data.slug}`;
+
   return (
     <div className="service-detail-page">
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([
+            { name: "Home", url: "/" },
+            { name: "Services", url: "/services" },
+            { name: data.title, url: path },
+          ]),
+          serviceJsonLd({
+            name: data.title,
+            description: data.seo?.description || data.heroSubtitle || data.title,
+            path,
+          }),
+        ]}
+      />
       <PageHeader
         breadcrumb={[
           { label: "Home", href: "/" },

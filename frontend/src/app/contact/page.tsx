@@ -3,8 +3,9 @@ import { SiteLayout } from "@/components/layout/SiteLayout";
 import { PageDesimentorContent } from "@/components/ui/PageDesimentorContent";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ContactForm } from "@/components/forms/ContactForm";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { getPageBySlug } from "@/lib/wordpress/api";
-import { buildMetadata } from "@/lib/seo/metadata";
+import { breadcrumbJsonLd, buildMetadata, contactPageJsonLd } from "@/lib/seo/metadata";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +26,15 @@ export default async function ContactPage() {
 
   return (
     <SiteLayout currentPath="/contact">
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([
+            { name: "Home", url: "/" },
+            { name: page.title, url: "/contact" },
+          ]),
+          contactPageJsonLd(),
+        ]}
+      />
       <PageHeader breadcrumb={[{ label: "Home", href: "/" }, { label: page.title }]} />
       {hasElementor ? (
         <section className="content-page-section pb-0">

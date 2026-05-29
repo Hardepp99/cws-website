@@ -85,12 +85,15 @@ export default async function DynamicPage({ params }: PageProps) {
 
   if (content?.type === "service_landing") {
     const data = content.data as ServiceLanding;
+    const faqSchema = faqJsonLd(data.faq ?? []);
     return (
       <SiteLayout currentPath={`/${slug}`}>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(data.faq)) }}
-        />
+        {faqSchema ? (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+          />
+        ) : null}
         <ServiceLandingPage data={data} />
       </SiteLayout>
     );
