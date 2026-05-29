@@ -1,14 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  webpack: (config, { dev }) => {
-    if (dev) {
-      config.optimization = {
-        ...config.optimization,
-        moduleIds: "named",
-      };
-    }
-    return config;
-  },
+  /** Next.js 16 defaults to Turbopack; explicit empty config replaces legacy webpack dev tweaks. */
+  turbopack: {},
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "www.cwsindia.online" },

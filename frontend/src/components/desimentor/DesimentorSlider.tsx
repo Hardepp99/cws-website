@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
@@ -36,7 +36,7 @@ function inlineText(
   editable: boolean,
   value: string,
   onChange: (v: string) => void,
-  Tag: keyof JSX.IntrinsicElements = "span",
+  Tag: keyof React.JSX.IntrinsicElements = "span",
   className = ""
 ) {
   if (!editable) {

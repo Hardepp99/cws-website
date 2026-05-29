@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { WpEditScreen } from "@/components/admin/wp/WpEditScreen";
@@ -84,7 +85,7 @@ export function PortfolioItemForm({ itemId, isNew }: { itemId?: number; isNew?: 
       <p className="cms-field-hint">
         Showcase local clients from Zirakpur, Chandigarh, Mohali & Punjab. Tick &quot;Show on homepage&quot; to
         include in the homepage portfolio grid. Section title &amp; limits:{" "}
-        <a href="/admin/settings">Settings → Portfolio section</a>.
+        <Link href="/admin/settings">Settings → Portfolio section</Link>.
       </p>
 
       <label className="cms-label">Client / business name</label>

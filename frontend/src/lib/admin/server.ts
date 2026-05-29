@@ -4,17 +4,17 @@ import { cookies, headers } from "next/headers";
 
 const CMS = process.env.CMS_API_URL?.replace(/\/$/, "") || "";
 
-function siteOrigin(): string {
+async function siteOrigin(): Promise<string> {
   const env = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
   if (env) return env;
-  const h = headers();
+  const h = await headers();
   const host = h.get("x-forwarded-host") || h.get("host");
   const proto = h.get("x-forwarded-proto") || "http";
   return host ? `${proto}://${host}` : "http://127.0.0.1:3000";
 }
 
-export function getAdminToken(): string | undefined {
-  return cookies().get("cws_admin_token")?.value;
+export async function getAdminToken(): Promise<string | undefined> {
+  return (await cookies()).get("cws_admin_token")?.value;
 }
 
 /** Server-side admin API — routes through Next proxy so auth cookie works on WAMP. */
@@ -22,12 +22,12 @@ export async function cmsAdminFetch<T>(
   path: string,
   init?: RequestInit & { json?: unknown },
 ): Promise<T> {
-  const token = getAdminToken();
+  const token = await getAdminToken();
   if (!token) {
     throw new Error("Not authenticated");
   }
 
-  const url = `${siteOrigin()}/api/admin/cms${path.startsWith("/") ? path : `/${path}`}`;
+  const url = `${await siteOrigin()}/api/admin/cms${path.startsWith("/") ? path : `/${path}`}`;
   const res = await fetch(url, {
     ...init,
     method: init?.method || "GET",
@@ -53,7 +53,7 @@ export async function cmsAdminFetchDirect<T>(
   path: string,
   init?: RequestInit & { json?: unknown },
 ): Promise<T> {
-  const token = getAdminToken();
+  const token = await getAdminToken();
   if (!CMS || !token) {
     throw new Error("Not authenticated");
   }

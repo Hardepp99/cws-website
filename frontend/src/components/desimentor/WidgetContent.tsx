@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { stylesToCss, scopedClass } from "@/lib/desimentor/apply-styles";
 import type { DesimentorWidget } from "@/lib/desimentor/types";
 import { DesimentorSlider } from "./DesimentorSlider";
@@ -98,7 +98,7 @@ export function WidgetContent({ widget, editable = false, onPropChange }: Widget
   function inlineText(
     key: string,
     value: string,
-    Tag: keyof JSX.IntrinsicElements = "span",
+    Tag: keyof React.JSX.IntrinsicElements = "span",
     className = ""
   ) {
     if (!editable || !onPropChange) {
@@ -143,7 +143,7 @@ export function WidgetContent({ widget, editable = false, onPropChange }: Widget
 
   switch (widget.type) {
     case "heading": {
-      const Tag = (p.tag as keyof JSX.IntrinsicElements) || "h2";
+      const Tag = (p.tag as keyof React.JSX.IntrinsicElements) || "h2";
       inner = editable && onPropChange ? (
         <Tag
           className={`${cls} dsmt-heading desimentor-inline-edit`}
@@ -164,12 +164,19 @@ export function WidgetContent({ widget, editable = false, onPropChange }: Widget
       break;
     case "button": {
       const variant = String(p.variant ?? "primary");
+      const color = String(p.color ?? "ink");
       const btnClass =
         variant === "link"
           ? "dsmt-btn-link"
           : variant === "outline"
-            ? "btn btn-outline-primary"
-            : "btn btn-primary-custom";
+            ? "btn btn-outline-custom"
+            : color === "green"
+              ? "btn btn-green-custom"
+              : color === "orange"
+                ? "btn btn-accent-custom"
+                : color === "blue"
+                  ? "btn btn-fill-blue"
+                  : "btn btn-primary-custom";
       inner = (
         <a
           href={String(p.href ?? "#")}
@@ -486,20 +493,27 @@ export function WidgetContent({ widget, editable = false, onPropChange }: Widget
       );
       break;
     }
-    case "call-to-action":
+    case "call-to-action": {
+      const btnColor = String(p.buttonColor ?? "green");
+      const ctaBtnClass =
+        btnColor === "orange"
+          ? "btn btn-accent-custom"
+          : btnColor === "blue"
+            ? "btn btn-fill-blue"
+            : btnColor === "ink"
+              ? "btn btn-primary-custom"
+              : "btn btn-green-custom";
       inner = (
-        <div
-          className={`${cls} dsmt-cta`}
-          style={{ backgroundColor: String(p.bgColor ?? "#0a1e5e"), color: String(p.textColor ?? "#fff") }}
-        >
+        <div className={`${cls} dsmt-cta dsmt-cta--soft`}>
           <h3>{inlineText("title", String(p.title ?? ""), "span")}</h3>
           <p>{String(p.description ?? "")}</p>
-          <a href={String(p.buttonHref ?? "#")} className="btn btn-primary-custom" onClick={stopNav}>
+          <a href={String(p.buttonHref ?? "#")} className={ctaBtnClass} onClick={stopNav}>
             {String(p.buttonLabel ?? "Button")}
           </a>
         </div>
       );
       break;
+    }
     case "price-table": {
       const features = String(p.features ?? "")
         .split("\n")

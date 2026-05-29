@@ -1,8 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @import "./corporate.css";
+@import "./desimentor-pages.css";
 @import "./animations.css";
 @import "./home.css";
 @import "./home-apple.css";
@@ -13,6 +10,10 @@
 @import "./portfolio-showcase.css";
 @import "./hero-illustration.css";
 @import "./testimonials-apple.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --primary-color: #0057ff;

@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  cookies().set("cws_admin_token", data.token, {
+  (await cookies()).set("cws_admin_token", data.token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
