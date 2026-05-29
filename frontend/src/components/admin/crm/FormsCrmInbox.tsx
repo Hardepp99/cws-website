@@ -39,6 +39,7 @@ type Stats = {
   inbox: number;
   unread: number;
   starred: number;
+  trash: number;
   byCategory: Record<string, number>;
 };
 
@@ -226,6 +227,29 @@ export function FormsCrmInbox() {
     openCompose({ recipients });
   }
 
+  async function emptyTrash() {
+    if (
+      !window.confirm(
+        "Permanently delete all messages in trash? This cannot be undone.",
+      )
+    ) {
+      return;
+    }
+    setErr("");
+    try {
+      await adminFetch<{ deleted: number }>("/crm/trash/empty", {
+        method: "POST",
+        json: {},
+      });
+      setSelectedId(null);
+      setDetail(null);
+      loadList();
+      loadStats();
+    } catch (e) {
+      setErr(String(e));
+    }
+  }
+
   async function patch(id: number, body: Record<string, unknown>) {
     const data = await adminFetch<{ message: MessageDetail; thread: MessageDetail[] }>(
       `/crm/messages/${id}`,
@@ -270,6 +294,7 @@ export function FormsCrmInbox() {
   }
 
   const unreadBadge = stats?.unread ?? 0;
+  const trashBadge = stats?.trash ?? 0;
   const checkedWithEmail = items.filter((r) => checkedIds.has(r.id) && r.fromEmail).length;
 
   return (
@@ -305,6 +330,9 @@ export function FormsCrmInbox() {
               </span>
               {f.id === "inbox" && unreadBadge > 0 ? (
                 <span className="crm-inbox__badge">{unreadBadge}</span>
+              ) : null}
+              {f.id === "trash" && trashBadge > 0 ? (
+                <span className="crm-inbox__badge">{trashBadge}</span>
               ) : null}
             </button>
           ))}
@@ -361,6 +389,17 @@ export function FormsCrmInbox() {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
+                {folder === "trash" && isAdmin ? (
+                  <button
+                    type="button"
+                    className="cms-btn cms-btn-sm"
+                    disabled={trashBadge === 0}
+                    onClick={emptyTrash}
+                    title="Admin only — permanently deletes all trashed messages"
+                  >
+                    Empty trash
+                  </button>
+                ) : null}
                 {checkedWithEmail > 0 ? (
                   <button
                     type="button"
@@ -466,32 +505,42 @@ export function FormsCrmInbox() {
                       >
                         {detail.message.isStarred ? "Unstar" : "Star"}
                       </button>
-                      {detail.message.folder !== "archive" ? (
-                        <button
-                          type="button"
-                          className="cms-btn cms-btn-sm"
-                          onClick={() => patch(detail.message.id, { folder: "archive" })}
-                        >
-                          Archive
-                        </button>
-                      ) : (
+                      {detail.message.folder === "trash" ? (
                         <button
                           type="button"
                           className="cms-btn cms-btn-sm"
                           onClick={() => patch(detail.message.id, { folder: "inbox" })}
                         >
-                          Move to inbox
+                          Restore to inbox
                         </button>
+                      ) : (
+                        <>
+                          {detail.message.folder !== "archive" ? (
+                            <button
+                              type="button"
+                              className="cms-btn cms-btn-sm"
+                              onClick={() => patch(detail.message.id, { folder: "archive" })}
+                            >
+                              Archive
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              className="cms-btn cms-btn-sm"
+                              onClick={() => patch(detail.message.id, { folder: "inbox" })}
+                            >
+                              Move to inbox
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            className="cms-btn cms-btn-sm"
+                            onClick={() => patch(detail.message.id, { folder: "trash" })}
+                          >
+                            Move to trash
+                          </button>
+                        </>
                       )}
-                      {detail.message.folder !== "trash" ? (
-                        <button
-                          type="button"
-                          className="cms-btn cms-btn-sm"
-                          onClick={() => patch(detail.message.id, { folder: "trash" })}
-                        >
-                          Trash
-                        </button>
-                      ) : null}
                     </div>
                   </header>
                   <div className="crm-inbox__body">

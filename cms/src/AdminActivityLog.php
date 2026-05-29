@@ -76,7 +76,149 @@ final class AdminActivityLog
             return false;
         }
 
+        if ($method === 'PATCH' && preg_match('#^/crm/messages/\d+$#', $path)) {
+            return false;
+        }
+
+        if ($method === 'POST' && $path === '/crm/trash/empty') {
+            return false;
+        }
+
         return true;
+    }
+
+    /**
+     * Log inbox read/star/folder changes with a clear description (not generic "updated message").
+     *
+     * @param array{id:int,username:string} $user
+     * @param array<string, mixed> $body PATCH body
+     * @param array<string, mixed> $row  DB row before change
+     */
+    public static function recordInboxPatch(array $user, int $messageId, array $body, array $row): void
+    {
+        $desc = self::describeInboxPatch($messageId, $body, $row);
+        if ($desc === null) {
+            return;
+        }
+        self::record(
+            $user,
+            $desc['action'],
+            'PATCH',
+            '/crm/messages/' . $messageId,
+            $desc['summary'],
+            $desc['meta'] ?? null,
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $body
+     * @param array<string, mixed> $row
+     * @return array{action:string,summary:string,meta:array<string,mixed>}|null
+     */
+    public static function describeInboxPatch(int $messageId, array $body, array $row): ?array
+    {
+        $label = self::inboxMessageLabel($row);
+        $meta = [
+            'messageId' => $messageId,
+            'threadId'  => (int) ($row['thread_id'] ?? $messageId),
+            'subject'   => $row['subject'] ?? null,
+            'fromEmail' => $row['from_email'] ?? null,
+            'task'      => 'inbox',
+        ];
+
+        if (array_key_exists('is_read', $body)) {
+            $read = (bool) $body['is_read'];
+            return [
+                'action'  => $read ? 'inbox.read' : 'inbox.unread',
+                'summary' => ($read ? 'Marked as read' : 'Marked as unread') . ': ' . $label,
+                'meta'    => array_merge($meta, [
+                    'hint' => $read
+                        ? 'Opened or marked this form submission / email as read.'
+                        : 'Marked this message unread in the inbox.',
+                ]),
+            ];
+        }
+
+        if (array_key_exists('is_starred', $body)) {
+            $star = (bool) $body['is_starred'];
+            return [
+                'action'  => $star ? 'inbox.star' : 'inbox.unstar',
+                'summary' => ($star ? 'Starred' : 'Removed star from') . ' ' . $label,
+                'meta'    => array_merge($meta, [
+                    'hint' => $star ? 'Flagged for follow-up.' : 'Removed the star flag.',
+                ]),
+            ];
+        }
+
+        if (array_key_exists('folder', $body)) {
+            $folder = (string) $body['folder'];
+            return match ($folder) {
+                'trash' => [
+                    'action'  => 'inbox.trash',
+                    'summary' => 'Moved to trash: ' . $label,
+                    'meta'    => array_merge($meta, [
+                        'folder' => 'trash',
+                        'hint'   => 'Message moved to trash (conversation thread). Only an admin can empty trash permanently.',
+                    ]),
+                ],
+                'archive' => [
+                    'action'  => 'inbox.archive',
+                    'summary' => 'Archived: ' . $label,
+                    'meta'    => array_merge($meta, [
+                        'folder' => 'archive',
+                        'hint'   => 'Moved out of the inbox into archive.',
+                    ]),
+                ],
+                'inbox' => [
+                    'action'  => 'inbox.restore',
+                    'summary' => 'Restored to inbox: ' . $label,
+                    'meta'    => array_merge($meta, [
+                        'folder' => 'inbox',
+                        'hint'   => 'Moved back to the active inbox.',
+                    ]),
+                ],
+                default => null,
+            };
+        }
+
+        return null;
+    }
+
+    /** @param array<string, mixed> $row */
+    public static function inboxMessageLabel(array $row): string
+    {
+        $subject = trim((string) ($row['subject'] ?? ''));
+        $name = trim((string) ($row['from_name'] ?? ''));
+        $email = trim((string) ($row['from_email'] ?? ''));
+        if ($subject !== '') {
+            return $subject . ($email !== '' ? " ({$email})" : '');
+        }
+        if ($name !== '') {
+            return $name . ($email !== '' ? " <{$email}>" : '');
+        }
+        if ($email !== '') {
+            return $email;
+        }
+        return 'message #' . (int) ($row['id'] ?? 0);
+    }
+
+    /** @param array{id:int,username:string} $user */
+    public static function recordTrashEmpty(array $user, int $count): void
+    {
+        self::record(
+            $user,
+            'inbox.trash_empty',
+            'POST',
+            '/crm/trash/empty',
+            $count > 0
+                ? "Emptied trash — permanently deleted {$count} message(s)"
+                : 'Emptied trash (no messages to delete)',
+            [
+                'task'  => 'inbox',
+                'count' => $count,
+                'hint'  => 'Permanently removed all messages from the CRM trash. This action is admin-only.',
+            ],
+        );
     }
 
     /**
@@ -226,13 +368,6 @@ final class AdminActivityLog
             return ['action' => 'pricing.update', 'summary' => 'Updated Ask Price form options'];
         }
 
-        if ($method === 'PATCH' && preg_match('#^/crm/messages/(\d+)$#', $path, $m)) {
-            return [
-                'action'  => 'inbox.update',
-                'summary' => 'Updated inbox message #' . $m[1],
-                'meta'    => ['id' => (int) $m[1]],
-            ];
-        }
         if ($method === 'POST' && $path === '/crm/compose') {
             return ['action' => 'inbox.compose', 'summary' => 'Sent email(s) from inbox'];
         }
@@ -494,17 +629,24 @@ final class AdminActivityLog
         }
         $part = explode('.', $action)[1] ?? '';
         return match ($part) {
-            'create'  => 'Created',
-            'update'  => 'Updated',
-            'delete'  => 'Deleted',
-            'upload'  => 'Uploaded',
-            'restore' => 'Restored',
-            'publish' => 'Published',
-            'compose' => 'Sent',
-            'reply'   => 'Replied',
-            'sync'    => 'Synced',
-            'crop'    => 'Edited',
-            default   => 'Changed',
+            'create'      => 'Created',
+            'update'      => 'Updated',
+            'delete'      => 'Deleted',
+            'upload'      => 'Uploaded',
+            'restore'     => 'Restored',
+            'publish'     => 'Published',
+            'compose'     => 'Sent',
+            'reply'       => 'Replied',
+            'sync'        => 'Synced',
+            'crop'        => 'Edited',
+            'read'        => 'Read',
+            'unread'      => 'Unread',
+            'star'        => 'Starred',
+            'unstar'      => 'Unstarred',
+            'trash'       => 'Trashed',
+            'trash_empty' => 'Emptied trash',
+            'archive'     => 'Archived',
+            default       => 'Changed',
         };
     }
 
@@ -551,8 +693,14 @@ final class AdminActivityLog
             $action === 'pricing.update' => 'Ask Price / lead form field options.',
             $action === 'gmb.sync' => 'Google reviews pulled into the site.',
             $action === 'email.settings' => 'SMTP host and sender settings for outbound mail.',
+            $action === 'inbox.read' => 'Marked a form submission or email as read in the inbox.',
+            $action === 'inbox.unread' => 'Marked a message as unread in the inbox.',
+            $action === 'inbox.trash' => 'Moved a message (and its thread) to trash.',
+            $action === 'inbox.trash_empty' => 'Permanently deleted all messages in trash (admin only).',
+            $action === 'inbox.archive' => 'Archived an inbox message.',
+            $action === 'inbox.restore' => 'Restored a message from archive or trash to the inbox.',
             str_starts_with($action, 'inbox.') => $id
-                ? "CRM inbox thread / message #{$id}."
+                ? "CRM inbox — message #{$id}."
                 : 'CRM inbox — form leads and outbound email.',
             str_starts_with($action, 'desimentor.') => $id
                 ? 'Desimentor visual layout' . (isset($meta['entityType'])

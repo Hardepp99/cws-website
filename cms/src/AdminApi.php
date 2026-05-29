@@ -492,7 +492,19 @@ final class AdminApi
 
         if ($method === 'PATCH' && preg_match('#^/crm/messages/(\d+)$#', $path, $m)) {
             try {
-                Http::json($crm->patchMessage((int) $m[1], Http::readJsonBody()) ?? ['error' => 'Not found']);
+                Http::json(
+                    $crm->patchMessage((int) $m[1], Http::readJsonBody(), $currentUser)
+                        ?? ['error' => 'Not found']
+                );
+            } catch (Throwable $e) {
+                Http::json(['error' => $e->getMessage()], 400);
+            }
+        }
+
+        if ($method === 'POST' && $path === '/crm/trash/empty') {
+            AdminAuth::requireAdmin($currentUser);
+            try {
+                Http::json($crm->emptyTrash($currentUser));
             } catch (Throwable $e) {
                 Http::json(['error' => $e->getMessage()], 400);
             }

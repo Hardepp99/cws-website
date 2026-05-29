@@ -83,12 +83,16 @@ final class CrmInbox
         string $search = '',
         bool $unreadOnly = false
     ): array {
-        $where = 'WHERE direction = "inbound"';
-        $params = [];
-
-        if ($folder !== 'all') {
-            $where .= ' AND folder = :folder';
-            $params[':folder'] = $folder;
+        if ($folder === 'trash') {
+            $where = 'WHERE folder = "trash"';
+            $params = [];
+        } else {
+            $where = 'WHERE direction = "inbound"';
+            $params = [];
+            if ($folder !== 'all') {
+                $where .= ' AND folder = :folder';
+                $params[':folder'] = $folder;
+            }
         }
 
         if ($unreadOnly) {
@@ -207,10 +211,15 @@ final class CrmInbox
             $byType[$key] = ($byType[$key] ?? 0) + (int) $row['c'];
         }
 
+        $trash = (int) $this->db->query(
+            'SELECT COUNT(*) AS c FROM form_submissions WHERE folder = "trash"'
+        )->fetch()['c'];
+
         return [
             'inbox'   => $inbox,
             'unread'  => $unread,
             'starred' => $starred,
+            'trash'   => $trash,
             'byCategory' => $byType,
         ];
     }
@@ -238,32 +247,64 @@ final class CrmInbox
         ];
     }
 
-    public function patchMessage(int $id, array $body): ?array
+    /**
+     * @param array{id:int,username:string}|null $actor
+     */
+    public function patchMessage(int $id, array $body, ?array $actor = null): ?array
     {
-        $allowed = ['is_read', 'is_starred', 'folder'];
+        $stmt = $this->db->prepare('SELECT * FROM form_submissions WHERE id = :id');
+        $stmt->execute([':id' => $id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$row) {
+            return null;
+        }
+
+        if ($actor !== null) {
+            AdminActivityLog::recordInboxPatch($actor, $id, $body, $row);
+        }
+
+        if (array_key_exists('folder', $body)) {
+            $folder = (string) $body['folder'];
+            if (in_array($folder, ['inbox', 'archive', 'trash'], true)) {
+                $threadId = (int) ($row['thread_id'] ?: $row['id']);
+                $this->db->prepare(
+                    'UPDATE form_submissions SET folder = :f WHERE thread_id = :tid OR id = :tid'
+                )->execute([':f' => $folder, ':tid' => $threadId]);
+            }
+        }
+
         $sets = [];
         $params = [':id' => $id];
-        foreach ($allowed as $key) {
+        foreach (['is_read', 'is_starred'] as $key) {
             if (!array_key_exists($key, $body)) {
                 continue;
             }
-            $col = $key;
-            $val = $body[$key];
-            if ($key === 'is_read' || $key === 'is_starred') {
-                $val = $val ? 1 : 0;
-            }
-            if ($key === 'folder' && !in_array($val, ['inbox', 'archive', 'trash'], true)) {
-                continue;
-            }
-            $sets[] = "{$col} = :{$col}";
-            $params[":{$col}"] = $val;
+            $val = $body[$key] ? 1 : 0;
+            $sets[] = "{$key} = :{$key}";
+            $params[":{$key}"] = $val;
         }
-        if ($sets === []) {
-            return $this->getMessage($id);
+        if ($sets !== []) {
+            $sql = 'UPDATE form_submissions SET ' . implode(', ', $sets) . ' WHERE id = :id';
+            $this->db->prepare($sql)->execute($params);
         }
-        $sql = 'UPDATE form_submissions SET ' . implode(', ', $sets) . ' WHERE id = :id';
-        $this->db->prepare($sql)->execute($params);
+
         return $this->getMessage($id);
+    }
+
+    /**
+     * Permanently delete all messages in trash (admin only).
+     *
+     * @param array{id:int,username:string} $actor
+     */
+    public function emptyTrash(array $actor): array
+    {
+        $count = (int) $this->db->query(
+            'SELECT COUNT(*) FROM form_submissions WHERE folder = "trash"'
+        )->fetchColumn();
+        $this->db->exec('DELETE FROM form_submissions WHERE folder = "trash"');
+        AdminActivityLog::recordTrashEmpty($actor, $count);
+
+        return ['success' => true, 'deleted' => $count];
     }
 
     public function listContacts(string $search = ''): array
