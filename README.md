@@ -47,18 +47,27 @@ php wordpress/scripts/seed-service-landings.php
 
 6. Set `WORDPRESS_GRAPHQL_URL=http://localhost/cws-cms/graphql` in `frontend/.env.local`.
 
-### 3. Apache virtual host (production)
+### 3. Production (any domain)
 
-Point `cwsindia.online` to Next.js (reverse proxy to port 3000) or run `npm run build && npm start` via PM2.
+The app is **domain-independent**: set `NEXT_PUBLIC_SITE_URL` and `CMS_API_URL` for your hostname. No code changes required when moving servers.
 
-Example proxy (Apache `httpd-vhosts.conf`):
+**Full guide:** [docs/PRODUCTION_DEPLOY.md](docs/PRODUCTION_DEPLOY.md)
+
+```bash
+cd frontend
+cp .env.production.example .env.local
+# Edit URLs for your domain, then:
+npm run build && npm start
+```
+
+Example Apache reverse proxy:
 
 ```apache
+ProxyPreserveHost On
+RequestHeader set X-Forwarded-Proto "https"
 ProxyPass / http://127.0.0.1:3000/
 ProxyPassReverse / http://127.0.0.1:3000/
 ```
-
-WordPress admin: `http://localhost/cws-cms/wp-admin` (or `cms.cwsindia.online`).
 
 ## Content editing (ACF)
 

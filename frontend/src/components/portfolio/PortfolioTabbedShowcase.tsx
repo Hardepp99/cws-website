@@ -62,19 +62,33 @@ export function PortfolioTabbedShowcase({
     });
   }, [activeTab]);
 
+  /** Scroll only the tab strip — avoid scrollIntoView shifting the page or panel. */
+  const scrollActiveTabIntoView = useCallback((tabId: string) => {
+    const capsule = capsuleRef.current;
+    const tab = tabRefs.current[tabId];
+    if (!capsule || !tab) return;
+
+    const tabLeft = tab.offsetLeft;
+    const tabWidth = tab.offsetWidth;
+    const capsuleWidth = capsule.clientWidth;
+    const maxScroll = Math.max(0, capsule.scrollWidth - capsuleWidth);
+    const targetScroll = tabLeft - (capsuleWidth - tabWidth) / 2;
+
+    capsule.scrollTo({
+      left: Math.max(0, Math.min(targetScroll, maxScroll)),
+      behavior: "smooth",
+    });
+  }, []);
+
   const prevTabRef = useRef(activeTab);
 
   useLayoutEffect(() => {
     updateIndicator();
     if (prevTabRef.current !== activeTab && isPageGrid) {
-      tabRefs.current[activeTab]?.scrollIntoView({
-        behavior: "smooth",
-        inline: "center",
-        block: "nearest",
-      });
+      scrollActiveTabIntoView(activeTab);
     }
     prevTabRef.current = activeTab;
-  }, [activeTab, updateIndicator, isPageGrid, tabs.length]);
+  }, [activeTab, updateIndicator, isPageGrid, tabs.length, scrollActiveTabIntoView]);
 
   useEffect(() => {
     const capsule = capsuleRef.current;

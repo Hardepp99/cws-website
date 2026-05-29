@@ -16,7 +16,12 @@ type FieldDef =
 const FIELDS: FieldDef[] = [
   { key: "phone", label: "Phone" },
   { key: "email", label: "Email" },
-  { key: "address", label: "Address", hint: "Shown in footer / contact areas.", type: "textarea" },
+  {
+    key: "address",
+    label: "Address",
+    hint: "Shown in footer / contact. All address links open your Google Business listing (Settings → Google Business).",
+    type: "textarea",
+  },
   { key: "logoUrl", label: "Logo", type: "media" },
   { key: "logoWhiteUrl", label: "Logo (light)", type: "media" },
   { key: "primaryColor", label: "Primary brand color", type: "color" },

@@ -1,16 +1,17 @@
 import "server-only";
 
 import { cookies, headers } from "next/headers";
+import { getSiteUrl } from "@/lib/site-url";
 
 const CMS = process.env.CMS_API_URL?.replace(/\/$/, "") || "";
 
 async function siteOrigin(): Promise<string> {
-  const env = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
+  const env = getSiteUrl();
   if (env) return env;
   const h = await headers();
   const host = h.get("x-forwarded-host") || h.get("host");
-  const proto = h.get("x-forwarded-proto") || "http";
-  return host ? `${proto}://${host}` : "http://127.0.0.1:3000";
+  const proto = h.get("x-forwarded-proto") || (host?.includes("localhost") ? "http" : "https");
+  return host ? `${proto}://${host}` : "http://localhost:3000";
 }
 
 export async function getAdminToken(): Promise<string | undefined> {

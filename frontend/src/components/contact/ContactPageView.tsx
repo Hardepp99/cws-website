@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { Reveal } from "@/components/ui/Reveal";
+import { resolveGmbMapsUrl } from "@/lib/gmb/resolve";
 import type { SiteSettings } from "@/lib/wordpress/types";
 
 function digitsOnly(s: string): string {
@@ -40,6 +41,7 @@ export function ContactPageView({
   reviewCount = "120+",
 }: ContactPageViewProps) {
   const addressLines = formatAddress(settings.address);
+  const gmbMapsUrl = resolveGmbMapsUrl(settings);
   const waHref = whatsAppHref(settings.phone);
   const telHref = settings.phone ? `tel:${settings.phone.replace(/\s/g, "")}` : "";
   const mailHref = settings.email ? `mailto:${settings.email}` : "";
@@ -119,21 +121,19 @@ export function ContactPageView({
                         </span>
                         <div>
                           <span className="contact-details-card__label">Office address</span>
-                          <address className="contact-details-card__address">
-                            {addressLines.map((line) => (
-                              <span key={line}>{line}</span>
-                            ))}
-                          </address>
-                          {settings.gmbMapsUrl ? (
-                            <a
-                              href={settings.gmbMapsUrl}
-                              className="contact-details-card__link"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              Open in Google Maps
-                            </a>
-                          ) : null}
+                          <a
+                            href={gmbMapsUrl}
+                            className="contact-details-card__address-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="View Creative Web Solutions on Google Maps"
+                          >
+                            <address className="contact-details-card__address">
+                              {addressLines.map((line) => (
+                                <span key={line}>{line}</span>
+                              ))}
+                            </address>
+                          </a>
                         </div>
                       </li>
                     ) : null}
@@ -194,16 +194,14 @@ export function ContactPageView({
               <p className="contact-page-map__sub">
                 {placeName} — Chandigarh Tricity. Parking available on VIP Road.
               </p>
-              {settings.gmbMapsUrl ? (
-                <Link
-                  href={settings.gmbMapsUrl}
-                  className="btn btn-outline-custom btn-sm"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <i className="fas fa-directions" aria-hidden="true" /> Get directions
-                </Link>
-              ) : null}
+              <Link
+                href={gmbMapsUrl}
+                className="btn btn-outline-custom btn-sm"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i className="fas fa-map-marker-alt" aria-hidden="true" /> View on Google Maps
+              </Link>
             </div>
           </Reveal>
         </div>

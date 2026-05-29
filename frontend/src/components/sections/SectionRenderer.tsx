@@ -22,9 +22,11 @@ import { HomepageSectionShell } from "@/components/sections/HomepageSectionShell
 import { LocalPortfolioSection } from "@/components/sections/LocalPortfolioSection";
 import {
   isHeroLayout,
+  pickRandomLightPastelTint,
   resolveSectionBackdrop,
   resolveSectionBackdropStrength,
   resolveSectionTheme,
+  type LightPastelTint,
 } from "@/lib/homepage/section-appearance";
 import { gmbConfigFromApiPayload } from "@/lib/gmb/from-api";
 import { gmbConfigFromSiteSettings } from "@/lib/gmb/resolve";
@@ -142,12 +144,15 @@ export async function SectionRenderer({ sections, allSections }: SectionRenderer
         const theme = resolveSectionTheme(section, bandIndex);
         const backdropUrl = resolveSectionBackdrop(section);
         const backdropStrength = resolveSectionBackdropStrength(section, theme);
+        const lightTint: LightPastelTint | undefined =
+          theme === "light" ? pickRandomLightPastelTint() : undefined;
         bandIndex += 1;
 
         return (
           <HomepageSectionShell
             key={key}
             theme={theme}
+            lightTint={lightTint}
             backdropUrl={backdropUrl}
             backdropStrength={backdropStrength}
             layout={layout}

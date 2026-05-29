@@ -10,7 +10,6 @@ export const metadata: Metadata = buildMetadata({
     "Creative Web Solutions — web development, mobile apps, digital marketing, and IT training in Chandigarh, Zirakpur, Mohali. Call +91-7015969967",
   keywords:
     "web development company India, website developer Chandigarh, digital marketing Zirakpur, mobile app development Mohali, IT company Punjab, Creative Web Solutions",
-  canonical: "https://www.cwsindia.online/",
 });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

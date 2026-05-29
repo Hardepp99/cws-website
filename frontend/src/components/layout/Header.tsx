@@ -1,10 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { SiteLogo } from "@/components/ui/SiteLogo";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { openAskPriceModal } from "@/lib/ask-price";
 import type { MenuItem, SiteSettings } from "@/lib/wordpress/types";
+
+function scrollContentToTop() {
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+}
 
 interface HeaderProps {
   settings: SiteSettings;
@@ -13,8 +20,28 @@ interface HeaderProps {
 }
 
 export function Header({ settings, menu, currentPath = "" }: HeaderProps) {
+  const pathname = usePathname();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const closeMobileMenu = useCallback(() => {
+    const collapse = document.getElementById("navbarNav");
+    const toggler = document.querySelector<HTMLButtonElement>(".navbar-toggler");
+    if (collapse?.classList.contains("show") && toggler) {
+      toggler.click();
+    }
+    setOpenDropdown(null);
+  }, []);
+
+  const onMainNavClick = useCallback(
+    (href: string) => {
+      closeMobileMenu();
+      if (href && href !== "#" && !href.startsWith("#")) {
+        scrollContentToTop();
+      }
+    },
+    [closeMobileMenu],
+  );
 
   const isActive = (href: string) => {
     if (href === "/") return currentPath === "/";
@@ -139,13 +166,18 @@ export function Header({ settings, menu, currentPath = "" }: HeaderProps) {
     return () => obs.disconnect();
   }, []);
 
+  useEffect(() => {
+    closeMobileMenu();
+    scrollContentToTop();
+  }, [pathname, closeMobileMenu]);
+
   return (
     <>
       <header className="header" id="header">
         <div className="mobile-menu-overlay" id="mobileMenuOverlay" aria-hidden="true" />
         <nav className="navbar navbar-expand-lg">
           <div className="container">
-            <Link className="navbar-brand" href="/">
+            <Link className="navbar-brand" href="/" onClick={() => onMainNavClick("/")}>
               <SiteLogo
                 variant="header"
                 src={settings.logoUrl}
@@ -199,6 +231,7 @@ export function Header({ settings, menu, currentPath = "" }: HeaderProps) {
                         aria-expanded={openDropdown === item.label ? true : false}
                         onClick={(e) => {
                           if (item.href === "#") e.preventDefault();
+                          else onMainNavClick(item.href);
                         }}
                       >
                         {item.label}
@@ -248,7 +281,11 @@ export function Header({ settings, menu, currentPath = "" }: HeaderProps) {
                       >
                         {item.children.map((child) => (
                           <li key={child.href}>
-                            <Link className="dropdown-item" href={child.href}>
+                            <Link
+                              className="dropdown-item"
+                              href={child.href}
+                              onClick={() => onMainNavClick(child.href)}
+                            >
                               {child.icon ? <i className={`${child.icon} me-2`} /> : null}
                               {child.label}
                             </Link>
@@ -258,7 +295,11 @@ export function Header({ settings, menu, currentPath = "" }: HeaderProps) {
                     </li>
                   ) : (
                     <li key={item.label} className="nav-item">
-                      <Link className={`nav-link${isActive(item.href) ? " active" : ""}`} href={item.href}>
+                      <Link
+                        className={`nav-link${isActive(item.href) ? " active" : ""}`}
+                        href={item.href}
+                        onClick={() => onMainNavClick(item.href)}
+                      >
                         {item.label}
                       </Link>
                     </li>

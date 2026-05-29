@@ -159,6 +159,22 @@ export async function getPortfolioAll(): Promise<PortfolioItem[]> {
   return PORTFOLIO_FALLBACK_ITEMS;
 }
 
+export async function getPortfolioBySlug(slug: string): Promise<PortfolioItem | null> {
+  const { PORTFOLIO_FALLBACK_ITEMS } = await import("@/data/portfolio-fallback");
+  try {
+    const item = await cmsFetch<PortfolioItem>(`/api/v1/portfolio/${encodeURIComponent(slug)}`);
+    if (item && !("error" in (item as object))) return item;
+  } catch {
+    /* CMS offline */
+  }
+  return PORTFOLIO_FALLBACK_ITEMS.find((i) => i.slug === slug) ?? null;
+}
+
+export async function getPortfolioSlugs(): Promise<string[]> {
+  const items = await getPortfolioAll();
+  return items.map((i) => i.slug).filter(Boolean);
+}
+
 export function isCmsActive(): boolean {
   return cmsApiEnabled();
 }

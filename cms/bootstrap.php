@@ -11,9 +11,27 @@ if (!is_file($configFile)) {
 /** @var array<string, mixed> $CWS_CONFIG */
 $CWS_CONFIG = require $configFile;
 
+// Optional env overrides (production / Docker) — see docs/PRODUCTION_DEPLOY.md
+if ($v = getenv('CWS_SITE_URL')) {
+    $CWS_CONFIG['site_url'] = $v;
+}
+if ($v = getenv('CWS_CMS_PUBLIC_URL')) {
+    $CWS_CONFIG['cms_public_url'] = $v;
+}
+$corsEnv = getenv('CWS_CORS_ORIGINS');
+if ($corsEnv !== false && $corsEnv !== '') {
+    $CWS_CONFIG['cors_origins'] = array_values(array_filter(array_map('trim', explode(',', $corsEnv))));
+}
+
 $placesKey = getenv('GOOGLE_PLACES_API_KEY');
 if ($placesKey && empty($CWS_CONFIG['google']['places_api_key'])) {
     $CWS_CONFIG['google']['places_api_key'] = $placesKey;
+}
+
+// Composer autoloader (for PHPMailer and future libraries)
+$composerAutoload = CWS_CMS_ROOT . '/vendor/autoload.php';
+if (is_file($composerAutoload)) {
+    require_once $composerAutoload;
 }
 
 require_once CWS_CMS_ROOT . '/src/Database.php';

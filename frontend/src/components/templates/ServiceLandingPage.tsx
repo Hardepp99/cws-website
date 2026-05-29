@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { PageFaq } from "@/components/faq/PageFaq";
 import { PageBodyContent } from "@/components/ui/PageBodyContent";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { resolvePublicBody } from "@/lib/content/display-mode";
+import { normalizeFaqItems } from "@/lib/faq/normalize";
 import type { ServiceLanding } from "@/lib/wordpress/types";
 
 function slugToLabel(slug: string): string {
@@ -72,6 +74,8 @@ export function ServiceLandingPage({ data }: ServiceLandingPageProps) {
           ) : null}
         </>
       )}
+
+      <PageFaq items={normalizeFaqItems(data.faq)} title={`${data.service} — FAQs`} />
 
       {data.related.length > 0 ? (
         <section className="service-location-section alt">

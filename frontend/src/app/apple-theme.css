@@ -70,7 +70,7 @@ small,
 
 a:not(.btn):not(.home-hero__btn):not(.home-btn):not(.nav-link):not(.social-link):not(
     .footer-social-link
-  ):not(.home-marquee-pill):not(.topbar-link) {
+  ):not(.home-marquee-pill):not(.topbar-link):not(.portfolio-showcase__view-all) {
   color: var(--apple-link);
   text-decoration: none;
 }
@@ -436,18 +436,17 @@ label {
   border-radius: var(--apple-radius-pill) !important;
 }
 
-/* Footer — site max-width content, no card border */
+/* Footer — site max-width content, pro monochrome */
 .site-footer,
 .footer {
   font-family: var(--font-body);
   background: var(--cws-footer-bg, #1d1d1f) !important;
-  color: #f5f5f7 !important;
+  color: rgba(255, 255, 255, 0.78) !important;
   border: none !important;
 }
 
 .footer-top,
-.footer-bottom,
-.footer-legal-strip {
+.footer-bar {
   background: transparent !important;
   border: none !important;
 }
@@ -455,109 +454,70 @@ label {
 .footer-desc,
 .footer-widget p,
 .footer-contact a,
+.footer-contact .footer-contact__row,
 .footer-links a,
 .footer-copyright,
 .footer-bottom-links a {
-  color: rgba(255, 255, 255, 0.82) !important;
+  color: rgba(255, 255, 255, 0.72) !important;
 }
 
 .footer-links a:hover,
 .footer-contact a:hover,
+.footer-contact a.footer-contact__row:hover,
 .footer-bottom-links a:hover {
-  color: #7ec8ff !important;
+  color: #fff !important;
 }
 
-.footer-title-text {
-  color: #f5f5f7 !important;
+.footer-title-text--neutral {
+  color: rgba(255, 255, 255, 0.92) !important;
 }
 
-.footer-tone-word--white {
-  color: #ffffff !important;
+.footer-title-text--company {
+  color: #8ec5ff !important;
 }
 
-.footer-tone-word--blue {
-  color: #5bc4ff !important;
+.footer-title-text--services {
+  color: #7ddea8 !important;
 }
 
-.footer-tone-word--royal {
-  color: #7eb8ff !important;
+.footer-title-text--products {
+  color: #ffc48a !important;
 }
 
-.footer-tone-word--slate {
-  color: #a1a1a6 !important;
-}
-
-.footer-tone-word--green {
-  color: #5dd879 !important;
-}
-
-.footer-tone-word--orange {
-  color: #ffb366 !important;
-}
-
-.footer-title-icon {
-  border-color: rgba(255, 255, 255, 0.12) !important;
-}
-
-.footer-link-icon--blue {
-  background: rgba(0, 113, 227, 0.2) !important;
-  color: #5bc4ff !important;
-}
-
-.footer-link-icon--royal {
-  background: rgba(88, 86, 214, 0.22) !important;
-  color: #9d9aff !important;
-}
-
-.footer-link-icon--green {
-  background: rgba(52, 199, 89, 0.2) !important;
-  color: #5dd879 !important;
-}
-
-.footer-link-icon--orange {
-  background: rgba(255, 149, 0, 0.22) !important;
-  color: #ffb366 !important;
-}
-
-.footer-link-icon--slate {
-  background: rgba(255, 255, 255, 0.1) !important;
-  color: #d2d2d7 !important;
-}
-
-.footer-contact-icon--blue {
-  color: #5bc4ff !important;
-}
-
-.footer-contact-icon--green {
-  color: #5dd879 !important;
-}
-
-.footer-contact-icon--orange {
-  color: #ffb366 !important;
+.footer-title-icon,
+.footer-contact-icon {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+  border: none !important;
 }
 
 .footer-social-link {
-  background: rgba(255, 255, 255, 0.1) !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
-  color: #f5f5f7 !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: rgba(255, 255, 255, 0.75) !important;
 }
 
 .footer-social-link:hover {
-  background: rgba(255, 255, 255, 0.16) !important;
+  background: rgba(255, 255, 255, 0.14) !important;
   color: #fff !important;
 }
 
 .footer-payments-label {
-  color: #a1a1a6 !important;
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.footer-copyright {
+  color: rgba(255, 255, 255, 0.5) !important;
 }
 
 .site-footer h4,
 .site-footer h5,
 .footer h4,
 .footer h5 {
+  font-family: var(--font-display) !important;
   font-weight: 600;
-  letter-spacing: var(--apple-tracking-tight);
-  color: #f5f5f7 !important;
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 0.92) !important;
 }
 
 /* Homepage process — kill legacy style.css gradients / spinners */

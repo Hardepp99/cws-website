@@ -5,9 +5,12 @@ import { FooterAskPriceTrigger } from "@/components/engagement/FooterAskPriceTri
 import { SitePromoQuote } from "@/components/engagement/SitePromoQuote";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
+import { PastelSectionsInit } from "./PastelSectionsInit";
 import { Preloader } from "./Preloader";
 import { SiteScripts } from "./SiteScripts";
+import { SiteMapsProvider } from "./SiteMapsContext";
 import { Topbar } from "./Topbar";
+import { resolveGmbMapsUrl } from "@/lib/gmb/resolve";
 import { getMenus, getPricingOptions, getSiteSettings } from "@/lib/wordpress/api";
 
 interface SiteLayoutProps {
@@ -22,8 +25,10 @@ export async function SiteLayout({ children, currentPath = "/" }: SiteLayoutProp
     getPricingOptions(),
   ]);
 
+  const gmbMapsUrl = resolveGmbMapsUrl(settings);
+
   return (
-    <>
+    <SiteMapsProvider mapsUrl={gmbMapsUrl}>
       <style
         dangerouslySetInnerHTML={{
           __html: `:root {
@@ -40,7 +45,10 @@ export async function SiteLayout({ children, currentPath = "/" }: SiteLayoutProp
       <SitePromoQuote settings={settings} pricingOptions={pricingOptions} />
       <Topbar settings={settings} />
       <Header settings={settings} menu={menus.primary} currentPath={currentPath} />
-      <main className="site-main">{children}</main>
+      <main className="site-main">
+        {children}
+        <PastelSectionsInit />
+      </main>
       <Footer
         settings={settings}
         footerMenu={menus.footer}
@@ -51,6 +59,6 @@ export async function SiteLayout({ children, currentPath = "/" }: SiteLayoutProp
       <GlassBubbleCursor />
       <SiteFloatWidgets settings={settings} />
       <SiteScripts />
-    </>
+    </SiteMapsProvider>
   );
 }

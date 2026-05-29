@@ -1,5 +1,8 @@
 import type { HomepageSection } from "@/lib/wordpress/types";
 
+export type { LightPastelTint } from "@/lib/page-section-tint";
+export { pickRandomLightPastelTint } from "@/lib/page-section-tint";
+
 export type SectionTheme = "light" | "dark";
 
 /**

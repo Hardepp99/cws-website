@@ -4,9 +4,11 @@ import { SiteLayout } from "@/components/layout/SiteLayout";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { ElementorPageBody } from "@/components/pages/ElementorPageBody";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { PageFaq } from "@/components/faq/PageFaq";
 import { PageConversionBand } from "@/components/engagement/PageConversionBand";
 import { PageTrustStrip } from "@/components/engagement/PageTrustStrip";
 import { getBlogPosts, getPageBySlug } from "@/lib/wordpress/api";
+import { normalizeFaqItems } from "@/lib/faq/normalize";
 import { blogItemListJsonLd, breadcrumbJsonLd, buildMetadata } from "@/lib/seo/metadata";
 
 export const dynamic = "force-dynamic";
@@ -74,6 +76,7 @@ export default async function BlogPage() {
           </div>
         </div>
       </section>
+      <PageFaq items={normalizeFaqItems(page?.faqs)} title="Blog FAQs" />
       <PageTrustStrip />
       <PageConversionBand
         title="Need help applying this to your business?"

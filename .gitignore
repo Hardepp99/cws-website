@@ -2,8 +2,11 @@ node_modules/
 .next/
 .env
 .env.local
+.env.production.local
 *.log
 .DS_Store
 frontend/.next/
 frontend/node_modules/
 cms/uploads/
+cms/config.php
+cms/vendor/

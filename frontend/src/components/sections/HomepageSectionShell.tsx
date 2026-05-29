@@ -1,7 +1,8 @@
-import type { SectionTheme } from "@/lib/homepage/section-appearance";
+import type { LightPastelTint, SectionTheme } from "@/lib/homepage/section-appearance";
 
 interface HomepageSectionShellProps {
   theme: SectionTheme;
+  lightTint?: LightPastelTint;
   backdropUrl: string;
   backdropStrength: number;
   layout: string;
@@ -11,6 +12,7 @@ interface HomepageSectionShellProps {
 /** Alternating light/dark band with optional full-bleed backdrop image. */
 export function HomepageSectionShell({
   theme,
+  lightTint,
   backdropUrl,
   backdropStrength,
   layout,
@@ -23,6 +25,7 @@ export function HomepageSectionShell({
       className={`home-section-band home-section-band--${theme}`}
       data-section-theme={theme}
       data-layout={layout}
+      data-tint={theme === "light" ? lightTint ?? "white" : undefined}
     >
       {backdropUrl ? (
         <>

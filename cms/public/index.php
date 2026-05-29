@@ -69,6 +69,10 @@ try {
     if ($method === 'GET' && $path === '/portfolio') {
         Http::json($repo->getAllPortfolioPublished());
     }
+    if ($method === 'GET' && preg_match('#^/portfolio/([a-z0-9][a-z0-9-]*)$#', $path, $m)) {
+        $item = $repo->getPortfolioItemBySlug($m[1]);
+        Http::json($item ?: ['error' => 'Not found'], $item ? 200 : 404);
+    }
     if ($method === 'GET' && $path === '/portfolio/home') {
         $settings = $repo->getSiteSettings();
         $maxPerCategory = max(1, min(24, (int) ($settings['portfolioHomeMax'] ?? 5)));

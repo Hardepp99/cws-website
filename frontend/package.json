@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:clean": "node -e \"try{require('fs').rmSync('.next',{recursive:true,force:true})}catch(e){}\" && next dev",
-    "build": "next build",
+    "build": "node ../scripts/check-production-env.mjs && next build",
     "start": "next start",
     "lint": "eslint ."
   },

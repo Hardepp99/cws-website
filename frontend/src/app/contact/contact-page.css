@@ -197,6 +197,18 @@
   display: block;
 }
 
+.contact-details-card__address-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.2s ease;
+}
+
+.contact-details-card__address-link:hover,
+.contact-details-card__address-link:focus-visible {
+  color: var(--contact-accent);
+}
+
 .contact-details-card__link {
   display: inline-flex;
   align-items: center;

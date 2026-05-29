@@ -1,10 +1,12 @@
 import Link from "next/link";
+import { PageFaq } from "@/components/faq/PageFaq";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { PageBodyContent } from "@/components/ui/PageBodyContent";
 import { PageContentTitle } from "@/components/ui/PageContentTitle";
 import { PageHeader } from "@/components/ui/PageHeader";
 import type { ServiceDetail } from "@/lib/wordpress/types";
 import { resolvePublicBody } from "@/lib/content/display-mode";
+import { normalizeFaqItems } from "@/lib/faq/normalize";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seo/metadata";
 
 interface ServiceDetailPageProps {
@@ -54,7 +56,11 @@ export function ServiceDetailPage({ data }: ServiceDetailPageProps) {
             showArticleWrapper={false}
           />
         </div>
-      ) : (
+      ) : null}
+      {body.showElementor ? (
+        <PageFaq items={normalizeFaqItems(data.faqs)} title={`${data.title} — FAQs`} />
+      ) : null}
+      {body.showElementor ? null : (
         <>
           <section className="service-detail-intro">
             <div className="corp-container">
@@ -109,6 +115,8 @@ export function ServiceDetailPage({ data }: ServiceDetailPageProps) {
               </div>
             </section>
           ) : null}
+
+          <PageFaq items={normalizeFaqItems(data.faqs)} title={`${data.title} — FAQs`} />
 
           <section className="cta-section service-detail-cta">
             <div className="corp-container text-center">

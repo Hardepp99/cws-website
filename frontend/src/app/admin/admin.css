@@ -1985,6 +1985,38 @@ button.row-action-btn {
   align-items: end;
 }
 
+.cms-repeater-row--menu-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 10px 12px;
+  align-items: end;
+}
+
+.cms-repeater-row--menu-item .cms-repeater-row__remove {
+  align-self: end;
+  margin-bottom: 0.35rem;
+}
+
+.cms-menu-icon-preview {
+  margin-top: 0.35rem;
+  font-size: 0.8125rem;
+}
+
+.cms-menu-icon-preview i {
+  margin-left: 0.35rem;
+  color: var(--cws-royal, #0057ff);
+}
+
+@media (max-width: 900px) {
+  .cms-repeater-row--menu-item {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cms-repeater-row--menu-item .cms-repeater-row__remove {
+    grid-column: 1 / -1;
+  }
+}
+
 .cms-pricing-bundle {
   background: #f8fafc;
 }

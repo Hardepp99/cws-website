@@ -125,6 +125,7 @@ export interface ServiceDetail {
   priceBadge?: string;
   content?: string;
   features: { title: string; description: string; icon: string }[];
+  faqs?: FaqItem[];
   ctaTitle?: string;
   ctaText?: string;
   seo: SeoMeta;
@@ -160,6 +161,7 @@ export interface WpPage {
   title: string;
   content?: string;
   displayMode?: ContentDisplayMode;
+  faqs?: FaqItem[];
   seo: SeoMeta;
   sections?: HomepageSection[];
   desimentor?: DesimentorDocument;
@@ -174,6 +176,7 @@ export interface BlogPost {
   image?: string;
   content?: string;
   displayMode?: ContentDisplayMode;
+  faqs?: FaqItem[];
   desimentor?: DesimentorDocument;
   categories?: string[];
   featured?: boolean;

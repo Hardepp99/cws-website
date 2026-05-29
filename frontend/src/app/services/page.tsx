@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { ElementorPageBody } from "@/components/pages/ElementorPageBody";
+import { PageFaq } from "@/components/faq/PageFaq";
 import { PageConversionBand } from "@/components/engagement/PageConversionBand";
 import { PageTrustStrip } from "@/components/engagement/PageTrustStrip";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -75,6 +76,7 @@ export default async function ServicesPage() {
             </div>
           </section>
         ) : null}
+        <PageFaq items={normalizeFaqItems(page.faqs)} />
         <PageTrustStrip />
         <PageConversionBand
           title="Not sure which service fits?"

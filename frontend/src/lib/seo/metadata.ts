@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import type { SeoMeta } from "@/lib/wordpress/types";
+import { getSiteUrl, siteUrl } from "@/lib/site-url";
 
-export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.cwsindia.online").replace(
-  /\/$/,
-  ""
-);
+export { siteUrl, getSiteUrl };
 
 const defaultKeywords =
   "web development company India, website developer Chandigarh, digital marketing Zirakpur, mobile app development Mohali, IT training Punjab, Creative Web Solutions";
@@ -26,10 +24,11 @@ export function isNoindex(seo: SeoMeta): boolean {
 
 export function buildMetadata(seo: SeoMeta, path = ""): Metadata {
   const canonicalPath = path.startsWith("/") ? path : path ? `/${path}` : "";
+  const base = siteUrl || "http://localhost:3000";
   const canonical =
     seo.canonical?.trim() ||
-    `${siteUrl}${canonicalPath}`.replace(/([^:]\/)\/+/g, "$1") ||
-    siteUrl;
+    `${base}${canonicalPath}`.replace(/([^:]\/)\/+/g, "$1") ||
+    base;
   const ogImage =
     seo.ogImage?.trim() ||
     "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&h=630&q=85";
@@ -39,7 +38,7 @@ export function buildMetadata(seo: SeoMeta, path = ""): Metadata {
   const noindex = isNoindex(seo);
 
   return {
-    metadataBase: new URL(siteUrl),
+    metadataBase: new URL(base),
     title,
     description,
     keywords,

@@ -7,9 +7,13 @@ import { SeoPanel } from "@/components/admin/SeoPanel";
 import { SlugField } from "@/components/admin/SlugField";
 import { WysiwygField } from "@/components/admin/WysiwygField";
 import { WpEditScreen } from "@/components/admin/wp/WpEditScreen";
+import { FaqEditorField } from "@/components/admin/FaqEditorField";
 import { EMPTY_SEO, seoFromPageRow, seoToPagePayload, type AdminSeoData } from "@/lib/admin/seo-types";
+import { parseFaqsFromAdminRow } from "@/lib/admin/parse-faqs";
 import { adminFetch } from "@/lib/admin/client";
 import { normalizeDisplayMode, type DisplayMode } from "@/lib/content/display-mode";
+import { filterValidFaqs } from "@/lib/faq/filter";
+import type { FaqItem } from "@/lib/wordpress/types";
 
 const EMPTY_META: DesimentorMeta = {
   hasDocument: false,
@@ -28,6 +32,8 @@ export function SitePageForm({ pageId, isNew }: { pageId?: number; isNew?: boole
   const [displayMode, setDisplayMode] = useState<DisplayMode>("classic");
   const [desimentorMeta, setDesimentorMeta] = useState<DesimentorMeta>(EMPTY_META);
   const [seo, setSeo] = useState<AdminSeoData>({ ...EMPTY_SEO });
+  const [faqs, setFaqs] = useState<FaqItem[]>([]);
+  const [isHomepage, setIsHomepage] = useState(false);
   const [slugManual, setSlugManual] = useState(false);
   const [msg, setMsg] = useState("");
   const [err, setErr] = useState("");
@@ -51,6 +57,8 @@ export function SitePageForm({ pageId, isNew }: { pageId?: number; isNew?: boole
       const meta = row.desimentor_meta as DesimentorMeta | undefined;
       if (meta) setDesimentorMeta(meta);
       setSeo(seoFromPageRow(row as Parameters<typeof seoFromPageRow>[0]));
+      setIsHomepage(Boolean(row.is_homepage));
+      setFaqs(parseFaqsFromAdminRow(row));
     }).catch((e) => setErr(String(e)));
   }, [pageId, isNew]);
 
@@ -72,6 +80,7 @@ export function SitePageForm({ pageId, isNew }: { pageId?: number; isNew?: boole
       status,
       display_mode: displayMode,
       ...seoToPagePayload(seo),
+      faqs: filterValidFaqs(faqs),
     };
     try {
       if (isNew) {
@@ -114,6 +123,13 @@ export function SitePageForm({ pageId, isNew }: { pageId?: number; isNew?: boole
       <p className="cms-field-hint">
         This is the original classic content. It is preserved when you edit with Desimentor.
       </p>
+      {!isHomepage ? (
+        <FaqEditorField
+          items={faqs}
+          onChange={setFaqs}
+          hint="Shown at the bottom of this page on the live site (accordion). Homepage uses Homepage → Sections instead."
+        />
+      ) : null}
       <SeoPanel seo={seo} onChange={setSeo} contentHtml={contentHtml} slug={slug} pathPrefix="/" />
     </>
   );

@@ -23,7 +23,7 @@ export const SAMPLE_SITE_SEO: SeoMeta = {
     "Creative Web Solutions — website development, mobile apps, ecommerce, digital marketing, SEO, and IT training in Zirakpur, Chandigarh, and Mohali. Request pricing, timelines, and a practical project plan.",
   keywords:
     "web development company Chandigarh, website developer Zirakpur, digital marketing agency Mohali, mobile app development Punjab, ecommerce website India, IT training Chandigarh, best web design company near me",
-  canonical: "https://www.cwsindia.online/",
+  canonical: "/",
 };
 
 /** Long-form homepage blocks (insert after About in fallback homepage). */

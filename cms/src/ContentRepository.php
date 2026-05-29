@@ -318,6 +318,9 @@ final class ContentRepository
                 ':id' => $id,
             ]);
         }
+        if (array_key_exists('faqs', $data)) {
+            $this->saveEntityFaqs('pages', $id, $data);
+        }
     }
 
     public function createPage(array $data): int
@@ -347,6 +350,9 @@ final class ContentRepository
             } catch (Throwable) {
                 /* optional until migration 007 */
             }
+        }
+        if (array_key_exists('faqs', $data)) {
+            $this->saveEntityFaqs('pages', $newId, $data);
         }
         return $newId;
     }
@@ -387,7 +393,11 @@ final class ContentRepository
                 ':st'   => $data['status'] ?? 'draft',
             ]);
         }
-        return (int) $this->db->lastInsertId();
+        $newId = (int) $this->db->lastInsertId();
+        if (array_key_exists('faqs', $data)) {
+            $this->saveEntityFaqs('blog_posts', $newId, $data);
+        }
+        return $newId;
     }
 
     public function createLanding(array $data): int
@@ -904,6 +914,9 @@ final class ContentRepository
                 ':id' => $id,
             ]);
         }
+        if (array_key_exists('faqs', $data)) {
+            $this->saveEntityFaqs('blog_posts', $id, $data);
+        }
     }
 
     public function getServiceLanding(string $slug): ?array
@@ -1067,6 +1080,9 @@ final class ContentRepository
                 ':id' => $id,
             ]);
         }
+        if (array_key_exists('faqs', $data)) {
+            $this->saveEntityFaqs('services', $id, $data);
+        }
     }
 
     public function createService(array $data): int
@@ -1095,6 +1111,9 @@ final class ContentRepository
                 cws_desimentor()->ensureDocument('service', $newId);
             } catch (Throwable) {
             }
+        }
+        if (array_key_exists('faqs', $data)) {
+            $this->saveEntityFaqs('services', $newId, $data);
         }
         return $newId;
     }
@@ -1162,6 +1181,9 @@ final class ContentRepository
         if ($withSections) {
             $data['sections'] = $this->getHomepageSections((int) $page['id']);
         }
+        if ($this->tableHasFaqsColumn('pages')) {
+            $data['faqs'] = $this->normalizeFaqsPayload($this->decodeJson($page['faqs'] ?? null) ?? []);
+        }
         $entityType = !empty($page['is_homepage']) ? 'homepage' : 'page';
         $this->attachDesimentor($data, $entityType, (int) $page['id']);
         return $data;
@@ -1216,6 +1238,9 @@ final class ContentRepository
                 'keywords'    => '',
             ], $seo),
         ];
+        if ($this->tableHasFaqsColumn('services')) {
+            $data['faqs'] = $this->normalizeFaqsPayload($this->decodeJson($row['faqs'] ?? null) ?? []);
+        }
         $this->attachDesimentor($data, 'service', (int) $row['id']);
         return $data;
     }
@@ -1255,6 +1280,9 @@ final class ContentRepository
                 'keywords'    => '',
             ], $seo, ['robots' => $robots]),
         ];
+        if ($this->tableHasFaqsColumn('blog_posts')) {
+            $data['faqs'] = $this->normalizeFaqsPayload($this->decodeJson($row['faqs'] ?? null) ?? []);
+        }
         $this->attachDesimentor($data, 'blog_post', (int) $row['id']);
         return $data;
     }
@@ -1377,29 +1405,53 @@ final class ContentRepository
         return $stmt->fetch() ?: null;
     }
 
+    public function getPortfolioItemBySlug(string $slug): ?array
+    {
+        if (!$this->portfolioTableExists() || $slug === '') {
+            return null;
+        }
+        $stmt = $this->db->prepare(
+            'SELECT * FROM portfolio_items WHERE slug = :slug AND status = "published" LIMIT 1'
+        );
+        $stmt->execute([':slug' => $slug]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $row ? $this->mapPortfolioItem($row, true) : null;
+    }
+
     public function createPortfolioItem(array $data): int
     {
         if (!$this->portfolioTableExists()) {
             throw new RuntimeException('Run php cms/scripts/migrate-010.php first.');
         }
+        $slug = $this->uniqueSlug(
+            'portfolio_items',
+            $this->sanitizeSlug((string) ($data['slug'] ?? $data['client_name'] ?? $data['title'] ?? 'project'))
+        );
         $stmt = $this->db->prepare(
-            'INSERT INTO portfolio_items (title, client_name, location, category, image, href, excerpt, sort_order, show_on_homepage, status)
-             VALUES (:t, :cn, :loc, :cat, :img, :href, :ex, :ord, :home, :st)'
+            'INSERT INTO portfolio_items (title, slug, client_name, location, category, image, href, excerpt, content, sort_order, show_on_homepage, status)
+             VALUES (:t, :slug, :cn, :loc, :cat, :img, :href, :ex, :content, :ord, :home, :st)'
         );
         $stmt->execute([
-            ':t'    => (string) ($data['title'] ?? $data['client_name'] ?? 'Project'),
-            ':cn'   => (string) ($data['client_name'] ?? $data['title'] ?? ''),
-            ':loc'  => (string) ($data['location'] ?? ''),
-            ':cat'  => (string) ($data['category'] ?? ''),
-            ':img'  => (string) ($data['image'] ?? ''),
-            ':href' => (string) ($data['href'] ?? ''),
-            ':ex'   => (string) ($data['excerpt'] ?? ''),
-            ':ord'  => (int) ($data['sort_order'] ?? 0),
-            ':home' => !empty($data['show_on_homepage']) ? 1 : 0,
-            ':st'   => ($data['status'] ?? 'published') === 'draft' ? 'draft' : 'published',
+            ':t'       => (string) ($data['title'] ?? $data['client_name'] ?? 'Project'),
+            ':slug'    => $slug,
+            ':cn'      => (string) ($data['client_name'] ?? $data['title'] ?? ''),
+            ':loc'     => (string) ($data['location'] ?? ''),
+            ':cat'     => (string) ($data['category'] ?? ''),
+            ':img'     => (string) ($data['image'] ?? ''),
+            ':href'    => (string) ($data['href'] ?? ''),
+            ':ex'      => (string) ($data['excerpt'] ?? ''),
+            ':content' => (string) ($data['content'] ?? ''),
+            ':ord'     => (int) ($data['sort_order'] ?? 0),
+            ':home'    => !empty($data['show_on_homepage']) ? 1 : 0,
+            ':st'      => ($data['status'] ?? 'published') === 'draft' ? 'draft' : 'published',
         ]);
 
-        return (int) $this->db->lastInsertId();
+        $newId = (int) $this->db->lastInsertId();
+        if (array_key_exists('faqs', $data)) {
+            $this->saveEntityFaqs('portfolio_items', $newId, $data);
+        }
+        return $newId;
     }
 
     public function savePortfolioItem(int $id, array $data): void
@@ -1407,24 +1459,44 @@ final class ContentRepository
         if (!$this->portfolioTableExists()) {
             throw new RuntimeException('Run php cms/scripts/migrate-010.php first.');
         }
+        $existing = $this->getPortfolioItemById($id);
+        if (!$existing) {
+            throw new RuntimeException('Portfolio item not found');
+        }
+        $slugInput = trim((string) ($data['slug'] ?? ''));
+        $slug = $slugInput !== ''
+            ? $this->uniqueSlug('portfolio_items', $this->sanitizeSlug($slugInput), $id)
+            : (string) ($existing['slug'] ?? '');
+        if ($slug === '') {
+            $slug = $this->uniqueSlug(
+                'portfolio_items',
+                $this->sanitizeSlug((string) ($data['client_name'] ?? $data['title'] ?? 'project')),
+                $id
+            );
+        }
         $stmt = $this->db->prepare(
-            'UPDATE portfolio_items SET title = :t, client_name = :cn, location = :loc, category = :cat,
-             image = :img, href = :href, excerpt = :ex, sort_order = :ord, show_on_homepage = :home, status = :st
+            'UPDATE portfolio_items SET title = :t, slug = :slug, client_name = :cn, location = :loc, category = :cat,
+             image = :img, href = :href, excerpt = :ex, content = :content, sort_order = :ord, show_on_homepage = :home, status = :st
              WHERE id = :id'
         );
         $stmt->execute([
-            ':t'    => (string) ($data['title'] ?? ''),
-            ':cn'   => (string) ($data['client_name'] ?? ''),
-            ':loc'  => (string) ($data['location'] ?? ''),
-            ':cat'  => (string) ($data['category'] ?? ''),
-            ':img'  => (string) ($data['image'] ?? ''),
-            ':href' => (string) ($data['href'] ?? ''),
-            ':ex'   => (string) ($data['excerpt'] ?? ''),
-            ':ord'  => (int) ($data['sort_order'] ?? 0),
-            ':home' => !empty($data['show_on_homepage']) ? 1 : 0,
-            ':st'   => ($data['status'] ?? 'published') === 'draft' ? 'draft' : 'published',
-            ':id'   => $id,
+            ':t'       => (string) ($data['title'] ?? ''),
+            ':slug'    => $slug,
+            ':cn'      => (string) ($data['client_name'] ?? ''),
+            ':loc'     => (string) ($data['location'] ?? ''),
+            ':cat'     => (string) ($data['category'] ?? ''),
+            ':img'     => (string) ($data['image'] ?? ''),
+            ':href'    => (string) ($data['href'] ?? ''),
+            ':ex'      => (string) ($data['excerpt'] ?? ''),
+            ':content' => (string) ($data['content'] ?? ''),
+            ':ord'     => (int) ($data['sort_order'] ?? 0),
+            ':home'    => !empty($data['show_on_homepage']) ? 1 : 0,
+            ':st'      => ($data['status'] ?? 'published') === 'draft' ? 'draft' : 'published',
+            ':id'      => $id,
         ]);
+        if (array_key_exists('faqs', $data)) {
+            $this->saveEntityFaqs('portfolio_items', $id, $data);
+        }
     }
 
     public function deletePortfolioItem(int $id): void
@@ -1477,19 +1549,53 @@ final class ContentRepository
         return array_map(fn ($row) => $this->mapPortfolioItem($row), $stmt->fetchAll());
     }
 
-    private function mapPortfolioItem(array $row): array
+    /** @return array<int, array<string, mixed>> */
+    public function getRelatedPortfolioItems(string $category, string $excludeSlug, int $limit = 4): array
     {
-        return [
-            'id'          => (int) $row['id'],
-            'title'       => (string) $row['title'],
-            'clientName'  => (string) ($row['client_name'] ?? ''),
-            'location'    => (string) ($row['location'] ?? ''),
-            'category'    => (string) ($row['category'] ?? ''),
-            'image'       => (string) ($row['image'] ?? ''),
-            'href'        => (string) ($row['href'] ?? ''),
-            'excerpt'     => (string) ($row['excerpt'] ?? ''),
+        if (!$this->portfolioTableExists()) {
+            return [];
+        }
+        $limit = max(1, min(12, $limit));
+        $stmt = $this->db->prepare(
+            "SELECT * FROM portfolio_items
+             WHERE status = 'published' AND slug != :ex AND category = :cat
+             ORDER BY sort_order ASC, id DESC
+             LIMIT {$limit}"
+        );
+        $stmt->execute([':ex' => $excludeSlug, ':cat' => $category]);
+
+        return array_map(fn ($row) => $this->mapPortfolioItem($row), $stmt->fetchAll());
+    }
+
+    /**
+     * @param array<string, mixed> $row
+     * @return array<string, mixed>
+     */
+    private function mapPortfolioItem(array $row, bool $includeContent = false): array
+    {
+        $slug = trim((string) ($row['slug'] ?? ''));
+        $external = trim((string) ($row['href'] ?? ''));
+        $mapped = [
+            'id'             => (int) $row['id'],
+            'slug'           => $slug,
+            'title'          => (string) $row['title'],
+            'clientName'     => (string) ($row['client_name'] ?? ''),
+            'location'       => (string) ($row['location'] ?? ''),
+            'category'       => (string) ($row['category'] ?? ''),
+            'image'          => (string) ($row['image'] ?? ''),
+            'href'           => $slug !== '' ? '/portfolio/' . $slug : ($external !== '' ? $external : '/portfolio'),
+            'projectUrl'     => $external,
+            'excerpt'        => (string) ($row['excerpt'] ?? ''),
             'showOnHomepage' => !empty($row['show_on_homepage']),
         ];
+        if ($includeContent) {
+            $mapped['content'] = (string) ($row['content'] ?? '');
+        }
+        if ($this->tableHasFaqsColumn('portfolio_items')) {
+            $mapped['faqs'] = $this->normalizeFaqsPayload($this->decodeJson($row['faqs'] ?? null) ?? []);
+        }
+
+        return $mapped;
     }
 
     public function trackPageView(string $path, string $slug = ''): void
@@ -1668,6 +1774,60 @@ final class ContentRepository
         return $cache;
     }
 
+    private function tableHasFaqsColumn(string $table): bool
+    {
+        static $cache = [];
+        if (isset($cache[$table])) {
+            return $cache[$table];
+        }
+        $allowed = ['pages', 'services', 'portfolio_items', 'blog_posts'];
+        if (!in_array($table, $allowed, true) || !$this->tableExists($table)) {
+            return $cache[$table] = false;
+        }
+        $stmt = $this->db->prepare(
+            'SELECT COUNT(*) AS c FROM information_schema.COLUMNS
+             WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = :t AND COLUMN_NAME = :c'
+        );
+        $stmt->execute([':t' => $table, ':c' => 'faqs']);
+        $cache[$table] = (int) ($stmt->fetch()['c'] ?? 0) > 0;
+
+        return $cache[$table];
+    }
+
+    /** @param mixed $raw */
+    private function normalizeFaqsPayload($raw): array
+    {
+        if (!is_array($raw)) {
+            return [];
+        }
+        $out = [];
+        foreach ($raw as $item) {
+            if (!is_array($item)) {
+                continue;
+            }
+            $question = trim((string) ($item['question'] ?? $item['title'] ?? ''));
+            $answer = trim((string) ($item['answer'] ?? $item['desc'] ?? $item['description'] ?? ''));
+            if ($question !== '' && $answer !== '') {
+                $out[] = ['question' => $question, 'answer' => $answer];
+            }
+        }
+
+        return $out;
+    }
+
+    private function saveEntityFaqs(string $table, int $id, array $data): void
+    {
+        if (!$this->tableHasFaqsColumn($table)) {
+            return;
+        }
+        $faqs = $this->normalizeFaqsPayload($data['faqs'] ?? []);
+        $stmt = $this->db->prepare("UPDATE {$table} SET faqs = :faqs WHERE id = :id");
+        $stmt->execute([
+            ':faqs' => json_encode($faqs, JSON_UNESCAPED_UNICODE),
+            ':id'   => $id,
+        ]);
+    }
+
     private function tableExists(string $table): bool
     {
         if (!preg_match('/^[a-z_]+$/', $table)) {
@@ -1679,7 +1839,7 @@ final class ContentRepository
 
     private function uniqueSlug(string $table, string $slug, ?int $excludeId = null): string
     {
-        $allowed = ['pages', 'blog_posts', 'service_landings', 'services'];
+        $allowed = ['pages', 'blog_posts', 'service_landings', 'services', 'portfolio_items'];
         if (!in_array($table, $allowed, true)) {
             return $slug;
         }

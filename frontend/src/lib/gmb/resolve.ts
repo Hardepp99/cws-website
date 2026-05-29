@@ -50,13 +50,19 @@ function normalizeReviewRecord(item: unknown, index: number): GmbReviewRecord | 
   };
 }
 
+/** Public Google Maps / GMB listing URL — use for all address links site-wide. */
+export function resolveGmbMapsUrl(settings?: Partial<SiteSettings> | null): string {
+  const url = (settings?.gmbMapsUrl ?? CWS_GMB_MAPS_URL).trim();
+  return url || CWS_GMB_MAPS_URL;
+}
+
 /** Build GmbConfig from flat site settings payload */
 export function gmbConfigFromSiteSettings(settings: Partial<SiteSettings> | null | undefined): GmbConfig {
   const parsed = parseGmbReviewsJson(settings?.gmbReviewsJson);
   const reviews = parsed.length ? parsed : DEFAULT_GMB_REVIEWS.map((r) => ({ ...r }));
 
   return {
-    mapsUrl: (settings?.gmbMapsUrl ?? CWS_GMB_MAPS_URL).trim() || CWS_GMB_MAPS_URL,
+    mapsUrl: resolveGmbMapsUrl(settings),
     placeName: (settings?.gmbPlaceName ?? CWS_GMB_PLACE_NAME).trim() || CWS_GMB_PLACE_NAME,
     rating: Number(settings?.gmbRating) || DEFAULT_GMB_RATING,
     reviewCount: (settings?.gmbReviewCount ?? DEFAULT_GMB_REVIEW_COUNT).trim() || DEFAULT_GMB_REVIEW_COUNT,

@@ -5,9 +5,11 @@ import { ContentArticle } from "@/components/ui/ContentArticle";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ElementorPageBody } from "@/components/pages/ElementorPageBody";
 import { getPageBySlug } from "@/lib/wordpress/api";
+import { PageFaq } from "@/components/faq/PageFaq";
 import { PageConversionBand } from "@/components/engagement/PageConversionBand";
 import { PageTrustStrip } from "@/components/engagement/PageTrustStrip";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { normalizeFaqItems } from "@/lib/faq/normalize";
 import { aboutPageJsonLd, breadcrumbJsonLd, buildMetadata } from "@/lib/seo/metadata";
 
 export const dynamic = "force-dynamic";
@@ -56,6 +58,7 @@ export default async function AboutPage() {
           </div>
         </section>
       ) : null}
+      <PageFaq items={normalizeFaqItems(page.faqs)} />
       <PageTrustStrip />
       <PageConversionBand
         title="Want a team that answers in plain language?"

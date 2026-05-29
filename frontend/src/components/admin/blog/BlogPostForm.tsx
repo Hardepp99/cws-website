@@ -8,9 +8,13 @@ import { SeoPanel } from "@/components/admin/SeoPanel";
 import { SlugField } from "@/components/admin/SlugField";
 import { WysiwygField } from "@/components/admin/WysiwygField";
 import { WpEditScreen } from "@/components/admin/wp/WpEditScreen";
+import { FaqEditorField } from "@/components/admin/FaqEditorField";
 import { EMPTY_SEO, parseSeoJson, seoToJson, type AdminSeoData } from "@/lib/admin/seo-types";
+import { parseFaqsFromAdminRow } from "@/lib/admin/parse-faqs";
 import { adminFetch } from "@/lib/admin/client";
 import { normalizeDisplayMode, type DisplayMode } from "@/lib/content/display-mode";
+import { filterValidFaqs } from "@/lib/faq/filter";
+import type { FaqItem } from "@/lib/wordpress/types";
 
 const EMPTY_META: DesimentorMeta = { hasDocument: false, status: null, sectionCount: 0 };
 
@@ -23,6 +27,7 @@ export function BlogPostForm({ postId, isNew }: { postId?: number; isNew?: boole
   const [featuredImage, setFeaturedImage] = useState("");
   const [publishedDate, setPublishedDate] = useState(new Date().toISOString().slice(0, 10));
   const [categories, setCategories] = useState("");
+  const [faqs, setFaqs] = useState<FaqItem[]>([]);
   const [isFeatured, setIsFeatured] = useState(false);
   const [status, setStatus] = useState("draft");
   const [displayMode, setDisplayMode] = useState<DisplayMode>("classic");
@@ -66,6 +71,7 @@ export function BlogPostForm({ postId, isNew }: { postId?: number; isNew?: boole
         title: parsed.title || String(row.title ?? ""),
         description: parsed.description || String(row.excerpt ?? ""),
       });
+      setFaqs(parseFaqsFromAdminRow(row));
     }).catch((e) => setErr(String(e)));
   }, [postId, isNew]);
 
@@ -89,6 +95,7 @@ export function BlogPostForm({ postId, isNew }: { postId?: number; isNew?: boole
       status,
       display_mode: displayMode,
       seo: seoToJson(seo),
+      faqs: filterValidFaqs(faqs),
     };
     try {
       if (isNew) {
@@ -147,6 +154,7 @@ export function BlogPostForm({ postId, isNew }: { postId?: number; isNew?: boole
         <option value="published">Published</option>
         <option value="draft">Draft</option>
       </select>
+      <FaqEditorField items={faqs} onChange={setFaqs} />
       <SeoPanel seo={seo} onChange={setSeo} contentHtml={contentHtml} slug={slug} pathPrefix="/blog/" />
     </>
   );

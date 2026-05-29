@@ -1,0 +1,3 @@
+ALTER TABLE portfolio_items
+  ADD COLUMN slug VARCHAR(200) NOT NULL DEFAULT '' AFTER title,
+  ADD COLUMN content LONGTEXT NULL AFTER excerpt;

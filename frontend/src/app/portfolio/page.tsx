@@ -3,7 +3,10 @@ import { PortfolioTabbedShowcase } from "@/components/portfolio/PortfolioTabbedS
 import { ElementorPageBody } from "@/components/pages/ElementorPageBody";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { PageFaq } from "@/components/faq/PageFaq";
 import { PageConversionBand } from "@/components/engagement/PageConversionBand";
+import { pickRandomLightPastelTint } from "@/lib/page-section-tint";
+import { normalizeFaqItems } from "@/lib/faq/normalize";
 import { getPageBySlug, getPortfolioAll, getSiteSettings } from "@/lib/wordpress/api";
 import { breadcrumbJsonLd, buildMetadata, siteUrl } from "@/lib/seo/metadata";
 
@@ -37,6 +40,8 @@ export default async function PortfolioPage() {
     settings.portfolioSubtitle ??
     "Filter by category to see websites, stores, and campaigns we have shipped across the Tricity.";
 
+  const showcaseTint = pickRandomLightPastelTint();
+
   const collectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -60,7 +65,8 @@ export default async function PortfolioPage() {
       <PageHeader breadcrumb={[{ label: "Home", href: "/" }, { label: "Portfolio" }]} />
       <div className="portfolio-page">
         <section
-          className="portfolio-page__showcase-band home-section-band home-section-band--light"
+          className="portfolio-page__showcase-band home-section-band home-section-band--light page-section-pastel"
+          data-tint={showcaseTint}
           aria-labelledby="portfolio-showcase-heading"
         >
           <div className="corp-container">
@@ -86,6 +92,7 @@ export default async function PortfolioPage() {
         ) : null}
 
         <div className="corp-container portfolio-page__footer">
+          <PageFaq items={normalizeFaqItems(page?.faqs)} title="Portfolio FAQs" />
           <PageConversionBand
             title="Want results like these for your business?"
             description="Share your industry and goals — we will suggest a similar approach, timeline, and honest budget range."

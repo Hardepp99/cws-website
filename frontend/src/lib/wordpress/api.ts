@@ -47,6 +47,12 @@ export async function getPortfolioHome() {
 export async function getPortfolioAll() {
   return cms.getPortfolioAll();
 }
+export async function getPortfolioBySlug(slug: string) {
+  return cms.getPortfolioBySlug(slug);
+}
+export async function getPortfolioSlugs() {
+  return cms.getPortfolioSlugs();
+}
 export async function getGmbLive() {
   return cms.getGmbLive();
 }

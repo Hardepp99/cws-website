@@ -4,7 +4,10 @@ import type { PortfolioItem } from "@/lib/wordpress/portfolio-types";
 
 export function PortfolioAppleCard({ item }: { item: PortfolioItem }) {
   const name = item.clientName?.trim() || item.title;
-  const detailHref = item.href?.trim() || "/portfolio";
+  const detailHref =
+    item.slug?.trim()
+      ? `/portfolio/${item.slug}`
+      : item.href?.trim() || "/portfolio";
 
   return (
     <article className="portfolio-apple-card">

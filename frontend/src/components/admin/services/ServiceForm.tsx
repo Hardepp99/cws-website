@@ -7,9 +7,13 @@ import { SeoPanel } from "@/components/admin/SeoPanel";
 import { SlugField } from "@/components/admin/SlugField";
 import { WysiwygField } from "@/components/admin/WysiwygField";
 import { WpEditScreen } from "@/components/admin/wp/WpEditScreen";
+import { FaqEditorField } from "@/components/admin/FaqEditorField";
 import { EMPTY_SEO, parseSeoJson, seoToJson, type AdminSeoData } from "@/lib/admin/seo-types";
+import { parseFaqsFromAdminRow } from "@/lib/admin/parse-faqs";
 import { adminFetch } from "@/lib/admin/client";
 import { normalizeDisplayMode, type DisplayMode } from "@/lib/content/display-mode";
+import { filterValidFaqs } from "@/lib/faq/filter";
+import type { FaqItem } from "@/lib/wordpress/types";
 
 const EMPTY_META: DesimentorMeta = { hasDocument: false, status: null, sectionCount: 0 };
 
@@ -22,6 +26,7 @@ export function ServiceForm({ serviceId, isNew }: { serviceId?: number; isNew?: 
   const [priceBadge, setPriceBadge] = useState("");
   const [contentHtml, setContentHtml] = useState("");
   const [featuresText, setFeaturesText] = useState("");
+  const [faqs, setFaqs] = useState<FaqItem[]>([]);
   const [ctaTitle, setCtaTitle] = useState("");
   const [ctaText, setCtaText] = useState("");
   const [status, setStatus] = useState("draft");
@@ -56,6 +61,7 @@ export function ServiceForm({ serviceId, isNew }: { serviceId?: number; isNew?: 
       }
       const parsed = parseSeoJson(data.seo);
       setSeo({ ...parsed, title: parsed.title || String(data.title ?? "") });
+      setFaqs(parseFaqsFromAdminRow(data));
     }).catch((e) => setErr(String(e)));
   }, [serviceId, isNew]);
 
@@ -82,6 +88,7 @@ export function ServiceForm({ serviceId, isNew }: { serviceId?: number; isNew?: 
       status,
       display_mode: displayMode,
       seo: seoToJson(seo),
+      faqs: filterValidFaqs(faqs),
     };
     try {
       if (isNew) {
@@ -111,6 +118,7 @@ export function ServiceForm({ serviceId, isNew }: { serviceId?: number; isNew?: 
       <WysiwygField label="Classic body (HTML)" value={contentHtml} onChange={setContentHtml} height={360} />
       <label className="cms-label">Features (one per line)</label>
       <textarea className="cms-textarea" rows={5} value={featuresText} onChange={(e) => setFeaturesText(e.target.value)} />
+      <FaqEditorField items={faqs} onChange={setFaqs} />
       <label className="cms-label">CTA title</label>
       <input className="cms-input" value={ctaTitle} onChange={(e) => setCtaTitle(e.target.value)} />
       <label className="cms-label">CTA text</label>

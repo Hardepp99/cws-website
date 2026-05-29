@@ -6,6 +6,7 @@ import { ContentArticle } from "@/components/ui/ContentArticle";
 import { categoryHref, categorySlug as toCategorySlug } from "@/lib/blog/sidebar";
 import { ElementorPageBody } from "@/components/pages/ElementorPageBody";
 import { PageBodyContent } from "@/components/ui/PageBodyContent";
+import { PageFaq } from "@/components/faq/PageFaq";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { resolvePublicBody } from "@/lib/content/display-mode";
 import { getBlogPosts } from "@/lib/wordpress/api";
@@ -86,6 +87,7 @@ export default async function BlogPostPage({ params }: Props) {
               content={post.content}
               desimentor={post.desimentor}
             />
+            <PageFaq items={normalizeFaqItems(post.faqs)} title="Article FAQs" />
           </div>
           <BlogSidebar posts={posts} currentSlug={slug} />
         </div>
@@ -126,6 +128,7 @@ export default async function BlogPostPage({ params }: Props) {
                     showArticleWrapper={false}
                   />
                 </ContentArticle>
+                <PageFaq items={normalizeFaqItems(post.faqs)} title="Article FAQs" />
               </main>
               <BlogSidebar posts={posts} currentSlug={slug} />
             </div>

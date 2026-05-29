@@ -3,11 +3,12 @@
 import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { analyzeSeo } from "@/lib/admin/seo-score";
 import type { AdminSeoData } from "@/lib/admin/seo-types";
+import { getSiteUrl } from "@/lib/site-url";
 
 export function SeoPanel({
   seo,
   onChange,
-  siteUrl = "",
+  siteUrl = getSiteUrl(),
   contentHtml = "",
   pathPrefix = "/",
   slug = "",
@@ -20,7 +21,7 @@ export function SeoPanel({
   slug?: string;
 }) {
   const { score, checks } = analyzeSeo(seo, contentHtml);
-  const base = siteUrl.replace(/\/$/, "") || "https://www.cwsindia.online";
+  const base = siteUrl.replace(/\/$/, "") || "http://localhost:3000";
   const displayUrl = `${base}${pathPrefix}${slug}`.replace(/([^:]\/)\/+/g, "$1");
 
   const set = (patch: Partial<AdminSeoData>) => onChange({ ...seo, ...patch });

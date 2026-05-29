@@ -7,8 +7,44 @@
 }
 
 .home-section-band--light {
-  background-color: #f5f5f7;
+  background-color: var(--home-band-bg, #f5f5f7);
   color: #1d1d1f;
+}
+
+/* Random pastel tints — assigned per light band on each page load */
+.home-section-band--light[data-tint="white"] {
+  --home-band-bg: #f5f5f7;
+  --home-band-scrim-a: rgba(245, 245, 247, 0.94);
+  --home-band-scrim-b: rgba(245, 245, 247, 0.9);
+  --home-band-scrim-c: rgba(245, 245, 247, 0.96);
+}
+
+.home-section-band--light[data-tint="yellow"] {
+  --home-band-bg: #fffbeb;
+  --home-band-scrim-a: rgba(255, 251, 235, 0.94);
+  --home-band-scrim-b: rgba(255, 251, 235, 0.9);
+  --home-band-scrim-c: rgba(255, 251, 235, 0.96);
+}
+
+.home-section-band--light[data-tint="pink"] {
+  --home-band-bg: #fff1f5;
+  --home-band-scrim-a: rgba(255, 241, 245, 0.94);
+  --home-band-scrim-b: rgba(255, 241, 245, 0.9);
+  --home-band-scrim-c: rgba(255, 241, 245, 0.96);
+}
+
+.home-section-band--light[data-tint="sky"] {
+  --home-band-bg: #f0f9ff;
+  --home-band-scrim-a: rgba(240, 249, 255, 0.94);
+  --home-band-scrim-b: rgba(240, 249, 255, 0.9);
+  --home-band-scrim-c: rgba(240, 249, 255, 0.96);
+}
+
+.home-section-band--light[data-tint="green"] {
+  --home-band-bg: #f0fdf4;
+  --home-band-scrim-a: rgba(240, 253, 244, 0.94);
+  --home-band-scrim-b: rgba(240, 253, 244, 0.9);
+  --home-band-scrim-c: rgba(240, 253, 244, 0.96);
 }
 
 .home-section-band--dark {
@@ -37,9 +73,9 @@
 .home-section-band--light .home-section-band__scrim {
   background: linear-gradient(
     180deg,
-    rgba(245, 245, 247, 0.94) 0%,
-    rgba(245, 245, 247, 0.9) 50%,
-    rgba(245, 245, 247, 0.96) 100%
+    var(--home-band-scrim-a, rgba(245, 245, 247, 0.94)) 0%,
+    var(--home-band-scrim-b, rgba(245, 245, 247, 0.9)) 50%,
+    var(--home-band-scrim-c, rgba(245, 245, 247, 0.96)) 100%
   );
 }
 
@@ -78,9 +114,9 @@
   opacity: 0.9 !important;
   background: linear-gradient(
     180deg,
-    rgba(245, 245, 247, 0.94) 0%,
-    rgba(245, 245, 247, 0.88) 45%,
-    rgba(245, 245, 247, 0.96) 100%
+    var(--home-band-scrim-a, rgba(245, 245, 247, 0.94)) 0%,
+    var(--home-band-scrim-b, rgba(245, 245, 247, 0.88)) 45%,
+    var(--home-band-scrim-c, rgba(245, 245, 247, 0.96)) 100%
   );
 }
 

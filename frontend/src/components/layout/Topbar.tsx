@@ -1,3 +1,4 @@
+import { resolveGmbMapsUrl } from "@/lib/gmb/resolve";
 import type { SiteSettings } from "@/lib/wordpress/types";
 import { TopbarBackground } from "./TopbarBackground";
 
@@ -9,6 +10,7 @@ export function Topbar({ settings }: TopbarProps) {
   const phone = settings.phone ?? "";
   const email = settings.email ?? "";
   const addressLine = (settings.address ?? "").replace(/\n+/g, ", ").trim();
+  const gmbMapsUrl = resolveGmbMapsUrl(settings);
 
   return (
     <div className="topbar" id="topbar">
@@ -41,10 +43,18 @@ export function Topbar({ settings }: TopbarProps) {
           </div>
 
           {addressLine ? (
-            <p className="topbar-address" title={addressLine} data-customize-address-topbar-wrap="">
+            <a
+              href={gmbMapsUrl}
+              className="topbar-address topbar-link"
+              title={addressLine}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-customize-address-topbar-wrap=""
+              aria-label="View office on Google Maps"
+            >
               <i className="fas fa-map-marker-alt" aria-hidden="true" />
               <span data-customize="address-topbar">{addressLine}</span>
-            </p>
+            </a>
           ) : null}
 
           <div className="topbar-social">

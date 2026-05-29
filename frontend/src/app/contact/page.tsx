@@ -2,11 +2,13 @@ import { notFound } from "next/navigation";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { ContactPageView } from "@/components/contact/ContactPageView";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { PageFaq } from "@/components/faq/PageFaq";
 import { PageTrustStrip } from "@/components/engagement/PageTrustStrip";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { googleMapsEmbedUrl } from "@/lib/contact/maps-embed";
 import { gmbConfigFromSiteSettings } from "@/lib/gmb/resolve";
 import { getPageBySlug, getSiteSettings } from "@/lib/wordpress/api";
+import { normalizeFaqItems } from "@/lib/faq/normalize";
 import { breadcrumbJsonLd, buildMetadata, contactPageJsonLd } from "@/lib/seo/metadata";
 import "./contact-page.css";
 
@@ -53,6 +55,7 @@ export default async function ContactPage() {
         rating={String(gmb.rating)}
         reviewCount={gmb.reviewCount}
       />
+      <PageFaq items={normalizeFaqItems(page.faqs)} title="Contact FAQs" />
       <PageTrustStrip />
     </SiteLayout>
   );

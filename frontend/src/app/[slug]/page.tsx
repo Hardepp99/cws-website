@@ -9,11 +9,13 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { RichContent } from "@/components/ui/RichContent";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { EnrollmentForm } from "@/components/forms/EnrollmentForm";
+import { PageFaq } from "@/components/faq/PageFaq";
 import { PageConversionBand } from "@/components/engagement/PageConversionBand";
 import { PageTrustStrip } from "@/components/engagement/PageTrustStrip";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { getAllServiceLandings, getContentBySlug, getPageBySlug } from "@/lib/wordpress/api";
-import { breadcrumbJsonLd, buildMetadata, faqJsonLd } from "@/lib/seo/metadata";
+import { normalizeFaqItems } from "@/lib/faq/normalize";
+import { breadcrumbJsonLd, buildMetadata } from "@/lib/seo/metadata";
 import type { ServiceDetail, ServiceLanding, WpPage } from "@/lib/wordpress/types";
 import Link from "next/link";
 
@@ -61,7 +63,6 @@ export async function generateMetadata({ params }: PageProps) {
         title: d.pageTitle,
         description: d.pageDescription,
         keywords: d.pageKeywords,
-        canonical: `https://www.cwsindia.online/${slug}`,
         ogImage: theme?.seoOgImage,
       },
       `/${slug}`
@@ -88,17 +89,9 @@ export default async function DynamicPage({ params }: PageProps) {
   }
 
   if (content?.type === "service_landing") {
-    const data = content.data as ServiceLanding;
-    const faqSchema = faqJsonLd(data.faq ?? []);
     return (
       <SiteLayout currentPath={`/${slug}`}>
-        {faqSchema ? (
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-          />
-        ) : null}
-        <ServiceLandingPage data={data} />
+        <ServiceLandingPage data={content.data as ServiceLanding} />
       </SiteLayout>
     );
   }
@@ -140,6 +133,7 @@ export default async function DynamicPage({ params }: PageProps) {
             </div>
           </div>
         </section>
+        <PageFaq items={normalizeFaqItems(page.faqs)} />
       </SiteLayout>
     );
   }
@@ -181,6 +175,7 @@ export default async function DynamicPage({ params }: PageProps) {
             </div>
           </section>
         ) : null}
+        <PageFaq items={normalizeFaqItems(page.faqs)} />
       </SiteLayout>
     );
   }
@@ -217,6 +212,7 @@ export default async function DynamicPage({ params }: PageProps) {
           </div>
         </section>
         <PageTrustStrip />
+        <PageFaq items={normalizeFaqItems(coursesPage?.faqs)} title="Course FAQs" />
         <PageConversionBand
           title="Questions about batches or fees?"
           description="Call us or submit the form — we will share schedules for PHP, Laravel, React, and full-stack tracks running from Zirakpur."
@@ -243,6 +239,7 @@ export default async function DynamicPage({ params }: PageProps) {
         content={page.content}
         desimentor={page.desimentor}
       />
+      <PageFaq items={normalizeFaqItems(page.faqs)} />
       <PageTrustStrip />
       {!["privacy-policy", "terms-conditions"].includes(slug) ? <PageConversionBand /> : null}
     </SiteLayout>

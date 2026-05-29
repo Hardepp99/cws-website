@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { FaqEditorField } from "@/components/admin/FaqEditorField";
 import { EntityEditorModePanel, type DesimentorMeta } from "@/components/admin/EntityEditorModePanel";
 import { SeoPanel } from "@/components/admin/SeoPanel";
 import { SlugField } from "@/components/admin/SlugField";
@@ -9,7 +10,10 @@ import { WysiwygField } from "@/components/admin/WysiwygField";
 import { WpEditScreen } from "@/components/admin/wp/WpEditScreen";
 import { EMPTY_SEO, type AdminSeoData } from "@/lib/admin/seo-types";
 import { adminFetch } from "@/lib/admin/client";
+import { parseFaqsFromAdminRow } from "@/lib/admin/parse-faqs";
 import { normalizeDisplayMode, type DisplayMode } from "@/lib/content/display-mode";
+import { filterValidFaqs } from "@/lib/faq/filter";
+import type { FaqItem } from "@/lib/wordpress/types";
 
 const EMPTY_META: DesimentorMeta = { hasDocument: false, status: null, sectionCount: 0 };
 
@@ -20,7 +24,7 @@ export function LandingForm({ landingId, isNew }: { landingId?: number; isNew?: 
   const [intro, setIntro] = useState("");
   const [benefits, setBenefits] = useState("");
   const [deliverables, setDeliverables] = useState("");
-  const [faqJson, setFaqJson] = useState("[]");
+  const [faqs, setFaqs] = useState<FaqItem[]>([]);
   const [seoBody, setSeoBody] = useState("");
   const [seo, setSeo] = useState<AdminSeoData>({ ...EMPTY_SEO });
   const [status, setStatus] = useState("draft");
@@ -42,7 +46,7 @@ export function LandingForm({ landingId, isNew }: { landingId?: number; isNew?: 
       setIntro(String(data.intro ?? ""));
       setBenefits(b.join("\n"));
       setDeliverables(d.join("\n"));
-      setFaqJson(JSON.stringify(JSON.parse((data.faq as string) || "[]"), null, 2));
+      setFaqs(parseFaqsFromAdminRow(data));
       setSeoBody(String(data.seo_body_html ?? ""));
       setStatus(String(data.status ?? "published"));
       setDisplayMode(normalizeDisplayMode(String(data.display_mode ?? "classic")));
@@ -83,7 +87,7 @@ export function LandingForm({ landingId, isNew }: { landingId?: number; isNew?: 
       intro,
       benefits: benefits.split("\n").map((s) => s.trim()).filter(Boolean),
       deliverables: deliverables.split("\n").map((s) => s.trim()).filter(Boolean),
-      faq: JSON.parse(faqJson),
+      faq: filterValidFaqs(faqs),
       related_slugs: [],
       theme,
       seo_body_html: seoBody,
@@ -115,8 +119,7 @@ export function LandingForm({ landingId, isNew }: { landingId?: number; isNew?: 
       <textarea className="cms-textarea" rows={5} value={benefits} onChange={(e) => setBenefits(e.target.value)} />
       <label className="cms-label">Deliverables (one per line)</label>
       <textarea className="cms-textarea" rows={5} value={deliverables} onChange={(e) => setDeliverables(e.target.value)} />
-      <label className="cms-label">FAQ (JSON)</label>
-      <textarea className="cms-textarea code" style={{ minHeight: 120 }} value={faqJson} onChange={(e) => setFaqJson(e.target.value)} />
+      <FaqEditorField items={faqs} onChange={setFaqs} />
       <SeoPanel seo={seo} onChange={setSeo} contentHtml={seoBody} slug={slug} pathPrefix="/" />
       <WysiwygField label="Classic SEO body (HTML)" value={seoBody} onChange={setSeoBody} height={320} />
       <label className="cms-label">Status</label>
