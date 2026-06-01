@@ -1,7 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import type { ImageUploadGuideKey } from "@/lib/admin/image-upload-guides";
+import { resolveImageUploadGuide } from "@/lib/admin/image-upload-guides";
 import type { MediaItem } from "@/lib/admin/media-types";
+import { ImageUploadGuide } from "./ImageUploadGuide";
 import { MediaLibraryModal } from "./MediaLibraryModal";
 
 export function MediaPickerField({
@@ -11,6 +14,7 @@ export function MediaPickerField({
   hint,
   mediaFilter = "image",
   compact = false,
+  imageGuide,
 }: {
   label: string;
   value: string;
@@ -18,7 +22,13 @@ export function MediaPickerField({
   hint?: string;
   mediaFilter?: "all" | "image" | "audio" | "video" | "document";
   compact?: boolean;
+  /** Explicit ratio/size guide; otherwise inferred from label. */
+  imageGuide?: ImageUploadGuideKey;
 }) {
+  const uploadGuide = useMemo(
+    () => resolveImageUploadGuide(imageGuide, label, mediaFilter),
+    [imageGuide, label, mediaFilter],
+  );
   const [open, setOpen] = useState(false);
   const isImage = mediaFilter === "image" || /\.(jpe?g|png|gif|webp)(\?|$)/i.test(value);
 
@@ -32,6 +42,7 @@ export function MediaPickerField({
     <div className={`media-picker-field${compact ? " media-picker-field--compact" : ""}`}>
       <label className={compact ? "dsmt-label" : "cms-label"}>{label}</label>
       {hint ? <p className="cms-field-hint">{hint}</p> : null}
+      {uploadGuide ? <ImageUploadGuide guide={uploadGuide} compact={compact} /> : null}
       <div className="media-picker-row">
         {value && isImage ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -64,6 +75,7 @@ export function MediaPickerField({
         <MediaLibraryModal
           title={label}
           filterType={mediaFilter}
+          uploadGuide={uploadGuide}
           onSelect={select}
           onClose={() => setOpen(false)}
           compact={compact}

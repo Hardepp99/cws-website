@@ -1,0 +1,108 @@
+/**
+ * Site scrollbars — metallic silver gradient (replaces blue brand gradient on thumbs).
+ */
+
+:root {
+  --cws-scrollbar-size: 10px;
+  --cws-scrollbar-track: #e8eaef;
+  --cws-scrollbar-track-gradient: linear-gradient(180deg, #f6f7f9 0%, #e3e5ea 100%);
+  --cws-scrollbar-thumb: linear-gradient(
+    180deg,
+    #fefefe 0%,
+    #eceef2 14%,
+    #c8ccd4 38%,
+    #9aa1ab 52%,
+    #b4bac3 68%,
+    #dfe2e8 88%,
+    #f5f6f8 100%
+  );
+  --cws-scrollbar-thumb-hover: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #e2e5eb 16%,
+    #b0b7c1 40%,
+    #868d98 54%,
+    #a8afb9 70%,
+    #d5d9e0 90%,
+    #fafbfc 100%
+  );
+  --cws-scrollbar-thumb-border: #f0f1f4;
+  --cws-scrollbar-firefox-thumb: #b0b6bf;
+  --cws-scrollbar-firefox-track: #e8eaef;
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--cws-scrollbar-firefox-thumb) var(--cws-scrollbar-firefox-track);
+}
+
+::-webkit-scrollbar {
+  width: var(--cws-scrollbar-size);
+  height: var(--cws-scrollbar-size);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cws-scrollbar-track-gradient);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--cws-scrollbar-thumb);
+  border-radius: 999px;
+  border: 2px solid var(--cws-scrollbar-thumb-border);
+  background-clip: padding-box;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cws-scrollbar-thumb-hover);
+  border-color: #e8eaef;
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--cws-scrollbar-track);
+}
+
+/* Nested scroll areas (menus, chat, etc.) */
+.mega-dropdown,
+.chatbot-messages,
+.header .nav-item-has-menu .dropdown-menu,
+.cws-modal-body,
+.admin-shell__nav,
+.admin-shell__main {
+  scrollbar-width: thin;
+  scrollbar-color: var(--cws-scrollbar-firefox-thumb) var(--cws-scrollbar-firefox-track);
+}
+
+.mega-dropdown::-webkit-scrollbar,
+.chatbot-messages::-webkit-scrollbar,
+.header .nav-item-has-menu .dropdown-menu::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.mega-dropdown::-webkit-scrollbar-track,
+.chatbot-messages::-webkit-scrollbar-track,
+.header .nav-item-has-menu .dropdown-menu::-webkit-scrollbar-track {
+  background: var(--cws-scrollbar-track-gradient);
+  border-radius: 999px;
+}
+
+.mega-dropdown::-webkit-scrollbar-thumb,
+.chatbot-messages::-webkit-scrollbar-thumb,
+.header .nav-item-has-menu .dropdown-menu::-webkit-scrollbar-thumb {
+  background: var(--cws-scrollbar-thumb);
+  border-radius: 999px;
+  border: 1px solid var(--cws-scrollbar-thumb-border);
+  background-clip: padding-box;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.mega-dropdown::-webkit-scrollbar-thumb:hover,
+.chatbot-messages::-webkit-scrollbar-thumb:hover,
+.header .nav-item-has-menu .dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: var(--cws-scrollbar-thumb-hover);
+}

@@ -245,7 +245,7 @@ export function Footer({ settings, footerMenu, footerServicesMenu, footerProduct
 
               <div className="col-lg-3 col-md-12">
                 <FooterMenuColumn
-                  title={settings.footerProductsTitle || "Products & Training"}
+                  title={settings.footerProductsTitle || "Products"}
                   icon="fa-graduation-cap"
                   items={footerProductsMenu}
                   titleCustomize="footer-products-title"

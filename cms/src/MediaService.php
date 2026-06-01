@@ -111,11 +111,27 @@ final class MediaService
             'thumb_path'    => $thumb,
             'medium_path'   => $medium,
             'large_path'    => $large,
+            'member_id'     => isset($meta['member_id']) ? (int) $meta['member_id'] : null,
         ]);
 
         $row = $this->repo->getById($id);
         if (!$row) {
             throw new RuntimeException('Failed to save media record.');
+        }
+        return $row;
+    }
+
+    /**
+     * Member blog featured image — images only, tagged to member (not listed in admin library filters).
+     *
+     * @param array{title?: string, alt_text?: string, altText?: string} $meta
+     */
+    public function uploadMemberImage(array $file, int $memberId, array $meta = []): array
+    {
+        $meta['member_id'] = $memberId;
+        $row = $this->upload($file, $meta);
+        if (($row['mediaType'] ?? '') !== 'image') {
+            throw new RuntimeException('Only image files are allowed.');
         }
         return $row;
     }

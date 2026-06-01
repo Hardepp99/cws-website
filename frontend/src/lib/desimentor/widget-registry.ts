@@ -1,3 +1,4 @@
+import type { ImageUploadGuideKey } from "@/lib/admin/image-upload-guides";
 import { createWidget } from "./document-utils";
 import { defaultSlides } from "./slider-types";
 
@@ -17,6 +18,7 @@ export type RepeaterSubField = {
   key: string;
   label: string;
   type: "text" | "textarea" | "media" | "url";
+  imageGuide?: ImageUploadGuideKey;
 };
 
 export type WidgetFieldDef = {
@@ -26,6 +28,7 @@ export type WidgetFieldDef = {
   options?: { value: string; label: string }[];
   repeaterFields?: RepeaterSubField[];
   hint?: string;
+  imageGuide?: ImageUploadGuideKey;
 };
 
 export type WidgetCategory = "layout" | "basic" | "media" | "pro" | "general" | "site";
@@ -132,7 +135,7 @@ export const WIDGET_REGISTRY: WidgetDef[] = [
 
   // Media
   w("image", "Image", "fa-image", "media", { mediaId: null, url: "", alt: "", link: "" }, [
-    { key: "url", label: "Image", type: "media" },
+    { key: "url", label: "Image", type: "media", imageGuide: "content" },
     { key: "alt", label: "Alt text", type: "text" },
     { key: "link", label: "Link (optional)", type: "url" },
   ], false),
@@ -146,7 +149,7 @@ export const WIDGET_REGISTRY: WidgetDef[] = [
       label: "Images",
       type: "repeater",
       repeaterFields: [
-        { key: "url", label: "Image", type: "media" },
+        { key: "url", label: "Image", type: "media", imageGuide: "content" },
         { key: "alt", label: "Alt", type: "text" },
       ],
     },
@@ -194,7 +197,7 @@ export const WIDGET_REGISTRY: WidgetDef[] = [
     description: "Description",
     link: "#",
   }, [
-    { key: "url", label: "Image", type: "media" },
+    { key: "url", label: "Image", type: "media", imageGuide: "content" },
     { key: "title", label: "Title", type: "text" },
     { key: "description", label: "Description", type: "textarea" },
     { key: "link", label: "Link", type: "url" },
@@ -217,9 +220,9 @@ export const WIDGET_REGISTRY: WidgetDef[] = [
       label: "Slides",
       type: "repeater",
       repeaterFields: [
-        { key: "bgImage", label: "Background (desktop)", type: "media" },
-        { key: "bgImageTablet", label: "Background (tablet)", type: "media" },
-        { key: "bgImageMobile", label: "Background (mobile)", type: "media" },
+        { key: "bgImage", label: "Background (desktop)", type: "media", imageGuide: "bannerDesktop" },
+        { key: "bgImageTablet", label: "Background (tablet)", type: "media", imageGuide: "bannerTablet" },
+        { key: "bgImageMobile", label: "Background (mobile)", type: "media", imageGuide: "bannerMobile" },
         { key: "title", label: "Title", type: "text" },
         { key: "subtitle", label: "Subtitle", type: "text" },
         { key: "description", label: "Description", type: "textarea" },
@@ -262,7 +265,7 @@ export const WIDGET_REGISTRY: WidgetDef[] = [
       label: "Slides",
       type: "repeater",
       repeaterFields: [
-        { key: "url", label: "Image", type: "media" },
+        { key: "url", label: "Image", type: "media", imageGuide: "content" },
         { key: "alt", label: "Alt", type: "text" },
       ],
     },
@@ -341,7 +344,7 @@ export const WIDGET_REGISTRY: WidgetDef[] = [
     { key: "content", label: "Content", type: "textarea" },
     { key: "name", label: "Name", type: "text" },
     { key: "role", label: "Job title", type: "text" },
-    { key: "imageUrl", label: "Avatar", type: "media" },
+    { key: "imageUrl", label: "Avatar", type: "media", imageGuide: "avatar" },
   ]),
   w("alert", "Alert", "fa-circle-exclamation", "pro", {
     type: "info",
@@ -504,7 +507,7 @@ export const WIDGET_REGISTRY: WidgetDef[] = [
 
   // Site
   w("site-logo", "Site Logo", "fa-building", "site", { url: "", alt: "Logo", width: "180px" }, [
-    { key: "url", label: "Logo image", type: "media" },
+    { key: "url", label: "Logo image", type: "media", imageGuide: "logo" },
     { key: "alt", label: "Alt text", type: "text" },
     { key: "width", label: "Width", type: "text" },
   ], false),

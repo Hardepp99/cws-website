@@ -153,13 +153,14 @@
   white-space: nowrap;
   transition: color 0.38s cubic-bezier(0.32, 0.72, 0, 1);
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
-/* Portfolio page: single-row scroll — strip stays centered; only inner tabs scroll */
+/* Portfolio page (desktop): single-row scroll — only inner tabs scroll */
 .portfolio-capsule-wrap--scroll {
   justify-content: center;
   max-width: 100%;
-  overflow-x: clip;
+  overflow-x: hidden;
 }
 
 .portfolio-capsule--scroll {
@@ -172,16 +173,70 @@
   overscroll-behavior-x: contain;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
   scrollbar-width: none;
+  cursor: grab;
+}
+
+.portfolio-capsule--scroll.is-dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+  user-select: none;
 }
 
 .portfolio-showcase--page {
-  overflow-x: clip;
   max-width: 100%;
 }
 
-.portfolio-capsule--scroll::-webkit-scrollbar {
+.portfolio-capsule--scroll::-webkit-scrollbar,
+.portfolio-capsule--scrollable::-webkit-scrollbar {
   display: none;
+}
+
+/* Mobile / tablet: horizontal finger-drag tab strip (homepage + portfolio) */
+@media (max-width: 991.98px) {
+  .home-section-band:has(.portfolio-showcase) {
+    overflow-x: visible;
+    overflow-y: hidden;
+  }
+
+  .portfolio-capsule-wrap {
+    justify-content: flex-start;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .portfolio-capsule {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+    scrollbar-width: none;
+    cursor: grab;
+  }
+
+  .portfolio-capsule.is-dragging {
+    cursor: grabbing;
+    scroll-behavior: auto;
+    user-select: none;
+  }
+
+  .portfolio-capsule__tab {
+    flex-shrink: 0;
+  }
+
+  .portfolio-showcase,
+  .portfolio-showcase--page {
+    overflow-x: visible;
+    max-width: 100%;
+  }
 }
 
 .portfolio-capsule__tab:hover:not(.is-active) {

@@ -7,7 +7,7 @@ import { buildMetadata, organizationJsonLd, webSiteJsonLd } from "@/lib/seo/meta
 export const metadata: Metadata = buildMetadata({
   title: "Creative Web Solutions | Best Web Development Company in India",
   description:
-    "Creative Web Solutions — web development, mobile apps, digital marketing, and IT training in Chandigarh, Zirakpur, Mohali. Call +91-7015969967",
+    "Creative Web Solutions — web development, mobile apps, and digital marketing in Chandigarh, Zirakpur, Mohali. Call +91-7015969967",
   keywords:
     "web development company India, website developer Chandigarh, digital marketing Zirakpur, mobile app development Mohali, IT company Punjab, Creative Web Solutions",
 });

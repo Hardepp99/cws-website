@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
+import { MobileBottomNav } from "@/components/engagement/MobileBottomNav";
+import { CwsModalLayer } from "@/components/ui/CwsModalLayer";
 import type { SiteSettings } from "@/lib/wordpress/types";
 
 const CALLBACK_DELAY_MS = 3 * 60 * 1000;
@@ -97,22 +99,29 @@ export function SiteFloatWidgets({ settings }: SiteFloatWidgetsProps) {
 
   return (
     <>
-      {/* WhatsApp — always visible */}
+      {/* Desktop: floating WhatsApp */}
       {waHref ? (
         <a
           href={waHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="cws-float-wa"
+          className="cws-float-wa cws-float-desktop-only"
           aria-label="Chat on WhatsApp"
         >
           <i className="fab fa-whatsapp" aria-hidden="true" />
         </a>
       ) : null}
 
-      {/* Scroll-reveal dock: portfolio + social */}
+      {/* Tablet/mobile: WhatsApp-style bottom bar */}
+      <MobileBottomNav settings={settings} />
+
+      {/* Scroll-reveal dock: portfolio (desktop) + social (all sizes, left on mobile) */}
       <div className={`cws-float-dock${scrolled ? " is-visible" : ""}`} aria-hidden={!scrolled}>
-        <Link href="/portfolio" className="cws-float-dock__btn cws-float-dock__btn--portfolio" title="View portfolio">
+        <Link
+          href="/portfolio"
+          className="cws-float-dock__btn cws-float-dock__btn--portfolio cws-float-desktop-only"
+          title="View portfolio"
+        >
           <i className="fas fa-briefcase" aria-hidden="true" />
           <span className="cws-float-dock__label">Portfolio</span>
         </Link>
@@ -131,9 +140,7 @@ export function SiteFloatWidgets({ settings }: SiteFloatWidgetsProps) {
       </div>
 
       {/* 3-minute callback + offers */}
-      {callbackOpen ? (
-        <div className="cws-modal-root" role="presentation">
-          <button type="button" className="cws-modal-backdrop" aria-label="Close" onClick={closeCallback} />
+      <CwsModalLayer open={callbackOpen} onClose={closeCallback}>
           <div className="cws-modal-dialog cws-modal-dialog--narrow" role="dialog" aria-modal="true">
             <div className="cws-modal-header">
               <h2 className="cws-modal-title h6 mb-0">Get a call back + new offers</h2>
@@ -196,8 +203,7 @@ export function SiteFloatWidgets({ settings }: SiteFloatWidgetsProps) {
               </form>
             )}
           </div>
-        </div>
-      ) : null}
+      </CwsModalLayer>
     </>
   );
 }

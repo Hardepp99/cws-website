@@ -136,7 +136,13 @@ export function PortfolioItemForm({ itemId, isNew }: { itemId?: number; isNew?: 
       <label className="cms-label">Category / service type</label>
       <input className="cms-input" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Website · Ecommerce · SEO" />
 
-      <MediaPickerField label="Screenshot / image" value={image} onChange={setImage} mediaFilter="image" />
+      <MediaPickerField
+        label="Screenshot / image"
+        value={image}
+        onChange={setImage}
+        mediaFilter="image"
+        imageGuide="portfolio"
+      />
 
       <label className="cms-label">Live site URL (optional)</label>
       <input

@@ -81,7 +81,7 @@ export default async function ServicesPage() {
         <PageTrustStrip />
         <PageConversionBand
           title="Not sure which service fits?"
-          description="Tell us your goal — website, app, marketing, or training. We will point you to the right landing and a realistic quote."
+          description="Tell us your goal — website, app, or marketing. We will point you to the right landing and a realistic quote."
           primaryLabel="Contact us"
           primaryHref="/contact"
         />

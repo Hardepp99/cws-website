@@ -29,9 +29,8 @@ export function HomeSeoAppendix() {
           <div className="home-seo-appendix__col">
             <p>
               Whether you operate in Chandigarh, Mohali, Zirakpur, or nationally, we structure projects for clarity:
-              staged milestones, staging environments, documented handover, and training where needed. Our training
-              wing complements delivery — teams can upskill on full‑stack and modern front‑end stacks alongside live
-              product work when it makes sense.
+              staged milestones, staging environments, and documented handover so your team can run the site
+              confidently after launch.
             </p>
             <p>
               Explore our <Link href="/services">services overview</Link>, review the{" "}
@@ -52,9 +51,6 @@ export function HomeSeoAppendix() {
             </li>
             <li>
               <Link href="/mobile-app-development-zirakpur">Mobile app development</Link>
-            </li>
-            <li>
-              <Link href="/courses">Training & courses</Link>
             </li>
           </ul>
         </div>

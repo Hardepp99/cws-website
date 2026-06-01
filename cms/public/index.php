@@ -185,13 +185,40 @@ try {
         Http::json(['items' => $community->getMemberContributions((int) $member['id'])['blogPosts']]);
     }
 
+    if ($method === 'POST' && $path === '/member/media/upload') {
+        $member = MemberAuth::requireMember();
+        if (empty($_FILES['file'])) {
+            Http::json(['error' => 'No file uploaded'], 400);
+        }
+        try {
+            $title = trim((string) ($_POST['title'] ?? ''));
+            $alt = trim((string) ($_POST['alt_text'] ?? $_POST['altText'] ?? $title));
+            $item = cws_media()->uploadMemberImage($_FILES['file'], (int) $member['id'], [
+                'title'    => $title !== '' ? $title : 'Member blog image',
+                'alt_text' => $alt,
+            ]);
+            Http::json([
+                'success' => true,
+                'url'     => $item['largeUrl'] ?? $item['url'],
+                'thumbUrl'=> $item['thumbUrl'] ?? '',
+                'item'    => $item,
+            ]);
+        } catch (Throwable $e) {
+            Http::json(['error' => $e->getMessage()], 400);
+        }
+    }
+
     if ($method === 'POST' && $path === '/member/blog') {
         $member = MemberAuth::requireMember();
         $body = Http::readJsonBody();
         if (empty($body['title'])) {
             Http::json(['error' => 'Title is required'], 400);
         }
-        $id = $community->createMemberBlogPost((int) $member['id'], $body);
+        try {
+            $id = $community->createMemberBlogPost((int) $member['id'], $body);
+        } catch (InvalidArgumentException $e) {
+            Http::json(['error' => $e->getMessage()], 400);
+        }
         Http::json(['success' => true, 'id' => $id, 'status' => 'pending_review']);
     }
 
@@ -203,7 +230,11 @@ try {
 
     if ($method === 'PUT' && preg_match('#^/member/blog/(\d+)$#', $path, $m)) {
         $member = MemberAuth::requireMember();
-        $community->updateMemberBlogPost((int) $member['id'], (int) $m[1], Http::readJsonBody());
+        try {
+            $community->updateMemberBlogPost((int) $member['id'], (int) $m[1], Http::readJsonBody());
+        } catch (InvalidArgumentException $e) {
+            Http::json(['error' => $e->getMessage()], 400);
+        }
         Http::json(['success' => true, 'status' => 'pending_review']);
     }
 

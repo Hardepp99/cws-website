@@ -134,25 +134,6 @@ if (!isset($currentPage)) {
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle<?php echo ($currentPage == 'courses') ? ' active' : ''; ?>" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                            Courses & Training
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="<?php echo $basePath; ?>courses#php"><i class="fab fa-php me-2"></i>PHP & Laravel Development</a></li>
-                            <li><a class="dropdown-item" href="<?php echo $basePath; ?>courses#react"><i class="fab fa-react me-2"></i>React & Node.js</a></li>
-                            <li><a class="dropdown-item" href="<?php echo $basePath; ?>courses#python"><i class="fab fa-python me-2"></i>Python & Django</a></li>
-                            <li><a class="dropdown-item" href="<?php echo $basePath; ?>courses#fullstack"><i class="fas fa-layer-group me-2"></i>Full Stack Development</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="<?php echo $basePath; ?>courses#digital-marketing"><i class="fas fa-bullhorn me-2"></i>Digital Marketing</a></li>
-                            <li><a class="dropdown-item" href="<?php echo $basePath; ?>courses#web-design"><i class="fas fa-palette me-2"></i>Website Designing</a></li>
-                            <li><a class="dropdown-item" href="<?php echo $basePath; ?>courses#uiux"><i class="fas fa-pencil-ruler me-2"></i>UI/UX Design</a></li>
-                            <li><a class="dropdown-item" href="<?php echo $basePath; ?>courses#app-development"><i class="fas fa-mobile-alt me-2"></i>Mobile App Development</a></li>
-                            <li><a class="dropdown-item" href="<?php echo $basePath; ?>courses#wordpress"><i class="fab fa-wordpress me-2"></i>WordPress Development</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="<?php echo $basePath; ?>courses#career-counselling"><i class="fas fa-user-tie me-2"></i>Career Counselling (FREE)</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle<?php echo (in_array($currentPage, ['portfolio', 'blog'])) ? ' active' : ''; ?>" href="#" data-bs-toggle="dropdown" aria-expanded="false">
                             Pages
                         </a>

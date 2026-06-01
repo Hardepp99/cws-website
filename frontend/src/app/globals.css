@@ -9,9 +9,11 @@
 @import "./page-section-pastel.css";
 @import "./page-faq.css";
 @import "./cws-modal-apple.css";
+@import "./modal-layer.css";
 @import "./portfolio-showcase.css";
 @import "./hero-illustration.css";
 @import "./testimonials-apple.css";
+@import "./scrollbar-silver.css";
 
 @tailwind base;
 @tailwind components;

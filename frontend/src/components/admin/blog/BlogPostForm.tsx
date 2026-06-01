@@ -136,6 +136,7 @@ export function BlogPostForm({ postId, isNew }: { postId?: number; isNew?: boole
         value={featuredImage}
         onChange={setFeaturedImage}
         mediaFilter="image"
+        imageGuide="blogFeatured"
       />
       <label className="cms-label">Published date</label>
       <input className="cms-input" type="date" value={publishedDate} onChange={(e) => setPublishedDate(e.target.value)} />

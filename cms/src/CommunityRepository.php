@@ -887,6 +887,10 @@ final class CommunityRepository
     public function createMemberBlogPost(int $memberId, array $data): int
     {
         $slug = $this->uniqueSlug('blog_posts', $this->sanitizeSlug((string) ($data['slug'] ?? $data['title'] ?? 'post')));
+        $featured = $this->sanitizeMemberFeaturedImage(
+            $memberId,
+            (string) ($data['featured_image'] ?? $data['image'] ?? ''),
+        );
         $stmt = $this->db->prepare(
             'INSERT INTO blog_posts (slug, title, excerpt, content_html, featured_image, published_date, seo, status, author_member_id, author_type)
              VALUES (:slug, :t, :ex, :c, :img, :pd, :seo, :st, :mid, :at)'
@@ -896,7 +900,7 @@ final class CommunityRepository
             ':t'    => $data['title'] ?? 'Untitled',
             ':ex'   => $data['excerpt'] ?? '',
             ':c'    => $data['content_html'] ?? $data['content'] ?? '',
-            ':img'  => $data['featured_image'] ?? $data['image'] ?? '',
+            ':img'  => $featured,
             ':pd'   => $data['published_date'] ?? date('Y-m-d'),
             ':seo'  => json_encode($data['seo'] ?? [], JSON_UNESCAPED_UNICODE),
             ':st'   => 'pending_review',
@@ -920,6 +924,10 @@ final class CommunityRepository
         if (($row['status'] ?? '') === 'published') {
             Http::json(['error' => 'Published posts cannot be edited. Contact support.'], 400);
         }
+        $featured = $this->sanitizeMemberFeaturedImage(
+            $memberId,
+            (string) ($data['featured_image'] ?? $data['image'] ?? ''),
+        );
         $this->db->prepare(
             'UPDATE blog_posts SET title = :t, excerpt = :ex, content_html = :c,
              featured_image = :img, slug = :slug, status = :st WHERE id = :id'
@@ -927,7 +935,7 @@ final class CommunityRepository
             ':t'    => $data['title'] ?? 'Untitled',
             ':ex'   => $data['excerpt'] ?? '',
             ':c'    => $data['content_html'] ?? $data['content'] ?? '',
-            ':img'  => $data['featured_image'] ?? $data['image'] ?? '',
+            ':img'  => $featured,
             ':slug' => $data['slug'] ?? '',
             ':st'   => 'pending_review',
             ':id'   => $id,
@@ -1158,6 +1166,20 @@ final class CommunityRepository
             'status'  => (string) $row['status'],
             'date'    => (string) ($row['published_date'] ?? ''),
         ];
+    }
+
+    private function sanitizeMemberFeaturedImage(int $memberId, string $url): string
+    {
+        $url = trim($url);
+        if ($url === '') {
+            return '';
+        }
+        if (!cws_media_repo()->urlBelongsToMember($memberId, $url)) {
+            throw new InvalidArgumentException(
+                'Featured image must be uploaded from your device. External image URLs are not allowed.',
+            );
+        }
+        return $url;
     }
 }
 

@@ -43,7 +43,6 @@ if (!isset($currentPage)) {
                             <li><a href="<?php echo $basePath; ?>services">Services</a></li>
                             <li><a href="<?php echo $basePath; ?>portfolio">Portfolio</a></li>
                             <li><a href="<?php echo $basePath; ?>blog">Blog</a></li>
-                            <li><a href="<?php echo $basePath; ?>courses">Courses</a></li>
                             <li><a href="<?php echo $basePath; ?>contact">Contact</a></li>
                         </ul>
                     </div>
@@ -167,7 +166,7 @@ if (!isset($currentPage)) {
                     <span class="message-time">Just now</span>
                     <div class="quick-replies">
                         <button class="quick-reply-btn" data-message="Tell me about your services">Our Services</button>
-                        <button class="quick-reply-btn" data-message="What courses do you offer?">Courses</button>
+                        <button class="quick-reply-btn" data-message="Tell me about your portfolio">Portfolio</button>
                         <button class="quick-reply-btn" data-message="I want a free consultation">Free Consultation</button>
                         <button class="quick-reply-btn" data-message="Contact information">Contact Us</button>
                     </div>

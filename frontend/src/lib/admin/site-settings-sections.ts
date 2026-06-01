@@ -1,3 +1,4 @@
+import type { ImageUploadGuideKey } from "@/lib/admin/image-upload-guides";
 import { serializeGmbReviews } from "@/lib/gmb/resolve";
 import { DEFAULT_GMB_REVIEWS } from "@/lib/gmb/defaults";
 import type { SiteSettings } from "@/lib/wordpress/types";
@@ -9,6 +10,7 @@ export type SettingsFieldDef = {
   label: string;
   hint?: string;
   type?: SettingsFieldType;
+  imageGuide?: ImageUploadGuideKey;
 };
 
 export type SettingsSectionDef = {
@@ -26,8 +28,8 @@ export const SITE_SETTINGS_SECTIONS: SettingsSectionDef[] = [
     icon: "fa-id-card",
     description: "Logo and branding images used in the header and footer.",
     fields: [
-      { key: "logoUrl", label: "Logo", type: "media" },
-      { key: "logoWhiteUrl", label: "Logo (on dark backgrounds)", type: "media" },
+      { key: "logoUrl", label: "Logo", type: "media", imageGuide: "logo" },
+      { key: "logoWhiteUrl", label: "Logo (on dark backgrounds)", type: "media", imageGuide: "logo" },
     ],
   },
   {

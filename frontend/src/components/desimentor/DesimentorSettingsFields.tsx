@@ -57,6 +57,8 @@ function RepeaterField({
                   value={row[sf.key] ?? ""}
                   onChange={(url) => updateRow(i, sf.key, url)}
                   compact
+                  mediaFilter="image"
+                  imageGuide={sf.imageGuide}
                 />
               ) : sf.type === "url" ? (
                 <>
@@ -176,6 +178,7 @@ export function DesimentorField({
             hint={field.hint}
             compact
             mediaFilter={field.label.toLowerCase().includes("audio") ? "audio" : "image"}
+            imageGuide={field.imageGuide}
           />
         </div>
       );

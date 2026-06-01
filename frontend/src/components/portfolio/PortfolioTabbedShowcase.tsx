@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 import { PortfolioAppleCard } from "@/components/portfolio/PortfolioAppleCard";
+import { useHorizontalScrollDrag } from "@/hooks/useHorizontalScrollDrag";
 import { buildPortfolioTabs, filterPortfolioByTab, limitPortfolioTabItems } from "@/lib/portfolio/tabs";
 import type { PortfolioItem } from "@/lib/wordpress/portfolio-types";
 import "swiper/css";
@@ -33,6 +34,8 @@ export function PortfolioTabbedShowcase({
 }: PortfolioTabbedShowcaseProps) {
   const tabs = useMemo(() => buildPortfolioTabs(items, allTabLabel), [items, allTabLabel]);
   const [activeTab, setActiveTab] = useState("all");
+  const [tabStripScrollable, setTabStripScrollable] = useState(false);
+  const [enableTabDrag, setEnableTabDrag] = useState(false);
   const [indicator, setIndicator] = useState({ left: 0, top: 0, width: 0, height: 0, ready: false });
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
@@ -84,23 +87,42 @@ export function PortfolioTabbedShowcase({
 
   useLayoutEffect(() => {
     updateIndicator();
-    if (prevTabRef.current !== activeTab && isPageGrid) {
+    if (prevTabRef.current !== activeTab && tabStripScrollable) {
       scrollActiveTabIntoView(activeTab);
     }
     prevTabRef.current = activeTab;
-  }, [activeTab, updateIndicator, isPageGrid, tabs.length, scrollActiveTabIntoView]);
+  }, [activeTab, updateIndicator, tabStripScrollable, tabs.length, scrollActiveTabIntoView]);
 
   useEffect(() => {
     const capsule = capsuleRef.current;
     if (!capsule) return;
-    const ro = new ResizeObserver(() => updateIndicator());
+
+    const measureScrollable = () => {
+      setTabStripScrollable(capsule.scrollWidth > capsule.clientWidth + 2);
+      updateIndicator();
+    };
+
+    measureScrollable();
+    const ro = new ResizeObserver(measureScrollable);
     ro.observe(capsule);
-    window.addEventListener("resize", updateIndicator);
+    capsule.addEventListener("scroll", updateIndicator, { passive: true });
+    window.addEventListener("resize", measureScrollable);
     return () => {
       ro.disconnect();
-      window.removeEventListener("resize", updateIndicator);
+      capsule.removeEventListener("scroll", updateIndicator);
+      window.removeEventListener("resize", measureScrollable);
     };
-  }, [updateIndicator]);
+  }, [updateIndicator, tabs.length]);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 991.98px)");
+    const sync = () => setEnableTabDrag(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  useHorizontalScrollDrag(capsuleRef, tabStripScrollable && enableTabDrag);
 
   const bindNavigation = useCallback((swiper: SwiperType) => {
     swiperRef.current = swiper;
@@ -129,7 +151,7 @@ export function PortfolioTabbedShowcase({
       <div className={`portfolio-capsule-wrap${isPageGrid ? " portfolio-capsule-wrap--scroll" : ""}`}>
         <div
           ref={capsuleRef}
-          className={`portfolio-capsule${isPageGrid ? " portfolio-capsule--scroll" : ""}`}
+          className={`portfolio-capsule${isPageGrid ? " portfolio-capsule--scroll" : ""}${tabStripScrollable ? " portfolio-capsule--scrollable" : ""}`}
           role="tablist"
           aria-label="Filter portfolio"
         >

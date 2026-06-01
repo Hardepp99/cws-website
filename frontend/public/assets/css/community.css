@@ -603,6 +603,72 @@
   font-size: 0.875rem;
 }
 
+.member-featured-image__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.member-featured-image__preview {
+  width: 120px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.member-featured-image__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Member blog — featured image specs (small red text) */
+.member-featured-image__guide.image-upload-guide {
+  margin-bottom: 6px;
+  padding: 6px 8px;
+  font-size: 10px;
+  line-height: 1.35;
+  color: #c62828;
+  background: #fff5f5;
+  border: 1px solid #f5c2c2;
+  border-radius: 6px;
+}
+
+.member-featured-image__guide .image-upload-guide__title {
+  margin: 0 0 4px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #b71c1c;
+}
+
+.member-featured-image__guide .image-upload-guide__list {
+  gap: 2px;
+}
+
+.member-featured-image__guide .image-upload-guide__list li {
+  grid-template-columns: 4.25rem 1fr;
+  gap: 4px;
+  font-size: 10px;
+  color: #c62828;
+}
+
+.member-featured-image__guide .image-upload-guide__label {
+  font-weight: 600;
+  color: #b71c1c;
+}
+
+.member-featured-image__guide .image-upload-guide__tips {
+  margin-top: 4px;
+  padding-top: 4px;
+  font-size: 9.5px;
+  color: #c62828;
+  border-top-color: #f5c2c2;
+}
+
 .account-table-wrap {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;

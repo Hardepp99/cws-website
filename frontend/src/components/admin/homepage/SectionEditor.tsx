@@ -201,17 +201,19 @@ export function SectionEditor({
           </button>
         </div>
         <div className="cms-repeater">
-          <label className="cms-label">Hero slides (image paths)</label>
+          <label className="cms-label">Hero slides</label>
           {slides.map((sl, i) => (
             <div key={i} className="cms-repeater-row">
-              <Field
-                label={`Slide ${i + 1} image URL`}
+              <MediaPickerField
+                label={`Slide ${i + 1} image`}
                 value={String((sl.image as SectionRecord)?.url ?? sl.image ?? "")}
                 onChange={(v) => {
                   const next = [...slides];
                   next[i] = { image: { url: v } };
                   set("slides", next);
                 }}
+                mediaFilter="image"
+                imageGuide="heroSlide"
               />
             </div>
           ))}
@@ -231,6 +233,7 @@ export function SectionEditor({
           value={String(section.personImage ?? "")}
           onChange={(v) => set("personImage", v)}
           mediaFilter="image"
+          imageGuide="heroPerson"
         />
         <Field
           label="Person image alt text"

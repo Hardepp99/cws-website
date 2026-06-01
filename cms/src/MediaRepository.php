@@ -73,18 +73,19 @@ final class MediaRepository
 
     public function insert(array $data): int
     {
-        $stmt = $this->db->prepare(
-            'INSERT INTO media (
-                original_name, stored_name, mime_type, media_type, file_size,
+        $hasMember = $this->hasMemberIdColumn();
+        $cols = 'original_name, stored_name, mime_type, media_type, file_size,
                 width, height, alt_text, title, caption, description,
-                file_path, thumb_path, medium_path, large_path
-            ) VALUES (
-                :on, :sn, :mime, :mt, :size,
+                file_path, thumb_path, medium_path, large_path';
+        $vals = ':on, :sn, :mime, :mt, :size,
                 :w, :h, :alt, :title, :cap, :desc,
-                :fp, :tp, :mp, :lp
-            )'
-        );
-        $stmt->execute([
+                :fp, :tp, :mp, :lp';
+        if ($hasMember) {
+            $cols .= ', member_id';
+            $vals .= ', :mid';
+        }
+        $stmt = $this->db->prepare("INSERT INTO media ({$cols}) VALUES ({$vals})");
+        $params = [
             ':on'    => $data['original_name'],
             ':sn'    => $data['stored_name'],
             ':mime'  => $data['mime_type'],
@@ -100,8 +101,44 @@ final class MediaRepository
             ':tp'    => $data['thumb_path'] ?? null,
             ':mp'    => $data['medium_path'] ?? null,
             ':lp'    => $data['large_path'] ?? null,
-        ]);
+        ];
+        if ($hasMember) {
+            $params[':mid'] = $data['member_id'] ?? null;
+        }
+        $stmt->execute($params);
         return (int) $this->db->lastInsertId();
+    }
+
+    public function mediaIdFromPublicUrl(string $url): ?int
+    {
+        if (preg_match('#/media/(\d+)/file(?:\?|$)#', $url, $m)) {
+            return (int) $m[1];
+        }
+        return null;
+    }
+
+    public function urlBelongsToMember(int $memberId, string $url): bool
+    {
+        $id = $this->mediaIdFromPublicUrl($url);
+        if (!$id || !$this->hasMemberIdColumn()) {
+            return false;
+        }
+        $stmt = $this->db->prepare(
+            'SELECT id FROM media WHERE id = :id AND member_id = :m LIMIT 1'
+        );
+        $stmt->execute([':id' => $id, ':m' => $memberId]);
+        return (bool) $stmt->fetch();
+    }
+
+    private function hasMemberIdColumn(): bool
+    {
+        static $cached = null;
+        if ($cached !== null) {
+            return $cached;
+        }
+        $stmt = $this->db->query("SHOW COLUMNS FROM media LIKE 'member_id'");
+        $cached = (bool) $stmt->fetch();
+        return $cached;
     }
 
     public function updateMeta(int $id, array $meta): void

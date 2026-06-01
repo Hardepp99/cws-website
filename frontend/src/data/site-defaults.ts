@@ -13,7 +13,7 @@ export const defaultSiteSettings: SiteSettings = {
   primaryColor: "#0057FF",
   secondaryColor: "#0088FF",
   footerText:
-    "We are a leading web development company in India, providing innovative digital solutions and professional IT training to businesses worldwide.",
+    "We are a leading web development company in India, providing innovative digital solutions to businesses worldwide.",
   facebook: "https://www.facebook.com/profile.php?id=61565017048983",
   linkedin: "https://www.linkedin.com/company/creative-websolutions/",
   instagram: "https://www.instagram.com/creativeweb_solutions?igsh=ZHFvZTJlZmIyaHdx",
@@ -44,15 +44,6 @@ export const defaultMenus: { primary: MenuItem[]; footer: MenuItem[] } = {
       ],
     },
     {
-      label: "Courses & Training",
-      href: "/courses",
-      children: [
-        { label: "PHP & Laravel", href: "/courses#php", icon: "fab fa-php" },
-        { label: "React & Node.js", href: "/courses#react", icon: "fab fa-react" },
-        { label: "Full Stack", href: "/courses#fullstack", icon: "fas fa-layer-group" },
-      ],
-    },
-    {
       label: "Pages",
       href: "#",
       children: [
@@ -66,7 +57,6 @@ export const defaultMenus: { primary: MenuItem[]; footer: MenuItem[] } = {
     { label: "Home", href: "/" },
     { label: "About Us", href: "/about" },
     { label: "Services", href: "/services" },
-    { label: "Courses", href: "/courses" },
     { label: "Contact", href: "/contact" },
   ],
 };
@@ -147,12 +137,6 @@ export const defaultHomepageSections: HomepageSection[] = [
     badge: "Services",
     title: "What we deliver",
     subtitle: "Strategy, design, development, and growth — under one accountable team.",
-  },
-  {
-    acfFcLayout: "courses",
-    badge: "Training",
-    title: "Industry-ready IT courses",
-    subtitle: "Practical programs in web and full-stack development, taught by working professionals.",
   },
   {
     acfFcLayout: "portfolio",

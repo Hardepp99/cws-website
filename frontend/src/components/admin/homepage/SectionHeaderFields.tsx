@@ -112,6 +112,7 @@ export function SectionHeaderFields({
           value={String(section.personImage ?? "")}
           onChange={(v) => set("personImage", v)}
           mediaFilter="image"
+          imageGuide="heroPerson"
         />
         <Field
           label="Person image alt text"
@@ -169,6 +170,7 @@ export function SectionHeaderFields({
           value={String(section.image ?? "")}
           onChange={(v) => set("image", v)}
           mediaFilter="image"
+          imageGuide="aboutImage"
         />
         <CtaFields section={section} onChange={onChange} />
       </SectionFieldsWrap>

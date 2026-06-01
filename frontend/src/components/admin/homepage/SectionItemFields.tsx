@@ -26,6 +26,7 @@ export function SectionItemFields({
               hint={field.hint}
               value={value}
               mediaFilter={field.mediaFilter ?? "image"}
+              imageGuide={field.imageGuide}
               onChange={(url) => onChange(writeRepeaterFieldValue(item, field, url))}
             />
           );

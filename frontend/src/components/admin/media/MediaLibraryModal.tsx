@@ -2,9 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { MediaItem, MediaListResponse } from "@/lib/admin/media-types";
+import type { ImageUploadGuide } from "@/lib/admin/image-upload-guides";
 import { MEDIA_ACCEPT, MEDIA_ACCEPT_LABEL } from "@/lib/admin/media-types";
 import { useAdminDialog } from "@/components/admin/dialog/AdminDialogProvider";
 import { adminFetch, adminUploadFile } from "@/lib/admin/client";
+import { ImageUploadGuide as ImageUploadGuidePanel } from "./ImageUploadGuide";
 import { MediaCropModal } from "./MediaCropModal";
 
 export function MediaLibraryModal({
@@ -13,12 +15,14 @@ export function MediaLibraryModal({
   filterType = "image",
   title = "Media Library",
   compact = false,
+  uploadGuide,
 }: {
   onSelect: (item: MediaItem) => void;
   onClose: () => void;
   filterType?: "all" | "image" | "audio" | "video" | "document";
   title?: string;
   compact?: boolean;
+  uploadGuide?: ImageUploadGuide;
 }) {
   const [items, setItems] = useState<MediaItem[]>([]);
   const [total, setTotal] = useState(0);
@@ -145,7 +149,15 @@ export function MediaLibraryModal({
             onChange={(e) => onUpload(e.target.files)}
           />
         </div>
-        <p className="cms-field-hint">{MEDIA_ACCEPT_LABEL}. Code and script files are blocked.</p>
+        {filterType === "image" && uploadGuide ? (
+          <ImageUploadGuidePanel guide={uploadGuide} compact={compact} />
+        ) : null}
+        <p className="cms-field-hint">
+          {filterType === "image"
+            ? `${uploadGuide?.formats ?? "JPG, PNG, GIF, WebP"}. Max ${uploadGuide?.maxFileSize ?? "20 MB"} per image.`
+            : MEDIA_ACCEPT_LABEL}
+          . Code and script files are blocked.
+        </p>
         {err ? <p className="cms-notice err">{err}</p> : null}
 
         {loading ? (

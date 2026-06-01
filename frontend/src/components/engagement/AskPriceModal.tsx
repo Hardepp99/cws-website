@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useMemo, useState } from "react";
+import { CwsModalLayer } from "@/components/ui/CwsModalLayer";
 import {
   buildPricingInterestSummary,
   findBundle,
@@ -38,13 +39,8 @@ export function AskPriceModal({ open, onClose, settings, pricingOptions }: AskPr
       setVisible(false);
       return;
     }
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
     const frame = requestAnimationFrame(() => setVisible(true));
-    return () => {
-      cancelAnimationFrame(frame);
-      document.body.style.overflow = prev;
-    };
+    return () => cancelAnimationFrame(frame);
   }, [open]);
 
   useEffect(() => {
@@ -53,17 +49,6 @@ export function AskPriceModal({ open, onClose, settings, pricingOptions }: AskPr
       setErrorMessage("");
     }
   }, [open]);
-
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open, onClose]);
-
-  if (!open) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -119,11 +104,11 @@ export function AskPriceModal({ open, onClose, settings, pricingOptions }: AskPr
   const hasServices = pricingOptions.serviceGroups.some((g) => g.options.length > 0);
 
   return (
-    <div
-      className={`cws-modal-root cws-modal-root--apple${visible ? " is-visible" : ""}`}
-      role="presentation"
+    <CwsModalLayer
+      open={open}
+      onClose={onClose}
+      rootClassName={`cws-modal-root--apple${visible ? " is-visible" : ""}`}
     >
-      <button type="button" className="cws-modal-backdrop" aria-label="Close dialog" onClick={onClose} />
       <div
         className="cws-modal-dialog cws-modal-dialog--pricing cws-modal--apple"
         role="dialog"
@@ -326,6 +311,6 @@ export function AskPriceModal({ open, onClose, settings, pricingOptions }: AskPr
           </form>
         )}
       </div>
-    </div>
+    </CwsModalLayer>
   );
 }

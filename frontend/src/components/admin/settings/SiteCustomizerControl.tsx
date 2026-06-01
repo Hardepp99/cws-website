@@ -22,6 +22,7 @@ export function SiteCustomizerControl({
           value={value}
           onChange={onChange}
           mediaFilter="image"
+          imageGuide={field.imageGuide}
         />
       </div>
     );

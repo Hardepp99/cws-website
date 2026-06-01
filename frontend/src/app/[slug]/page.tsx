@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import nextDynamic from "next/dynamic";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { ContentArticle } from "@/components/ui/ContentArticle";
@@ -8,7 +8,6 @@ import { PageContentTitle } from "@/components/ui/PageContentTitle";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { RichContent } from "@/components/ui/RichContent";
 import { ContactForm } from "@/components/forms/ContactForm";
-import { EnrollmentForm } from "@/components/forms/EnrollmentForm";
 import { PageFaq } from "@/components/faq/PageFaq";
 import { PageConversionBand } from "@/components/engagement/PageConversionBand";
 import { PageTrustStrip } from "@/components/engagement/PageTrustStrip";
@@ -181,47 +180,7 @@ export default async function DynamicPage({ params }: PageProps) {
   }
 
   if (slug === "courses") {
-    const coursesPage = await getPageBySlug("courses");
-    return (
-      <SiteLayout currentPath={`/${slug}`}>
-        <JsonLd
-          data={breadcrumbJsonLd([
-            { name: "Home", url: "/" },
-            { name: coursesPage?.title ?? "Courses", url: "/courses" },
-          ])}
-        />
-        <PageHeader breadcrumb={[{ label: "Home", href: "/" }, { label: "Courses" }]} />
-        <section className="corp-section corp-section-tight">
-          <div className="container">
-            <PageContentTitle title={coursesPage?.title ?? "Courses & Training"} />
-            {coursesPage ? (
-              <ElementorPageBody
-                title={coursesPage.title}
-                displayMode={coursesPage.displayMode}
-                content={coursesPage.content}
-                desimentor={coursesPage.desimentor}
-              />
-            ) : null}
-            <div className="row justify-content-center">
-              <div className="col-lg-8">
-                <div className="p-4 bg-white rounded-4 border shadow-sm">
-                  <EnrollmentForm />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <PageTrustStrip />
-        <PageFaq items={normalizeFaqItems(coursesPage?.faqs)} title="Course FAQs" />
-        <PageConversionBand
-          title="Questions about batches or fees?"
-          description="Call us or submit the form — we will share schedules for PHP, Laravel, React, and full-stack tracks running from Zirakpur."
-          primaryLabel="Enquire now"
-          primaryHref="/contact"
-          showAskPrice={false}
-        />
-      </SiteLayout>
-    );
+    redirect("/services");
   }
 
   return (

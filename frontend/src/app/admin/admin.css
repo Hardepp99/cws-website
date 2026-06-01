@@ -1843,6 +1843,66 @@ button.row-action-btn {
   gap: 8px;
 }
 
+/* Image upload ratio / size guides (banners, portfolio, etc.) */
+.image-upload-guide {
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  background: linear-gradient(135deg, #f8f9fb 0%, #eef0f4 55%, #f4f5f7 100%);
+  border: 1px solid #d0d4dc;
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #3c434a;
+}
+
+.image-upload-guide--compact {
+  padding: 8px 10px;
+  font-size: 11px;
+}
+
+.image-upload-guide__title {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1d2327;
+}
+
+.image-upload-guide--compact .image-upload-guide__title {
+  font-size: 11px;
+}
+
+.image-upload-guide__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 4px;
+}
+
+.image-upload-guide__list li {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 6px;
+  align-items: baseline;
+}
+
+.image-upload-guide__label {
+  font-weight: 600;
+  color: #50575e;
+}
+
+.image-upload-guide__tips {
+  margin: 8px 0 0;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  color: #646970;
+  font-size: 11px;
+}
+
+.media-library-modal .image-upload-guide {
+  margin-bottom: 8px;
+}
+
 .media-crop-stage {
   position: relative;
   display: inline-block;

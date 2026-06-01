@@ -65,3 +65,28 @@ export async function memberGoogleLogin(credential: string) {
 export async function memberLogout() {
   await fetch("/api/member/logout", { method: "POST", credentials: "include" });
 }
+
+export async function memberUploadImage(
+  file: File,
+  meta?: { title?: string; altText?: string },
+): Promise<{ url: string; thumbUrl?: string }> {
+  const fd = new FormData();
+  fd.append("file", file);
+  if (meta?.title) fd.append("title", meta.title);
+  if (meta?.altText) fd.append("alt_text", meta.altText);
+  const res = await fetch("/api/member/cms/member/media/upload", {
+    method: "POST",
+    credentials: "include",
+    body: fd,
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error((data as { error?: string }).error || "Upload failed");
+  }
+  const payload = data as { url?: string; item?: { largeUrl?: string; url?: string } };
+  const url = payload.url || payload.item?.largeUrl || payload.item?.url || "";
+  if (!url) {
+    throw new Error("Upload succeeded but no image URL was returned.");
+  }
+  return { url, thumbUrl: (data as { thumbUrl?: string }).thumbUrl };
+}

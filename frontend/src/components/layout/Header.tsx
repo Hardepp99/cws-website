@@ -23,7 +23,12 @@ interface HeaderProps {
 export function Header({ settings, menu, currentPath = "" }: HeaderProps) {
   const pathname = usePathname();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [navStuck, setNavStuck] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const stickySentinelRef = useRef<HTMLDivElement>(null);
+
+  const phone = settings.phone?.trim() ?? "";
+  const phoneTel = phone ? `tel:${phone.replace(/[\s-]/g, "")}` : "";
 
   const closeMobileMenu = useCallback(() => {
     const collapse = document.getElementById("navbarNav");
@@ -75,33 +80,22 @@ export function Header({ settings, menu, currentPath = "" }: HeaderProps) {
     const headerEl = document.getElementById("header");
     if (!collapse || !overlay || !headerEl) return;
 
-    const barHeight = (el: HTMLElement | null) => {
-      if (!el) return 0;
-      const h = el.getBoundingClientRect().height;
-      return h > 0 ? h : 0;
-    };
-
-    const setMobileNavAnchor = () => {
+    const updateOverlayTop = () => {
       if (!window.matchMedia("(max-width: 991.98px)").matches) {
         document.documentElement.style.removeProperty("--mobile-nav-sheet-top");
-        document.documentElement.style.removeProperty("--mobile-overlay-top");
-        document.body.classList.remove("has-promo-offer");
         return;
       }
-      const promo = document.getElementById("promoOfferBar");
-      const topbar = document.getElementById("topbar");
-      const navbar = headerEl.querySelector<HTMLElement>(".navbar");
-      const promoH = barHeight(promo);
-      const topbarH = barHeight(topbar);
-      const navbarH = barHeight(navbar);
-      const chromeTop = promoH + topbarH;
-      document.body.classList.toggle("has-promo-offer", promoH > 0);
-      document.documentElement.style.setProperty("--mobile-overlay-top", `${Math.max(0, Math.round(chromeTop))}px`);
+      const chrome = headerEl.querySelector<HTMLElement>(".navbar-mobile-chrome");
+      if (!chrome) return;
       document.documentElement.style.setProperty(
         "--mobile-nav-sheet-top",
-        `${Math.max(0, Math.round(chromeTop + navbarH))}px`,
+        `${Math.round(chrome.getBoundingClientRect().bottom)}px`,
       );
     };
+
+    if (overlay.parentElement !== document.body) {
+      document.body.appendChild(overlay);
+    }
 
     const sync = () => {
       const open = collapse.classList.contains("show");
@@ -109,28 +103,23 @@ export function Header({ settings, menu, currentPath = "" }: HeaderProps) {
       headerEl.classList.toggle("mobile-nav-active", open);
       document.body.classList.toggle("mobile-nav-open", open);
       document.body.style.overflow = open ? "hidden" : "";
-      setMobileNavAnchor();
+      const toggler = headerEl.querySelector<HTMLButtonElement>(".navbar-toggler");
+      if (toggler) {
+        toggler.setAttribute("aria-expanded", open ? "true" : "false");
+        toggler.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      }
+      if (open) {
+        updateOverlayTop();
+        requestAnimationFrame(updateOverlayTop);
+      }
     };
 
     const observer = new MutationObserver(sync);
     observer.observe(collapse, { attributes: true, attributeFilter: ["class"] });
     sync();
 
-    setMobileNavAnchor();
-    window.addEventListener("resize", setMobileNavAnchor);
-    window.addEventListener("cws:promo-offer-dismissed", setMobileNavAnchor);
-    const ro =
-      typeof ResizeObserver !== "undefined"
-        ? new ResizeObserver(() => setMobileNavAnchor())
-        : null;
-    const promo = document.getElementById("promoOfferBar");
-    const topbar = document.getElementById("topbar");
-    const navbar = headerEl.querySelector(".navbar");
-    if (ro) {
-      if (promo) ro.observe(promo);
-      if (topbar) ro.observe(topbar);
-      if (navbar) ro.observe(navbar);
-    }
+    window.addEventListener("resize", updateOverlayTop);
+    window.addEventListener("cws:promo-offer-dismissed", updateOverlayTop);
 
     const closeFromOverlay = () => {
       const toggler = document.querySelector<HTMLButtonElement>(".navbar-toggler");
@@ -141,11 +130,12 @@ export function Header({ settings, menu, currentPath = "" }: HeaderProps) {
     return () => {
       observer.disconnect();
       overlay.removeEventListener("click", closeFromOverlay);
-      window.removeEventListener("resize", setMobileNavAnchor);
-      window.removeEventListener("cws:promo-offer-dismissed", setMobileNavAnchor);
-      ro?.disconnect();
+      window.removeEventListener("resize", updateOverlayTop);
+      window.removeEventListener("cws:promo-offer-dismissed", updateOverlayTop);
       document.documentElement.style.removeProperty("--mobile-nav-sheet-top");
-      document.documentElement.style.removeProperty("--mobile-overlay-top");
+      if (overlay.parentElement === document.body) {
+        headerEl.prepend(overlay);
+      }
       headerEl.classList.remove("mobile-nav-active");
       document.body.classList.remove("mobile-nav-open");
       document.body.classList.remove("has-promo-offer");
@@ -172,36 +162,82 @@ export function Header({ settings, menu, currentPath = "" }: HeaderProps) {
     scrollContentToTop();
   }, [pathname, closeMobileMenu]);
 
+  useEffect(() => {
+    const sentinel = stickySentinelRef.current;
+    const headerEl = document.getElementById("header");
+    if (!sentinel || !headerEl) return;
+
+    const mq = window.matchMedia("(max-width: 991.98px)");
+    const applyStuck = (stuck: boolean) => {
+      setNavStuck(stuck && mq.matches);
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => applyStuck(!entry.isIntersecting),
+      { threshold: 0, root: null, rootMargin: "0px" },
+    );
+    observer.observe(sentinel);
+
+    const onMq = () => {
+      if (!mq.matches) {
+        applyStuck(false);
+        return;
+      }
+      const rect = sentinel.getBoundingClientRect();
+      applyStuck(rect.bottom <= 0);
+    };
+    mq.addEventListener("change", onMq);
+
+    return () => {
+      observer.disconnect();
+      mq.removeEventListener("change", onMq);
+    };
+  }, []);
+
   return (
     <>
-      <header className="header" id="header">
+      <div ref={stickySentinelRef} className="navbar-sticky-sentinel" aria-hidden="true" />
+      <header className={`header${navStuck ? " is-stuck" : ""}`} id="header">
         <div className="mobile-menu-overlay" id="mobileMenuOverlay" aria-hidden="true" />
         <nav className="navbar navbar-expand-lg">
           <div className="container">
-            <Link className="navbar-brand" href="/" onClick={() => onMainNavClick("/")}>
-              <SiteLogo
-                variant="header"
-                src={settings.logoUrl}
-                priority
-                className="logo-img"
-                dataCustomize="logo-header"
-              />
-            </Link>
-            <button
-              className="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarNav"
-              aria-controls="navbarNav"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span className="toggler-icon">
-                <span />
-                <span />
-                <span />
-              </span>
-            </button>
+            <div className="navbar-mobile-chrome">
+              <Link className="navbar-brand" href="/" onClick={() => onMainNavClick("/")}>
+                <SiteLogo
+                  variant="header"
+                  src={settings.logoUrl}
+                  priority
+                  className="logo-img"
+                  dataCustomize="logo-header"
+                />
+              </Link>
+              {phoneTel ? (
+                <a
+                  href={phoneTel}
+                  className="navbar-sticky-call d-lg-none"
+                  data-customize-phone-wrap=""
+                  onClick={closeMobileMenu}
+                >
+                  <i className="fas fa-phone-alt" aria-hidden="true" />
+                  <span data-customize="phone">{phone}</span>
+                </a>
+              ) : null}
+              <button
+                className="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Open menu"
+              >
+                <span className="toggler-icon" aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                </span>
+              </button>
+            </div>
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav ms-auto">
                 {menu.map((item) =>

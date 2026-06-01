@@ -12,12 +12,18 @@ async function proxy(request: NextRequest, pathParts: string[]) {
   const qs = request.nextUrl.search;
   const url = `${cms}/api/v1${path}${qs}`;
 
-  const headers: Record<string, string> = {
-    "Content-Type": request.headers.get("content-type") || "application/json",
-  };
+  const contentType = request.headers.get("content-type") || "";
+  const isMultipart = contentType.includes("multipart/form-data");
+
+  const headers: Record<string, string> = {};
   if (token) {
     headers.Authorization = `Bearer ${token}`;
     headers["X-CWS-Member-Token"] = token;
+  }
+  if (!isMultipart) {
+    headers["Content-Type"] = contentType || "application/json";
+  } else {
+    headers["Content-Type"] = contentType;
   }
 
   const init: RequestInit = {
@@ -27,7 +33,7 @@ async function proxy(request: NextRequest, pathParts: string[]) {
   };
 
   if (request.method !== "GET" && request.method !== "HEAD") {
-    init.body = await request.text();
+    init.body = isMultipart ? await request.arrayBuffer() : await request.text();
   }
 
   const res = await fetch(url, init);

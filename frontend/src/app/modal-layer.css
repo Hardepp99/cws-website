@@ -1,0 +1,95 @@
+/**
+ * Modal layer — above navbar (10500), mobile tab bar (10450), floats.
+ * Page scroll locked via body.cws-modal-open; only .cws-modal-dialog scrolls.
+ */
+
+:root {
+  --cws-z-modal: 110000;
+}
+
+html.cws-modal-open,
+body.cws-modal-open {
+  overflow: hidden !important;
+  height: 100%;
+  overscroll-behavior: none;
+}
+
+body.cws-modal-open {
+  position: fixed;
+  width: 100%;
+  top: var(--cws-scroll-lock-y, 0);
+  left: 0;
+  right: 0;
+}
+
+/* Site chrome stays under open modals */
+body.cws-modal-open .header,
+body.cws-modal-open .topbar,
+body.cws-modal-open .promo-offer-bar,
+body.cws-modal-open .cws-mobile-tab-bar,
+body.cws-modal-open .cws-float-wa,
+body.cws-modal-open .cws-float-dock,
+body.cws-modal-open .cws-glass-bubble-layer,
+body.cws-modal-open .mobile-menu-overlay {
+  z-index: auto !important;
+}
+
+body.cws-modal-open .site-main,
+body.cws-modal-open .footer {
+  pointer-events: none;
+}
+
+.cws-modal-root {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: var(--cws-z-modal) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+  overflow: hidden !important;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+
+.cws-modal-backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 0;
+  touch-action: none;
+}
+
+.cws-modal-dialog {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  max-height: min(90dvh, calc(100dvh - 32px));
+  overflow: hidden;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+
+.cws-modal-header {
+  flex-shrink: 0;
+}
+
+.cws-modal-body,
+.cws-modal-dialog > form.cws-modal-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cws-modal-root--apple .cws-modal--apple.cws-modal-dialog {
+  max-height: min(92dvh, calc(100dvh - 32px));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.cws-modal-open {
+    position: fixed;
+  }
+}

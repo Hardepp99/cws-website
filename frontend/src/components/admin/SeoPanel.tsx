@@ -110,7 +110,7 @@ export function SeoPanel({
             value={seo.ogImage}
             onChange={(url) => set({ ogImage: url })}
             mediaFilter="image"
-            hint="Recommended 1200×630 for social sharing."
+            imageGuide="ogSocial"
           />
         </div>
       </div>

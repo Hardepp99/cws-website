@@ -4,6 +4,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { MediaCropModal } from "@/components/admin/media/MediaCropModal";
 import type { MediaItem, MediaListResponse } from "@/lib/admin/media-types";
+import { ImageUploadGuide } from "@/components/admin/media/ImageUploadGuide";
+import { getImageUploadGuide } from "@/lib/admin/image-upload-guides";
 import { MEDIA_ACCEPT, MEDIA_ACCEPT_LABEL } from "@/lib/admin/media-types";
 import { useAdminDialog } from "@/components/admin/dialog/AdminDialogProvider";
 import { adminFetch, adminUploadFile } from "@/lib/admin/client";
@@ -118,7 +120,11 @@ export default function AdminMediaPage() {
           {uploading ? "Uploading…" : "Add New"}
         </button>
         <hr className="wp-header-end" />
-        <p className="wp-list-desc">{MEDIA_ACCEPT_LABEL}. Safe storage with auto resize. Images support crop & SEO metadata.</p>
+        <ImageUploadGuide guide={getImageUploadGuide("default")} />
+        <p className="wp-list-desc">
+          {MEDIA_ACCEPT_LABEL}. Images max 20 MB; video up to 80 MB; audio up to 30 MB; PDF up to 25 MB. Crop & SEO metadata
+          supported for images.
+        </p>
       </div>
 
       <div className="wp-list-toolbar media-toolbar">

@@ -65,6 +65,7 @@ export function SectionAppearanceFields({
         value={backdrop}
         onChange={(v) => set("backdropImage", v)}
         mediaFilter="image"
+        imageGuide="sectionBackdrop"
         hint={
           defaultUrl
             ? `Leave empty for default theme image. Default: ${defaultUrl.slice(0, 48)}…`

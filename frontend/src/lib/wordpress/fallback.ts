@@ -63,7 +63,7 @@ export function normalizeSiteSettings(input: Partial<SiteSettings> | null | unde
     instagram: input.instagram ?? defaults.instagram,
     footerCompanyTitle: input.footerCompanyTitle ?? "Company",
     footerServicesTitle: input.footerServicesTitle ?? "Services",
-    footerProductsTitle: decodeHtmlEntities(input.footerProductsTitle ?? "Products & Training"),
+    footerProductsTitle: decodeHtmlEntities(input.footerProductsTitle ?? "Products"),
     gmbMapsUrl: input.gmbMapsUrl ?? defaults.gmbMapsUrl,
     gmbPlaceId: input.gmbPlaceId ?? defaults.gmbPlaceId,
     gmbPlaceQuery: input.gmbPlaceQuery ?? defaults.gmbPlaceQuery,

@@ -1,3 +1,4 @@
+import type { ImageUploadGuideKey } from "@/lib/admin/image-upload-guides";
 import type { SectionRecord } from "./SectionEditor";
 import { newItemId, normalizeItemStatus } from "@/lib/homepage/item-status";
 
@@ -9,6 +10,7 @@ export type RepeaterFieldDef = {
   type?: RepeaterFieldType;
   hint?: string;
   mediaFilter?: "all" | "image" | "audio" | "video" | "document";
+  imageGuide?: ImageUploadGuideKey;
 };
 
 export type SectionRepeaterDef = {
@@ -52,7 +54,7 @@ export function getSectionRepeaters(layout: string): SectionRepeaterDef[] {
   ];
 
   const serviceGridFields: RepeaterFieldDef[] = [
-    { key: "image", label: "Card image (top)", type: "media", mediaFilter: "image" },
+    { key: "image", label: "Card image (top)", type: "media", mediaFilter: "image", imageGuide: "serviceCard" },
     { key: "title", label: "Title" },
     { key: "desc", label: "Description", type: "textarea" },
     { key: "href", label: "Link" },
@@ -123,7 +125,9 @@ export function getSectionRepeaters(layout: string): SectionRepeaterDef[] {
         key: "slides",
         label: "Hero slides",
         singular: "Slide",
-        fields: [{ key: "imageUrl", label: "Slide image", type: "media", mediaFilter: "image" }],
+        fields: [
+          { key: "imageUrl", label: "Slide image", type: "media", mediaFilter: "image", imageGuide: "heroSlide" },
+        ],
         emptyItem: () => ({ ...draft(), imageUrl: "/assets/images/hero1.png" }),
       },
       {
@@ -177,7 +181,7 @@ export function getSectionRepeaters(layout: string): SectionRepeaterDef[] {
         singular: "Portfolio item",
         fields: [
           { key: "title", label: "Title" },
-          { key: "image", label: "Image", type: "media", mediaFilter: "image" },
+          { key: "image", label: "Image", type: "media", mediaFilter: "image", imageGuide: "portfolio" },
           { key: "href", label: "Link" },
         ],
         emptyItem: () => ({ ...draft(), title: "", image: "", href: "/portfolio" }),

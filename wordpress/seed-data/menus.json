@@ -25,16 +25,6 @@
       ]
     },
     {
-      "label": "Courses & Training",
-      "href": "/courses",
-      "icon": "fas fa-graduation-cap",
-      "children": [
-        { "label": "PHP & Laravel", "href": "/courses#php", "icon": "fab fa-php" },
-        { "label": "React & Node.js", "href": "/courses#react", "icon": "fab fa-react" },
-        { "label": "Full Stack", "href": "/courses#fullstack", "icon": "fas fa-layer-group" }
-      ]
-    },
-    {
       "label": "Pages",
       "href": "/portfolio",
       "icon": "fas fa-folder-open",
@@ -49,7 +39,6 @@
     { "label": "Home", "href": "/", "icon": "fas fa-home" },
     { "label": "About Us", "href": "/about", "icon": "fas fa-info-circle" },
     { "label": "Services", "href": "/services", "icon": "fas fa-layer-group" },
-    { "label": "Courses", "href": "/courses", "icon": "fas fa-graduation-cap" },
     { "label": "Blog", "href": "/blog", "icon": "fas fa-feather-alt" },
     { "label": "Portfolio", "href": "/portfolio", "icon": "fas fa-images" },
     { "label": "Contact", "href": "/contact", "icon": "fas fa-envelope" },
@@ -70,10 +59,6 @@
     { "label": "Custom Software", "href": "/web-application", "icon": "fas fa-puzzle-piece" },
     { "label": "Corporate Websites", "href": "/website-development-zirakpur", "icon": "fas fa-building" },
     { "label": "Online Stores", "href": "/ecommerce-website-zirakpur", "icon": "fas fa-store" },
-    { "label": "PHP & Laravel Training", "href": "/courses", "icon": "fas fa-server" },
-    { "label": "React & Node.js Training", "href": "/courses", "icon": "fab fa-react" },
-    { "label": "Full Stack Program", "href": "/courses", "icon": "fas fa-layer-group" },
-    { "label": "IT Courses", "href": "/courses", "icon": "fas fa-book-open" },
     { "label": "Portfolio", "href": "/portfolio", "icon": "fas fa-briefcase" }
   ]
 }

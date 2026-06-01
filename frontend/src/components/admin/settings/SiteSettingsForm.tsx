@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ColorField } from "@/components/admin/ColorField";
 import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { WpEditScreen } from "@/components/admin/wp/WpEditScreen";
+import type { ImageUploadGuideKey } from "@/lib/admin/image-upload-guides";
 import { adminFetch } from "@/lib/admin/client";
 
 type Settings = Record<string, string>;
@@ -11,7 +12,7 @@ type Settings = Record<string, string>;
 type FieldDef =
   | { key: string; label: string; hint?: string; type?: "text" | "textarea" }
   | { key: string; label: string; hint?: string; type: "color" }
-  | { key: string; label: string; hint?: string; type: "media" };
+  | { key: string; label: string; hint?: string; type: "media"; imageGuide?: ImageUploadGuideKey };
 
 const FIELDS: FieldDef[] = [
   { key: "phone", label: "Phone" },
@@ -22,8 +23,8 @@ const FIELDS: FieldDef[] = [
     hint: "Shown in footer / contact. All address links open your Google Business listing (Settings → Google Business).",
     type: "textarea",
   },
-  { key: "logoUrl", label: "Logo", type: "media" },
-  { key: "logoWhiteUrl", label: "Logo (light)", type: "media" },
+  { key: "logoUrl", label: "Logo", type: "media", imageGuide: "logo" },
+  { key: "logoWhiteUrl", label: "Logo (light)", type: "media", imageGuide: "logo" },
   { key: "primaryColor", label: "Primary brand color", type: "color" },
   { key: "secondaryColor", label: "Secondary brand color", type: "color" },
   { key: "footerText", label: "Footer text", hint: "Copyright or tagline.", type: "textarea" },
@@ -87,6 +88,7 @@ export function SiteSettingsForm() {
                 value={data[f.key] ?? ""}
                 onChange={(v) => setData({ ...data, [f.key]: v })}
                 mediaFilter="image"
+                imageGuide={f.imageGuide}
               />
             );
           }

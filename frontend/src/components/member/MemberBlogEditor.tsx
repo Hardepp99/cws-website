@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import { WysiwygField } from "@/components/admin/WysiwygField";
+import { MemberFeaturedImageField } from "@/components/member/MemberFeaturedImageField";
 import { useMemberSession } from "@/components/member/MemberSessionProvider";
 import { memberFetch } from "@/lib/member/client";
 
@@ -75,10 +76,7 @@ export function MemberBlogEditor({ postId }: { postId?: number }) {
         <label className="form-label">Excerpt</label>
         <textarea className="form-control" rows={2} value={excerpt} onChange={(e) => setExcerpt(e.target.value)} />
       </div>
-      <div className="mb-3">
-        <label className="form-label">Featured image URL (optional)</label>
-        <input className="form-control" value={image} onChange={(e) => setImage(e.target.value)} />
-      </div>
+      <MemberFeaturedImageField value={image} onChange={setImage} postTitle={title} />
       <WysiwygField label="Article content" value={content} onChange={setContent} height={360} />
       <p className="form-text">Posts are reviewed by our team before publishing on the blog.</p>
       {err ? <div className="alert alert-danger py-2">{err}</div> : null}

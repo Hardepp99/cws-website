@@ -17,7 +17,7 @@ const LABELS: Record<string, string> = {
   primary: "Primary Menu",
   footer: "Footer Company",
   footerServices: "Footer Services",
-  footerProducts: "Footer Products & Training",
+  footerProducts: "Footer Products",
 };
 
 const FOOTER_MENU_KEYS = new Set(["footer", "footerServices", "footerProducts"]);
