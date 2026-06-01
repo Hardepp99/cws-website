@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Run before `next build` — ensures required env vars for domain-independent production.
+ * Run before `next build` — ensures required env vars for production.
  * Set SKIP_ENV_CHECK=1 to bypass (not recommended on real deploys).
  */
 const skip = process.env.SKIP_ENV_CHECK === "1";
@@ -12,26 +12,29 @@ if (skip || !isProd) {
 
 const required = [
   ["NEXT_PUBLIC_SITE_URL", "Public site URL (https://your-domain.com)"],
-  ["CMS_API_URL", "CMS API base reachable from the Next.js server"],
+  ["MYSQL_DATABASE", "MySQL database name (or DB_NAME)"],
 ];
 
-const missing = required.filter(([key]) => !process.env[key]?.trim());
+const missing = required.filter(([key]) => {
+  if (key === "MYSQL_DATABASE") {
+    return !(process.env.MYSQL_DATABASE?.trim() || process.env.DB_NAME?.trim());
+  }
+  return !process.env[key]?.trim();
+});
 
 if (missing.length) {
   console.error("\n[cws-website] Production build missing required environment variables:\n");
   for (const [key, hint] of missing) {
     console.error(`  - ${key}  (${hint})`);
   }
-  console.error("\nCopy frontend/.env.production.example → frontend/.env.local (or set host env).");
-  console.error("See docs/PRODUCTION_DEPLOY.md\n");
+  console.error("\nSee frontend/.env.production.example and docs/NODE_CMS.md\n");
   process.exit(1);
 }
 
 try {
   new URL(process.env.NEXT_PUBLIC_SITE_URL);
-  new URL(process.env.CMS_API_URL);
 } catch {
-  console.error("[cws-website] NEXT_PUBLIC_SITE_URL and CMS_API_URL must be valid absolute URLs.\n");
+  console.error("[cws-website] NEXT_PUBLIC_SITE_URL must be a valid absolute URL.\n");
   process.exit(1);
 }
 

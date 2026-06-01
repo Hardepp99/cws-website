@@ -110,7 +110,7 @@ export const SITE_SETTINGS_SECTIONS: SettingsSectionDef[] = [
       {
         key: "gmbUseLive",
         label: "Use live Google reviews",
-        hint: "Set to 1 (yes) or 0 (no). Requires API key in cms/config.php.",
+        hint: "Set to 1 (yes) or 0 (no). Requires GOOGLE_PLACES_API_KEY in server environment.",
       },
       {
         key: "gmbCacheHours",

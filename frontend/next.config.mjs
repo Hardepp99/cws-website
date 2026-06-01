@@ -24,7 +24,6 @@ function mergeImagePatterns(patterns) {
 const envImageHosts = mergeImagePatterns([
   ...hostPatternsFromUrl(process.env.NEXT_PUBLIC_SITE_URL),
   ...hostPatternsFromUrl(process.env.NEXT_PUBLIC_CMS_PUBLIC_URL),
-  ...hostPatternsFromUrl(process.env.CMS_API_URL),
 ]);
 
 const nextConfig = {

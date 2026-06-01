@@ -49,10 +49,7 @@ export default async function BlogCategoryPage({ params }: Props) {
   );
 }
 
-export async function generateStaticParams() {
-  const posts = await getBlogPosts();
-  return getBlogCategories(posts).map((c) => ({ category: c.slug }));
-}
+export const dynamicParams = true;
 
 export async function generateMetadata({ params }: Props) {
   const { category: catSlug } = await params;

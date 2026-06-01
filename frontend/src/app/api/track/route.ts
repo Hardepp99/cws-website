@@ -1,20 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { contentRepository } from "@/server/repositories/content-repository";
 
 export async function POST(request: NextRequest) {
-  const cms = process.env.CMS_API_URL?.replace(/\/$/, "");
-  if (!cms) {
-    return NextResponse.json({ ok: false }, { status: 204 });
-  }
   try {
     const body = await request.json();
-    await fetch(`${cms}/api/v1/track-view`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        path: body.path ?? "/",
-        slug: body.slug ?? "",
-      }),
-    });
+    await contentRepository().trackPageView(String(body.path ?? "/"), String(body.slug ?? ""));
   } catch {
     /* ignore tracking errors */
   }

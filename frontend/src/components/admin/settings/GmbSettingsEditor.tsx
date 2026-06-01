@@ -109,7 +109,7 @@ export function GmbSettingsEditor({
         {syncMsg ? <p className="cms-notice ok">{syncMsg}</p> : null}
         {syncErr ? <p className="cms-notice err">{syncErr}</p> : null}
         <p className="cms-field-hint">
-          Requires <code>google.places_api_key</code> in <code>cms/config.php</code> (Places API enabled in Google
+          Requires <code>GOOGLE_PLACES_API_KEY</code> in server environment (Places API enabled in Google
           Cloud).
         </p>
       </div>

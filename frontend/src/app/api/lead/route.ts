@@ -45,23 +45,8 @@ export async function POST(request: NextRequest) {
   }
 
   const { postToCms } = await import("@/lib/cms/forms");
-  const cmsRes = await postToCms("/api/v1/lead", payload);
+  const cmsRes = await postToCms("/lead", payload);
   if (cmsRes) return NextResponse.json(cmsRes);
-
-  const wpUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL;
-  if (wpUrl) {
-    try {
-      const res = await fetch(`${wpUrl}/wp-json/cws/v1/lead`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const json = await res.json();
-      if (res.ok) return NextResponse.json(json);
-    } catch {
-      /* fall through */
-    }
-  }
 
   console.info("[Lead]", payload);
 

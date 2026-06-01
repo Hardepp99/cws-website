@@ -14,7 +14,10 @@ export type CrmSummernoteHandle = {
 };
 
 type JQuerySummernoteElement = {
-  summernote: (command: string, value?: string) => string | void;
+  summernote: {
+    (options: Record<string, unknown>): void;
+    (command: string, value?: string): string | void;
+  };
 };
 
 type JQueryStatic = (el: HTMLElement) => JQuerySummernoteElement;

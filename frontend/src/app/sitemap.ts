@@ -2,6 +2,9 @@ import type { MetadataRoute } from "next";
 import { getAllSlugs, getBlogPosts, getPortfolioAll } from "@/lib/wordpress/api";
 import { isNoindex, siteUrl } from "@/lib/seo/metadata";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const slugs = await getAllSlugs();
   const posts = (await getBlogPosts()).filter((p) => !isNoindex(p.seo));

@@ -1,6 +1,6 @@
 /**
  * Reference defaults for WordPress seed scripts only — the Next.js app does not read this at runtime.
- * All live content comes from the WordPress database via GraphQL (see src/lib/wordpress/api.ts).
+ * Fallback when MySQL CMS is unavailable (see src/lib/wordpress/api.ts).
  */
 import type { HomepageSection, MenuItem, SiteSettings } from "@/lib/wordpress/types";
 

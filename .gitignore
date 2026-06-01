@@ -7,6 +7,5 @@ node_modules/
 .DS_Store
 frontend/.next/
 frontend/node_modules/
-cms/uploads/
-cms/config.php
-cms/vendor/
+data/uploads/*
+!data/uploads/.gitkeep

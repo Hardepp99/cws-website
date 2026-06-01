@@ -4,6 +4,10 @@ import { AnalyticsProvider } from "@/components/analytics/AnalyticsProvider";
 import "./globals.css";
 import { buildMetadata, organizationJsonLd, webSiteJsonLd } from "@/lib/seo/metadata";
 
+/** Every page reads fresh content from MySQL on each request (no static HTML at build time). */
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata: Metadata = buildMetadata({
   title: "Creative Web Solutions | Best Web Development Company in India",
   description:

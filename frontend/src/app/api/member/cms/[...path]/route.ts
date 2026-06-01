@@ -1,62 +1,46 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { cookies } from "next/headers";
+import { dispatchCms, cmsResultToResponse } from "@/server/dispatch-cms";
+import { readJsonBody } from "@/server/http";
 
-async function proxy(request: NextRequest, pathParts: string[]) {
-  const cms = process.env.CMS_API_URL?.replace(/\/$/, "");
+async function handle(request: NextRequest, pathParts: string[]) {
   const token = (await cookies()).get("cws_member_token")?.value;
-  if (!cms) {
-    return NextResponse.json({ error: "CMS_API_URL not configured" }, { status: 500 });
-  }
-
   const path = "/" + pathParts.join("/");
-  const qs = request.nextUrl.search;
-  const url = `${cms}/api/v1${path}${qs}`;
-
   const contentType = request.headers.get("content-type") || "";
-  const isMultipart = contentType.includes("multipart/form-data");
-
-  const headers: Record<string, string> = {};
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-    headers["X-CWS-Member-Token"] = token;
-  }
-  if (!isMultipart) {
-    headers["Content-Type"] = contentType || "application/json";
-  } else {
-    headers["Content-Type"] = contentType;
-  }
-
-  const init: RequestInit = {
-    method: request.method,
-    headers,
-    cache: "no-store",
-  };
+  let body: Record<string, unknown> | undefined;
+  let rawBody: ArrayBuffer | undefined;
 
   if (request.method !== "GET" && request.method !== "HEAD") {
-    init.body = isMultipart ? await request.arrayBuffer() : await request.text();
+    if (contentType.includes("multipart/form-data")) {
+      rawBody = await request.arrayBuffer();
+    } else {
+      body = await readJsonBody(request);
+    }
   }
 
-  const res = await fetch(url, init);
-  const text = await res.text();
-  return new NextResponse(text, {
-    status: res.status,
-    headers: { "Content-Type": res.headers.get("content-type") || "application/json" },
+  const result = await dispatchCms({
+    method: request.method,
+    path,
+    searchParams: request.nextUrl.searchParams,
+    body,
+    rawBody,
+    contentType,
+    memberToken: token,
   });
+  return cmsResultToResponse(result);
 }
 
 type RouteCtx = { params: Promise<{ path: string[] }> };
 
 export async function GET(request: NextRequest, ctx: RouteCtx) {
   const { path } = await ctx.params;
-  return proxy(request, path);
+  return handle(request, path);
 }
-
 export async function POST(request: NextRequest, ctx: RouteCtx) {
   const { path } = await ctx.params;
-  return proxy(request, path);
+  return handle(request, path);
 }
-
 export async function PUT(request: NextRequest, ctx: RouteCtx) {
   const { path } = await ctx.params;
-  return proxy(request, path);
+  return handle(request, path);
 }

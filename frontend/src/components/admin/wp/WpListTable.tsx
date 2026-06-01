@@ -142,11 +142,13 @@ export function WpRowActions({
   desimentorHref,
   deleteAction,
   viewHref,
+  children,
 }: {
   editHref?: string;
   desimentorHref?: string;
   deleteAction?: React.ReactNode;
   viewHref?: string;
+  children?: React.ReactNode;
 }) {
   return (
     <div className="row-actions row-actions-buttons">
@@ -166,6 +168,7 @@ export function WpRowActions({
         </Link>
       ) : null}
       {deleteAction}
+      {children}
     </div>
   );
 }

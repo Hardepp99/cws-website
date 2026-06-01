@@ -3,8 +3,6 @@ import "server-only";
 import { cookies, headers } from "next/headers";
 import { getSiteUrl } from "@/lib/site-url";
 
-const CMS = process.env.CMS_API_URL?.replace(/\/$/, "") || "";
-
 async function siteOrigin(): Promise<string> {
   const env = getSiteUrl();
   if (env) return env;
@@ -18,7 +16,7 @@ export async function getAdminToken(): Promise<string | undefined> {
   return (await cookies()).get("cws_admin_token")?.value;
 }
 
-/** Server-side admin API — routes through Next proxy so auth cookie works on WAMP. */
+/** Server-side admin API via Next.js `/api/admin/cms` proxy. */
 export async function cmsAdminFetch<T>(
   path: string,
   init?: RequestInit & { json?: unknown },
@@ -50,31 +48,6 @@ export async function cmsAdminFetch<T>(
   return data as T;
 }
 
-export async function cmsAdminFetchDirect<T>(
-  path: string,
-  init?: RequestInit & { json?: unknown },
-): Promise<T> {
-  const token = await getAdminToken();
-  if (!CMS || !token) {
-    throw new Error("Not authenticated");
-  }
-  const res = await fetch(`${CMS}/api/v1/admin${path}`, {
-    ...init,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "X-CWS-Admin-Token": token,
-      ...(init?.json ? { "Content-Type": "application/json" } : {}),
-    },
-    body: init?.json ? JSON.stringify(init.json) : init?.body,
-    cache: "no-store",
-  });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) {
-    throw new Error((data as { error?: string }).error || "Request failed");
-  }
-  return data as T;
-}
-
-export function getCmsPublicUrl(): string {
-  return CMS;
+export async function getCmsPublicUrl(): Promise<string> {
+  return `${(await siteOrigin()).replace(/\/$/, "")}/api/v1`;
 }

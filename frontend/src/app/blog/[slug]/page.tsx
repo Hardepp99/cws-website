@@ -19,10 +19,7 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  const posts = await getBlogPosts();
-  return posts.map((p) => ({ slug: p.slug }));
-}
+export const dynamicParams = true;
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;

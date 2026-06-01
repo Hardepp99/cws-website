@@ -17,23 +17,8 @@ export async function POST(request: NextRequest) {
   }
 
   const { postToCms } = await import("@/lib/cms/forms");
-  const cmsRes = await postToCms("/api/v1/enrollment", body);
+  const cmsRes = await postToCms("/enrollment", body);
   if (cmsRes) return NextResponse.json(cmsRes);
-
-  const wpUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL;
-  if (wpUrl) {
-    try {
-      const res = await fetch(`${wpUrl}/wp-json/cws/v1/enrollment`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      const json = await res.json();
-      if (res.ok) return NextResponse.json(json);
-    } catch {
-      /* fallback */
-    }
-  }
 
   console.info("[Enrollment]", { name, email, phone, course, message });
 

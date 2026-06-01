@@ -1,12 +1,6 @@
-/** Server-side CMS fetch for community (no member auth). */
+import { cmsFetch as fetchCms } from "@/lib/cms/client";
+
+/** Server-side CMS fetch for community pages. */
 export async function cmsFetch<T>(path: string): Promise<T | null> {
-  const cms = process.env.CMS_API_URL?.replace(/\/$/, "");
-  if (!cms) return null;
-  try {
-    const res = await fetch(`${cms}/api/v1${path}`, { next: { revalidate: 30 } });
-    if (!res.ok) return null;
-    return (await res.json()) as T;
-  } catch {
-    return null;
-  }
+  return fetchCms<T>(`/api/v1${path.startsWith("/") ? path : `/${path}`}`);
 }

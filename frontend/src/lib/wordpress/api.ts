@@ -1,5 +1,5 @@
 /**
- * Content API — uses CWS PHP CMS when CMS_API_URL is set, otherwise WordPress GraphQL.
+ * Content API — loads from Node CMS (`/api/v1`) via MySQL.
  */
 import { cmsApiEnabled } from "@/lib/cms/client";
 import * as cms from "@/lib/cms/api";
