@@ -5,9 +5,16 @@ export type { RowDataPacket, ResultSetHeader };
 
 let pool: Pool | null = null;
 
+function resolveMysqlHost(): string {
+  const host = (process.env.MYSQL_HOST || process.env.DB_HOST || "127.0.0.1").trim();
+  // Hostinger/Linux: "localhost" often resolves to IPv6 ::1; MySQL user may only allow 127.0.0.1
+  if (host === "localhost") return "127.0.0.1";
+  return host;
+}
+
 export function getDbConfig() {
   return {
-    host: process.env.MYSQL_HOST || process.env.DB_HOST || "127.0.0.1",
+    host: resolveMysqlHost(),
     port: Number(process.env.MYSQL_PORT || process.env.DB_PORT || 3306),
     database: process.env.MYSQL_DATABASE || process.env.DB_NAME || "cws_cms",
     user: process.env.MYSQL_USER || process.env.DB_USER || "root",
