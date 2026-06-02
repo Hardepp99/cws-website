@@ -3,7 +3,13 @@ import mysql, { type Pool, type RowDataPacket, type ResultSetHeader } from "mysq
 
 export type { RowDataPacket, ResultSetHeader };
 
-let pool: Pool | null = null;
+declare global {
+  // Reuse a single DB pool across Next.js dev hot reloads.
+  // eslint-disable-next-line no-var
+  var __cwsMysqlPool: Pool | undefined;
+}
+
+let pool: Pool | null = globalThis.__cwsMysqlPool ?? null;
 
 function resolveMysqlHost(): string {
   const host = (process.env.MYSQL_HOST || process.env.DB_HOST || "127.0.0.1").trim();
@@ -25,6 +31,10 @@ export function getDbConfig() {
 export function getPool(): Pool {
   if (!pool) {
     const cfg = getDbConfig();
+    const connectionLimit = Math.min(
+      5,
+      Math.max(1, Number(process.env.MYSQL_CONNECTION_LIMIT || process.env.DB_CONNECTION_LIMIT || 2)),
+    );
     pool = mysql.createPool({
       host: cfg.host,
       port: cfg.port,
@@ -33,9 +43,13 @@ export function getPool(): Pool {
       password: cfg.password,
       charset: "utf8mb4",
       waitForConnections: true,
-      connectionLimit: 10,
+      connectionLimit,
+      maxIdle: connectionLimit,
+      idleTimeout: 60_000,
+      queueLimit: 0,
       enableKeepAlive: true,
     });
+    globalThis.__cwsMysqlPool = pool;
   }
   return pool;
 }

@@ -42,12 +42,25 @@ export async function adminLogin(
   };
 }
 
+const sessionUserIdCache = new Map<string, { userId: number; expiresAt: number }>();
+const SESSION_CACHE_MS = 30_000;
+
 export async function adminUserIdFromToken(token: string): Promise<number | null> {
+  if (!token) return null;
+  const hit = sessionUserIdCache.get(token);
+  if (hit && hit.expiresAt > Date.now()) return hit.userId;
+
   const [rows] = await getPool().query<RowDataPacket[]>(
     "SELECT user_id FROM admin_sessions WHERE token = ? AND expires_at > NOW() LIMIT 1",
     [token],
   );
-  return rows[0] ? Number(rows[0].user_id) : null;
+  const userId = rows[0] ? Number(rows[0].user_id) : null;
+  if (userId) {
+    sessionUserIdCache.set(token, { userId, expiresAt: Date.now() + SESSION_CACHE_MS });
+  } else {
+    sessionUserIdCache.delete(token);
+  }
+  return userId;
 }
 
 export async function adminGetUserById(id: number): Promise<AdminUser | null> {

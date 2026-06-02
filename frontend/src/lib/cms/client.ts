@@ -13,11 +13,17 @@ export function getCmsApiBase(): string {
 
 export function cmsApiEnabled(): boolean {
   if (process.env.CWS_NODE_CMS === "0") return false;
-  return Boolean(
+  if (
     process.env.MYSQL_DATABASE?.trim() ||
-      process.env.DB_NAME?.trim() ||
-      process.env.MYSQL_HOST?.trim(),
-  );
+    process.env.DB_NAME?.trim() ||
+    process.env.MYSQL_HOST?.trim() ||
+    process.env.DB_HOST?.trim()
+  ) {
+    return true;
+  }
+  // Server-side local/dev still uses DB defaults from db.ts (cws_cms on 127.0.0.1)
+  if (typeof window === "undefined") return true;
+  return false;
 }
 
 export async function cmsFetch<T>(path: string, init?: RequestInit): Promise<T | null> {
@@ -38,7 +44,9 @@ export async function cmsFetch<T>(path: string, init?: RequestInit): Promise<T |
             : undefined,
       });
       if (result.status >= 400) {
-        console.warn("[CMS API]", result.status, path);
+        if (result.status !== 404) {
+          console.warn("[CMS API]", result.status, path);
+        }
         return null;
       }
       return (result.data ?? null) as T | null;

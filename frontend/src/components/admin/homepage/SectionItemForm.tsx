@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { SectionItemFields } from "./SectionItemFields";
 import { layoutLabel } from "./layouts";
 import {
@@ -35,10 +35,18 @@ export function SectionItemForm({
   const [saving, setSaving] = useState(false);
 
   const layout = String(section?.acfFcLayout ?? "");
-  const repeater = getSectionRepeaters(layout).find((r) => r.key === repeaterKey);
+  const repeater = useMemo(
+    () => getSectionRepeaters(layout).find((r) => r.key === repeaterKey),
+    [layout, repeaterKey]
+  );
+  const initializedKeyRef = useRef<string>("");
 
   useEffect(() => {
     if (!section || !repeater) return;
+    const initKey = `${sectionId}:${repeaterKey}:${itemId ?? "new"}:${isNew ? "new" : "edit"}`;
+    if (initializedKeyRef.current === initKey) return;
+    initializedKeyRef.current = initKey;
+
     if (isNew) {
       const empty = repeater.emptyItem();
       setItem(empty);

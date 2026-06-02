@@ -5,6 +5,15 @@ import { cmsApiEnabled } from "@/lib/cms/client";
 import * as cms from "@/lib/cms/api";
 import * as wp from "./api-wp";
 
+export async function getLayoutBootstrap() {
+  if (cmsApiEnabled()) return cms.getLayoutBootstrap();
+  const [settings, menus, pricing] = await Promise.all([
+    wp.getSiteSettings(),
+    wp.getMenus(),
+    wp.getPricingOptions(),
+  ]);
+  return { settings, menus, pricing };
+}
 export async function getSiteSettings() {
   return cmsApiEnabled() ? cms.getSiteSettings() : wp.getSiteSettings();
 }

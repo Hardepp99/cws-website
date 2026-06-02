@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { cmsApiEnabled, cmsFetch } from "./client";
 import { decodeHtmlEntities } from "@/lib/text";
 import { emptySiteMenus, emptySiteSettings, normalizeSiteSettings } from "@/lib/wordpress/fallback";
@@ -33,44 +34,61 @@ function normalizeMenus(menus: SiteMenus): SiteMenus {
   };
 }
 
-export async function getSiteSettings(): Promise<SiteSettings> {
+const emptyPricing = (): PricingOptions => ({
+  bundles: [],
+  serviceGroups: [],
+  budgetRanges: [],
+  timelines: [],
+});
+
+export const getLayoutBootstrap = cache(async (): Promise<{
+  settings: SiteSettings;
+  menus: SiteMenus;
+  pricing: PricingOptions;
+}> => {
+  const data = await cmsFetch<{
+    settings: SiteSettings;
+    menus: SiteMenus;
+    pricing: PricingOptions;
+  }>("/api/v1/layout-bootstrap");
+  return {
+    settings: data?.settings ? normalizeSiteSettings(data.settings) : emptySiteSettings(),
+    menus: data?.menus ? normalizeMenus(data.menus) : emptySiteMenus(),
+    pricing: data?.pricing ?? emptyPricing(),
+  };
+});
+
+export const getSiteSettings = cache(async (): Promise<SiteSettings> => {
   const data = await cmsFetch<SiteSettings>("/api/v1/settings");
   return data ? normalizeSiteSettings(data) : emptySiteSettings();
-}
+});
 
-export async function getPricingOptions(): Promise<PricingOptions> {
+export const getPricingOptions = cache(async (): Promise<PricingOptions> => {
   const data = await cmsFetch<PricingOptions>("/api/v1/pricing-options");
-  return (
-    data ?? {
-      bundles: [],
-      serviceGroups: [],
-      budgetRanges: [],
-      timelines: [],
-    }
-  );
-}
+  return data ?? emptyPricing();
+});
 
-export async function getMenus(): Promise<SiteMenus> {
+export const getMenus = cache(async (): Promise<SiteMenus> => {
   const data = await cmsFetch<SiteMenus>("/api/v1/menus");
   return data ? normalizeMenus(data) : emptySiteMenus();
-}
+});
 
-export async function getHomepage(): Promise<WpPage | null> {
+export const getHomepage = cache(async (): Promise<WpPage | null> => {
   return cmsFetch<WpPage>("/api/v1/homepage");
-}
+});
 
-export async function getPageBySlug(slug: string): Promise<WpPage | null> {
+export const getPageBySlug = cache(async (slug: string): Promise<WpPage | null> => {
   const page = await cmsFetch<WpPage>(`/api/v1/pages/${encodeURIComponent(slug)}`);
   return page ? { ...page, title: decodeHtmlEntities(page.title) } : null;
-}
+});
 
 export async function getServiceLanding(slug: string): Promise<ServiceLanding | null> {
   return cmsFetch<ServiceLanding>(`/api/v1/landings/${encodeURIComponent(slug)}`);
 }
 
-export async function getAllServiceLandings(): Promise<ServiceLanding[]> {
+export const getAllServiceLandings = cache(async (): Promise<ServiceLanding[]> => {
   return (await cmsFetch<ServiceLanding[]>("/api/v1/landings")) ?? [];
-}
+});
 
 export async function getServiceDetail(slug: string): Promise<ServiceDetail | null> {
   return cmsFetch<ServiceDetail>(`/api/v1/services/${encodeURIComponent(slug)}`);
@@ -97,25 +115,25 @@ export async function getContentBySlug(slug: string): Promise<ResolvedContent | 
   return null;
 }
 
-export async function getAllSlugs(): Promise<string[]> {
+export const getAllSlugs = cache(async (): Promise<string[]> => {
   const slugs = await cmsFetch<string[]>("/api/v1/slugs");
   return slugs?.length ? slugs : [];
-}
+});
 
-export async function getBlogPosts(): Promise<BlogPost[]> {
+export const getBlogPosts = cache(async (): Promise<BlogPost[]> => {
   return (await cmsFetch<BlogPost[]>("/api/v1/blog")) ?? [];
-}
+});
 
 export async function getBlogPost(slug: string): Promise<BlogPost | null> {
   const posts = await getBlogPosts();
   return posts.find((p) => p.slug === slug) ?? null;
 }
 
-export async function getGmbLive(): Promise<GmbApiPayload | null> {
+export const getGmbLive = cache(async (): Promise<GmbApiPayload | null> => {
   return cmsFetch<GmbApiPayload>("/api/v1/gmb");
-}
+});
 
-export async function getPortfolioHome(): Promise<PortfolioHomePayload> {
+export const getPortfolioHome = cache(async (): Promise<PortfolioHomePayload> => {
   const settings = await getSiteSettings();
   const maxPerCategory = parsePortfolioHomeMax(settings.portfolioHomeMax);
   const portfolioSettings = {
@@ -146,9 +164,9 @@ export async function getPortfolioHome(): Promise<PortfolioHomePayload> {
     items: capPortfolioHomeItemsByCategory(homeItems, maxPerCategory),
     settings: portfolioSettings,
   };
-}
+});
 
-export async function getPortfolioAll(): Promise<PortfolioItem[]> {
+export const getPortfolioAll = cache(async (): Promise<PortfolioItem[]> => {
   const { PORTFOLIO_FALLBACK_ITEMS } = await import("@/data/portfolio-fallback");
   try {
     const items = await cmsFetch<PortfolioItem[]>("/api/v1/portfolio");
@@ -157,9 +175,9 @@ export async function getPortfolioAll(): Promise<PortfolioItem[]> {
     /* CMS offline */
   }
   return PORTFOLIO_FALLBACK_ITEMS;
-}
+});
 
-export async function getPortfolioBySlug(slug: string): Promise<PortfolioItem | null> {
+export const getPortfolioBySlug = cache(async (slug: string): Promise<PortfolioItem | null> => {
   const { PORTFOLIO_FALLBACK_ITEMS } = await import("@/data/portfolio-fallback");
   try {
     const item = await cmsFetch<PortfolioItem>(`/api/v1/portfolio/${encodeURIComponent(slug)}`);
@@ -168,7 +186,7 @@ export async function getPortfolioBySlug(slug: string): Promise<PortfolioItem | 
     /* CMS offline */
   }
   return PORTFOLIO_FALLBACK_ITEMS.find((i) => i.slug === slug) ?? null;
-}
+});
 
 export async function getPortfolioSlugs(): Promise<string[]> {
   const items = await getPortfolioAll();

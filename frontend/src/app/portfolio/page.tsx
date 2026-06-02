@@ -7,7 +7,7 @@ import { PageFaq } from "@/components/faq/PageFaq";
 import { PageConversionBand } from "@/components/engagement/PageConversionBand";
 import { pickRandomLightPastelTint } from "@/lib/page-section-tint";
 import { normalizeFaqItems } from "@/lib/faq/normalize";
-import { getPageBySlug, getPortfolioAll, getSiteSettings } from "@/lib/wordpress/api";
+import { getLayoutBootstrap, getPageBySlug, getPortfolioAll } from "@/lib/wordpress/api";
 import { breadcrumbJsonLd, buildMetadata, siteUrl } from "@/lib/seo/metadata";
 
 export const dynamic = "force-dynamic";
@@ -15,7 +15,7 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata() {
   const page = await getPageBySlug("portfolio");
   if (page?.seo?.title) return buildMetadata(page.seo, "/portfolio");
-  const settings = await getSiteSettings();
+  const { settings } = await getLayoutBootstrap();
   return buildMetadata(
     {
       title: settings.portfolioTitle ?? "Portfolio | Creative Web Solutions",
@@ -28,9 +28,9 @@ export async function generateMetadata() {
 }
 
 export default async function PortfolioPage() {
-  const [items, settings, page] = await Promise.all([
+  const [{ settings }, items, page] = await Promise.all([
+    getLayoutBootstrap(),
     getPortfolioAll(),
-    getSiteSettings(),
     getPageBySlug("portfolio"),
   ]);
 

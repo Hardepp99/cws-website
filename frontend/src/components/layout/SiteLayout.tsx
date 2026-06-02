@@ -12,7 +12,7 @@ import { MemberSessionProvider } from "@/components/member/MemberSessionProvider
 import { SiteMapsProvider } from "./SiteMapsContext";
 import { Topbar } from "./Topbar";
 import { resolveGmbMapsUrl } from "@/lib/gmb/resolve";
-import { getMenus, getPricingOptions, getSiteSettings } from "@/lib/wordpress/api";
+import { getLayoutBootstrap } from "@/lib/wordpress/api";
 
 interface SiteLayoutProps {
   children: React.ReactNode;
@@ -20,11 +20,7 @@ interface SiteLayoutProps {
 }
 
 export async function SiteLayout({ children, currentPath = "/" }: SiteLayoutProps) {
-  const [settings, menus, pricingOptions] = await Promise.all([
-    getSiteSettings(),
-    getMenus(),
-    getPricingOptions(),
-  ]);
+  const { settings, menus, pricing: pricingOptions } = await getLayoutBootstrap();
 
   const gmbMapsUrl = resolveGmbMapsUrl(settings);
 

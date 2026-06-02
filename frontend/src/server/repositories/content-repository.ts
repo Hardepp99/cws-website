@@ -10,6 +10,7 @@ import {
   parseJsonValue,
   sanitizeSlug,
 } from "../utils/json";
+import { isDbBusyError } from "../db-resilience";
 import { saveInboundForm } from "./crm-inbox";
 
 type Row = RowDataPacket;
@@ -24,12 +25,53 @@ export function contentRepository(): ContentRepository {
 export class ContentRepository {
   private displayModeCache = new Map<string, boolean>();
   private faqsColumnCache = new Map<string, boolean>();
+  private siteSettingsCache: Record<string, unknown> | null = null;
+  private siteSettingsCachedAt = 0;
+  private siteSettingsInFlight: Promise<Record<string, unknown>> | null = null;
+  private menusCache: Record<string, unknown[]> | null = null;
+  private menusCachedAt = 0;
+  private menusInFlight: Promise<Record<string, unknown[]>> | null = null;
+  private pricingCache: Record<string, unknown> | null = null;
+  private pricingCachedAt = 0;
+  private pricingInFlight: Promise<Record<string, unknown>> | null = null;
+  private pageSlugCache = new Map<string, { at: number; value: Record<string, unknown> | null }>();
+  private portfolioAllCache: Record<string, unknown>[] | null = null;
+  private portfolioAllCachedAt = 0;
+  private portfolioExists: boolean | null = null;
+  private portfolioExistsAt = 0;
+  private layoutBootstrapInFlight: Promise<{
+    settings: Record<string, unknown>;
+    menus: Record<string, unknown[]>;
+    pricing: Record<string, unknown>;
+  }> | null = null;
+  private readonly cacheTtlMs = 60_000;
 
   constructor(private pool: Pool) {}
 
   async getSiteSettings(): Promise<Record<string, unknown>> {
-    const [rows] = await this.pool.query<Row[]>("SELECT payload FROM site_settings WHERE id = 1");
-    return decodeJson(rows[0]?.payload) ?? this.defaultSettings();
+    const now = Date.now();
+    if (this.siteSettingsCache && now - this.siteSettingsCachedAt < this.cacheTtlMs) {
+      return this.siteSettingsCache;
+    }
+    if (this.siteSettingsInFlight) return this.siteSettingsInFlight;
+    this.siteSettingsInFlight = (async () => {
+      try {
+        const [rows] = await this.pool.query<Row[]>("SELECT payload FROM site_settings WHERE id = 1");
+        const value = decodeJson(rows[0]?.payload) ?? this.defaultSettings();
+        this.siteSettingsCache = value;
+        this.siteSettingsCachedAt = Date.now();
+        return value;
+      } catch (e) {
+        if (isDbBusyError(e)) {
+          if (this.siteSettingsCache) return this.siteSettingsCache;
+          return this.defaultSettings();
+        }
+        throw e;
+      } finally {
+        this.siteSettingsInFlight = null;
+      }
+    })();
+    return this.siteSettingsInFlight;
   }
 
   async saveSiteSettings(data: Record<string, unknown>): Promise<void> {
@@ -38,6 +80,8 @@ export class ContentRepository {
       "INSERT INTO site_settings (id, payload) VALUES (1, ?) ON DUPLICATE KEY UPDATE payload = ?",
       [json, json],
     );
+    this.siteSettingsCache = data;
+    this.siteSettingsCachedAt = Date.now();
   }
 
   async getMenus(): Promise<Record<string, unknown[]>> {
@@ -53,12 +97,29 @@ export class ContentRepository {
       footerServices: [],
       footerProducts: [],
     };
-    const [rows] = await this.pool.query<Row[]>("SELECT menu_key, payload FROM menus");
-    for (const row of rows) {
-      const key = map[String(row.menu_key)];
-      if (key) out[key] = decodeJsonArray(row.payload);
-    }
-    return out;
+    const now = Date.now();
+    if (this.menusCache && now - this.menusCachedAt < this.cacheTtlMs) return this.menusCache;
+    if (this.menusInFlight) return this.menusInFlight;
+    this.menusInFlight = (async () => {
+      try {
+        const [rows] = await this.pool.query<Row[]>("SELECT menu_key, payload FROM menus");
+        for (const row of rows) {
+          const key = map[String(row.menu_key)];
+          if (key) out[key] = decodeJsonArray(row.payload);
+        }
+        this.menusCache = out;
+        this.menusCachedAt = Date.now();
+        return out;
+      } catch (e) {
+        if (isDbBusyError(e)) {
+          return this.menusCache ?? out;
+        }
+        throw e;
+      } finally {
+        this.menusInFlight = null;
+      }
+    })();
+    return this.menusInFlight;
   }
 
   async saveMenu(menuKey: string, items: unknown[]): Promise<void> {
@@ -67,19 +128,64 @@ export class ContentRepository {
       "INSERT INTO menus (menu_key, payload) VALUES (?, ?) ON DUPLICATE KEY UPDATE payload = ?",
       [menuKey, json, json],
     );
+    this.menusCachedAt = 0;
   }
 
   async getPricingOptions(): Promise<Record<string, unknown>> {
-    const [rows] = await this.pool.query<Row[]>("SELECT payload FROM pricing_options WHERE id = 1");
-    const stored = decodeJson(rows[0]?.payload) ?? {};
-    const rules = (stored.serviceGroupRules as unknown[]) ?? [];
-    return {
-      bundles: stored.bundles ?? [],
-      budgetRanges: stored.budgetRanges ?? [],
-      timelines: stored.timelines ?? [],
-      serviceGroupRules: rules,
-      serviceGroups: await this.buildPricingServiceGroups(Array.isArray(rules) ? rules : []),
-    };
+    const now = Date.now();
+    if (this.pricingCache && now - this.pricingCachedAt < this.cacheTtlMs) return this.pricingCache;
+    if (this.pricingInFlight) return this.pricingInFlight;
+    this.pricingInFlight = (async () => {
+      try {
+        const [rows] = await this.pool.query<Row[]>("SELECT payload FROM pricing_options WHERE id = 1");
+        const stored = decodeJson(rows[0]?.payload) ?? {};
+        const rules = (stored.serviceGroupRules as unknown[]) ?? [];
+        const value = {
+          bundles: stored.bundles ?? [],
+          budgetRanges: stored.budgetRanges ?? [],
+          timelines: stored.timelines ?? [],
+          serviceGroupRules: rules,
+          serviceGroups: await this.buildPricingServiceGroups(Array.isArray(rules) ? rules : []),
+        };
+        this.pricingCache = value;
+        this.pricingCachedAt = Date.now();
+        return value;
+      } catch (e) {
+        if (isDbBusyError(e)) {
+          return (
+            this.pricingCache ?? {
+              bundles: [],
+              budgetRanges: [],
+              timelines: [],
+              serviceGroupRules: [],
+              serviceGroups: [],
+            }
+          );
+        }
+        throw e;
+      } finally {
+        this.pricingInFlight = null;
+      }
+    })();
+    return this.pricingInFlight;
+  }
+
+  /** One round-trip batch for header/footer layout (settings + menus + pricing). */
+  async getLayoutBootstrap(): Promise<{
+    settings: Record<string, unknown>;
+    menus: Record<string, unknown[]>;
+    pricing: Record<string, unknown>;
+  }> {
+    if (this.layoutBootstrapInFlight) return this.layoutBootstrapInFlight;
+    this.layoutBootstrapInFlight = (async () => {
+      const settings = await this.getSiteSettings();
+      const menus = await this.getMenus();
+      const pricing = await this.getPricingOptions();
+      return { settings, menus, pricing };
+    })().finally(() => {
+      this.layoutBootstrapInFlight = null;
+    });
+    return this.layoutBootstrapInFlight;
   }
 
   async savePricingOptions(data: Record<string, unknown>): Promise<void> {
@@ -90,6 +196,7 @@ export class ContentRepository {
       "INSERT INTO pricing_options (id, payload) VALUES (1, ?) ON DUPLICATE KEY UPDATE payload = ?",
       [json, json],
     );
+    this.pricingCachedAt = 0;
   }
 
   async getHomepage(): Promise<Record<string, unknown> | null> {
@@ -105,11 +212,20 @@ export class ContentRepository {
   }
 
   async getPageBySlug(slug: string): Promise<Record<string, unknown> | null> {
-    const [rows] = await this.pool.query<Row[]>(
-      "SELECT * FROM pages WHERE slug = ? AND status = 'published' LIMIT 1",
-      [slug],
-    );
-    return rows[0] ? await this.mapPage(rows[0], Boolean(rows[0].is_homepage)) : null;
+    const cached = this.pageSlugCache.get(slug);
+    if (cached && Date.now() - cached.at < this.cacheTtlMs) return cached.value;
+    try {
+      const [rows] = await this.pool.query<Row[]>(
+        "SELECT * FROM pages WHERE slug = ? AND status = 'published' LIMIT 1",
+        [slug],
+      );
+      const value = rows[0] ? await this.mapPage(rows[0], Boolean(rows[0].is_homepage)) : null;
+      this.pageSlugCache.set(slug, { at: Date.now(), value });
+      return value;
+    } catch (e) {
+      if (isDbBusyError(e)) return cached?.value ?? null;
+      throw e;
+    }
   }
 
   async getPageById(id: number): Promise<Row | null> {
@@ -182,45 +298,77 @@ export class ContentRepository {
   }
 
   async portfolioTableExists(): Promise<boolean> {
-    const [rows] = await this.pool.query<Row[]>("SHOW TABLES LIKE 'portfolio_items'");
-    return rows.length > 0;
+    if (this.portfolioExists !== null && Date.now() - this.portfolioExistsAt < this.cacheTtlMs) {
+      return this.portfolioExists;
+    }
+    try {
+      const [rows] = await this.pool.query<Row[]>("SHOW TABLES LIKE 'portfolio_items'");
+      this.portfolioExists = rows.length > 0;
+      this.portfolioExistsAt = Date.now();
+      return this.portfolioExists;
+    } catch (e) {
+      if (isDbBusyError(e)) return this.portfolioExists ?? false;
+      throw e;
+    }
   }
 
   async getPortfolioItemBySlug(slug: string): Promise<Record<string, unknown> | null> {
-    if (!(await this.portfolioTableExists()) || !slug) return null;
-    const [rows] = await this.pool.query<Row[]>(
-      'SELECT * FROM portfolio_items WHERE slug = ? AND status = "published" LIMIT 1',
-      [slug],
-    );
-    return rows[0] ? this.mapPortfolioItem(rows[0], true) : null;
+    if (!slug) return null;
+    try {
+      if (!(await this.portfolioTableExists())) return null;
+      const [rows] = await this.pool.query<Row[]>(
+        'SELECT * FROM portfolio_items WHERE slug = ? AND status = "published" LIMIT 1',
+        [slug],
+      );
+      return rows[0] ? this.mapPortfolioItem(rows[0], true) : null;
+    } catch (e) {
+      if (isDbBusyError(e)) return null;
+      throw e;
+    }
   }
 
   async getAllPortfolioPublished(): Promise<Record<string, unknown>[]> {
-    if (!(await this.portfolioTableExists())) return [];
-    const [rows] = await this.pool.query<Row[]>(
-      'SELECT * FROM portfolio_items WHERE status = "published" ORDER BY sort_order ASC, id DESC',
-    );
-    return rows.map((r) => this.mapPortfolioItem(r));
+    if (this.portfolioAllCache && Date.now() - this.portfolioAllCachedAt < this.cacheTtlMs) {
+      return this.portfolioAllCache;
+    }
+    try {
+      if (!(await this.portfolioTableExists())) return [];
+      const [rows] = await this.pool.query<Row[]>(
+        'SELECT * FROM portfolio_items WHERE status = "published" ORDER BY sort_order ASC, id DESC',
+      );
+      const items = rows.map((r) => this.mapPortfolioItem(r));
+      this.portfolioAllCache = items;
+      this.portfolioAllCachedAt = Date.now();
+      return items;
+    } catch (e) {
+      if (isDbBusyError(e)) return this.portfolioAllCache ?? [];
+      throw e;
+    }
   }
 
   async getPortfolioForHomepage(perCategoryLimit = 5): Promise<Record<string, unknown>[]> {
-    if (!(await this.portfolioTableExists())) return [];
-    perCategoryLimit = Math.max(1, Math.min(24, perCategoryLimit));
-    const [rows] = await this.pool.query<Row[]>(
-      'SELECT * FROM portfolio_items WHERE status = "published" AND show_on_homepage = 1 ORDER BY sort_order ASC, id DESC',
-    );
-    const counts: Record<string, number> = {};
-    const result: Record<string, unknown>[] = [];
-    for (const row of rows) {
-      const cat = String(row.category ?? "").trim();
-      if ((counts[cat] ?? 0) >= perCategoryLimit) continue;
-      counts[cat] = (counts[cat] ?? 0) + 1;
-      result.push(this.mapPortfolioItem(row));
+    try {
+      if (!(await this.portfolioTableExists())) return [];
+      perCategoryLimit = Math.max(1, Math.min(24, perCategoryLimit));
+      const [rows] = await this.pool.query<Row[]>(
+        'SELECT * FROM portfolio_items WHERE status = "published" AND show_on_homepage = 1 ORDER BY sort_order ASC, id DESC',
+      );
+      const counts: Record<string, number> = {};
+      const result: Record<string, unknown>[] = [];
+      for (const row of rows) {
+        const cat = String(row.category ?? "").trim();
+        if ((counts[cat] ?? 0) >= perCategoryLimit) continue;
+        counts[cat] = (counts[cat] ?? 0) + 1;
+        result.push(this.mapPortfolioItem(row));
+      }
+      return result;
+    } catch (e) {
+      if (isDbBusyError(e)) return [];
+      throw e;
     }
-    return result;
   }
 
-  async getGmbPublicPayload(): Promise<Record<string, unknown>> {
+  async getGmbPublicPayload() {
     const settings = await this.getSiteSettings();
     return this.formatGmbPublicPayload(settings);
   }
@@ -649,7 +797,7 @@ export class ContentRepository {
       instagram: "",
       footerCompanyTitle: "Company",
       footerServicesTitle: "Services",
-      footerProductsTitle: "Products & Training",
+      footerProductsTitle: "Products",
     };
   }
 
@@ -856,3 +1004,4 @@ export class ContentRepository {
     return { items, total, page, perPage };
   }
 }
+

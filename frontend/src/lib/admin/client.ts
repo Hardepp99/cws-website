@@ -12,7 +12,12 @@ export async function adminFetch<T>(path: string, init?: RequestInit & { json?: 
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
-    throw new Error((data as { message?: string }).message || (data as { error?: string }).error || "Request failed");
+    const payload = data as { message?: string; error?: string; code?: string };
+    const detail = payload.message || payload.error;
+    if (payload.code === "DB_TOO_MANY_CONNECTIONS") {
+      throw new Error(detail || "Database busy — restart WAMP MySQL and reload.");
+    }
+    throw new Error(detail || "Request failed");
   }
   return data as T;
 }

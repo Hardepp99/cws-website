@@ -1,7 +1,6 @@
 import { DesimentorRenderer } from "@/components/desimentor/DesimentorRenderer";
 import { SectionRenderer } from "@/components/sections/SectionRenderer";
 import { SiteLayout } from "@/components/layout/SiteLayout";
-import { CWS_MODERN_HOMEPAGE_SECTIONS } from "@/data/cws-homepage-modern-sections";
 import { resolveHomepageSections } from "@/lib/homepage/resolve-homepage-sections";
 import { getHomepage } from "@/lib/wordpress/api";
 import { normalizeDisplayMode } from "@/lib/content/display-mode";
@@ -19,8 +18,7 @@ export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const page = await getHomepage();
-  const allSections =
-    page?.sections && page.sections.length > 0 ? page.sections : CWS_MODERN_HOMEPAGE_SECTIONS;
+  const allSections = Array.isArray(page?.sections) ? page.sections : [];
   const sections = resolveHomepageSections(allSections);
 
   const mode = normalizeDisplayMode(page?.displayMode);
