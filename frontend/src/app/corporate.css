@@ -2995,15 +2995,23 @@ main.site-main .rounded-4.border.shadow-sm {
 
 /* —— Mobile / tablet bottom tab bar (WhatsApp-style) —— */
 @media (max-width: 991.98px) {
+  html,
+  body {
+    overflow-x: clip;
+  }
+
   .cws-float-desktop-only {
     display: none !important;
   }
 
   .cws-float-dock {
-    left: 14px;
+    left: 8px;
     right: auto;
     bottom: calc(68px + env(safe-area-inset-bottom, 0px));
     align-items: flex-start;
+    max-width: calc(100vw - 16px);
+    gap: 4px;
+    overflow: clip;
   }
 
   main.site-main {
@@ -3014,6 +3022,12 @@ main.site-main .rounded-4.border.shadow-sm {
     opacity: 0;
     pointer-events: none;
     transform: translateY(100%);
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .cws-float-dock__btn:hover {
+    transform: none;
   }
 }
 
