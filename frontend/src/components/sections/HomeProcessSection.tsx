@@ -1,9 +1,8 @@
+import { HomeMacIcon } from "@/components/ui/HomeMacIcon";
 import { Reveal } from "@/components/ui/Reveal";
 import { filterPublishedItems } from "@/lib/homepage/item-status";
+import { resolveMacTone } from "@/lib/homepage/mac-tones";
 import type { HomepageSection } from "@/lib/wordpress/types";
-
-/** System accent colors — one per step (01–04). */
-const PROCESS_MAC_TONES = ["blue", "purple", "green", "orange"] as const;
 
 function ProcessSectionHead({
   badge,
@@ -18,7 +17,7 @@ function ProcessSectionHead({
   return (
     <Reveal variant="fade-up">
       <div className="home-section-head home-section-head--center home-process__head">
-        {badge ? <span className="home-eyebrow home-process__eyebrow">{badge}</span> : null}
+        {badge ? <span className="home-eyebrow home-eyebrow--mac home-process__eyebrow">{badge}</span> : null}
         {title ? <h2 className="home-process__title">{title}</h2> : null}
         {subtitle ? <p className="home-process__subtitle">{subtitle}</p> : null}
       </div>
@@ -41,18 +40,25 @@ export function HomeProcessSection({ section }: { section: HomepageSection }) {
           subtitle={section.subtitle as string}
         />
         <div className="home-process__grid">
-          {steps.map((step, i) => (
-            <Reveal key={step.title} variant="fade-up" delay={i * 70}>
-              <article
-                className="home-process__step"
-                data-tone={PROCESS_MAC_TONES[i % PROCESS_MAC_TONES.length]}
-              >
-                <span className="home-process__index">{String(i + 1).padStart(2, "0")}</span>
-                <h3 className="home-process__step-title">{step.title}</h3>
-                <p className="home-process__step-desc">{step.description}</p>
-              </article>
-            </Reveal>
-          ))}
+          {steps.map((step, i) => {
+            const tone = resolveMacTone(undefined, i);
+            return (
+              <Reveal key={step.title} variant="fade-up" delay={i * 110}>
+                <article className="home-process__step home-mac-card" data-tone={tone}>
+                  <HomeMacIcon
+                    icon={step.icon || "fas fa-arrow-right"}
+                    tone={tone}
+                    index={i}
+                    size="md"
+                    className="home-process__step-icon"
+                  />
+                  <span className="home-process__index">{String(i + 1).padStart(2, "0")}</span>
+                  <h3 className="home-process__step-title">{step.title}</h3>
+                  <p className="home-process__step-desc">{step.description}</p>
+                </article>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>

@@ -1,0 +1,288 @@
+/**
+ * Mobile nav drawer — full-height tray, solid items, tight padding-based spacing.
+ */
+
+@media (max-width: 991.98px) {
+  /* Desktop dropdown parent is d-none; drawer rules must not resurrect it */
+  .header .navbar-collapse .nav-link-parent-desktop {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+  }
+
+  .header .navbar-collapse .nav-item-has-menu:not(.is-open) .dropdown-menu {
+    display: none !important;
+  }
+
+  .header .navbar-collapse .nav-item-has-menu.is-open .dropdown-menu,
+  .header .navbar-collapse .nav-item-has-menu.is-open .dropdown-menu.show {
+    display: block !important;
+  }
+
+  .header .navbar-collapse.collapsing,
+  .header .navbar-collapse.show {
+    position: fixed !important;
+    top: var(--mobile-nav-sheet-top, 0px) !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: auto !important;
+    width: min(320px, 92vw) !important;
+    max-width: min(320px, 92vw) !important;
+    max-height: none !important;
+    min-height: calc(100dvh - var(--mobile-nav-sheet-top, 0px)) !important;
+    height: auto !important;
+    padding: clamp(0.85rem, 3vw, 1.1rem) clamp(0.85rem, 4vw, 1.1rem)
+      calc(1rem + env(safe-area-inset-bottom, 0px)) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    background: #ffffff !important;
+    border-radius: 14px 0 0 14px !important;
+    box-shadow: -16px 0 40px rgba(1, 33, 116, 0.18) !important;
+  }
+
+  .header .navbar-collapse .navbar-nav {
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    gap: 0 !important;
+    padding: 0.2rem 0 0.65rem !important;
+    margin: 0 !important;
+  }
+
+  .header .navbar-collapse .nav-item {
+    width: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .header .navbar-collapse .nav-link {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    padding: 0.55rem 0.9rem !important;
+    margin: 0 !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    letter-spacing: -0.01em !important;
+    color: #1d1d1f !important;
+    background: #ffffff !important;
+    border-radius: 10px !important;
+    opacity: 1 !important;
+  }
+
+  .header .navbar-collapse .nav-link:hover,
+  .header .navbar-collapse .nav-link.active {
+    color: #012174 !important;
+    background: #e3effd !important;
+  }
+
+  .header .nav-mobile-parent {
+    width: 100% !important;
+    min-height: 0 !important;
+    padding: 0.5rem 0.75rem !important;
+    margin: 0 !important;
+    border-radius: 10px !important;
+    background: #f3f5f8 !important;
+  }
+
+  .header .nav-item-has-menu.is-open .nav-mobile-parent {
+    background: #e8f1fc !important;
+  }
+
+  .header .nav-mobile-parent-label {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    color: #1d1d1f !important;
+  }
+
+  .header .nav-mobile-parent-label.is-active-trail {
+    color: #012174 !important;
+  }
+
+  .header .nav-mobile-submenu-toggle {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    border-radius: 8px !important;
+    background: #ffffff !important;
+  }
+
+  .header .nav-mobile-submenu-toggle i {
+    font-size: 0.85rem !important;
+  }
+
+  .header .navbar-collapse .dropdown-menu {
+    margin: 0 !important;
+    padding: 0.3rem 0 0.3rem 0.45rem !important;
+    border-radius: 10px !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(1, 33, 116, 0.08) !important;
+    box-shadow:
+      0 4px 10px rgba(1, 33, 116, 0.06),
+      0 14px 28px rgba(15, 23, 42, 0.12) !important;
+  }
+
+  .header .navbar-collapse .dropdown-item {
+    display: flex !important;
+    align-items: center !important;
+    min-height: 0 !important;
+    padding: 0.5rem 0.85rem 0.5rem 0.95rem !important;
+    margin: 0 !important;
+    font-size: 0.9375rem !important;
+    font-weight: 500 !important;
+    line-height: 1.3 !important;
+    border-radius: 8px !important;
+    background: #ffffff !important;
+  }
+
+  .header .navbar-collapse .dropdown-item:hover {
+    background: #e3effd !important;
+  }
+
+  .header .navbar-collapse .dropdown-item i {
+    font-size: 0.875rem !important;
+    width: 1.25rem !important;
+  }
+
+  .header .navbar-collapse .navbar-actions {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    margin-top: 0 !important;
+    padding-top: 0.65rem !important;
+    border-top: 1px solid rgba(1, 33, 116, 0.1) !important;
+    gap: 0.5rem !important;
+  }
+
+  .header .navbar-collapse > .d-lg-none {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding-top: 0.55rem !important;
+    border-top: 1px solid rgba(1, 33, 116, 0.08);
+  }
+
+  .header #navbarNav .btn-cta-navbar.btn-cta {
+    min-height: 0 !important;
+    padding: 0.65rem 1rem !important;
+    font-size: 0.9375rem !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    border-radius: 10px !important;
+  }
+
+  .header #navbarNav .btn-cta-navbar.btn-cta i {
+    font-size: 0.9375rem !important;
+  }
+
+  .header .navbar-collapse .member-auth-nav__account-btn,
+  .header .navbar-actions .member-auth-nav__account-btn {
+    min-height: 0 !important;
+    padding: 0.6rem 0.95rem !important;
+    font-size: 0.9375rem !important;
+    font-weight: 600 !important;
+    border-radius: 10px !important;
+  }
+
+  .header .navbar-collapse .member-auth-nav__account-label {
+    font-size: 0.9375rem !important;
+  }
+
+  .header-premium .navbar-collapse .nav-link {
+    font-size: 1rem !important;
+    min-height: 0 !important;
+    background: #ffffff !important;
+  }
+
+  /* Kill legacy style.css side bar + transparent hovers */
+  .header .navbar-collapse .nav-link::before {
+    display: none !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .header .navbar-collapse.collapsing,
+  .header .navbar-collapse.show {
+    width: min(100vw, 100%) !important;
+    max-width: 100% !important;
+    border-radius: 0 !important;
+  }
+
+  .header .navbar-collapse .nav-link,
+  .header .nav-mobile-parent {
+    padding: 0.5rem 0.8rem !important;
+  }
+
+  .header .navbar-collapse .nav-link {
+    font-size: 0.9375rem !important;
+  }
+
+  .header .nav-mobile-parent-label {
+    font-size: 0.9375rem !important;
+  }
+}
+
+/* Desktop — flat links; pill background on hover only */
+@media (min-width: 992px) {
+  .header-premium .navbar-nav,
+  .header .navbar-nav {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .header-premium .navbar-nav .nav-link,
+  .header .navbar-nav .nav-link {
+    background: transparent !important;
+    opacity: 1 !important;
+  }
+
+  .header-premium .navbar-nav .nav-link:hover,
+  .header-premium .navbar-nav .nav-link:focus-visible,
+  .header .navbar-nav .nav-link:hover,
+  .header .navbar-nav .nav-link:focus-visible,
+  .header .nav-item-has-menu:hover > .nav-link,
+  .header .nav-item-has-menu.is-open > .nav-link,
+  .header .nav-item-has-menu:focus-within > .nav-link {
+    background: #e3effd !important;
+  }
+
+  .header-premium .navbar-nav .nav-link.active,
+  .header .navbar-nav .nav-link.active {
+    background: transparent !important;
+  }
+
+  .header-premium .navbar-nav .nav-link.active:hover,
+  .header-premium .navbar-nav .nav-link.active:focus-visible,
+  .header .navbar-nav .nav-link.active:hover,
+  .header .navbar-nav .nav-link.active:focus-visible {
+    background: #e3effd !important;
+  }
+
+  .header .nav-item-has-menu .dropdown-menu {
+    background: #ffffff !important;
+    opacity: 1 !important;
+    box-shadow:
+      0 2px 4px rgba(1, 33, 116, 0.05),
+      0 10px 22px rgba(1, 33, 116, 0.1),
+      0 22px 44px rgba(15, 23, 42, 0.18) !important;
+    filter: drop-shadow(0 14px 18px rgba(1, 33, 116, 0.12));
+  }
+
+  .header .dropdown-item {
+    background: #ffffff !important;
+  }
+
+  .header .dropdown-item:hover {
+    background: #e8f1fc !important;
+  }
+}

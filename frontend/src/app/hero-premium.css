@@ -1,0 +1,745 @@
+/**
+ * Premium hero — dark galaxy mesh (blue / purple nebula, static star lights).
+ */
+
+:root {
+  --cws-hero-blue: #0a78ed;
+  --cws-hero-navy: #012174;
+  --cws-hero-violet: #5856d6;
+  --cws-hero-cyan: #32ade6;
+  --cws-hero-magenta: #9b4dca;
+  --cws-hero-dark: #010104;
+  --cws-hero-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* —— Dark shell —— */
+.home-page .home-hero.home-hero--premium {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--cws-hero-dark) !important;
+  min-height: min(92vh, 800px);
+  color: #f5f5f7;
+}
+
+.home-hero--premium .home-hero__surface {
+  min-height: min(92vh, 800px);
+  position: relative;
+  z-index: 4;
+}
+
+/* —— Galaxy ambient (static — no scanner / sweep animations) —— */
+.home-hero__ambient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: #010104;
+}
+
+.home-hero__mesh {
+  position: absolute;
+  inset: -20% -12%;
+  background:
+    radial-gradient(ellipse 50% 38% at 50% 36%, rgba(88, 86, 214, 0.22), transparent 52%),
+    radial-gradient(ellipse 62% 48% at 14% 18%, rgba(10, 120, 237, 0.38), transparent 58%),
+    radial-gradient(ellipse 58% 44% at 88% 22%, rgba(50, 173, 230, 0.28), transparent 55%),
+    radial-gradient(ellipse 64% 52% at 72% 78%, rgba(155, 77, 202, 0.32), transparent 58%),
+    radial-gradient(ellipse 56% 48% at 10% 75%, rgba(88, 86, 214, 0.26), transparent 54%),
+    radial-gradient(ellipse 70% 55% at 42% 55%, rgba(1, 33, 116, 0.45), transparent 60%),
+    radial-gradient(ellipse 45% 35% at 65% 40%, rgba(10, 120, 237, 0.15), transparent 50%),
+    linear-gradient(180deg, #010104 0%, #030612 35%, #0a0618 62%, #010104 100%);
+  opacity: 0;
+  transition: opacity 1.4s var(--cws-hero-ease);
+}
+
+body.site-ready .home-hero--premium .home-hero__mesh {
+  opacity: 1;
+}
+
+.home-hero__vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(
+    ellipse 72% 64% at 50% 40%,
+    transparent 12%,
+    rgba(0, 0, 0, 0.55) 55%,
+    rgba(0, 0, 0, 0.96) 100%
+  );
+}
+
+/* Star field */
+.home-hero__stars {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 1.6s var(--cws-hero-ease) 0.15s;
+  background-image:
+    radial-gradient(1.2px 1.2px at 8% 14%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1px 1px at 22% 38%, rgba(180, 210, 255, 0.45), transparent),
+    radial-gradient(1.5px 1.5px at 35% 12%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 48% 62%, rgba(200, 180, 255, 0.4), transparent),
+    radial-gradient(1.2px 1.2px at 62% 28%, rgba(255, 255, 255, 0.48), transparent),
+    radial-gradient(1px 1px at 78% 18%, rgba(150, 200, 255, 0.42), transparent),
+    radial-gradient(1px 1px at 88% 48%, rgba(255, 255, 255, 0.38), transparent),
+    radial-gradient(1.5px 1.5px at 12% 72%, rgba(220, 190, 255, 0.45), transparent),
+    radial-gradient(1px 1px at 28% 88%, rgba(255, 255, 255, 0.35), transparent),
+    radial-gradient(1px 1px at 55% 82%, rgba(180, 220, 255, 0.4), transparent),
+    radial-gradient(1.2px 1.2px at 72% 68%, rgba(255, 255, 255, 0.42), transparent),
+    radial-gradient(1px 1px at 92% 78%, rgba(200, 160, 255, 0.38), transparent),
+    radial-gradient(1px 1px at 42% 44%, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(1px 1px at 18% 52%, rgba(255, 255, 255, 0.32), transparent);
+  background-size: 100% 100%;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 42%, #000 10%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 42%, #000 10%, transparent 78%);
+}
+
+body.site-ready .home-hero--premium .home-hero__stars {
+  opacity: 0.85;
+}
+
+.home-hero__halo {
+  position: absolute;
+  left: 62%;
+  top: 44%;
+  width: min(58vw, 560px);
+  height: min(58vw, 560px);
+  margin-left: calc(min(58vw, 560px) / -2);
+  margin-top: calc(min(58vw, 560px) / -2);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(120, 160, 255, 0.18) 0%,
+    rgba(88, 86, 214, 0.1) 28%,
+    rgba(10, 120, 237, 0.06) 48%,
+    transparent 70%
+  );
+  filter: blur(36px);
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 1.2s var(--cws-hero-ease);
+}
+
+body.site-ready .home-hero--premium .home-hero__halo {
+  opacity: 1;
+}
+
+/* Bokeh dots */
+.home-hero__bokeh {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.home-hero__bokeh-dot {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.45) 0%, transparent 70%);
+  filter: blur(1px);
+  opacity: 0;
+  transition: opacity 1.2s var(--cws-hero-ease);
+}
+
+body.site-ready .home-hero--premium .home-hero__bokeh-dot {
+  opacity: 0.55;
+}
+
+body.site-ready .home-hero--premium .home-hero__bokeh-dot:nth-child(2) {
+  opacity: 0.45;
+}
+body.site-ready .home-hero--premium .home-hero__bokeh-dot:nth-child(4) {
+  opacity: 0.5;
+}
+body.site-ready .home-hero--premium .home-hero__bokeh-dot:nth-child(6) {
+  opacity: 0.4;
+}
+body.site-ready .home-hero--premium .home-hero__bokeh-dot:nth-child(8) {
+  opacity: 0.48;
+}
+
+.home-hero__bokeh-dot:nth-child(1) {
+  width: 8px;
+  height: 8px;
+  top: 14%;
+  left: 10%;
+}
+.home-hero__bokeh-dot:nth-child(2) {
+  width: 14px;
+  height: 14px;
+  top: 22%;
+  left: 28%;
+  background: radial-gradient(circle, rgba(50, 173, 230, 0.5), transparent 70%);
+}
+.home-hero__bokeh-dot:nth-child(3) {
+  width: 6px;
+  height: 6px;
+  top: 8%;
+  right: 22%;
+}
+.home-hero__bokeh-dot:nth-child(4) {
+  width: 18px;
+  height: 18px;
+  top: 35%;
+  right: 12%;
+  background: radial-gradient(circle, rgba(155, 77, 202, 0.42), transparent 70%);
+}
+.home-hero__bokeh-dot:nth-child(5) {
+  width: 10px;
+  height: 10px;
+  bottom: 38%;
+  left: 6%;
+}
+.home-hero__bokeh-dot:nth-child(6) {
+  width: 22px;
+  height: 22px;
+  bottom: 28%;
+  left: 22%;
+  filter: blur(2px);
+}
+.home-hero__bokeh-dot:nth-child(7) {
+  width: 7px;
+  height: 7px;
+  top: 48%;
+  left: 42%;
+}
+.home-hero__bokeh-dot:nth-child(8) {
+  width: 12px;
+  height: 12px;
+  bottom: 18%;
+  right: 28%;
+  background: radial-gradient(circle, rgba(10, 120, 237, 0.45), transparent 70%);
+}
+.home-hero__bokeh-dot:nth-child(9) {
+  width: 16px;
+  height: 16px;
+  top: 58%;
+  right: 8%;
+}
+.home-hero__bokeh-dot:nth-child(10) {
+  width: 5px;
+  height: 5px;
+  bottom: 12%;
+  left: 48%;
+}
+.home-hero__bokeh-dot:nth-child(11) {
+  width: 11px;
+  height: 11px;
+  top: 18%;
+  left: 55%;
+}
+.home-hero__bokeh-dot:nth-child(12) {
+  width: 20px;
+  height: 20px;
+  bottom: 42%;
+  right: 42%;
+  filter: blur(3px);
+}
+.home-hero__bokeh-dot:nth-child(13) {
+  width: 9px;
+  height: 9px;
+  top: 72%;
+  left: 14%;
+  background: radial-gradient(circle, rgba(88, 86, 214, 0.38), transparent 70%);
+}
+.home-hero__bokeh-dot:nth-child(14) {
+  width: 13px;
+  height: 13px;
+  top: 40%;
+  right: 35%;
+}
+
+/* Nebula orbs (static) */
+.home-hero__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(72px);
+  opacity: 0;
+  transition: opacity 1.3s var(--cws-hero-ease);
+}
+
+body.site-ready .home-hero--premium .home-hero__orb {
+  opacity: 1;
+}
+
+.home-hero__orb--blue {
+  width: min(50vw, 500px);
+  height: min(50vw, 500px);
+  top: -14%;
+  left: -10%;
+  background: radial-gradient(circle, rgba(10, 120, 237, 0.42) 0%, transparent 68%);
+}
+
+.home-hero__orb--violet {
+  width: min(42vw, 420px);
+  height: min(42vw, 420px);
+  top: 4%;
+  right: -8%;
+  background: radial-gradient(circle, rgba(88, 86, 214, 0.38) 0%, transparent 70%);
+}
+
+.home-hero__orb--cyan {
+  width: min(38vw, 380px);
+  height: min(38vw, 380px);
+  top: 0;
+  left: 30%;
+  background: radial-gradient(circle, rgba(50, 173, 230, 0.3) 0%, transparent 72%);
+}
+
+.home-hero__orb--magenta {
+  width: min(46vw, 460px);
+  height: min(40vw, 400px);
+  bottom: -10%;
+  right: 6%;
+  background: radial-gradient(ellipse, rgba(155, 77, 202, 0.4) 0%, transparent 72%);
+}
+
+.home-hero__orb--navy {
+  width: min(54vw, 540px);
+  height: min(36vw, 360px);
+  bottom: -18%;
+  left: 8%;
+  background: radial-gradient(ellipse, rgba(1, 33, 116, 0.55) 0%, transparent 72%);
+}
+
+/* Fade into page when no bottom tray (stats + marquee handle transition) */
+.home-hero--premium:not(.has-hero-tray)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 140px;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent 0%, rgba(1, 1, 6, 0.55) 40%, #f5f5f7 92%);
+}
+
+/* —— Banner copy (open layout, no boxes) —— */
+.home-hero--premium .home-hero__banner {
+  align-items: center;
+}
+
+.home-hero--premium .home-hero__copy {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.home-hero--premium .home-hero__copy::before,
+.home-hero--premium .home-hero__copy::after {
+  display: none !important;
+}
+
+.home-hero--premium .home-hero__eyebrow {
+  display: block;
+  margin: 0 0 0.85rem;
+  padding: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(100, 181, 255, 0.95);
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.home-hero--premium .home-hero__title {
+  margin: 0 0 1rem;
+  max-width: none;
+  font-size: clamp(2.25rem, 5.5vw, 3.75rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  color: #f5f5f7 !important;
+  text-shadow: none;
+}
+
+.home-hero--premium .home-hero__lead {
+  margin: 0;
+  max-width: none;
+  font-size: clamp(1rem, 1.65vw, 1.1875rem);
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* Hero lead — macOS-style keyword colors on dark hero */
+.home-hero--premium .home-hero__lead--multicolor [class*="home-hero__word--"] {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.home-hero--premium .home-hero__word--blue {
+  color: #5ac8fa;
+  text-shadow: 0 0 20px rgba(90, 200, 250, 0.35);
+}
+
+.home-hero--premium .home-hero__word--purple {
+  color: #bf5af2;
+  text-shadow: 0 0 20px rgba(191, 90, 242, 0.3);
+}
+
+.home-hero--premium .home-hero__word--orange {
+  color: #ff9f0a;
+  text-shadow: 0 0 20px rgba(255, 159, 10, 0.28);
+}
+
+.home-hero--premium .home-hero__word--cyan {
+  color: #64d2ff;
+  text-shadow: 0 0 18px rgba(100, 210, 255, 0.28);
+}
+
+.home-hero--premium .home-hero__word--mint {
+  font-weight: 700;
+  background: linear-gradient(120deg, #30d158 0%, #5ac8fa 55%, #bf5af2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  text-shadow: none;
+  filter: drop-shadow(0 0 12px rgba(48, 209, 88, 0.25));
+}
+
+.home-hero--premium .home-hero__actions {
+  margin-top: clamp(1.35rem, 3vw, 1.75rem);
+  gap: 0.75rem 1rem;
+}
+
+/* GMB on dark */
+.home-hero--premium .home-hero-gmb__score {
+  color: #f5f5f7 !important;
+}
+
+.home-hero--premium .home-hero-gmb__count {
+  color: rgba(255, 255, 255, 0.62) !important;
+}
+
+.home-hero--premium .home-hero-gmb__maps-link {
+  color: #64b5ff !important;
+}
+
+.home-hero--premium .home-hero-gmb__maps-link:hover {
+  color: #9ed0ff !important;
+}
+
+.home-hero--premium .home-hero-gmb__card {
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.04) 100%
+  ) !important;
+  backdrop-filter: blur(16px) saturate(1.35);
+  -webkit-backdrop-filter: blur(16px) saturate(1.35);
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow: none !important;
+}
+
+.home-hero--premium .home-hero-gmb__card-top strong,
+.home-hero--premium .home-hero-gmb__card p {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.home-hero--premium .home-hero-gmb__ago {
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.home-hero--premium .home-hero-gmb__slide.swiper-slide-active .home-hero-gmb__card {
+  box-shadow: none !important;
+  border-color: rgba(10, 120, 237, 0.25) !important;
+}
+
+/* —— Reveal —— */
+.home-hero--premium .reveal {
+  transition-duration: 0.72s;
+  transition-timing-function: var(--cws-hero-ease);
+}
+
+html.is-intro-pending .home-hero--premium .home-hero__copy .reveal {
+  opacity: 0;
+}
+
+body.site-ready .home-hero--premium .home-hero__photo-wrap.reveal.is-visible {
+  animation: heroVisualEnter 0.95s var(--cws-hero-ease) both;
+}
+
+@keyframes heroVisualEnter {
+  from {
+    filter: blur(10px) brightness(0.7);
+    opacity: 0.5;
+  }
+  to {
+    filter: blur(0) brightness(1);
+    opacity: 1;
+  }
+}
+
+/* —— CTAs —— */
+.home-hero--premium .home-hero__btn {
+  border: none !important;
+}
+
+.home-hero--premium .home-hero__btn--primary {
+  position: relative;
+  overflow: hidden;
+  padding: 0.8rem 1.5rem !important;
+  background: linear-gradient(135deg, var(--cws-hero-blue) 0%, var(--cws-hero-navy) 100%) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+.home-hero--premium .home-hero__btn--primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 28%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 72%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.55s var(--cws-hero-ease);
+}
+
+.home-hero--premium .home-hero__btn--primary:hover::before {
+  transform: translateX(120%);
+}
+
+.home-hero--premium .home-hero__btn--ghost {
+  padding: 0.8rem 0.25rem !important;
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.home-hero--premium .home-hero__btn--ghost:hover {
+  background: transparent !important;
+  color: #fff !important;
+  text-decoration: underline !important;
+  text-underline-offset: 0.2em;
+}
+
+/* —— Visual: halo + metallic rim + reflection —— */
+.home-hero--premium .home-hero__photo-wrap {
+  position: relative;
+}
+
+.home-hero--premium .home-hero__visual,
+.home-hero--premium .home-hero__photo {
+  position: relative;
+  z-index: 2;
+}
+
+.home-hero--premium .home-hero__photo-wrap::after {
+  display: none !important;
+}
+
+.home-hero--premium .home-hero__visual::before,
+.home-hero--premium .home-hero__photo::before {
+  content: "";
+  position: absolute;
+  inset: 5% 0 10%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at 50% 55%,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(10, 120, 237, 0.15) 30%,
+    rgba(200, 80, 192, 0.08) 50%,
+    transparent 72%
+  );
+  filter: blur(14px);
+  z-index: -1;
+  opacity: 0.75;
+}
+
+.home-hero--premium .home-hero__photo::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -2%;
+  height: 35%;
+  border-radius: 50%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.15),
+    rgba(10, 120, 237, 0.08) 35%,
+    transparent 75%
+  );
+  transform: scaleY(-1);
+  filter: blur(8px);
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+.home-hero--premium .home-hero__visual--svg .hero-web-builder-illus {
+  filter: none;
+}
+
+.home-hero--premium .home-hero__photo-img {
+  filter: none;
+}
+
+.home-hero--premium .home-hero__photo-wrap::before {
+  display: none !important;
+}
+
+/* —— Layout —— */
+.home-hero--premium .home-hero__grid {
+  gap: clamp(2rem, 5vw, 3.5rem);
+  align-items: center;
+}
+
+/* Desktop: wider copy column, narrower visual (width: layout-width.css) */
+@media (min-width: 992px) {
+  .home-hero--premium .home-hero__grid {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.38fr);
+    gap: clamp(1rem, 2vw, 1.75rem);
+    align-items: center;
+  }
+
+  .home-hero--premium .home-hero__copy {
+    width: 100%;
+    max-width: none;
+    padding-right: clamp(0.5rem, 2vw, 1.5rem);
+  }
+
+  .home-hero--premium .home-hero__title {
+    max-width: 28ch;
+  }
+
+  .home-hero--premium .home-hero__lead {
+    max-width: 62ch;
+    font-size: clamp(1.0625rem, 1.25vw, 1.25rem);
+    line-height: 1.58;
+  }
+
+  .home-hero--premium .home-hero__photo-wrap {
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    max-width: min(320px, 100%);
+    margin-left: auto;
+  }
+
+  .home-hero--premium .home-hero__photo {
+    width: min(100%, 280px);
+    max-height: min(46vh, 400px);
+  }
+
+  .home-hero--premium .home-hero__visual--svg {
+    width: 100%;
+    max-width: 300px;
+    margin-left: auto;
+  }
+
+  .home-hero--premium .home-hero__visual--svg .hero-web-builder-illus {
+    max-height: min(44vh, 380px);
+  }
+}
+
+@media (min-width: 1200px) {
+  .home-hero--premium .home-hero__grid {
+    grid-template-columns: minmax(0, 1.62fr) minmax(0, 0.34fr);
+  }
+
+  .home-hero--premium .home-hero__title {
+    max-width: 32ch;
+  }
+
+  .home-hero--premium .home-hero__lead {
+    max-width: 70ch;
+  }
+
+  .home-hero--premium .home-hero__photo {
+    width: min(100%, 260px);
+    max-height: min(42vh, 360px);
+  }
+
+  .home-hero--premium .home-hero__visual--svg {
+    max-width: 280px;
+  }
+
+  .home-hero--premium .home-hero__visual--svg .hero-web-builder-illus {
+    max-height: min(40vh, 340px);
+  }
+}
+
+@media (min-width: 1400px) {
+  .home-hero--premium .home-hero__grid {
+    grid-template-columns: minmax(0, 1.72fr) minmax(0, 0.3fr);
+  }
+
+  .home-hero--premium .home-hero__lead {
+    max-width: 78ch;
+  }
+}
+
+/* —— Mobile —— */
+@media (max-width: 991.98px) {
+  .home-page .home-hero.home-hero--premium {
+    min-height: auto;
+  }
+
+  .home-hero--premium .home-hero__surface {
+    min-height: auto;
+  }
+
+  .home-hero--premium .home-hero__title {
+    max-width: none;
+  }
+
+  .home-hero--premium .home-hero__lead {
+    max-width: none;
+  }
+
+  .home-hero__halo {
+    left: 50%;
+    top: 28%;
+  }
+
+  .home-hero__orb {
+    filter: blur(48px);
+  }
+
+}
+
+@media (max-width: 575.98px) {
+  .home-hero--premium .home-hero__eyebrow {
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero__mesh,
+  .home-hero__stars,
+  .home-hero__orb,
+  .home-hero__halo,
+  .home-hero__bokeh-dot {
+    transition: none !important;
+  }
+
+  body.site-ready .home-hero--premium .home-hero__mesh,
+  body.site-ready .home-hero--premium .home-hero__stars,
+  body.site-ready .home-hero--premium .home-hero__orb,
+  body.site-ready .home-hero--premium .home-hero__halo,
+  body.site-ready .home-hero--premium .home-hero__bokeh-dot {
+    opacity: 1;
+  }
+}

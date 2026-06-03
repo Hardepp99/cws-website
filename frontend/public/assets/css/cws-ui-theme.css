@@ -473,13 +473,17 @@ label {
 .site-footer,
 .footer {
   font-family: var(--font-body);
-  background: var(--cws-footer-bg, #012174) !important;
+  background: linear-gradient(180deg, #010818 0%, #01102a 32%, #012174 100%) !important;
   color: rgba(255, 255, 255, 0.78) !important;
   border: none !important;
 }
 
-.footer-top,
-.footer-bar {
+.footer-top {
+  background: transparent !important;
+  border: none !important;
+}
+
+.footer-bar:not(.footer-bar--premium) {
   background: transparent !important;
   border: none !important;
 }

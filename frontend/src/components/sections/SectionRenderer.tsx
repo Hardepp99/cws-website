@@ -18,6 +18,8 @@ import { HomeAboutSection } from "@/components/sections/HomeAboutSection";
 import { HomeProcessSection } from "@/components/sections/HomeProcessSection";
 import { HomeTestimonialsSection } from "@/components/sections/HomeTestimonialsSection";
 import { ServiceGridCard, type ServiceGridItem } from "@/components/sections/ServiceGridCard";
+import { HomeMacIcon } from "@/components/ui/HomeMacIcon";
+import { resolveMacTone } from "@/lib/homepage/mac-tones";
 import { HomepageSectionShell } from "@/components/sections/HomepageSectionShell";
 import { LocalPortfolioSection } from "@/components/sections/LocalPortfolioSection";
 import {
@@ -75,7 +77,11 @@ export async function SectionRenderer({ sections, allSections }: SectionRenderer
 
         switch (layout) {
           case "hero_slider":
-            node = <HeroSlider section={section} gmb={gmb} marqueeItems={heroMarqueeItems} />;
+            node = (
+              <div className="home-hero-stack">
+                <HeroSlider section={section} marqueeItems={heroMarqueeItems} />
+              </div>
+            );
             break;
           case "trust_badges":
             node = <TrustBadgesSection section={section} heroStats={heroStats} />;
@@ -193,7 +199,7 @@ function HomeSectionHead({
   return (
     <Reveal variant="fade-up">
       <div className={`home-section-head${center ? " home-section-head--center" : ""}`}>
-        {badge && <span className="home-eyebrow">{badge}</span>}
+        {badge && <span className="home-eyebrow home-eyebrow--mac">{badge}</span>}
         {title && <h2>{title}</h2>}
         {subtitle && <p>{subtitle}</p>}
       </div>
@@ -212,11 +218,9 @@ function WhyCodifySection({ section }: { section: HomepageSection }) {
         <div className="row g-3">
           {cards.map((card, i) => (
             <div key={card.number} className="col-lg-4 col-md-6">
-              <Reveal variant={cardVariant(i)} delay={i * 70}>
-              <div className="why-card">
-                <div className="why-icon">
-                  <i className={card.icon} />
-                </div>
+              <Reveal variant={cardVariant(i)} delay={i * 110}>
+              <div className="why-card home-mac-card" data-tone={resolveMacTone(undefined, i)}>
+                <HomeMacIcon icon={card.icon || "fas fa-star"} index={i} size="lg" />
                 <h3>{card.title}</h3>
                 <p>{card.description}</p>
                 <div className="why-number">{card.number}</div>
@@ -249,13 +253,13 @@ function ServicesGridSection({ section }: { section: HomepageSection }) {
         <div className="row g-3 home-services__grid">
           {services.map((s, i) => (
             <div key={`${s.href}-${s.title}-${i}`} className="col-lg-4 col-md-6">
-              <Reveal variant={i % 2 === 0 ? "slide-left" : "slide-right"} delay={i * 50}>
-                <ServiceGridCard item={s} />
+              <Reveal variant={i % 2 === 0 ? "slide-left" : "slide-right"} delay={i * 85}>
+                <ServiceGridCard item={s} index={i} />
               </Reveal>
             </div>
           ))}
         </div>
-        <Reveal variant="zoom-in" delay={200}>
+        <Reveal variant="zoom-in" delay={300}>
         <div className="text-center mt-4">
           <Link href="/services" className="home-btn home-btn--primary">
             All services
@@ -280,9 +284,9 @@ function CoursesSection({ section }: { section: HomepageSection }) {
         <div className="row g-3">
           {courses.map((c, i) => (
             <div key={c.title} className="col-lg-4 col-md-6">
-              <Reveal variant="zoom-in" delay={i * 90}>
-              <div className="course-card">
-                <i className={`${c.icon} course-icon`} />
+              <Reveal variant="zoom-in" delay={i * 130}>
+              <div className="course-card home-mac-card" data-tone={resolveMacTone(undefined, i)}>
+                <HomeMacIcon icon={c.icon || "fas fa-graduation-cap"} index={i} size="lg" />
                 <h3>{c.title}</h3>
                 <p className="small text-muted mb-2">{c.desc}</p>
                 <Link href={c.href}>View program</Link>
@@ -317,14 +321,20 @@ function BlogPreviewSection({
         <div className="row g-3">
           {posts.slice(0, 3).map((post, i) => (
             <div key={post.slug} className="col-lg-4 col-md-6">
-              <Reveal variant="fade-up" delay={i * 80}>
-              <article className="blog-card">
+              <Reveal variant="fade-up" delay={i * 120}>
+              <article className="blog-card home-mac-card" data-tone={resolveMacTone(undefined, i)}>
                 {post.image && (
                   <div className="blog-image">
                     <Image src={post.image} alt={post.title} width={400} height={220} />
                   </div>
                 )}
                 <div className="blog-content p-3">
+                  <HomeMacIcon
+                    icon="fas fa-newspaper"
+                    index={i}
+                    size="sm"
+                    className="blog-card__mac-icon"
+                  />
                   <h3>
                     <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                   </h3>
@@ -354,10 +364,10 @@ function CtaSection({ section }: { section: HomepageSection }) {
         <Reveal variant="fade-up">
           <h2>{section.title}</h2>
         </Reveal>
-        <Reveal variant="fade-in" delay={120}>
+        <Reveal variant="fade-in" delay={180}>
           <p>{section.subtitle}</p>
         </Reveal>
-        <Reveal variant="zoom-in" delay={240}>
+        <Reveal variant="zoom-in" delay={360}>
           <CtaLink href={(section.ctaHref as string) || "/contact"} className="home-hero__btn home-hero__btn--ghost">
             {(section.ctaLabel as string) || "Contact us"}
           </CtaLink>
@@ -375,7 +385,7 @@ function ContactPreviewSection({ section }: { section: HomepageSection }) {
     <section className="contact-preview-section corp-section" id="contact-preview">
       <div className="container text-center">
         <HomeSectionHead badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
-        <Reveal variant="slide-left" delay={150}>
+        <Reveal variant="slide-left" delay={220}>
         <CtaLink href={href} className="btn btn-primary-custom btn-sm">
           {label}
         </CtaLink>

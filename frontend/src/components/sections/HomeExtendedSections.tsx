@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { ServicesMarqueeStrip } from "@/components/sections/ServicesMarqueeStrip";
+import { HomeMacIcon } from "@/components/ui/HomeMacIcon";
 import { Reveal } from "@/components/ui/Reveal";
 import { filterTrustItemsNotInHeroStats } from "@/lib/homepage/dedupe-trust-items";
 import { filterPublishedItems } from "@/lib/homepage/item-status";
+import { resolveMacTone } from "@/lib/homepage/mac-tones";
 import type { HomepageSection } from "@/lib/wordpress/types";
 
 function Head({
@@ -18,7 +20,7 @@ function Head({
   return (
     <Reveal variant="fade-up">
       <div className="home-section-head home-section-head--center">
-        {badge ? <span className="home-eyebrow">{badge}</span> : null}
+        {badge ? <span className="home-eyebrow home-eyebrow--mac">{badge}</span> : null}
         {title ? <h2>{title}</h2> : null}
         {subtitle ? <p>{subtitle}</p> : null}
       </div>
@@ -52,17 +54,18 @@ export function TrustBadgesSection({
       <div className="corp-container">
         <Head badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
         <div className="home-trust-grid">
-          {items.map((item, i) => (
-            <Reveal key={item.title} variant="zoom-in" delay={i * 50}>
-              <article className={`home-trust-card home-trust-card--${item.tone || "blue"}`}>
-                <span className="home-trust-icon" aria-hidden="true">
-                  <i className={item.icon || "fas fa-check"} />
-                </span>
-                <h3>{item.title}</h3>
-                <p>{item.desc || item.description}</p>
-              </article>
-            </Reveal>
-          ))}
+          {items.map((item, i) => {
+            const tone = resolveMacTone(item.tone, i);
+            return (
+              <Reveal key={item.title} variant="zoom-in" delay={i * 85}>
+                <article className={`home-trust-card home-mac-card home-trust-card--${tone}`} data-tone={tone}>
+                  <HomeMacIcon icon={item.icon || "fas fa-check"} tone={tone} index={i} size="md" />
+                  <h3>{item.title}</h3>
+                  <p>{item.desc || item.description}</p>
+                </article>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -86,14 +89,17 @@ export function IndustriesSection({ section }: { section: HomepageSection }) {
       <div className="corp-container">
         <Head badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
         <div className="home-industries-grid">
-          {items.map((item, i) => (
-            <Reveal key={item.title} variant="fade-up" delay={i * 30}>
-              <div className="home-industry-chip">
-                <i className={item.icon || "fas fa-briefcase"} aria-hidden="true" />
-                <span>{item.title}</span>
-              </div>
-            </Reveal>
-          ))}
+          {items.map((item, i) => {
+            const tone = resolveMacTone(item.tone, i);
+            return (
+              <Reveal key={item.title} variant="fade-up" delay={i * 55}>
+                <div className="home-industry-chip home-mac-chip" data-tone={tone}>
+                  <HomeMacIcon icon={item.icon || "fas fa-briefcase"} tone={tone} index={i} size="sm" />
+                  <span>{item.title}</span>
+                </div>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -107,24 +113,25 @@ export function WebsiteTypesSection({ section }: { section: HomepageSection }) {
       <div className="corp-container">
         <Head badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
         <div className="row g-3 g-md-4">
-          {items.map((item, i) => (
-            <div key={item.title} className="col-lg-4 col-md-6">
-              <Reveal variant={i % 2 === 0 ? "slide-left" : "slide-right"} delay={i * 60}>
-                <article className="home-type-card h-100">
-                  <div className="home-type-icon">
-                    <i className={item.icon || "fas fa-globe"} aria-hidden="true" />
-                  </div>
-                  <h3>{item.title}</h3>
-                  <p>{item.desc || item.description}</p>
-                  {item.href ? (
-                    <Link href={item.href} className="home-type-link">
-                      Learn more <i className="fas fa-arrow-right ms-1" />
-                    </Link>
-                  ) : null}
-                </article>
-              </Reveal>
-            </div>
-          ))}
+          {items.map((item, i) => {
+            const tone = resolveMacTone(item.tone, i);
+            return (
+              <div key={item.title} className="col-lg-4 col-md-6">
+                <Reveal variant={i % 2 === 0 ? "slide-left" : "slide-right"} delay={i * 100}>
+                  <article className="home-type-card home-mac-card h-100" data-tone={tone}>
+                    <HomeMacIcon icon={item.icon || "fas fa-globe"} tone={tone} index={i} size="lg" />
+                    <h3>{item.title}</h3>
+                    <p>{item.desc || item.description}</p>
+                    {item.href ? (
+                      <Link href={item.href} className="home-type-link">
+                        Learn more <i className="fas fa-arrow-right ms-1" />
+                      </Link>
+                    ) : null}
+                  </article>
+                </Reveal>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -138,11 +145,17 @@ export function TechStackSection({ section }: { section: HomepageSection }) {
       <div className="corp-container">
         <Head badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
         <div className="home-tech-row">
-          {items.map((item) => (
-            <span key={item.title} className="home-tech-pill">
-              {item.title}
-            </span>
-          ))}
+          {items.map((item, i) => {
+            const tone = resolveMacTone(item.tone, i);
+            return (
+              <Reveal key={item.title} variant="zoom-in" delay={i * 45}>
+                <span className="home-tech-pill home-mac-chip" data-tone={tone}>
+                  <HomeMacIcon icon={item.icon || "fas fa-code"} tone={tone} index={i} size="sm" />
+                  {item.title}
+                </span>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -156,20 +169,23 @@ export function PricingPackagesSection({ section }: { section: HomepageSection }
       <div className="corp-container">
         <Head badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
         <div className="row g-3 g-md-4">
-          {items.map((item, i) => (
-            <div key={item.title} className="col-lg-3 col-md-6">
-              <Reveal variant="zoom-in" delay={i * 70}>
-                <article className="home-package-card h-100">
-                  <i className={`${item.icon || "fas fa-box"} home-package-icon`} aria-hidden="true" />
-                  <h3>{item.title}</h3>
-                  <p>{item.desc || item.description}</p>
-                  <Link href="/contact" className="btn btn-outline-custom btn-sm">
-                    View rate
-                  </Link>
-                </article>
-              </Reveal>
-            </div>
-          ))}
+          {items.map((item, i) => {
+            const tone = resolveMacTone(item.tone, i);
+            return (
+              <div key={item.title} className="col-lg-3 col-md-6">
+                <Reveal variant="zoom-in" delay={i * 115}>
+                  <article className="home-package-card home-mac-card h-100" data-tone={tone}>
+                    <HomeMacIcon icon={item.icon || "fas fa-box"} tone={tone} index={i} size="lg" />
+                    <h3>{item.title}</h3>
+                    <p>{item.desc || item.description}</p>
+                    <Link href="/contact" className="btn btn-outline-custom btn-sm">
+                      View rate
+                    </Link>
+                  </article>
+                </Reveal>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -183,17 +199,20 @@ export function GuaranteesSection({ section }: { section: HomepageSection }) {
       <div className="corp-container">
         <Head badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
         <div className="row g-3">
-          {items.map((item, i) => (
-            <div key={item.title} className="col-lg-3 col-md-6">
-              <Reveal variant="fade-up" delay={i * 80}>
-                <article className="home-guarantee-card h-100">
-                  <i className={item.icon || "fas fa-check"} aria-hidden="true" />
-                  <h3>{item.title}</h3>
-                  <p>{item.desc || item.description}</p>
-                </article>
-              </Reveal>
-            </div>
-          ))}
+          {items.map((item, i) => {
+            const tone = resolveMacTone(item.tone, i);
+            return (
+              <div key={item.title} className="col-lg-3 col-md-6">
+                <Reveal variant="fade-up" delay={i * 120}>
+                  <article className="home-guarantee-card home-mac-card h-100" data-tone={tone}>
+                    <HomeMacIcon icon={item.icon || "fas fa-shield-alt"} tone={tone} index={i} size="md" />
+                    <h3>{item.title}</h3>
+                    <p>{item.desc || item.description}</p>
+                  </article>
+                </Reveal>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -207,14 +226,20 @@ export function FaqSection({ section }: { section: HomepageSection }) {
       <div className="corp-container">
         <Head badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
         <div className="home-faq-list">
-          {items.map((item, i) => (
-            <Reveal key={item.title} variant="fade-up" delay={i * 40}>
-              <details className="home-faq-item">
-                <summary>{item.title}</summary>
-                <p>{item.desc || item.description}</p>
-              </details>
-            </Reveal>
-          ))}
+          {items.map((item, i) => {
+            const tone = resolveMacTone(item.tone, i);
+            return (
+              <Reveal key={item.title} variant="fade-up" delay={i * 75}>
+                <details className="home-faq-item home-mac-card" data-tone={tone}>
+                  <summary>
+                    <HomeMacIcon icon={item.icon || "fas fa-question-circle"} tone={tone} index={i} size="sm" />
+                    {item.title}
+                  </summary>
+                  <p>{item.desc || item.description}</p>
+                </details>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>

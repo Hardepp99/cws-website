@@ -3,7 +3,7 @@ import { CWS_LOGO_ASPECT, CWS_LOGO_PATH, logoDimensions, resolveLogoSrc } from "
 type SiteLogoVariant = "header" | "footer" | "preloader";
 
 const HEIGHTS: Record<SiteLogoVariant, number> = {
-  header: 60,
+  header: 72,
   footer: 60,
   preloader: 80,
 };

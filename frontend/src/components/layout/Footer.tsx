@@ -256,8 +256,13 @@ export function Footer({ settings, footerMenu, footerServicesMenu, footerProduct
           </div>
         </div>
 
-        <div className="footer-bar">
-          <div className="footer-content footer-bar-inner">
+      </div>
+
+      <div className="footer-bar footer-bar--premium">
+        <div className="footer-bar-premium__metal" aria-hidden="true" />
+        <div className="footer-bar-premium__shine" aria-hidden="true" />
+        <div className="container footer-bar__container">
+          <div className="footer-bar-inner">
             <p className="footer-copyright">
               &copy; {year} Creative Web Solutions. All rights reserved.
             </p>

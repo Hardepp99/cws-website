@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { Reveal } from "@/components/ui/Reveal";
@@ -46,6 +47,19 @@ export function ContactPageView({
   const telHref = settings.phone ? `tel:${settings.phone.replace(/\s/g, "")}` : "";
   const mailHref = settings.email ? `mailto:${settings.email}` : "";
 
+  useEffect(() => {
+    if (typeof window === "undefined" || window.location.hash !== "#contact-form") return;
+    const panel = document.getElementById("contact-form");
+    if (!panel) return;
+    const scroll = () => panel.scrollIntoView({ behavior: "smooth", block: "start" });
+    requestAnimationFrame(scroll);
+    const focusTarget = panel.querySelector<HTMLInputElement | HTMLTextAreaElement>(
+      'input[name="name"], input:not([type="hidden"]), textarea',
+    );
+    const t = window.setTimeout(() => focusTarget?.focus({ preventScroll: true }), 450);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <div className="contact-page">
       <section className="contact-page-hero">
@@ -68,7 +82,7 @@ export function ContactPageView({
           </h2>
           <div className="row g-4 g-xl-5 align-items-stretch">
             <div className="col-lg-5">
-              <Reveal variant="slide-left" delay={80}>
+              <Reveal variant="slide-left" delay={120}>
                 <div className="contact-details-panel">
                   <h3 className="contact-details-panel__title">Contact details</h3>
                   <p className="contact-details-panel__sub">
@@ -169,8 +183,8 @@ export function ContactPageView({
             </div>
 
             <div className="col-lg-7">
-              <Reveal variant="slide-right" delay={140}>
-                <div className="contact-form-panel">
+              <Reveal variant="slide-right" delay={200}>
+                <div id="contact-form" className="contact-form-panel" tabIndex={-1}>
                   <h3 className="contact-form-panel__title">Send us a message</h3>
                   <p className="contact-form-panel__sub">
                     Tell us about your website, app, or marketing goals. Prefer a package quote? Use{" "}
@@ -186,7 +200,7 @@ export function ContactPageView({
 
       <section className="contact-page-map" aria-labelledby="contact-map-heading">
         <div className="corp-container">
-          <Reveal variant="fade-up" delay={60}>
+          <Reveal variant="fade-up" delay={100}>
             <div className="contact-page-map__head">
               <h2 id="contact-map-heading" className="contact-page-map__title">
                 Find our office
@@ -205,7 +219,7 @@ export function ContactPageView({
             </div>
           </Reveal>
         </div>
-        <Reveal variant="zoom-in" delay={120}>
+        <Reveal variant="zoom-in" delay={180}>
           <div className="contact-page-map__frame">
             <iframe
               src={mapsEmbedUrl}

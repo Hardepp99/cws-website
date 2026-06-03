@@ -57,7 +57,7 @@ export function PageFaqSection({
         ) : (
           <div className="page-faq__list">
             {items.map((item, i) => (
-              <Reveal key={`${item.question}-${i}`} variant="fade-up" delay={i * 45}>
+              <Reveal key={`${item.question}-${i}`} variant="fade-up" delay={i * 80}>
                 <details className="page-faq__item">
                   <summary className="page-faq__question">
                     <span className="page-faq__q-text">{item.question}</span>

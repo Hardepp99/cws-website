@@ -1,23 +1,76 @@
 "use client";
 
 import { useEffect } from "react";
+import {
+  SITE_INTRO_EXIT_MS,
+  SITE_INTRO_READY_EVENT,
+  waitForSiteIntroGate,
+} from "@/lib/site-intro";
 
 export function SiteScripts() {
   useEffect(() => {
-    const hidePreloader = () => {
-      const el = document.getElementById("preloader");
-      if (!el) return;
-      el.classList.add("loaded");
-      el.style.opacity = "0";
-      el.style.visibility = "hidden";
-      setTimeout(() => {
-        el.style.display = "none";
-      }, 500);
+    let finished = false;
+    let exitTimer: number | undefined;
+    let hideTimer: number | undefined;
+    const introStarted = performance.now();
+
+    const resetIntroState = () => {
+      document.body.classList.remove("site-ready");
+      document.documentElement.classList.add("is-intro-pending");
+
+      const preloader = document.getElementById("preloader");
+      if (!preloader) return;
+      preloader.classList.remove("loaded", "is-exiting");
+      preloader.removeAttribute("style");
+      preloader.setAttribute("aria-busy", "true");
     };
 
-    if (document.readyState === "complete") hidePreloader();
-    else window.addEventListener("load", hidePreloader);
-    const t = setTimeout(hidePreloader, 1500);
+    const finishIntro = () => {
+      if (finished) return;
+      finished = true;
+
+      const prefersReduced =
+        typeof window !== "undefined" &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const runExit = () => {
+        const preloader = document.getElementById("preloader");
+        const exitMs = prefersReduced ? 0 : SITE_INTRO_EXIT_MS;
+
+        if (preloader && !prefersReduced) {
+          preloader.classList.add("is-exiting");
+        }
+
+        document.documentElement.classList.remove("is-intro-pending");
+        document.body.classList.add("site-ready");
+        window.dispatchEvent(new CustomEvent(SITE_INTRO_READY_EVENT));
+
+        hideTimer = window.setTimeout(() => {
+          if (!preloader) return;
+          preloader.classList.add("loaded");
+          preloader.setAttribute("aria-busy", "false");
+          preloader.style.pointerEvents = "none";
+          window.setTimeout(() => {
+            preloader.style.display = "none";
+          }, 80);
+        }, exitMs);
+      };
+
+      void waitForSiteIntroGate(introStarted).then(runExit);
+    };
+
+    resetIntroState();
+    finishIntro();
+
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (!event.persisted) return;
+      finished = false;
+      if (exitTimer !== undefined) window.clearTimeout(exitTimer);
+      if (hideTimer !== undefined) window.clearTimeout(hideTimer);
+      resetIntroState();
+      finishIntro();
+    };
+    window.addEventListener("pageshow", onPageShow);
 
     const header = document.getElementById("header");
     const onScroll = () => {
@@ -29,7 +82,7 @@ export function SiteScripts() {
     onScroll();
 
     const counters = document.querySelectorAll<HTMLElement>("[data-count]");
-    const observer = new IntersectionObserver(
+    const counterObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
@@ -45,18 +98,19 @@ export function SiteScripts() {
             }
             el.textContent = String(current);
           }, 20);
-          observer.unobserve(el);
+          counterObserver.unobserve(el);
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.3 },
     );
-    counters.forEach((c) => observer.observe(c));
+    counters.forEach((c) => counterObserver.observe(c));
 
     return () => {
-      clearTimeout(t);
+      if (exitTimer !== undefined) window.clearTimeout(exitTimer);
+      if (hideTimer !== undefined) window.clearTimeout(hideTimer);
+      window.removeEventListener("pageshow", onPageShow);
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("load", hidePreloader);
-      observer.disconnect();
+      counterObserver.disconnect();
     };
   }, []);
 

@@ -1,0 +1,206 @@
+/**
+ * Preloader — logo on light brand plate; three color tiles echo the CWS mark.
+ */
+
+.preloader-premium {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(180deg, #010818 0%, #01102a 50%, #012174 100%) !important;
+  transform: translateX(0);
+  will-change: transform;
+  transition: none !important;
+}
+
+.preloader-premium__loader {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem;
+}
+
+/* Brand mark + logo (icon colors → wordmark on white plate) */
+.preloader-premium__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.15rem;
+  animation: preloaderBrandIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.preloader-premium__tiles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.preloader-premium__tile {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 0.22rem;
+  opacity: 0;
+  transform: translateY(8px) scale(0.85);
+  animation: preloaderTileIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.preloader-premium__tile--blue {
+  background: #0a78ed;
+  animation-delay: 0.12s;
+}
+
+.preloader-premium__tile--navy {
+  background: #012174;
+  animation-delay: 0.22s;
+}
+
+.preloader-premium__tile--slate {
+  background: #6e6e73;
+  animation-delay: 0.32s;
+}
+
+.preloader-premium__logo-plate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.1rem, 4vw, 1.5rem) clamp(1.35rem, 5vw, 2rem);
+  border-radius: 1.15rem;
+  background: #ffffff;
+  border: 1px solid rgba(1, 33, 116, 0.08);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+  animation: preloaderPlateIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.18s both;
+}
+
+.preloader-premium__logo,
+.preloader-premium .site-logo--preloader,
+.preloader-premium .loader-logo {
+  position: static !important;
+  transform: none !important;
+  height: clamp(64px, 14vw, 80px) !important;
+  min-height: clamp(64px, 14vw, 80px) !important;
+  max-width: min(320px, 78vw) !important;
+  width: auto !important;
+  animation: preloaderLogoSettle 2.4s ease-in-out 0.5s infinite !important;
+  filter: none !important;
+}
+
+@keyframes preloaderBrandIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes preloaderTileIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes preloaderPlateIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes preloaderLogoSettle {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.96;
+  }
+}
+
+/* Progress */
+.preloader-premium__bar {
+  width: min(220px, 70vw);
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  overflow: hidden;
+  animation: preloaderBrandIn 0.6s ease 0.35s both;
+}
+
+.preloader-premium__bar-fill {
+  height: 100%;
+  width: 38%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #0a78ed, #012174);
+  animation: preloaderBar 1.15s ease-in-out infinite;
+}
+
+@keyframes preloaderBar {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(320%);
+  }
+}
+
+.preloader-premium__label {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+  text-align: center;
+  animation: preloaderLabel 1.8s ease-in-out infinite;
+}
+
+@keyframes preloaderLabel {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Exit — full-panel slide handled in site-intro.css (preloaderUncoverRight) */
+.preloader-premium.is-exiting {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.preloader-premium.loaded {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preloader-premium__brand,
+  .preloader-premium__tile,
+  .preloader-premium__logo-plate,
+  .preloader-premium__bar,
+  .preloader-premium .site-logo--preloader,
+  .preloader-premium__bar-fill,
+  .preloader-premium__label {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

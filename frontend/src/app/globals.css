@@ -1,4 +1,5 @@
 @import "./corporate.css";
+@import "./layout-width.css";
 @import "./desimentor-pages.css";
 @import "./animations.css";
 @import "./home.css";
@@ -15,6 +16,17 @@
 @import "./hero-illustration.css";
 @import "./testimonials-refined.css";
 @import "./scrollbar-silver.css";
+@import "./header-premium.css";
+@import "./mobile-nav-drawer.css";
+@import "./topbar-premium.css";
+@import "./footer-bar-premium.css";
+@import "./footer-premium.css";
+@import "./preloader-premium.css";
+@import "./site-intro.css";
+@import "./hero-premium.css";
+@import "./home-hero-rail.css";
+@import "./home-marquee-premium.css";
+@import "./home-cards-premium.css";
 
 @tailwind base;
 @tailwind components;

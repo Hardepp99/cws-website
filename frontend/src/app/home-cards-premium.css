@@ -1,0 +1,527 @@
+/**
+ * Homepage cards — macOS / Apple multicolor accents, iconified, animated.
+ */
+
+.home-page {
+  --mac-blue: #007aff;
+  --mac-purple: #af52de;
+  --mac-green: #34c759;
+  --mac-orange: #ff9500;
+  --mac-pink: #ff2d55;
+  --mac-teal: #5ac8fa;
+  --mac-indigo: #5856d6;
+  --mac-mint: #00c7be;
+  --mac-royal: #0057ff;
+}
+
+@keyframes homeMacIconFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes homeMacCardShine {
+  0% {
+    transform: translateX(-120%) skewX(-12deg);
+  }
+  100% {
+    transform: translateX(220%) skewX(-12deg);
+  }
+}
+
+@keyframes homeMacChipPop {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Section eyebrow — Apple pill */
+.home-page .home-eyebrow--mac {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.9rem;
+  margin-bottom: 0.65rem;
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mac-indigo);
+  background: linear-gradient(135deg, rgba(88, 86, 214, 0.12), rgba(0, 122, 255, 0.1));
+  border: 1px solid rgba(88, 86, 214, 0.18);
+  box-shadow: 0 2px 10px rgba(88, 86, 214, 0.08);
+}
+
+.home-page .home-eyebrow--mac::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--mac-blue), var(--mac-purple));
+  animation: homeMacIconFloat 2.4s ease-in-out infinite;
+}
+
+/* Icon badge */
+.home-mac-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.home-mac-icon--sm {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.home-mac-icon--md {
+  width: 3rem;
+  height: 3rem;
+}
+
+.home-mac-icon--lg {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.home-mac-icon__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 22%;
+  opacity: 0.35;
+  transform: scale(1.15);
+  animation: homeMacIconFloat 3s ease-in-out infinite;
+}
+
+.home-mac-icon__glyph {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 22%;
+  font-size: 1.15rem;
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 6px 16px rgba(0, 0, 0, 0.12);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.home-mac-icon--sm .home-mac-icon__glyph {
+  font-size: 0.9rem;
+  border-radius: 24%;
+}
+
+.home-mac-icon--lg .home-mac-icon__glyph {
+  font-size: 1.35rem;
+}
+
+.home-mac-icon--blue .home-mac-icon__glyph {
+  background: linear-gradient(145deg, #3d9dff, var(--mac-blue));
+}
+.home-mac-icon--blue .home-mac-icon__ring {
+  background: var(--mac-blue);
+}
+
+.home-mac-icon--purple .home-mac-icon__glyph {
+  background: linear-gradient(145deg, #c77ef0, var(--mac-purple));
+}
+.home-mac-icon--purple .home-mac-icon__ring {
+  background: var(--mac-purple);
+}
+
+.home-mac-icon--green .home-mac-icon__glyph {
+  background: linear-gradient(145deg, #5cd87a, var(--mac-green));
+}
+.home-mac-icon--green .home-mac-icon__ring {
+  background: var(--mac-green);
+}
+
+.home-mac-icon--orange .home-mac-icon__glyph {
+  background: linear-gradient(145deg, #ffb340, var(--mac-orange));
+}
+.home-mac-icon--orange .home-mac-icon__ring {
+  background: var(--mac-orange);
+}
+
+.home-mac-icon--pink .home-mac-icon__glyph {
+  background: linear-gradient(145deg, #ff5f7f, var(--mac-pink));
+}
+.home-mac-icon--pink .home-mac-icon__ring {
+  background: var(--mac-pink);
+}
+
+.home-mac-icon--teal .home-mac-icon__glyph {
+  background: linear-gradient(145deg, #7dd4fc, var(--mac-teal));
+}
+.home-mac-icon--teal .home-mac-icon__ring {
+  background: var(--mac-teal);
+}
+
+.home-mac-icon--indigo .home-mac-icon__glyph {
+  background: linear-gradient(145deg, #7a78e8, var(--mac-indigo));
+}
+.home-mac-icon--indigo .home-mac-icon__ring {
+  background: var(--mac-indigo);
+}
+
+.home-mac-icon--mint .home-mac-icon__glyph {
+  background: linear-gradient(145deg, #3dd9d0, var(--mac-mint));
+}
+.home-mac-icon--mint .home-mac-icon__ring {
+  background: var(--mac-mint);
+}
+
+.home-mac-icon--royal .home-mac-icon__glyph {
+  background: linear-gradient(145deg, #3d8bff, var(--mac-royal));
+}
+.home-mac-icon--royal .home-mac-icon__ring {
+  background: var(--mac-royal);
+}
+
+/* Shared mac card */
+.home-page .home-mac-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 8px 24px rgba(0, 0, 0, 0.06) !important;
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease,
+    border-color 0.35s ease;
+}
+
+.home-page .home-mac-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 42%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: translateX(-120%) skewX(-12deg);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.home-page .home-mac-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+.home-page .home-mac-card:hover::after {
+  opacity: 1;
+  animation: homeMacCardShine 0.75s ease;
+}
+
+.home-page .home-mac-card:hover .home-mac-icon__glyph {
+  transform: scale(1.08) rotate(-3deg);
+}
+
+/* Tone top accent bar */
+.home-page .home-mac-card[data-tone="blue"] {
+  --mac-accent: var(--mac-blue);
+}
+.home-page .home-mac-card[data-tone="purple"] {
+  --mac-accent: var(--mac-purple);
+}
+.home-page .home-mac-card[data-tone="green"] {
+  --mac-accent: var(--mac-green);
+}
+.home-page .home-mac-card[data-tone="orange"] {
+  --mac-accent: var(--mac-orange);
+}
+.home-page .home-mac-card[data-tone="pink"] {
+  --mac-accent: var(--mac-pink);
+}
+.home-page .home-mac-card[data-tone="teal"] {
+  --mac-accent: var(--mac-teal);
+}
+.home-page .home-mac-card[data-tone="indigo"] {
+  --mac-accent: var(--mac-indigo);
+}
+.home-page .home-mac-card[data-tone="mint"] {
+  --mac-accent: var(--mac-mint);
+}
+.home-page .home-mac-card[data-tone="royal"] {
+  --mac-accent: var(--mac-royal);
+}
+
+.home-page .home-mac-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--mac-accent, var(--mac-blue)), transparent 85%);
+  border-radius: 18px 18px 0 0;
+  opacity: 0.85;
+}
+
+.home-page .home-mac-card[data-tone="blue"]:hover {
+  box-shadow: 0 14px 36px rgba(0, 122, 255, 0.16) !important;
+}
+.home-page .home-mac-card[data-tone="purple"]:hover {
+  box-shadow: 0 14px 36px rgba(175, 82, 222, 0.16) !important;
+}
+.home-page .home-mac-card[data-tone="green"]:hover {
+  box-shadow: 0 14px 36px rgba(52, 199, 89, 0.16) !important;
+}
+.home-page .home-mac-card[data-tone="orange"]:hover {
+  box-shadow: 0 14px 36px rgba(255, 149, 0, 0.16) !important;
+}
+.home-page .home-mac-card[data-tone="pink"]:hover {
+  box-shadow: 0 14px 36px rgba(255, 45, 85, 0.14) !important;
+}
+.home-page .home-mac-card[data-tone="teal"]:hover {
+  box-shadow: 0 14px 36px rgba(90, 200, 250, 0.16) !important;
+}
+.home-page .home-mac-card[data-tone="indigo"]:hover {
+  box-shadow: 0 14px 36px rgba(88, 86, 214, 0.16) !important;
+}
+.home-page .home-mac-card[data-tone="mint"]:hover {
+  box-shadow: 0 14px 36px rgba(0, 199, 190, 0.14) !important;
+}
+.home-page .home-mac-card[data-tone="royal"]:hover {
+  box-shadow: 0 14px 36px rgba(0, 87, 255, 0.16) !important;
+}
+
+/* Trust */
+.home-page .home-trust-card.home-mac-card {
+  padding: 1.35rem 1rem 1.2rem !important;
+}
+
+.home-page .home-trust-card .home-mac-icon {
+  margin-bottom: 0.75rem;
+}
+
+.home-page .home-trust-card h3 {
+  font-weight: 600 !important;
+  color: #1d1d1f !important;
+}
+
+/* Industry chips */
+.home-page .home-industry-chip.home-mac-chip {
+  padding: 0.5rem 1rem 0.5rem 0.55rem !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  animation: homeMacChipPop 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.home-page .home-industry-chip.home-mac-chip:hover {
+  transform: translateY(-3px) scale(1.02);
+}
+
+.home-page .home-industry-chip .home-mac-icon--sm {
+  margin-right: 0.15rem;
+}
+
+.home-page .home-industry-chip span {
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+/* Website types */
+.home-page .home-type-card.home-mac-card {
+  padding: 1.5rem 1.35rem !important;
+}
+
+.home-page .home-type-card .home-mac-icon {
+  margin-bottom: 0.85rem;
+}
+
+.home-page .home-type-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+  font-weight: 600;
+  transition: gap 0.25s ease;
+}
+
+.home-page .home-type-card:hover .home-type-link {
+  gap: 0.45rem;
+  color: var(--mac-accent, var(--mac-blue)) !important;
+}
+
+.home-page .home-tech-row > .reveal {
+  display: inline-flex;
+}
+
+/* Tech pills */
+.home-page .home-tech-pill.home-mac-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1rem !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.home-page .home-tech-pill.home-mac-chip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.home-page .home-tech-pill .home-mac-icon--sm {
+  width: 1.85rem;
+  height: 1.85rem;
+}
+
+/* Pricing */
+.home-page .home-package-card.home-mac-card {
+  padding: 1.65rem 1.35rem !important;
+  text-align: center;
+}
+
+.home-page .home-package-card .home-mac-icon {
+  margin: 0 auto 0.85rem;
+}
+
+/* Guarantees */
+.home-page .home-guarantee-card.home-mac-card {
+  padding: 1.45rem 1.2rem !important;
+}
+
+.home-page .home-guarantee-card .home-mac-icon {
+  margin-bottom: 0.75rem;
+}
+
+/* FAQ */
+.home-page .home-faq-item.home-mac-card {
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.home-page .home-faq-item.home-mac-card summary {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.95rem 1.1rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.home-page .home-faq-item.home-mac-card summary::-webkit-details-marker {
+  display: none;
+}
+
+.home-page .home-faq-item.home-mac-card summary .home-mac-icon--sm {
+  flex-shrink: 0;
+}
+
+.home-page .home-faq-item.home-mac-card[open] summary .home-mac-icon__glyph {
+  transform: scale(1.06);
+}
+
+.home-page .home-faq-item.home-mac-card > p {
+  padding: 0 1.1rem 1rem 3.75rem;
+  margin: 0;
+}
+
+/* Service card body badge */
+.home-page .home-service-card.home-mac-card .home-service-card__body {
+  position: relative;
+}
+
+.home-page .home-service-card__mac-badge {
+  position: absolute;
+  top: -1.35rem;
+  right: 1rem;
+  z-index: 2;
+}
+
+.home-page .home-service-card.home-mac-card .home-service-card__body {
+  padding-top: 1.65rem;
+}
+
+/* Process steps — icon row */
+.home-page .home-process__step-icon {
+  margin-bottom: 0.65rem;
+}
+
+.home-page .home-process__step.home-mac-card {
+  padding: 1.35rem 1.2rem !important;
+}
+
+/* Why / course cards on homepage */
+.home-page .why-card.home-mac-card,
+.home-page .course-card.home-mac-card {
+  padding: 1.5rem 1.35rem !important;
+  text-align: center;
+}
+
+.home-page .why-card .home-mac-icon,
+.home-page .course-card .home-mac-icon {
+  margin: 0 auto 0.85rem;
+}
+
+.home-page .why-card .why-number {
+  margin-top: 0.75rem;
+  font-size: 2rem;
+  font-weight: 700;
+  opacity: 0.12;
+  color: var(--mac-accent, var(--mac-indigo));
+}
+
+.home-page .blog-card.home-mac-card {
+  overflow: hidden;
+  border-radius: 18px !important;
+}
+
+.home-page .blog-card.home-mac-card .blog-content {
+  position: relative;
+}
+
+.home-page .blog-card__mac-icon {
+  position: absolute;
+  top: -1.25rem;
+  right: 1rem;
+}
+
+/* Testimonials — enhance quote mark with mac gradient */
+.home-page .testimonial-card .testimonial-card__mark {
+  background: linear-gradient(135deg, var(--mac-blue), var(--mac-purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-mac-icon__ring,
+  .home-mac-icon__glyph,
+  .home-page .home-eyebrow--mac::before,
+  .home-page .home-mac-card::after,
+  .home-page .home-industry-chip.home-mac-chip {
+    animation: none !important;
+  }
+
+  .home-page .home-mac-card:hover {
+    transform: none;
+  }
+}

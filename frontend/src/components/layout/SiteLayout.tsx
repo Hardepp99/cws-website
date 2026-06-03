@@ -4,6 +4,7 @@ import { SitePromoQuote } from "@/components/engagement/SitePromoQuote";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { PastelSectionsInit } from "./PastelSectionsInit";
+import { ScrollRevealInit } from "./ScrollRevealInit";
 import { Preloader } from "./Preloader";
 import { SiteScripts } from "./SiteScripts";
 import { MemberSessionProvider } from "@/components/member/MemberSessionProvider";
@@ -32,6 +33,7 @@ export async function SiteLayout({ children, currentPath = "/" }: SiteLayoutProp
       <main className="site-main">
         {children}
         <PastelSectionsInit />
+        <ScrollRevealInit />
       </main>
       <Footer
         settings={settings}

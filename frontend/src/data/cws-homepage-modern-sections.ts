@@ -14,12 +14,13 @@ const LOC = "Zirakpur, Chandigarh & Mohali";
 export const CWS_MODERN_HOMEPAGE_SECTIONS: HomepageSection[] = [
   {
     acfFcLayout: "hero_slider",
-    eyebrow: `Creative Web Solutions · ${LOC}`,
-    headline: "We build websites, mobile apps, and digital marketing that turn visitors into real enquiries.",
-    subheadline: "",
+    eyebrow: "",
+    headline: "What we do for you",
+    subheadline:
+      "We build websites, mobile apps, and digital marketing that turn visitors into real enquiries — with clear communication, on-time delivery, and long-term support.",
     headlineParts: [],
-    ctaPrimary: { label: "Get a quote", href: "#ask-price" },
-    ctaSecondary: { label: "Call +91-7015969967", href: "tel:+917015969967" },
+    ctaPrimary: { label: "Book consultation", href: "#ask-price" },
+    ctaSecondary: { label: "Contact us", href: "/contact#contact-form" },
     slides: [
       { image: { url: "/assets/images/hero1.png" } },
       { image: { url: "/assets/images/hero2.png" } },
@@ -28,7 +29,11 @@ export const CWS_MODERN_HOMEPAGE_SECTIONS: HomepageSection[] = [
     heroVisual: "svg",
     personImage: "/assets/images/hero2.png",
     personImageAlt: "Designer building websites and digital products",
-    stats: [],
+    stats: [
+      { icon: "fas fa-project-diagram", count: 549, label: "Projects delivered", tone: "blue" },
+      { icon: "fas fa-users", count: 320, label: "Clients served", tone: "green" },
+      { icon: "fas fa-award", count: 15, label: "Years in business", tone: "royal" },
+    ],
     gmbRating: 4.9,
     gmbReviewCount: "120+",
     gmbReviews: [

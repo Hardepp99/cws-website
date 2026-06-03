@@ -1169,10 +1169,9 @@ main.site-main:has(> .home-page) {
 }
 
 .home-marquee-track {
-  display: flex;
+  display: inline-flex;
   gap: 0.75rem;
   width: max-content;
-  animation: home-marquee-scroll 40s linear infinite;
 }
 
 .home-marquee-viewport:hover .home-marquee-track {
@@ -1205,11 +1204,6 @@ main.site-main:has(> .home-page) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-
-@keyframes home-marquee-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
 }
 
 /* Industries */

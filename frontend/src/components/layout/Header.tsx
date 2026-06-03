@@ -23,9 +23,11 @@ interface HeaderProps {
 export function Header({ settings, menu, currentPath = "" }: HeaderProps) {
   const pathname = usePathname();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const [navStuck, setNavStuck] = useState(false);
+  const [navPinned, setNavPinned] = useState(false);
+  const [navSpacerH, setNavSpacerH] = useState(0);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const stickySentinelRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
 
   const phone = settings.phone?.trim() ?? "";
   const phoneTel = phone ? `tel:${phone.replace(/[\s-]/g, "")}` : "";
@@ -164,40 +166,39 @@ export function Header({ settings, menu, currentPath = "" }: HeaderProps) {
 
   useEffect(() => {
     const sentinel = stickySentinelRef.current;
-    const headerEl = document.getElementById("header");
+    const headerEl = headerRef.current;
     if (!sentinel || !headerEl) return;
 
-    const mq = window.matchMedia("(max-width: 991.98px)");
-    const applyStuck = (stuck: boolean) => {
-      setNavStuck(stuck && mq.matches);
+    const syncPinned = (pinned: boolean) => {
+      setNavPinned(pinned);
+      setNavSpacerH(pinned ? headerEl.offsetHeight : 0);
     };
 
     const observer = new IntersectionObserver(
-      ([entry]) => applyStuck(!entry.isIntersecting),
+      ([entry]) => syncPinned(!entry.isIntersecting),
       { threshold: 0, root: null, rootMargin: "0px" },
     );
     observer.observe(sentinel);
 
-    const onMq = () => {
-      if (!mq.matches) {
-        applyStuck(false);
-        return;
-      }
-      const rect = sentinel.getBoundingClientRect();
-      applyStuck(rect.bottom <= 0);
+    const onResize = () => {
+      if (navPinned) setNavSpacerH(headerEl.offsetHeight);
     };
-    mq.addEventListener("change", onMq);
+    window.addEventListener("resize", onResize);
 
     return () => {
       observer.disconnect();
-      mq.removeEventListener("change", onMq);
+      window.removeEventListener("resize", onResize);
     };
   }, []);
 
   return (
     <>
       <div ref={stickySentinelRef} className="navbar-sticky-sentinel" aria-hidden="true" />
-      <header className={`header${navStuck ? " is-stuck" : ""}`} id="header">
+      <header
+        ref={headerRef}
+        className={`header header-premium${navPinned ? " is-navbar-fixed is-stuck" : ""}`}
+        id="header"
+      >
         <div className="mobile-menu-overlay" id="mobileMenuOverlay" aria-hidden="true" />
         <nav className="navbar navbar-expand-lg">
           <div className="container">
@@ -223,7 +224,7 @@ export function Header({ settings, menu, currentPath = "" }: HeaderProps) {
                 </a>
               ) : null}
               <button
-                className="navbar-toggler"
+                className="navbar-toggler d-lg-none"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#navbarNav"
@@ -363,6 +364,11 @@ export function Header({ settings, menu, currentPath = "" }: HeaderProps) {
           </div>
         </nav>
       </header>
+      <div
+        className="header-fixed-spacer"
+        aria-hidden="true"
+        style={{ height: navSpacerH > 0 ? navSpacerH : undefined }}
+      />
     </>
   );
 }

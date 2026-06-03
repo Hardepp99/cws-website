@@ -13,7 +13,7 @@ function sectionVariant(index: number): RevealVariant {
 
 /** Cap stagger so long pages do not feel sluggish */
 function sectionDelay(index: number): number {
-  return Math.min(index * 24, 96);
+  return Math.min(index * 55, 220);
 }
 
 export function DesimentorRenderer({ document }: { document: DesimentorDocument }) {

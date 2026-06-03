@@ -13,30 +13,37 @@ export function Topbar({ settings }: TopbarProps) {
   const gmbMapsUrl = resolveGmbMapsUrl(settings);
 
   return (
-    <div className="topbar" id="topbar">
-      <TopbarBackground />
+    <div className="topbar topbar--premium" id="topbar">
+      <TopbarBackground premium />
+      <div className="topbar-premium__shine" aria-hidden="true" />
       <div className="container topbar-content">
         <div className="topbar-inner">
-          <div className="topbar-contact">
-            {phone ? (
-              <a
-                href={`tel:${phone.replace(/\s/g, "")}`}
-                className="topbar-link"
-                data-customize-phone-wrap=""
-              >
-                <i className="fas fa-phone-alt" aria-hidden="true" />
-                <span data-customize="phone">{phone}</span>
-              </a>
-            ) : null}
+          <div className="topbar-row topbar-row--contact">
             {email ? (
               <a
                 href={`mailto:${email}`}
-                className="topbar-link"
+                className="topbar-link topbar-link--email"
                 data-customize-email-wrap=""
               >
-                <i className="fas fa-envelope" aria-hidden="true" />
-                <span className="topbar-email" data-customize="email">
+                <span className="topbar-link__icon" aria-hidden="true">
+                  <i className="fas fa-envelope" />
+                </span>
+                <span className="topbar-link__text topbar-email" data-customize="email">
                   {email}
+                </span>
+              </a>
+            ) : null}
+            {phone ? (
+              <a
+                href={`tel:${phone.replace(/\s/g, "")}`}
+                className="topbar-link topbar-link--phone"
+                data-customize-phone-wrap=""
+              >
+                <span className="topbar-link__icon" aria-hidden="true">
+                  <i className="fas fa-phone-alt" />
+                </span>
+                <span className="topbar-link__text" data-customize="phone">
+                  {phone}
                 </span>
               </a>
             ) : null}
@@ -45,15 +52,19 @@ export function Topbar({ settings }: TopbarProps) {
           {addressLine ? (
             <a
               href={gmbMapsUrl}
-              className="topbar-address topbar-link"
+              className="topbar-link topbar-link--address"
               title={addressLine}
               target="_blank"
               rel="noopener noreferrer"
               data-customize-address-topbar-wrap=""
               aria-label="View office on Google Maps"
             >
-              <i className="fas fa-map-marker-alt" aria-hidden="true" />
-              <span data-customize="address-topbar">{addressLine}</span>
+              <span className="topbar-link__icon" aria-hidden="true">
+                <i className="fas fa-map-marker-alt" />
+              </span>
+              <span className="topbar-link__text" data-customize="address-topbar">
+                {addressLine}
+              </span>
             </a>
           ) : null}
 

@@ -1,0 +1,138 @@
+/**
+ * Footer — unified dark navy blue (matches site royal / topbar).
+ */
+
+:root {
+  --cws-footer-bg: #012174;
+  --cws-footer-navy-deep: #010818;
+  --cws-footer-navy-mid: #01102a;
+  --cws-footer-navy-rich: #012174;
+  --cws-footer-navy-soft: #0a2d6e;
+}
+
+.footer,
+.site-footer {
+  background: linear-gradient(
+    180deg,
+    var(--cws-footer-navy-deep) 0%,
+    var(--cws-footer-navy-mid) 32%,
+    var(--cws-footer-navy-rich) 100%
+  ) !important;
+  color: rgba(255, 255, 255, 0.82) !important;
+  border-top: 1px solid rgba(100, 160, 255, 0.12) !important;
+}
+
+.footer::before {
+  display: none !important;
+}
+
+.footer-top {
+  background: transparent !important;
+}
+
+.footer-desc,
+.footer-widget p,
+.footer-contact__text,
+.footer-links a,
+.footer-contact a,
+.footer-contact a.footer-contact__row {
+  color: rgba(220, 235, 255, 0.78) !important;
+}
+
+.footer-links a:hover,
+.footer-contact a:hover,
+.footer-contact a.footer-contact__row:hover {
+  color: #fff !important;
+}
+
+.footer-title-text--company {
+  color: #9ec8ff !important;
+}
+
+.footer-title-text--services {
+  color: #8ee4b8 !important;
+}
+
+.footer-title-text--products {
+  color: #ffd4a8 !important;
+}
+
+.footer-title-icon--company {
+  color: #9ec8ff;
+  background: rgba(0, 136, 255, 0.18);
+}
+
+.footer-title-icon--services {
+  color: #8ee4b8;
+  background: rgba(0, 168, 107, 0.16);
+}
+
+.footer-title-icon--products {
+  color: #ffd4a8;
+  background: rgba(255, 149, 0, 0.14);
+}
+
+.footer-social-link {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(140, 185, 255, 0.2) !important;
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+.footer-social-link:hover {
+  background: rgba(10, 120, 237, 0.35) !important;
+  border-color: rgba(140, 185, 255, 0.35) !important;
+  color: #fff !important;
+}
+
+/* Bottom bar — darker navy strip, same family */
+.footer-bar.footer-bar--premium {
+  --footer-bar-text: rgba(230, 240, 255, 0.94);
+  --footer-bar-muted: rgba(190, 210, 245, 0.72);
+  background: linear-gradient(
+    180deg,
+    #010f24 0%,
+    var(--cws-footer-navy-deep) 55%,
+    #010818 100%
+  ) !important;
+  border-top: 1px solid rgba(100, 160, 255, 0.14) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(140, 190, 255, 0.12),
+    0 -8px 28px rgba(1, 8, 24, 0.4);
+}
+
+.footer-bar--premium .footer-bar-premium__metal {
+  background:
+    radial-gradient(ellipse 100% 80% at 20% 0%, rgba(60, 130, 255, 0.2), transparent 55%),
+    radial-gradient(ellipse 80% 70% at 90% 100%, rgba(1, 33, 116, 0.45), transparent 50%),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.02) 0%,
+      rgba(120, 175, 255, 0.06) 50%,
+      rgba(255, 255, 255, 0.02) 100%
+    );
+  opacity: 1;
+}
+
+.footer-bar--premium .footer-bar-premium__shine {
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(150, 200, 255, 0.08) 42%,
+    transparent 62%
+  );
+}
+
+.footer-bar--premium::after {
+  background: radial-gradient(ellipse 120% 50% at 50% -40%, rgba(80, 150, 255, 0.12), transparent 58%);
+}
+
+.footer-bar--premium .footer-payment-badge {
+  background: linear-gradient(
+    165deg,
+    rgba(80, 150, 255, 0.22) 0%,
+    rgba(1, 33, 116, 0.5) 55%,
+    rgba(1, 8, 24, 0.65) 100%
+  );
+  border-color: rgba(140, 190, 255, 0.28);
+  color: rgba(220, 235, 255, 0.9);
+}

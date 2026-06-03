@@ -1,0 +1,248 @@
+/**
+ * Site load intro — hide all chrome until ready; preloader slides right to uncover.
+ */
+
+:root {
+  --site-intro-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --site-intro-duration: 0.55s;
+  --preloader-exit-duration: 0.68s;
+}
+
+html.is-intro-pending body {
+  overflow: hidden;
+}
+
+/* Hide entire site shell while preloader runs */
+html.is-intro-pending .site-main,
+html.is-intro-pending .topbar,
+html.is-intro-pending .header-premium,
+html.is-intro-pending .site-float-widgets,
+html.is-intro-pending .footer,
+html.is-intro-pending .promo-offer-bar,
+html.is-intro-pending .cws-mobile-tab-bar {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+html.is-intro-pending .header-premium .navbar-toggler,
+html.is-intro-pending .header-premium .navbar-mobile-chrome,
+html.is-intro-pending .header-premium .navbar-brand,
+html.is-intro-pending .header-premium .navbar-sticky-call,
+html.is-intro-pending .header-premium .navbar-collapse {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+html.is-intro-pending .header-premium .navbar-toggler {
+  display: none !important;
+}
+
+html.is-intro-pending .preloader-premium {
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/* —— Preloader exit: slide panel right, uncover site underneath —— */
+.preloader-premium.is-exiting {
+  animation: preloaderUncoverRight var(--preloader-exit-duration) var(--site-intro-ease) forwards;
+  pointer-events: none;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.preloader-premium.is-exiting .preloader-premium__loader {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes preloaderUncoverRight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* —— Topbar —— */
+.topbar--premium .topbar-link--email,
+.topbar--premium .topbar-link--phone,
+.topbar--premium .topbar-link--address,
+.topbar .topbar-social .social-link {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+body.site-ready .topbar--premium .topbar-link--email {
+  animation: siteIntroFadeDown var(--site-intro-duration) var(--site-intro-ease) 0.06s forwards;
+}
+body.site-ready .topbar--premium .topbar-link--phone {
+  animation: siteIntroFadeDown var(--site-intro-duration) var(--site-intro-ease) 0.1s forwards;
+}
+body.site-ready .topbar--premium .topbar-link--address {
+  animation: siteIntroFadeDown var(--site-intro-duration) var(--site-intro-ease) 0.14s forwards;
+}
+body.site-ready .topbar .topbar-social .social-link:nth-child(1) {
+  animation: siteIntroFadeDown var(--site-intro-duration) var(--site-intro-ease) 0.18s forwards;
+}
+body.site-ready .topbar .topbar-social .social-link:nth-child(2) {
+  animation: siteIntroFadeDown var(--site-intro-duration) var(--site-intro-ease) 0.22s forwards;
+}
+body.site-ready .topbar .topbar-social .social-link:nth-child(3) {
+  animation: siteIntroFadeDown var(--site-intro-duration) var(--site-intro-ease) 0.26s forwards;
+}
+body.site-ready .topbar .topbar-social .social-link:nth-child(4) {
+  animation: siteIntroFadeDown var(--site-intro-duration) var(--site-intro-ease) 0.3s forwards;
+}
+
+/* —— Header logo + chrome —— */
+.header-premium .navbar-brand {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.97);
+}
+
+body.site-ready .header-premium .navbar-brand {
+  animation: headerLogoReveal 0.62s var(--site-intro-ease) 0.08s forwards;
+}
+
+@keyframes headerLogoReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes headerTogglerPop {
+  from {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Desktop — hamburger only on mobile */
+@media (min-width: 992px) {
+  .header-premium .navbar-toggler {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .header-premium .navbar-toggler {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+
+  body.site-ready .header-premium .navbar-toggler {
+    display: inline-flex !important;
+    visibility: visible !important;
+    animation: headerTogglerPop 0.45s var(--site-intro-ease) 0.14s forwards;
+  }
+}
+
+.header-premium .navbar-sticky-call {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+body.site-ready .header-premium .navbar-sticky-call {
+  animation: siteIntroFadeUp var(--site-intro-duration) var(--site-intro-ease) 0.16s forwards;
+}
+
+/* —— Main shell —— */
+body.site-ready .topbar,
+body.site-ready .header-premium,
+body.site-ready .site-main,
+body.site-ready .site-float-widgets,
+body.site-ready .footer,
+body.site-ready .promo-offer-bar,
+body.site-ready .cws-mobile-tab-bar {
+  visibility: visible !important;
+  pointer-events: auto;
+}
+
+body.site-ready .site-main {
+  animation: siteMainEnter 0.65s var(--site-intro-ease) 0.08s both;
+}
+
+@keyframes siteIntroFadeDown {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes siteIntroFadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes siteMainEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --preloader-exit-duration: 0.01s;
+  }
+
+  html.is-intro-pending body {
+    overflow: auto;
+  }
+
+  html.is-intro-pending .site-main,
+  html.is-intro-pending .topbar,
+  html.is-intro-pending .header-premium,
+  html.is-intro-pending .site-float-widgets,
+  html.is-intro-pending .footer,
+  html.is-intro-pending .promo-offer-bar,
+  html.is-intro-pending .cws-mobile-tab-bar {
+    visibility: visible !important;
+  }
+
+  html.is-intro-pending .header-premium .navbar-toggler,
+  html.is-intro-pending .header-premium .navbar-mobile-chrome {
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+
+  .preloader-premium.is-exiting {
+    animation: none;
+    opacity: 0 !important;
+    transition: opacity 0.15s ease;
+  }
+
+  .topbar--premium .topbar-link--email,
+  .topbar--premium .topbar-link--phone,
+  .topbar--premium .topbar-link--address,
+  .topbar .topbar-social .social-link,
+  .header-premium .navbar-brand,
+  .header-premium .navbar-toggler,
+  .header-premium .navbar-sticky-call {
+    opacity: 1;
+    transform: none;
+  }
+
+  body.site-ready .site-main {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}

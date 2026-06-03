@@ -16,7 +16,7 @@ function HomeSectionHead({
   if (!badge && !title && !subtitle) return null;
   return (
     <div className="home-section-head home-section-head--center">
-      {badge ? <span className="home-eyebrow">{badge}</span> : null}
+      {badge ? <span className="home-eyebrow home-eyebrow--mac">{badge}</span> : null}
       {title ? <h2>{title}</h2> : null}
       {subtitle ? <p>{subtitle}</p> : null}
     </div>
@@ -43,8 +43,8 @@ export function HomeTestimonialsSection({ section }: { section: HomepageSection 
           {items.map((t, i) => {
             const tone = TESTIMONIAL_TONES[i % TESTIMONIAL_TONES.length];
             return (
-              <Reveal key={`${t.name}-${i}`} variant="fade-up" delay={i * 80}>
-                <article className={`testimonial-card testimonial-card--${tone}`}>
+              <Reveal key={`${t.name}-${i}`} variant="fade-up" delay={i * 120}>
+                <article className={`testimonial-card testimonial-card--${tone} home-mac-card`} data-tone={tone}>
                   <span className="testimonial-card__mark" aria-hidden="true">
                     &ldquo;
                   </span>

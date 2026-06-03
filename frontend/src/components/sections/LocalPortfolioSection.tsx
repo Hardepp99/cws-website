@@ -23,7 +23,7 @@ export function LocalPortfolioSection({
     <section className="portfolio-section home-portfolio corp-section" id="portfolio">
       <div className="corp-container">
         <div className="home-section-head home-section-head--center">
-          {badge ? <span className="home-eyebrow">{badge}</span> : null}
+          {badge ? <span className="home-eyebrow home-eyebrow--mac">{badge}</span> : null}
           {title ? <h2>{title}</h2> : null}
           {subtitle ? <p>{subtitle}</p> : null}
         </div>

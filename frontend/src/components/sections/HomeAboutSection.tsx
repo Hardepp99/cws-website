@@ -43,9 +43,9 @@ export function HomeAboutSection({ section }: { section: HomepageSection }) {
           </Reveal>
 
           <div className="home-about__content">
-            <Reveal variant="slide-right" delay={80}>
+            <Reveal variant="slide-right" delay={120}>
               <div className="home-about__copy">
-                {badge ? <span className="home-eyebrow home-about__eyebrow">{badge}</span> : null}
+                {badge ? <span className="home-eyebrow home-eyebrow--mac home-about__eyebrow">{badge}</span> : null}
                 {title ? <h2 className="home-about__title">{title}</h2> : null}
                 {subtitle && !html ? <p className="home-about__lead">{subtitle}</p> : null}
                 {html ? (

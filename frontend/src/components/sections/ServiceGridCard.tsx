@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { HomeMacIcon } from "@/components/ui/HomeMacIcon";
 import { resolveServiceItemImage } from "@/lib/homepage/service-item-image";
+import { resolveMacTone } from "@/lib/homepage/mac-tones";
 
 export type ServiceGridItem = {
   title: string;
@@ -12,14 +14,14 @@ export type ServiceGridItem = {
   imageUrl?: string;
 };
 
-export function ServiceGridCard({ item }: { item: ServiceGridItem }) {
-  const tone = item.tone || "blue";
+export function ServiceGridCard({ item, index = 0 }: { item: ServiceGridItem; index?: number }) {
+  const tone = resolveMacTone(item.tone, index);
   const imageUrl = resolveServiceItemImage(item);
   const icon = item.icon || "fas fa-check";
   const href = item.href?.trim() || "/services";
 
   return (
-    <article className="service-card home-service-card" data-tone={tone}>
+    <article className="service-card home-service-card home-mac-card" data-tone={tone}>
       <div className="home-service-card__media">
         {imageUrl ? (
           <Image
@@ -37,6 +39,13 @@ export function ServiceGridCard({ item }: { item: ServiceGridItem }) {
         )}
       </div>
       <div className="home-service-card__body">
+        <HomeMacIcon
+          icon={icon}
+          tone={tone}
+          index={index}
+          size="md"
+          className="home-service-card__mac-badge"
+        />
         <h3>{item.title}</h3>
         {item.desc ? <p>{item.desc}</p> : null}
         <Link href={href} className="service-link">
