@@ -1985,6 +1985,19 @@ main.site-main .rounded-4.border.shadow-sm {
   padding: 28px 0 32px;
 }
 
+/* Pro sectionized body (classic HTML from CMS) */
+.service-detail-page .pro-page {
+  width: 100%;
+}
+
+.service-detail-page .pro-page__section:first-of-type {
+  padding-top: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.service-detail-page .pro-page__section--highlight {
+  border-radius: 0;
+}
+
 .service-detail-price-badge {
   display: inline-flex;
   align-items: center;

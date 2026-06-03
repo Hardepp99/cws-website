@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { EntityEditorModePanel, type DesimentorMeta } from "@/components/admin/EntityEditorModePanel";
 import { SeoPanel } from "@/components/admin/SeoPanel";
 import { SlugField } from "@/components/admin/SlugField";
+import { PageProCssField } from "@/components/admin/PageProCssField";
 import { WysiwygField } from "@/components/admin/WysiwygField";
 import { WpEditScreen } from "@/components/admin/wp/WpEditScreen";
 import { FaqEditorField } from "@/components/admin/FaqEditorField";
@@ -27,6 +28,7 @@ export function SitePageForm({ pageId, isNew }: { pageId?: number; isNew?: boole
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [contentHtml, setContentHtml] = useState("");
+  const [pageCustomCss, setPageCustomCss] = useState("");
   const [template, setTemplate] = useState("default");
   const [status, setStatus] = useState("draft");
   const [displayMode, setDisplayMode] = useState<DisplayMode>("classic");
@@ -51,6 +53,7 @@ export function SitePageForm({ pageId, isNew }: { pageId?: number; isNew?: boole
       setTitle(String(row.title ?? ""));
       setSlug(String(row.slug ?? ""));
       setContentHtml(String(row.content_html ?? ""));
+      setPageCustomCss(String(row.page_custom_css ?? ""));
       setTemplate(String(row.template ?? "default"));
       setStatus(String(row.status ?? "published"));
       setDisplayMode(normalizeDisplayMode(String(row.display_mode ?? "classic")));
@@ -76,6 +79,7 @@ export function SitePageForm({ pageId, isNew }: { pageId?: number; isNew?: boole
       title,
       slug,
       content_html: contentHtml,
+      page_custom_css: pageCustomCss,
       template,
       status,
       display_mode: displayMode,
@@ -121,8 +125,10 @@ export function SitePageForm({ pageId, isNew }: { pageId?: number; isNew?: boole
       </select>
       <WysiwygField label="Classic content (HTML)" value={contentHtml} onChange={setContentHtml} />
       <p className="cms-field-hint">
-        This is the original classic content. It is preserved when you edit with Desimentor.
+        Use <strong>H2 headings</strong> to split sections (About, Team, Services, etc.). This is preserved when you
+        edit with Desimentor.
       </p>
+      <PageProCssField value={pageCustomCss} onChange={setPageCustomCss} />
       {!isHomepage ? (
         <FaqEditorField
           items={faqs}

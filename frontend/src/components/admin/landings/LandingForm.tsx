@@ -6,6 +6,7 @@ import { FaqEditorField } from "@/components/admin/FaqEditorField";
 import { EntityEditorModePanel, type DesimentorMeta } from "@/components/admin/EntityEditorModePanel";
 import { SeoPanel } from "@/components/admin/SeoPanel";
 import { SlugField } from "@/components/admin/SlugField";
+import { PageProCssField } from "@/components/admin/PageProCssField";
 import { WysiwygField } from "@/components/admin/WysiwygField";
 import { WpEditScreen } from "@/components/admin/wp/WpEditScreen";
 import { EMPTY_SEO, type AdminSeoData } from "@/lib/admin/seo-types";
@@ -26,6 +27,7 @@ export function LandingForm({ landingId, isNew }: { landingId?: number; isNew?: 
   const [deliverables, setDeliverables] = useState("");
   const [faqs, setFaqs] = useState<FaqItem[]>([]);
   const [seoBody, setSeoBody] = useState("");
+  const [pageCustomCss, setPageCustomCss] = useState("");
   const [seo, setSeo] = useState<AdminSeoData>({ ...EMPTY_SEO });
   const [status, setStatus] = useState("draft");
   const [displayMode, setDisplayMode] = useState<DisplayMode>("classic");
@@ -48,6 +50,7 @@ export function LandingForm({ landingId, isNew }: { landingId?: number; isNew?: 
       setDeliverables(d.join("\n"));
       setFaqs(parseFaqsFromAdminRow(data));
       setSeoBody(String(data.seo_body_html ?? ""));
+      setPageCustomCss(String(data.page_custom_css ?? ""));
       setStatus(String(data.status ?? "published"));
       setDisplayMode(normalizeDisplayMode(String(data.display_mode ?? "classic")));
       const meta = data.desimentor_meta as DesimentorMeta | undefined;
@@ -91,6 +94,7 @@ export function LandingForm({ landingId, isNew }: { landingId?: number; isNew?: 
       related_slugs: [],
       theme,
       seo_body_html: seoBody,
+      page_custom_css: pageCustomCss,
       status,
       display_mode: displayMode,
     };
@@ -122,6 +126,7 @@ export function LandingForm({ landingId, isNew }: { landingId?: number; isNew?: 
       <FaqEditorField items={faqs} onChange={setFaqs} />
       <SeoPanel seo={seo} onChange={setSeo} contentHtml={seoBody} slug={slug} pathPrefix="/" />
       <WysiwygField label="Classic SEO body (HTML)" value={seoBody} onChange={setSeoBody} height={320} />
+      <PageProCssField value={pageCustomCss} onChange={setPageCustomCss} />
       <label className="cms-label">Status</label>
       <select className="cms-select" value={status} onChange={(e) => setStatus(e.target.value)}>
         <option value="published">Published</option>

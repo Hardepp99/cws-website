@@ -197,6 +197,8 @@ export default async function DynamicPage({ params }: PageProps) {
         displayMode={page.displayMode}
         content={page.content}
         desimentor={page.desimentor}
+        pageCustomCss={page.pageCustomCss}
+        contentStructure={page.contentStructure}
       />
       <PageFaq items={normalizeFaqItems(page.faqs)} />
       <PageTrustStrip />

@@ -18,6 +18,9 @@
 --   ★ 4) 08_plan2_site_settings_promo.sql
 --      → Top announcement / promo bar (admin-editable fields).
 --
+--   ★ 5) 12_services_detail_genuine_content.sql
+--      → Service detail pages: hero, pro HTML body, features, FAQs (classic mode).
+--
 --   (Optional legacy) 05_homepage_ONLY_full_update.sql — same content as 07 if regenerated
 --
 --   OR section-by-section: database/live/homepage-sections/

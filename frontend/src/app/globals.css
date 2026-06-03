@@ -1,6 +1,7 @@
 @import "./corporate.css";
 @import "./layout-width.css";
 @import "./desimentor-pages.css";
+@import "./inner-pages-pro.css";
 @import "./animations.css";
 @import "./home.css";
 @import "./home-refined.css";
@@ -30,6 +31,7 @@
 @import "./home-cards-premium.css";
 @import "./home-agency-modern.css";
 @import "./home-grid-balanced.css";
+@import "./home-item-layouts.css";
 
 @tailwind base;
 @tailwind components;

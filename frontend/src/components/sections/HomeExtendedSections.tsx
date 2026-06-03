@@ -1,11 +1,12 @@
-import Link from "next/link";
 import { CtaLink } from "@/components/engagement/CtaLink";
-import { ServicesMarqueeStrip } from "@/components/sections/ServicesMarqueeStrip";
+import { HomeSectionItems } from "@/components/homepage/items/HomeSectionItems";
 import { HomeMacIcon } from "@/components/ui/HomeMacIcon";
+import { resolveMacTone } from "@/lib/homepage/mac-tones";
+import { ServicesMarqueeStrip } from "@/components/sections/ServicesMarqueeStrip";
 import { Reveal } from "@/components/ui/Reveal";
 import { filterTrustItemsNotInHeroStats } from "@/lib/homepage/dedupe-trust-items";
+import type { HomeDisplayItem } from "@/lib/homepage/home-display-item";
 import { filterPublishedItems } from "@/lib/homepage/item-status";
-import { resolveMacTone } from "@/lib/homepage/mac-tones";
 import type { HomepageSection } from "@/lib/wordpress/types";
 
 function Head({
@@ -29,16 +30,10 @@ function Head({
   );
 }
 
-type Item = {
-  title?: string;
-  desc?: string;
-  description?: string;
-  icon?: string;
-  href?: string;
-  letter?: string;
-  tone?: string;
-  status?: string;
-};
+function sectionVisual(section: HomepageSection): string | undefined {
+  const v = section.itemsVisual ?? section.items_visual;
+  return typeof v === "string" ? v : undefined;
+}
 
 export function TrustBadgesSection({
   section,
@@ -47,29 +42,14 @@ export function TrustBadgesSection({
   section: HomepageSection;
   heroStats?: { count?: number; label?: string; status?: string }[];
 }) {
-  const published = filterPublishedItems((section.items as Item[]) || []);
+  const published = filterPublishedItems((section.items as HomeDisplayItem[]) || []);
   const heroPublished = filterPublishedItems(heroStats || []);
   const items = filterTrustItemsNotInHeroStats(published, heroPublished);
   return (
     <section className="home-trust home-agency-section corp-section corp-section-alt">
       <div className="corp-container">
         <Head badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
-        <div className="home-trust-grid home-grid-balanced home-grid-balanced--4">
-          {items.map((item, i) => {
-            const tone = resolveMacTone(item.tone, i);
-            return (
-              <div key={item.title} className="home-grid-balanced__item">
-                <Reveal variant="zoom-in" delay={i * 85}>
-                  <article className={`home-trust-card home-mac-card home-trust-card--${tone}`} data-tone={tone}>
-                    <HomeMacIcon icon={item.icon || "fas fa-check"} tone={tone} index={i} size="md" />
-                    <h3>{item.title}</h3>
-                    <p>{item.desc || item.description}</p>
-                  </article>
-                </Reveal>
-              </div>
-            );
-          })}
-        </div>
+        <HomeSectionItems items={items} columns={4} visual={sectionVisual(section)} />
       </div>
     </section>
   );
@@ -77,7 +57,7 @@ export function TrustBadgesSection({
 
 /** @deprecated Marquee lives on hero bottom — use ServicesMarqueeStrip via HeroSlider */
 export function ServicesMarqueeSection({ section }: { section: HomepageSection }) {
-  const items = filterPublishedItems((section.items as Item[]) || []);
+  const items = filterPublishedItems((section.items as HomeDisplayItem[]) || []);
   return (
     <section className="home-marquee corp-section" aria-label="Services">
       <ServicesMarqueeStrip items={items} />
@@ -86,144 +66,93 @@ export function ServicesMarqueeSection({ section }: { section: HomepageSection }
 }
 
 export function IndustriesSection({ section }: { section: HomepageSection }) {
-  const items = filterPublishedItems((section.items as Item[]) || []);
+  const items = filterPublishedItems((section.items as HomeDisplayItem[]) || []);
   return (
     <section className="home-industries corp-section">
       <div className="corp-container">
         <Head badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
-        <div className="home-industries-grid">
-          {items.map((item, i) => {
-            const tone = resolveMacTone(item.tone, i);
-            return (
-              <Reveal key={item.title} variant="fade-up" delay={i * 55}>
-                <div className="home-industry-chip home-mac-chip" data-tone={tone}>
-                  <HomeMacIcon icon={item.icon || "fas fa-briefcase"} tone={tone} index={i} size="sm" />
-                  <span>{item.title}</span>
-                </div>
-              </Reveal>
-            );
-          })}
-        </div>
+        <HomeSectionItems
+          items={items}
+          columns={4}
+          compact
+          cardVariant="chip"
+          visual={sectionVisual(section)}
+        />
       </div>
     </section>
   );
 }
 
 export function WebsiteTypesSection({ section }: { section: HomepageSection }) {
-  const items = filterPublishedItems((section.items as Item[]) || []);
+  const items = filterPublishedItems((section.items as HomeDisplayItem[]) || []);
   return (
     <section className="home-website-types corp-section corp-section-alt">
       <div className="corp-container">
         <Head badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
-        <div className="home-grid-balanced home-grid-balanced--3">
-          {items.map((item, i) => {
-            const tone = resolveMacTone(item.tone, i);
-            return (
-              <div key={item.title} className="home-grid-balanced__item">
-                <Reveal variant={i % 2 === 0 ? "slide-left" : "slide-right"} delay={i * 100}>
-                  <article className="home-type-card home-mac-card h-100" data-tone={tone}>
-                    <HomeMacIcon icon={item.icon || "fas fa-globe"} tone={tone} index={i} size="lg" />
-                    <h3>{item.title}</h3>
-                    <p>{item.desc || item.description}</p>
-                    {item.href ? (
-                      <Link href={item.href} className="home-type-link">
-                        Learn more <i className="fas fa-arrow-right ms-1" />
-                      </Link>
-                    ) : null}
-                  </article>
-                </Reveal>
-              </div>
-            );
-          })}
-        </div>
+        <HomeSectionItems items={items} columns={3} visual={sectionVisual(section)} />
       </div>
     </section>
   );
 }
 
 export function TechStackSection({ section }: { section: HomepageSection }) {
-  const items = filterPublishedItems((section.items as Item[]) || []);
+  const items = filterPublishedItems((section.items as HomeDisplayItem[]) || []);
   return (
     <section className="home-tech corp-section">
       <div className="corp-container">
         <Head badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
-        <div className="home-tech-row">
-          {items.map((item, i) => {
-            const tone = resolveMacTone(item.tone, i);
-            return (
-              <Reveal key={item.title} variant="zoom-in" delay={i * 45}>
-                <span className="home-tech-pill home-mac-chip" data-tone={tone}>
-                  <HomeMacIcon icon={item.icon || "fas fa-code"} tone={tone} index={i} size="sm" />
-                  {item.title}
-                </span>
-              </Reveal>
-            );
-          })}
-        </div>
+        <HomeSectionItems
+          items={items}
+          columns={4}
+          compact
+          cardVariant="compact"
+          visual={sectionVisual(section)}
+        />
       </div>
     </section>
   );
 }
 
 export function PricingPackagesSection({ section }: { section: HomepageSection }) {
-  const items = filterPublishedItems((section.items as Item[]) || []);
+  const items = filterPublishedItems((section.items as HomeDisplayItem[]) || []);
   return (
     <section className="home-pricing corp-section corp-section-alt" id="packages">
       <div className="corp-container">
         <Head badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
-        <div className="home-grid-balanced home-grid-balanced--4">
-          {items.map((item, i) => {
-            const tone = resolveMacTone(item.tone, i);
-            return (
-              <div key={item.title} className="home-grid-balanced__item">
-                <Reveal variant="zoom-in" delay={i * 115}>
-                  <article className="home-package-card home-mac-card h-100" data-tone={tone}>
-                    <HomeMacIcon icon={item.icon || "fas fa-box"} tone={tone} index={i} size="lg" />
-                    <h3>{item.title}</h3>
-                    <p>{item.desc || item.description}</p>
-                    <CtaLink href="#ask-price" className="btn btn-outline-custom btn-sm">
-                      Get estimate
-                    </CtaLink>
-                  </article>
-                </Reveal>
-              </div>
-            );
-          })}
-        </div>
+        <HomeSectionItems
+          items={items}
+          columns={4}
+          visual={sectionVisual(section)}
+          renderItem={(item, i) => (
+            <article className="home-package-card home-mac-card h-100" data-tone={resolveMacTone(item.tone, i)}>
+              <HomeMacIcon icon={item.icon || "fas fa-box"} tone={item.tone} index={i} size="lg" />
+              <h3>{item.title}</h3>
+              <p>{item.desc || item.description}</p>
+              <CtaLink href="#ask-price" className="btn btn-outline-custom btn-sm">
+                Get estimate
+              </CtaLink>
+            </article>
+          )}
+        />
       </div>
     </section>
   );
 }
 
 export function GuaranteesSection({ section }: { section: HomepageSection }) {
-  const items = filterPublishedItems((section.items as Item[]) || []);
+  const items = filterPublishedItems((section.items as HomeDisplayItem[]) || []);
   return (
     <section className="home-guarantees home-agency-section corp-section">
       <div className="corp-container">
         <Head badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
-        <div className="home-grid-balanced home-grid-balanced--4">
-          {items.map((item, i) => {
-            const tone = resolveMacTone(item.tone, i);
-            return (
-              <div key={item.title} className="home-grid-balanced__item">
-                <Reveal variant="fade-up" delay={i * 120}>
-                  <article className="home-guarantee-card home-mac-card h-100" data-tone={tone}>
-                    <HomeMacIcon icon={item.icon || "fas fa-shield-alt"} tone={tone} index={i} size="md" />
-                    <h3>{item.title}</h3>
-                    <p>{item.desc || item.description}</p>
-                  </article>
-                </Reveal>
-              </div>
-            );
-          })}
-        </div>
+        <HomeSectionItems items={items} columns={4} visual={sectionVisual(section)} />
       </div>
     </section>
   );
 }
 
 export function FaqSection({ section }: { section: HomepageSection }) {
-  const items = filterPublishedItems((section.items as Item[]) || []);
+  const items = filterPublishedItems((section.items as HomeDisplayItem[]) || []);
   return (
     <section className="home-faq corp-section corp-section-alt" id="faq">
       <div className="corp-container">

@@ -1,0 +1,212 @@
+/**
+ * Pro internal pages — sectionized classic HTML (about, services, landings, etc.)
+ * Not used on blog single posts.
+ */
+
+.pro-page {
+  width: 100%;
+}
+
+.pro-page__title-wrap {
+  padding: clamp(1.5rem, 4vw, 2.5rem) 0 0.5rem;
+  text-align: center;
+}
+
+.pro-page__page-title {
+  margin: 0;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #0f172a;
+}
+
+.pro-page__section {
+  padding: clamp(2.25rem, 5vw, 3.5rem) 0;
+}
+
+.pro-page__section--default {
+  background: #fff;
+}
+
+.pro-page__section--alt {
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.pro-page__section--highlight {
+  background: linear-gradient(135deg, #0a1e5e 0%, #0057ff 55%, #0088ff 100%);
+  color: #f8fafc;
+}
+
+.pro-page__section--highlight .pro-page__section-title,
+.pro-page__section--highlight .pro-page__prose,
+.pro-page__section--highlight .pro-page__prose p,
+.pro-page__section--highlight .pro-page__prose li {
+  color: rgba(248, 250, 252, 0.95) !important;
+}
+
+.pro-page__section--highlight .pro-page__eyebrow {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #ffe566;
+}
+
+.pro-page__section-inner {
+  max-width: 72rem;
+}
+
+.pro-page__eyebrow {
+  display: inline-flex;
+  margin-bottom: 0.65rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  background: rgba(0, 87, 255, 0.08);
+  border: 1px solid rgba(0, 87, 255, 0.15);
+  color: #0057ff;
+}
+
+.pro-page__section-title {
+  margin: 0 0 1.25rem;
+  font-size: clamp(1.35rem, 3vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: #0f172a;
+}
+
+.pro-page__section-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.pro-page__section--split .pro-page__section-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  align-items: center;
+}
+
+.pro-page__section-media {
+  min-width: 0;
+}
+
+.pro-page__figure {
+  margin: 0;
+}
+
+.pro-page__figure-media {
+  position: relative;
+  min-height: clamp(220px, 32vw, 380px);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.14);
+  background: #e2e8f0;
+}
+
+.pro-page__figure-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pro-page__figure figcaption {
+  margin-top: 0.65rem;
+  font-size: 0.875rem;
+  color: #64748b;
+  text-align: center;
+}
+
+.pro-page__prose {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: #475569;
+}
+
+.pro-page__prose h3,
+.pro-page__prose h4 {
+  color: #0f172a;
+  margin-top: 1.25rem;
+}
+
+.pro-page__prose p {
+  margin-bottom: 1rem;
+}
+
+.pro-page__prose p.lead {
+  font-size: 1.125rem;
+  color: #334155;
+}
+
+.pro-page__icon-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.pro-page__icon-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.pro-page__section--highlight .pro-page__icon-list li {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: #f8fafc;
+}
+
+.pro-page__icon-list i {
+  color: #0057ff;
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+}
+
+.pro-page__section--highlight .pro-page__icon-list i {
+  color: #ffe566;
+}
+
+.pro-page__mini-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 1rem;
+}
+
+.pro-page__mini-card {
+  padding: 1.15rem 1.1rem;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.pro-page__mini-card h4 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  color: #0f172a;
+}
+
+@media (max-width: 991.98px) {
+  .pro-page__section--split .pro-page__section-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pro-page__section {
+    animation: none !important;
+  }
+}

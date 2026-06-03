@@ -2,10 +2,8 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { AnalyticsProvider } from "@/components/analytics/AnalyticsProvider";
 import "./globals.css";
-import { buildMetadata, organizationJsonLd, webSiteJsonLd } from "@/lib/seo/metadata";
-import { buildSiteIntroBootstrapScript } from "@/lib/site-intro";
-
-const siteIntroBootstrapScript = buildSiteIntroBootstrapScript();
+import { JsonLdScripts } from "@/components/seo/JsonLdScripts";
+import { buildMetadata } from "@/lib/seo/metadata";
 
 /** Every page reads fresh content from MySQL on each request (no static HTML at build time). */
 export const dynamic = "force-dynamic";
@@ -29,16 +27,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="stylesheet" href="/assets/css/cws-ui-theme.css" />
         <link rel="stylesheet" href="/assets/css/community.css" />
         <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify([organizationJsonLd(), webSiteJsonLd()]),
-          }}
-        />
+        <Script id="cws-site-intro-bootstrap" src="/cws-site-intro-bootstrap.js" strategy="beforeInteractive" />
       </head>
-      {/* Inline site-intro script may set body class before hydration (session / path). */}
       <body suppressHydrationWarning>
-        <script dangerouslySetInnerHTML={{ __html: siteIntroBootstrapScript }} />
+        <JsonLdScripts />
         <AnalyticsProvider />
         {children}
       </body>

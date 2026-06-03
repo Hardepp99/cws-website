@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { EntityEditorModePanel, type DesimentorMeta } from "@/components/admin/EntityEditorModePanel";
 import { SeoPanel } from "@/components/admin/SeoPanel";
 import { SlugField } from "@/components/admin/SlugField";
+import { PageProCssField } from "@/components/admin/PageProCssField";
 import { WysiwygField } from "@/components/admin/WysiwygField";
 import { WpEditScreen } from "@/components/admin/wp/WpEditScreen";
 import { FaqEditorField } from "@/components/admin/FaqEditorField";
@@ -25,6 +26,7 @@ export function ServiceForm({ serviceId, isNew }: { serviceId?: number; isNew?: 
   const [heroSubtitle, setHeroSubtitle] = useState("");
   const [priceBadge, setPriceBadge] = useState("");
   const [contentHtml, setContentHtml] = useState("");
+  const [pageCustomCss, setPageCustomCss] = useState("");
   const [featuresText, setFeaturesText] = useState("");
   const [faqs, setFaqs] = useState<FaqItem[]>([]);
   const [ctaTitle, setCtaTitle] = useState("");
@@ -47,6 +49,7 @@ export function ServiceForm({ serviceId, isNew }: { serviceId?: number; isNew?: 
       setHeroSubtitle(String(data.hero_subtitle ?? ""));
       setPriceBadge(String(data.price_badge ?? ""));
       setContentHtml(String(data.content_html ?? ""));
+      setPageCustomCss(String(data.page_custom_css ?? ""));
       setCtaTitle(String(data.cta_title ?? ""));
       setCtaText(String(data.cta_text ?? ""));
       setStatus(String(data.status ?? "published"));
@@ -82,6 +85,7 @@ export function ServiceForm({ serviceId, isNew }: { serviceId?: number; isNew?: 
       hero_subtitle: heroSubtitle,
       price_badge: priceBadge,
       content_html: contentHtml,
+      page_custom_css: pageCustomCss,
       features,
       cta_title: ctaTitle,
       cta_text: ctaText,
@@ -116,6 +120,7 @@ export function ServiceForm({ serviceId, isNew }: { serviceId?: number; isNew?: 
       <label className="cms-label">Price badge</label>
       <input className="cms-input" value={priceBadge} onChange={(e) => setPriceBadge(e.target.value)} />
       <WysiwygField label="Classic body (HTML)" value={contentHtml} onChange={setContentHtml} height={360} />
+      <PageProCssField value={pageCustomCss} onChange={setPageCustomCss} />
       <label className="cms-label">Features (one per line)</label>
       <textarea className="cms-textarea" rows={5} value={featuresText} onChange={(e) => setFeaturesText(e.target.value)} />
       <FaqEditorField items={faqs} onChange={setFaqs} />

@@ -149,6 +149,21 @@ ALTER TABLE media
 ALTER TABLE media ADD INDEX idx_media_member (member_id);
 
 -- -----------------------------------------------------------------------------
+-- 019 — Pro internal pages (per-page CSS + content_structure JSON)
+-- -----------------------------------------------------------------------------
+ALTER TABLE pages
+  ADD COLUMN page_custom_css MEDIUMTEXT NULL AFTER content_html,
+  ADD COLUMN content_structure JSON NULL AFTER page_custom_css;
+
+ALTER TABLE services
+  ADD COLUMN page_custom_css MEDIUMTEXT NULL AFTER content_html,
+  ADD COLUMN content_structure JSON NULL AFTER page_custom_css;
+
+ALTER TABLE service_landings
+  ADD COLUMN page_custom_css MEDIUMTEXT NULL AFTER seo_body_html,
+  ADD COLUMN content_structure JSON NULL AFTER page_custom_css;
+
+-- -----------------------------------------------------------------------------
 -- 015 — Community / members (large — run database/migrations/015_community.sql
 --       separately if you use forums / member login)
 -- -----------------------------------------------------------------------------

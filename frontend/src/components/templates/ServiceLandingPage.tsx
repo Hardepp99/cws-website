@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { PageFaq } from "@/components/faq/PageFaq";
-import { PageBodyContent } from "@/components/ui/PageBodyContent";
+import { InternalProPageBody } from "@/components/pages/InternalProPageBody";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { resolvePublicBody } from "@/lib/content/display-mode";
 import { normalizeFaqItems } from "@/lib/faq/normalize";
@@ -44,12 +44,14 @@ export function ServiceLandingPage({ data }: ServiceLandingPageProps) {
 
       {body.showElementor ? (
         <div className="inner-page-elementor">
-          <PageBodyContent
+          <InternalProPageBody
             title={data.pageTitle}
             displayMode={data.displayMode}
             content={data.seoBody}
             desimentor={data.desimentor}
-            showArticleWrapper={false}
+            pageCustomCss={data.pageCustomCss}
+            contentStructure={data.contentStructure}
+            hideTitleInBody
           />
         </div>
       ) : (
@@ -60,17 +62,15 @@ export function ServiceLandingPage({ data }: ServiceLandingPageProps) {
               <p className="service-location-lead">{data.intro}</p>
             </div>
           </section>
-          {body.showClassic ? (
-            <section className="service-location-section alt">
-              <div className="corp-container service-location-copy">
-                <PageBodyContent
-                  title={data.pageTitle}
-                  displayMode="classic"
-                  content={data.seoBody}
-                  showArticleWrapper={false}
-                />
-              </div>
-            </section>
+          {body.showClassic && data.seoBody?.trim() ? (
+            <InternalProPageBody
+              title={data.pageTitle}
+              displayMode="classic"
+              content={data.seoBody}
+              pageCustomCss={data.pageCustomCss}
+              contentStructure={data.contentStructure}
+              hideTitleInBody
+            />
           ) : null}
         </>
       )}

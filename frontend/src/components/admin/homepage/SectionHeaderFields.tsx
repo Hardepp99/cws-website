@@ -227,6 +227,21 @@ export function SectionHeaderFields({
         <Field label="Badge" value={String(section.badge ?? "")} onChange={(v) => set("badge", v)} />
         <Field label="Title" value={String(section.title ?? "")} onChange={(v) => set("title", v)} />
         <Field label="Subtitle" value={String(section.subtitle ?? "")} onChange={(v) => set("subtitle", v)} type="textarea" />
+        <label className="cms-label">Items layout (optional)</label>
+        <select
+          className="cms-select"
+          value={String(section.itemsVisual ?? section.items_visual ?? "")}
+          onChange={(e) => set("itemsVisual", e.target.value || undefined)}
+        >
+          <option value="">Auto (varies per section)</option>
+          <option value="grid">Grid</option>
+          <option value="wheel">Wheel</option>
+          <option value="infographic">Infographic</option>
+          <option value="roadmap">Roadmap</option>
+          <option value="tree">Tree</option>
+          <option value="collage">Collage</option>
+        </select>
+        <p className="cms-field-hint">Leave Auto for rotating wheel, roadmap, tree, collage, and infographic styles.</p>
       </SectionFieldsWrap>
     );
   }

@@ -65,6 +65,9 @@ async function main() {
       "02_fix_menu_db_keys.sql",
       "07_plan2_homepage_full_update.sql",
       "08_plan2_site_settings_promo.sql",
+      "10_page_pro_columns.sql",
+      "11_about_page_pro_content.sql",
+      "12_services_detail_genuine_content.sql",
     ];
     for (const f of liveFiles) {
       await runSqlFile(conn, join(liveDir, f));

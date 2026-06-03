@@ -118,6 +118,8 @@ export interface ServiceLanding {
   theme: ServiceTheme;
   /** Long-form sample copy for editors / localhost (optional). */
   seoBody?: string;
+  pageCustomCss?: string | null;
+  contentStructure?: unknown;
   desimentor?: DesimentorDocument;
 }
 
@@ -129,6 +131,8 @@ export interface ServiceDetail {
   heroSubtitle: string;
   priceBadge?: string;
   content?: string;
+  pageCustomCss?: string | null;
+  contentStructure?: unknown;
   features: { title: string; description: string; icon: string }[];
   faqs?: FaqItem[];
   ctaTitle?: string;
@@ -156,6 +160,9 @@ export interface HomepageSection {
   /** Service pills on hero bottom marquee */
   marqueeItems?: { title?: string; href?: string; letter?: string; status?: string }[];
   items?: Record<string, unknown>[];
+  /** Optional: force item layout (wheel | infographic | roadmap | tree | collage | grid) */
+  itemsVisual?: string;
+  items_visual?: string;
   [key: string]: unknown;
 }
 
@@ -166,6 +173,8 @@ export interface WpPage {
   title: string;
   content?: string;
   displayMode?: ContentDisplayMode;
+  pageCustomCss?: string | null;
+  contentStructure?: unknown;
   faqs?: FaqItem[];
   seo: SeoMeta;
   sections?: HomepageSection[];

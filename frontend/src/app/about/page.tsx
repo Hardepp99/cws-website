@@ -41,6 +41,8 @@ export default async function AboutPage() {
         displayMode={page.displayMode}
         content={page.content}
         desimentor={page.desimentor}
+        pageCustomCss={page.pageCustomCss}
+        contentStructure={page.contentStructure}
       />
       {!page.content && !page.desimentor?.sections?.length ? (
         <section className="content-page-section">

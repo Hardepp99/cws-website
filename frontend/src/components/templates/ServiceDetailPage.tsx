@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { PageFaq } from "@/components/faq/PageFaq";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { PageBodyContent } from "@/components/ui/PageBodyContent";
+import { InternalProPageBody } from "@/components/pages/InternalProPageBody";
 import { PageContentTitle } from "@/components/ui/PageContentTitle";
 import { PageHeader } from "@/components/ui/PageHeader";
 import type { ServiceDetail } from "@/lib/wordpress/types";
@@ -48,12 +48,14 @@ export function ServiceDetailPage({ data }: ServiceDetailPageProps) {
 
       {body.showElementor ? (
         <div className="inner-page-elementor">
-          <PageBodyContent
+          <InternalProPageBody
             title={data.title}
             displayMode={data.displayMode}
             content={data.content}
             desimentor={data.desimentor}
-            showArticleWrapper={false}
+            pageCustomCss={data.pageCustomCss}
+            contentStructure={data.contentStructure}
+            hideTitleInBody
           />
         </div>
       ) : null}
@@ -103,17 +105,15 @@ export function ServiceDetailPage({ data }: ServiceDetailPageProps) {
             </section>
           ) : null}
 
-          {body.showClassic ? (
-            <section className="content-page-section">
-              <div className="corp-container">
-                <PageBodyContent
-                  title={data.title}
-                  displayMode="classic"
-                  content={data.content}
-                  showArticleWrapper={false}
-                />
-              </div>
-            </section>
+          {body.showClassic && data.content?.trim() ? (
+            <InternalProPageBody
+              title={data.title}
+              displayMode="classic"
+              content={data.content}
+              pageCustomCss={data.pageCustomCss}
+              contentStructure={data.contentStructure}
+              hideTitleInBody
+            />
           ) : null}
 
           <PageFaq items={normalizeFaqItems(data.faqs)} title={`${data.title} — FAQs`} />

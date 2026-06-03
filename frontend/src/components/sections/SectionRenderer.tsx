@@ -18,8 +18,11 @@ import { HomeAboutSection } from "@/components/sections/HomeAboutSection";
 import { HomeProcessSection } from "@/components/sections/HomeProcessSection";
 import { HomeTestimonialsSection } from "@/components/sections/HomeTestimonialsSection";
 import { ServiceGridCard, type ServiceGridItem } from "@/components/sections/ServiceGridCard";
+import { HomeSectionItems } from "@/components/homepage/items/HomeSectionItems";
 import { HomeMacIcon } from "@/components/ui/HomeMacIcon";
+import type { HomeDisplayItem } from "@/lib/homepage/home-display-item";
 import { resolveMacTone } from "@/lib/homepage/mac-tones";
+import { HomeSectionVisualProvider } from "@/components/homepage/items/HomeSectionVisualContext";
 import { HomepageSectionShell } from "@/components/sections/HomepageSectionShell";
 import { LocalPortfolioSection } from "@/components/sections/LocalPortfolioSection";
 import {
@@ -163,7 +166,9 @@ export async function SectionRenderer({ sections, allSections }: SectionRenderer
             backdropStrength={backdropStrength}
             layout={layout}
           >
-            {node}
+            <HomeSectionVisualProvider acfLayout={layout} sectionIndex={index}>
+              {node}
+            </HomeSectionVisualProvider>
           </HomepageSectionShell>
         );
       })}
@@ -209,26 +214,17 @@ function HomeSectionHead({
 
 function WhyCodifySection({ section }: { section: HomepageSection }) {
   const cards = filterPublishedItems(
-    (section.cards as { icon: string; title: string; description: string; number: string; status?: string }[]) || []
-  );
+    (section.cards as HomeDisplayItem[]) || [],
+  ).map((c) => ({
+    ...c,
+    desc: c.description || c.desc,
+    number: c.number,
+  }));
   return (
     <section className="why-codify-section home-agency-why corp-section corp-section-alt" id="why-codify">
       <div className="container">
         <HomeSectionHead badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
-        <div className="home-grid-balanced home-grid-balanced--3">
-          {cards.map((card, i) => (
-            <div key={card.number} className="home-grid-balanced__item">
-              <Reveal variant={cardVariant(i)} delay={i * 110}>
-                <div className="why-card home-mac-card" data-tone={resolveMacTone(undefined, i)}>
-                  <HomeMacIcon icon={card.icon || "fas fa-star"} index={i} size="lg" />
-                  <h3>{card.title}</h3>
-                  <p>{card.description}</p>
-                  <div className="why-number">{card.number}</div>
-                </div>
-              </Reveal>
-            </div>
-          ))}
-        </div>
+        <HomeSectionItems items={cards} columns={3} cardVariant="why" visual={section.itemsVisual as string} />
       </div>
     </section>
   );
@@ -250,15 +246,13 @@ function ServicesGridSection({ section }: { section: HomepageSection }) {
     <section className="services-section home-services home-agency-section corp-section" id="services">
       <div className="corp-container">
         <HomeSectionHead badge={section.badge as string} title={section.title as string} subtitle={subtitle} />
-        <div className="home-grid-balanced home-grid-balanced--3 home-services__grid">
-          {services.map((s, i) => (
-            <div key={`${s.href}-${s.title}-${i}`} className="home-grid-balanced__item">
-              <Reveal variant={i % 2 === 0 ? "slide-left" : "slide-right"} delay={i * 85}>
-                <ServiceGridCard item={s} index={i} />
-              </Reveal>
-            </div>
-          ))}
-        </div>
+        <HomeSectionItems
+          items={services}
+          columns={3}
+          gridExtraClass="home-services__grid"
+          visual={section.itemsVisual as string}
+          renderItem={(item, i) => <ServiceGridCard item={item as ServiceGridItem} index={i} />}
+        />
         <Reveal variant="zoom-in">
         <div className="home-agency-services-cta">
           <div className="home-agency-strip">
@@ -287,20 +281,19 @@ function CoursesSection({ section }: { section: HomepageSection }) {
     <section className="courses-section corp-section" id="courses">
       <div className="container">
         <HomeSectionHead badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
-        <div className="row g-3">
-          {courses.map((c, i) => (
-            <div key={c.title} className="col-lg-4 col-md-6">
-              <Reveal variant="zoom-in" delay={i * 130}>
-              <div className="course-card home-mac-card" data-tone={resolveMacTone(undefined, i)}>
-                <HomeMacIcon icon={c.icon || "fas fa-graduation-cap"} index={i} size="lg" />
-                <h3>{c.title}</h3>
-                <p className="small text-muted mb-2">{c.desc}</p>
-                <Link href={c.href}>View program</Link>
-              </div>
-              </Reveal>
-            </div>
-          ))}
-        </div>
+        <HomeSectionItems
+          items={courses as HomeDisplayItem[]}
+          columns={3}
+          visual={section.itemsVisual as string}
+          renderItem={(item, i) => (
+            <article className="course-card home-mac-card h-100" data-tone={resolveMacTone(undefined, i)}>
+              <HomeMacIcon icon={item.icon || "fas fa-graduation-cap"} index={i} size="lg" />
+              <h3>{item.title}</h3>
+              <p className="small text-muted mb-2">{item.desc || item.description}</p>
+              {item.href ? <Link href={item.href}>View program</Link> : null}
+            </article>
+          )}
+        />
         <Reveal variant="fade-in">
         <div className="text-center mt-4">
           <Link href="/courses" className="btn btn-outline-custom btn-sm">

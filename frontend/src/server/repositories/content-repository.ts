@@ -12,6 +12,7 @@ import {
 } from "../utils/json";
 import { isDbBusyError } from "../db-resilience";
 import { saveInboundForm } from "./crm-inbox";
+import { sectionizePageHtml } from "@/lib/pages/sectionize-html";
 
 type Row = RowDataPacket;
 
@@ -23,8 +24,7 @@ export function contentRepository(): ContentRepository {
 }
 
 export class ContentRepository {
-  private displayModeCache = new Map<string, boolean>();
-  private faqsColumnCache = new Map<string, boolean>();
+  private columnCache = new Map<string, boolean>();
   private siteSettingsCache: Record<string, unknown> | null = null;
   private siteSettingsCachedAt = 0;
   private siteSettingsInFlight: Promise<Record<string, unknown>> | null = null;
@@ -257,14 +257,14 @@ export class ContentRepository {
       "SELECT * FROM service_landings WHERE slug = ? AND status = 'published' LIMIT 1",
       [slug],
     );
-    return rows[0] ? this.mapLanding(rows[0]) : null;
+    return rows[0] ? await this.mapLanding(rows[0]) : null;
   }
 
   async getAllServiceLandings(): Promise<Record<string, unknown>[]> {
     const [rows] = await this.pool.query<Row[]>(
       "SELECT * FROM service_landings WHERE status = 'published' ORDER BY service_name ASC",
     );
-    return rows.map((r) => this.mapLanding(r));
+    return Promise.all(rows.map((r) => this.mapLanding(r)));
   }
 
   async getService(slug: string): Promise<Record<string, unknown> | null> {
@@ -272,7 +272,7 @@ export class ContentRepository {
       "SELECT * FROM services WHERE slug = ? AND status = 'published' LIMIT 1",
       [slug],
     );
-    return rows[0] ? this.mapService(rows[0]) : null;
+    return rows[0] ? await this.mapService(rows[0]) : null;
   }
 
   async getBlogPosts(): Promise<Record<string, unknown>[]> {
@@ -571,44 +571,79 @@ export class ContentRepository {
     if (data.slug && !row.is_homepage) {
       slug = await this.uniqueSlug("pages", sanitizeSlug(String(data.slug)), id);
     }
-    await this.pool.query(
-      `UPDATE pages SET slug = ?, title = ?, content_html = ?, template = ?,
-       seo_title = ?, seo_description = ?, seo_keywords = ?, status = ? WHERE id = ?`,
-      [
-        slug,
-        data.title,
-        data.content_html ?? "",
-        data.template ?? "default",
-        data.seo_title ?? "",
-        data.seo_description ?? "",
-        data.seo_keywords ?? "",
-        data.status ?? "published",
-        id,
-      ],
-    );
+    const contentHtml = String(data.content_html ?? "");
+    const hasPro = await this.tableHasColumn("pages", "page_custom_css");
+    const hasFaqs = await this.tableHasColumn("pages", "faqs");
+    const sets = [
+      "slug = ?",
+      "title = ?",
+      "content_html = ?",
+      "template = ?",
+      "seo_title = ?",
+      "seo_description = ?",
+      "seo_keywords = ?",
+      "status = ?",
+    ];
+    const params: unknown[] = [
+      slug,
+      data.title,
+      contentHtml,
+      data.template ?? "default",
+      data.seo_title ?? "",
+      data.seo_description ?? "",
+      data.seo_keywords ?? "",
+      data.status ?? "published",
+    ];
+    if (hasPro) {
+      sets.push("page_custom_css = ?", "content_structure = ?");
+      params.push(data.page_custom_css ?? "", encodeJson(sectionizePageHtml(contentHtml)));
+    }
+    if (hasFaqs && data.faqs !== undefined) {
+      sets.push("faqs = ?");
+      params.push(encodeJson(data.faqs ?? []));
+    }
+    params.push(id);
+    await this.pool.query(`UPDATE pages SET ${sets.join(", ")} WHERE id = ?`, params);
+    this.pageSlugCache.delete(slug);
   }
 
   async saveLanding(id: number, data: Record<string, unknown>): Promise<void> {
-    await this.pool.query(
-      `UPDATE service_landings SET service_name = ?, page_title = ?, page_description = ?,
-       page_keywords = ?, intro = ?, benefits = ?, deliverables = ?, faq = ?, related_slugs = ?,
-       theme = ?, seo_body_html = ?, status = ? WHERE id = ?`,
-      [
-        data.service_name,
-        data.page_title,
-        data.page_description ?? "",
-        data.page_keywords ?? "",
-        data.intro ?? "",
-        encodeJson(data.benefits ?? []),
-        encodeJson(data.deliverables ?? []),
-        encodeJson(data.faq ?? []),
-        encodeJson(data.related_slugs ?? []),
-        encodeJson(data.theme ?? []),
-        data.seo_body_html ?? "",
-        data.status ?? "published",
-        id,
-      ],
-    );
+    const seoBody = String(data.seo_body_html ?? "");
+    const hasPro = await this.tableHasColumn("service_landings", "page_custom_css");
+    const sets = [
+      "service_name = ?",
+      "page_title = ?",
+      "page_description = ?",
+      "page_keywords = ?",
+      "intro = ?",
+      "benefits = ?",
+      "deliverables = ?",
+      "faq = ?",
+      "related_slugs = ?",
+      "theme = ?",
+      "seo_body_html = ?",
+      "status = ?",
+    ];
+    const params: unknown[] = [
+      data.service_name,
+      data.page_title,
+      data.page_description ?? "",
+      data.page_keywords ?? "",
+      data.intro ?? "",
+      encodeJson(data.benefits ?? []),
+      encodeJson(data.deliverables ?? []),
+      encodeJson(data.faq ?? []),
+      encodeJson(data.related_slugs ?? []),
+      encodeJson(data.theme ?? []),
+      seoBody,
+      data.status ?? "published",
+    ];
+    if (hasPro) {
+      sets.push("page_custom_css = ?", "content_structure = ?");
+      params.push(data.page_custom_css ?? "", encodeJson(sectionizePageHtml(seoBody)));
+    }
+    params.push(id);
+    await this.pool.query(`UPDATE service_landings SET ${sets.join(", ")} WHERE id = ?`, params);
   }
 
   async saveService(id: number, data: Record<string, unknown>): Promise<void> {
@@ -617,24 +652,45 @@ export class ContentRepository {
       sanitizeSlug(String(data.slug ?? data.title ?? "service")),
       id,
     );
-    await this.pool.query(
-      `UPDATE services SET slug = ?, title = ?, hero_title = ?, hero_subtitle = ?, price_badge = ?,
-       content_html = ?, features = ?, cta_title = ?, cta_text = ?, seo = ?, status = ? WHERE id = ?`,
-      [
-        slug,
-        data.title,
-        data.hero_title ?? data.title,
-        data.hero_subtitle ?? "",
-        data.price_badge ?? "",
-        data.content_html ?? "",
-        encodeJson(data.features ?? []),
-        data.cta_title ?? "",
-        data.cta_text ?? "",
-        encodeJson(data.seo ?? []),
-        data.status ?? "published",
-        id,
-      ],
-    );
+    const contentHtml = String(data.content_html ?? "");
+    const hasPro = await this.tableHasColumn("services", "page_custom_css");
+    const hasFaqs = await this.tableHasColumn("services", "faqs");
+    const sets = [
+      "slug = ?",
+      "title = ?",
+      "hero_title = ?",
+      "hero_subtitle = ?",
+      "price_badge = ?",
+      "content_html = ?",
+      "features = ?",
+      "cta_title = ?",
+      "cta_text = ?",
+      "seo = ?",
+      "status = ?",
+    ];
+    const params: unknown[] = [
+      slug,
+      data.title,
+      data.hero_title ?? data.title,
+      data.hero_subtitle ?? "",
+      data.price_badge ?? "",
+      contentHtml,
+      encodeJson(data.features ?? []),
+      data.cta_title ?? "",
+      data.cta_text ?? "",
+      encodeJson(data.seo ?? []),
+      data.status ?? "published",
+    ];
+    if (hasPro) {
+      sets.push("page_custom_css = ?", "content_structure = ?");
+      params.push(data.page_custom_css ?? "", encodeJson(sectionizePageHtml(contentHtml)));
+    }
+    if (hasFaqs && data.faqs !== undefined) {
+      sets.push("faqs = ?");
+      params.push(encodeJson(data.faqs ?? []));
+    }
+    params.push(id);
+    await this.pool.query(`UPDATE services SET ${sets.join(", ")} WHERE id = ?`, params);
   }
 
   async saveBlogPost(id: number, data: Record<string, unknown>): Promise<void> {
@@ -860,12 +916,16 @@ export class ContentRepository {
   }
 
   private async mapPage(page: Row, withSections: boolean): Promise<Record<string, unknown>> {
+    const id = Number(page.id);
+    const isHome = Boolean(page.is_homepage);
+    const entityType = isHome ? "homepage" : "page";
+    const displayMode = this.normalizeDisplayMode(page.display_mode);
     const data: Record<string, unknown> = {
       slug: page.slug,
       title: decodeHtmlEntities(String(page.title)),
       content: String(page.content_html ?? ""),
       template: page.template || "default",
-      displayMode: "classic",
+      displayMode,
       seo: {
         title: page.seo_title || page.title,
         description: page.seo_description ?? "",
@@ -876,15 +936,25 @@ export class ContentRepository {
         focusKeyword: page.seo_focus_keyword ?? "",
       },
     };
-    if (withSections) data.sections = await this.getHomepageSections(Number(page.id));
+    if (await this.tableHasColumn("pages", "faqs")) {
+      data.faqs = decodeJsonArray(page.faqs);
+    }
+    await this.attachProPageFields(data, page, "pages");
+    if (displayMode === "elementor") {
+      const doc = await this.loadPublishedDesimentor(entityType, id);
+      if (doc) data.desimentor = doc;
+    }
+    if (withSections) data.sections = await this.getHomepageSections(id);
     return data;
   }
 
-  private mapLanding(row: Row): Record<string, unknown> {
+  private async mapLanding(row: Row): Promise<Record<string, unknown>> {
+    const id = Number(row.id);
     const theme = decodeJson(row.theme) ?? {};
-    return {
+    const displayMode = this.normalizeDisplayMode(row.display_mode);
+    const data: Record<string, unknown> = {
       slug: row.slug,
-      displayMode: "classic",
+      displayMode,
       service: row.service_name,
       pageTitle: row.page_title,
       pageDescription: row.page_description ?? "",
@@ -902,17 +972,25 @@ export class ContentRepository {
         accent: "#93c5fd",
         icon: "fas fa-briefcase",
         badge: "",
-        ...theme,
+        ...(theme as Record<string, unknown>),
       },
     };
+    await this.attachProPageFields(data, row, "service_landings");
+    if (displayMode === "elementor") {
+      const doc = await this.loadPublishedDesimentor("service_landing", id);
+      if (doc) data.desimentor = doc;
+    }
+    return data;
   }
 
-  private mapService(row: Row): Record<string, unknown> {
+  private async mapService(row: Row): Promise<Record<string, unknown>> {
+    const id = Number(row.id);
     const seo = decodeJson(row.seo) ?? {};
-    return {
+    const displayMode = this.normalizeDisplayMode(row.display_mode);
+    const data: Record<string, unknown> = {
       slug: row.slug,
       title: row.title,
-      displayMode: "classic",
+      displayMode,
       heroTitle: row.hero_title || row.title,
       heroSubtitle: row.hero_subtitle ?? "",
       priceBadge: row.price_badge ?? "",
@@ -920,8 +998,71 @@ export class ContentRepository {
       features: decodeJsonArray(row.features),
       ctaTitle: row.cta_title ?? "",
       ctaText: row.cta_text ?? "",
-      seo: { title: row.title, description: "", keywords: "", ...seo },
+      seo: { title: row.title, description: "", keywords: "", ...(seo as Record<string, unknown>) },
     };
+    if (await this.tableHasColumn("services", "faqs")) {
+      data.faqs = decodeJsonArray(row.faqs);
+    }
+    await this.attachProPageFields(data, row, "services");
+    if (displayMode === "elementor") {
+      const doc = await this.loadPublishedDesimentor("service", id);
+      if (doc) data.desimentor = doc;
+    }
+    return data;
+  }
+
+  private normalizeDisplayMode(raw: unknown): "classic" | "elementor" {
+    return raw === "elementor" ? "elementor" : "classic";
+  }
+
+  private async tableHasColumn(table: string, column: string): Promise<boolean> {
+    const key = `${table}.${column}`;
+    if (this.columnCache.has(key)) return this.columnCache.get(key)!;
+    try {
+      const [rows] = await this.pool.query<Row[]>(
+        `SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS
+         WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ? LIMIT 1`,
+        [table, column],
+      );
+      const exists = rows.length > 0;
+      this.columnCache.set(key, exists);
+      return exists;
+    } catch {
+      this.columnCache.set(key, false);
+      return false;
+    }
+  }
+
+  private async attachProPageFields(
+    data: Record<string, unknown>,
+    row: Row,
+    table: "pages" | "services" | "service_landings",
+  ): Promise<void> {
+    if (!(await this.tableHasColumn(table, "page_custom_css"))) return;
+    data.pageCustomCss = String(row.page_custom_css ?? "");
+    data.contentStructure = decodeJson(row.content_structure) ?? null;
+  }
+
+  private async loadPublishedDesimentor(
+    entityType: string,
+    entityId: number,
+  ): Promise<Record<string, unknown> | null> {
+    try {
+      const [rows] = await this.pool.query<Row[]>(
+        `SELECT content_json FROM desimentor_documents
+         WHERE entity_type = ? AND entity_id = ? AND status = 'published' LIMIT 1`,
+        [entityType, entityId],
+      );
+      const row = rows[0];
+      if (!row?.content_json) return null;
+      const parsed = parseJsonValue(row.content_json);
+      if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return null;
+      const doc = parsed as Record<string, unknown>;
+      if (!Array.isArray(doc.sections) || !doc.sections.length) return null;
+      return doc;
+    } catch {
+      return null;
+    }
   }
 
   private mapBlogPost(row: Row): Record<string, unknown> {
