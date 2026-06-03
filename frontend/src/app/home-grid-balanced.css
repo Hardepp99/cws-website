@@ -1,0 +1,68 @@
+/**
+ * Homepage item grids — incomplete last row centered on desktop
+ * (e.g. 4 items on row 1, 2 items on row 2 → bottom pair centered).
+ */
+
+.home-page .home-grid-balanced {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: 1rem 1.15rem;
+}
+
+.home-page .home-grid-balanced__item {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.home-page .home-grid-balanced__item > .reveal {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+}
+
+.home-page .home-grid-balanced__item .home-mac-card,
+.home-page .home-grid-balanced__item .why-card,
+.home-page .home-grid-balanced__item .home-service-card,
+.home-page .home-grid-balanced__item .home-trust-card,
+.home-page .home-grid-balanced__item .home-guarantee-card,
+.home-page .home-grid-balanced__item .home-package-card,
+.home-page .home-grid-balanced__item .home-type-card,
+.home-page .home-grid-balanced__item .home-process__step,
+.home-page .home-grid-balanced__item .testimonial-card {
+  flex: 1;
+  width: 100%;
+}
+
+/* Mobile: single column */
+.home-page .home-grid-balanced > .home-grid-balanced__item {
+  flex: 0 1 100%;
+  max-width: 100%;
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 768px) {
+  .home-page .home-grid-balanced--2 > .home-grid-balanced__item,
+  .home-page .home-grid-balanced--3 > .home-grid-balanced__item,
+  .home-page .home-grid-balanced--4 > .home-grid-balanced__item {
+    flex: 0 1 calc((100% - 1.15rem) / 2);
+    max-width: calc((100% - 1.15rem) / 2);
+  }
+}
+
+/* Desktop */
+@media (min-width: 992px) {
+  .home-page .home-grid-balanced--3 > .home-grid-balanced__item {
+    flex: 0 1 calc((100% - 2 * 1.15rem) / 3);
+    max-width: calc((100% - 2 * 1.15rem) / 3);
+  }
+
+  .home-page .home-grid-balanced--4 > .home-grid-balanced__item {
+    flex: 0 1 calc((100% - 3 * 1.15rem) / 4);
+    max-width: calc((100% - 3 * 1.15rem) / 4);
+  }
+}

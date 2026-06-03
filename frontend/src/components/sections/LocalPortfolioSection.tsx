@@ -1,5 +1,4 @@
-import { PortfolioTabbedShowcase } from "@/components/portfolio/PortfolioTabbedShowcase";
-import { DEFAULT_PORTFOLIO_HOME_PER_CATEGORY } from "@/lib/portfolio/home-limit";
+import { PortfolioHomeGallery } from "@/components/portfolio/PortfolioHomeGallery";
 import type { PortfolioHomePayload } from "@/lib/wordpress/portfolio-types";
 import type { HomepageSection } from "@/lib/wordpress/types";
 
@@ -27,12 +26,11 @@ export function LocalPortfolioSection({
           {title ? <h2>{title}</h2> : null}
           {subtitle ? <p>{subtitle}</p> : null}
         </div>
-        <PortfolioTabbedShowcase
+        <PortfolioHomeGallery
           items={items}
           allTabLabel="All work"
-          maxItemsPerTab={portfolio.settings.maxPerCategory ?? DEFAULT_PORTFOLIO_HOME_PER_CATEGORY}
           viewAllHref={ctaHref || undefined}
-          viewAllLabel={ctaLabel || "View all work"}
+          viewAllLabel={ctaLabel || "View all case studies"}
         />
       </div>
     </section>

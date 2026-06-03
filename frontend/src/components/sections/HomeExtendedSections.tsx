@@ -54,17 +54,19 @@ export function TrustBadgesSection({
     <section className="home-trust home-agency-section corp-section corp-section-alt">
       <div className="corp-container">
         <Head badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
-        <div className="home-trust-grid">
+        <div className="home-trust-grid home-grid-balanced home-grid-balanced--4">
           {items.map((item, i) => {
             const tone = resolveMacTone(item.tone, i);
             return (
-              <Reveal key={item.title} variant="zoom-in" delay={i * 85}>
-                <article className={`home-trust-card home-mac-card home-trust-card--${tone}`} data-tone={tone}>
-                  <HomeMacIcon icon={item.icon || "fas fa-check"} tone={tone} index={i} size="md" />
-                  <h3>{item.title}</h3>
-                  <p>{item.desc || item.description}</p>
-                </article>
-              </Reveal>
+              <div key={item.title} className="home-grid-balanced__item">
+                <Reveal variant="zoom-in" delay={i * 85}>
+                  <article className={`home-trust-card home-mac-card home-trust-card--${tone}`} data-tone={tone}>
+                    <HomeMacIcon icon={item.icon || "fas fa-check"} tone={tone} index={i} size="md" />
+                    <h3>{item.title}</h3>
+                    <p>{item.desc || item.description}</p>
+                  </article>
+                </Reveal>
+              </div>
             );
           })}
         </div>
@@ -113,11 +115,11 @@ export function WebsiteTypesSection({ section }: { section: HomepageSection }) {
     <section className="home-website-types corp-section corp-section-alt">
       <div className="corp-container">
         <Head badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
-        <div className="row g-3 g-md-4">
+        <div className="home-grid-balanced home-grid-balanced--3">
           {items.map((item, i) => {
             const tone = resolveMacTone(item.tone, i);
             return (
-              <div key={item.title} className="col-lg-4 col-md-6">
+              <div key={item.title} className="home-grid-balanced__item">
                 <Reveal variant={i % 2 === 0 ? "slide-left" : "slide-right"} delay={i * 100}>
                   <article className="home-type-card home-mac-card h-100" data-tone={tone}>
                     <HomeMacIcon icon={item.icon || "fas fa-globe"} tone={tone} index={i} size="lg" />
@@ -169,11 +171,11 @@ export function PricingPackagesSection({ section }: { section: HomepageSection }
     <section className="home-pricing corp-section corp-section-alt" id="packages">
       <div className="corp-container">
         <Head badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
-        <div className="row g-3 g-md-4">
+        <div className="home-grid-balanced home-grid-balanced--4">
           {items.map((item, i) => {
             const tone = resolveMacTone(item.tone, i);
             return (
-              <div key={item.title} className="col-lg-3 col-md-6">
+              <div key={item.title} className="home-grid-balanced__item">
                 <Reveal variant="zoom-in" delay={i * 115}>
                   <article className="home-package-card home-mac-card h-100" data-tone={tone}>
                     <HomeMacIcon icon={item.icon || "fas fa-box"} tone={tone} index={i} size="lg" />
@@ -199,11 +201,11 @@ export function GuaranteesSection({ section }: { section: HomepageSection }) {
     <section className="home-guarantees home-agency-section corp-section">
       <div className="corp-container">
         <Head badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
-        <div className="row g-3">
+        <div className="home-grid-balanced home-grid-balanced--4">
           {items.map((item, i) => {
             const tone = resolveMacTone(item.tone, i);
             return (
-              <div key={item.title} className="col-lg-3 col-md-6">
+              <div key={item.title} className="home-grid-balanced__item">
                 <Reveal variant="fade-up" delay={i * 120}>
                   <article className="home-guarantee-card home-mac-card h-100" data-tone={tone}>
                     <HomeMacIcon icon={item.icon || "fas fa-shield-alt"} tone={tone} index={i} size="md" />

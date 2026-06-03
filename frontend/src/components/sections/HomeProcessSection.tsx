@@ -39,12 +39,13 @@ export function HomeProcessSection({ section }: { section: HomepageSection }) {
           title={section.title as string}
           subtitle={section.subtitle as string}
         />
-        <div className="home-process__grid">
+        <div className="home-process__grid home-grid-balanced home-grid-balanced--4">
           {steps.map((step, i) => {
             const tone = resolveMacTone(undefined, i);
             return (
-              <Reveal key={step.title} variant="fade-up" delay={i * 110}>
-                <article className="home-process__step home-mac-card" data-tone={tone}>
+              <div key={step.title} className="home-grid-balanced__item">
+                <Reveal variant="fade-up" delay={i * 110}>
+                  <article className="home-process__step home-mac-card" data-tone={tone}>
                   <HomeMacIcon
                     icon={step.icon || "fas fa-arrow-right"}
                     tone={tone}
@@ -55,8 +56,9 @@ export function HomeProcessSection({ section }: { section: HomepageSection }) {
                   <span className="home-process__index">{String(i + 1).padStart(2, "0")}</span>
                   <h3 className="home-process__step-title">{step.title}</h3>
                   <p className="home-process__step-desc">{step.description}</p>
-                </article>
-              </Reveal>
+                  </article>
+                </Reveal>
+              </div>
             );
           })}
         </div>

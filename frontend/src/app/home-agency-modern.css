@@ -61,10 +61,10 @@
   padding-block: clamp(2.5rem, 6vw, 4rem);
 }
 
-.home-page .home-trust-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
-  gap: 1rem 1.15rem;
+/* Trust grid: flex balanced layout — see home-grid-balanced.css */
+.home-page .home-trust-grid.home-grid-balanced {
+  max-width: 72rem;
+  margin-inline: auto;
 }
 
 .home-page .home-trust-card {
@@ -212,11 +212,16 @@
 
 /* —— Industries —— */
 .home-page .home-industries-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 140px), 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 0.75rem;
   max-width: 52rem;
   margin-inline: auto;
+}
+
+.home-page .home-industries-grid > * {
+  flex: 0 1 auto;
 }
 
 .home-page .home-industry-chip {
@@ -369,10 +374,6 @@
 }
 
 @media (max-width: 767px) {
-  .home-page .home-trust-grid {
-    grid-template-columns: 1fr;
-  }
-
   .home-page .home-agency-services-cta .home-hero__btn {
     width: 100%;
     justify-content: center;

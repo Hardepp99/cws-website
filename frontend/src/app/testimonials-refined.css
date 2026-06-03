@@ -236,29 +236,35 @@
   -webkit-text-fill-color: #248a3d !important;
 }
 
-.home-testimonials__grid {
+.home-testimonials__grid:not(.home-grid-balanced) {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   margin-top: clamp(1.5rem, 3vw, 2rem);
 }
 
-.home-testimonials__grid > .reveal {
+.home-testimonials__grid.home-grid-balanced {
+  margin-top: clamp(1.5rem, 3vw, 2rem);
+}
+
+.home-testimonials__grid > .home-grid-balanced__item > .reveal,
+.home-testimonials__grid:not(.home-grid-balanced) > .reveal {
   height: 100%;
 }
 
-.home-testimonials__grid > .reveal > .testimonial-card {
+.home-testimonials__grid > .home-grid-balanced__item .testimonial-card,
+.home-testimonials__grid:not(.home-grid-balanced) > .reveal > .testimonial-card {
   height: 100%;
 }
 
 @media (max-width: 991.98px) {
-  .home-testimonials__grid {
+  .home-testimonials__grid:not(.home-grid-balanced) {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 575.98px) {
-  .home-testimonials__grid {
+  .home-testimonials__grid:not(.home-grid-balanced) {
     grid-template-columns: 1fr;
   }
 }

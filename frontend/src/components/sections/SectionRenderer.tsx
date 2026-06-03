@@ -215,16 +215,16 @@ function WhyCodifySection({ section }: { section: HomepageSection }) {
     <section className="why-codify-section home-agency-why corp-section corp-section-alt" id="why-codify">
       <div className="container">
         <HomeSectionHead badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
-        <div className="row g-3">
+        <div className="home-grid-balanced home-grid-balanced--3">
           {cards.map((card, i) => (
-            <div key={card.number} className="col-lg-4 col-md-6">
+            <div key={card.number} className="home-grid-balanced__item">
               <Reveal variant={cardVariant(i)} delay={i * 110}>
-              <div className="why-card home-mac-card" data-tone={resolveMacTone(undefined, i)}>
-                <HomeMacIcon icon={card.icon || "fas fa-star"} index={i} size="lg" />
-                <h3>{card.title}</h3>
-                <p>{card.description}</p>
-                <div className="why-number">{card.number}</div>
-              </div>
+                <div className="why-card home-mac-card" data-tone={resolveMacTone(undefined, i)}>
+                  <HomeMacIcon icon={card.icon || "fas fa-star"} index={i} size="lg" />
+                  <h3>{card.title}</h3>
+                  <p>{card.description}</p>
+                  <div className="why-number">{card.number}</div>
+                </div>
               </Reveal>
             </div>
           ))}
@@ -250,9 +250,9 @@ function ServicesGridSection({ section }: { section: HomepageSection }) {
     <section className="services-section home-services home-agency-section corp-section" id="services">
       <div className="corp-container">
         <HomeSectionHead badge={section.badge as string} title={section.title as string} subtitle={subtitle} />
-        <div className="row g-3 home-services__grid">
+        <div className="home-grid-balanced home-grid-balanced--3 home-services__grid">
           {services.map((s, i) => (
-            <div key={`${s.href}-${s.title}-${i}`} className="col-lg-4 col-md-6">
+            <div key={`${s.href}-${s.title}-${i}`} className="home-grid-balanced__item">
               <Reveal variant={i % 2 === 0 ? "slide-left" : "slide-right"} delay={i * 85}>
                 <ServiceGridCard item={s} index={i} />
               </Reveal>

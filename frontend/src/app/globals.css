@@ -29,6 +29,7 @@
 @import "./home-marquee-premium.css";
 @import "./home-cards-premium.css";
 @import "./home-agency-modern.css";
+@import "./home-grid-balanced.css";
 
 @tailwind base;
 @tailwind components;

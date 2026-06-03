@@ -39,12 +39,13 @@ export function HomeTestimonialsSection({ section }: { section: HomepageSection 
             subtitle={section.subtitle as string}
           />
         </Reveal>
-        <div className="home-testimonials__grid">
+        <div className="home-testimonials__grid home-grid-balanced home-grid-balanced--3">
           {items.map((t, i) => {
             const tone = TESTIMONIAL_TONES[i % TESTIMONIAL_TONES.length];
             return (
-              <Reveal key={`${t.name}-${i}`} variant="fade-up" delay={i * 120}>
-                <article className={`testimonial-card testimonial-card--${tone} home-mac-card`} data-tone={tone}>
+              <div key={`${t.name}-${i}`} className="home-grid-balanced__item">
+                <Reveal variant="fade-up" delay={i * 120}>
+                  <article className={`testimonial-card testimonial-card--${tone} home-mac-card`} data-tone={tone}>
                   <span className="testimonial-card__mark" aria-hidden="true">
                     &ldquo;
                   </span>
@@ -53,8 +54,9 @@ export function HomeTestimonialsSection({ section }: { section: HomepageSection 
                     <cite className="testimonial-card__name">{t.name}</cite>
                     {t.role ? <span className="testimonial-card__tag">{t.role}</span> : null}
                   </footer>
-                </article>
-              </Reveal>
+                  </article>
+                </Reveal>
+              </div>
             );
           })}
         </div>

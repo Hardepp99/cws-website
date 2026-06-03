@@ -1124,7 +1124,7 @@ main.site-main:has(> .home-page) {
 .hero-pro-stat-num--orange { color: var(--cws-orange); }
 
 /* Trust badges */
-.home-trust-grid {
+.home-trust-grid:not(.home-grid-balanced) {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 1rem;
