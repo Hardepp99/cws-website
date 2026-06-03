@@ -93,6 +93,7 @@ Do **not** set `CMS_API_URL` (removed with PHP).
 
 | URL | Expected |
 |-----|----------|
+| https://cwsindia.online/api/ping | `{"ok":true,"service":"cws-website"}` (no DB) |
 | https://cwsindia.online/api/health | `{"ok":true,"mode":"live",...}` |
 | https://cwsindia.online/api/v1/menus | JSON with menu items |
 | https://cwsindia.online/api/v1/settings | Site settings JSON |
@@ -128,7 +129,8 @@ In production: **Admin → Settings → Email** — use Hostinger SMTP:
 
 | Problem | Fix |
 |---------|-----|
-| **503 Service Unavailable** (Hostinger grey page) | Node app not running. hPanel → Node.js → **Runtime logs** / `stderr.log`. Fix build/start errors, then **Restart**. Confirm **Application root** = `frontend`, Start = `npm run start`. |
+| **503 Service Unavailable** (Hostinger grey page) | Node process crashed or never started. hPanel → Node.js → **Runtime logs** / `stderr.log`. Look for `failed to launch next`, `EADDRINUSE`, `Module not found`, MySQL errors. **Restart** after fix. Test `/api/ping` first (no DB). |
+| Config OK but still 503 | Click **Redeploy** after latest `main` push; confirm build log ends with success; Start must be `npm run start` (not `node server.js` unless you added one). |
 | Build fails: missing env | Set `NEXT_PUBLIC_SITE_URL` + `MYSQL_DATABASE` **before** Build. Or temporarily `SKIP_ENV_CHECK=1` (not ideal). |
 | `/api/health` → `ok: false` | Wrong MySQL credentials or database not imported. Use `MYSQL_HOST=127.0.0.1` not `localhost`. |
 | Menus empty | Check `menus` table in phpMyAdmin; redeploy after JSON fix |
