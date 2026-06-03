@@ -49,7 +49,7 @@ Create folder if missing; permissions **755** or **775**.
 |------|---------|
 | Install | `npm ci` |
 | Build | `npm run build` |
-| Start | `npm start` |
+| Start | `npm run start` (binds `0.0.0.0` + Hostinger `$PORT`) |
 
 6. Assign domain **cwsindia.online** and enable **SSL**.
 
@@ -128,7 +128,9 @@ In production: **Admin → Settings → Email** — use Hostinger SMTP:
 
 | Problem | Fix |
 |---------|-----|
-| `/api/health` → `ok: false` | Wrong MySQL credentials or database not imported |
+| **503 Service Unavailable** (Hostinger grey page) | Node app not running. hPanel → Node.js → **Runtime logs** / `stderr.log`. Fix build/start errors, then **Restart**. Confirm **Application root** = `frontend`, Start = `npm run start`. |
+| Build fails: missing env | Set `NEXT_PUBLIC_SITE_URL` + `MYSQL_DATABASE` **before** Build. Or temporarily `SKIP_ENV_CHECK=1` (not ideal). |
+| `/api/health` → `ok: false` | Wrong MySQL credentials or database not imported. Use `MYSQL_HOST=127.0.0.1` not `localhost`. |
 | Menus empty | Check `menus` table in phpMyAdmin; redeploy after JSON fix |
 | Images 404 | `CWS_UPLOAD_DIR` wrong or uploads not copied |
 | Old content after edit | Hard refresh; confirm you edit on live admin, not local |

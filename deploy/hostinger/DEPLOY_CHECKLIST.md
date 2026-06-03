@@ -16,7 +16,8 @@
 
 - [ ] Repo connected, root folder **`frontend`**
 - [ ] Node 20+ selected
-- [ ] Install: `npm ci` | Build: `npm run build` | Start: `npm start`
+- [ ] Install: `npm ci` | Build: `npm run build` | Start: `npm run start`
+- [ ] If **503** page: open Runtime logs → fix error → **Restart** app
 - [ ] All env vars from `node.env.example` saved **before** build
 - [ ] `NEXT_PUBLIC_SITE_URL=https://cwsindia.online` (exact, no trailing slash)
 - [ ] `CWS_UPLOAD_DIR` points to uploaded media folder
