@@ -48,6 +48,7 @@ export function getPool(): Pool {
       idleTimeout: 60_000,
       queueLimit: 0,
       enableKeepAlive: true,
+      connectTimeout: 10_000,
     });
     globalThis.__cwsMysqlPool = pool;
   }

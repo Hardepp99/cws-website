@@ -198,6 +198,45 @@ body.site-ready .site-main {
   }
 }
 
+/* Failsafe: if the client bundle never runs, still reveal the page (see layout inline script) */
+@keyframes siteIntroFailsafeUnhide {
+  to {
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+}
+
+@keyframes siteIntroFailsafeHidePreloader {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateX(100%);
+  }
+}
+
+html.is-intro-pending body:not(.site-ready) .site-main,
+html.is-intro-pending body:not(.site-ready) .topbar,
+html.is-intro-pending body:not(.site-ready) .header-premium,
+html.is-intro-pending body:not(.site-ready) .site-float-widgets,
+html.is-intro-pending body:not(.site-ready) .footer,
+html.is-intro-pending body:not(.site-ready) .promo-offer-bar,
+html.is-intro-pending body:not(.site-ready) .cws-mobile-tab-bar {
+  animation: siteIntroFailsafeUnhide 0s linear 20s forwards;
+}
+
+html.is-intro-pending body:not(.site-ready) .header-premium .navbar-toggler,
+html.is-intro-pending body:not(.site-ready) .header-premium .navbar-mobile-chrome,
+html.is-intro-pending body:not(.site-ready) .header-premium .navbar-brand,
+html.is-intro-pending body:not(.site-ready) .header-premium .navbar-sticky-call,
+html.is-intro-pending body:not(.site-ready) .header-premium .navbar-collapse {
+  animation: siteIntroFailsafeUnhide 0s linear 20s forwards;
+}
+
+html.is-intro-pending body:not(.site-ready) .preloader-premium {
+  animation: siteIntroFailsafeHidePreloader 0.55s var(--site-intro-ease) 20s forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
   :root {
     --preloader-exit-duration: 0.01s;
