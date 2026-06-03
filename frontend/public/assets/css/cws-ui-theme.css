@@ -1,29 +1,29 @@
 /**
- * Site-wide Apple.com typography, buttons, and content rhythm.
- * Imported in globals.css; also copied to public/assets/css/apple-theme.css
+ * Site-wide site-wide typography, buttons, and content rhythm.
+ * Imported in globals.css; also copied to public/assets/css/cws-ui-theme.css
  * (loaded after style.css in layout.tsx). Re-copy when you edit this file.
  */
 
 :root {
-  --apple-text: #1d1d1f;
-  --apple-text-secondary: #6e6e73;
-  --apple-text-tertiary: #86868b;
-  --apple-link: #1d1d1f;
-  --apple-link-hover: #424245;
-  --apple-bg: #f5f5f7;
-  --apple-surface: #ffffff;
-  --apple-border: rgba(0, 0, 0, 0.08);
-  --apple-btn-fill: #1d1d1f;
-  --apple-btn-fill-hover: #333336;
-  --apple-btn-blue: #1d1d1f;
-  --apple-btn-blue-hover: #333336;
-  --apple-radius-pill: 980px;
-  --apple-text-base: 1.0625rem;
-  --apple-text-small: 0.875rem;
-  --apple-text-caption: 0.75rem;
-  --apple-leading: 1.47059;
-  --apple-tracking-tight: -0.022em;
-  --apple-tracking-headline: -0.035em;
+  --cws-ui-text: #1d1d1f;
+  --cws-ui-text-secondary: #6e6e73;
+  --cws-ui-text-tertiary: #86868b;
+  --cws-ui-link: #0071e3;
+  --cws-ui-link-hover: #0077ed;
+  --cws-ui-bg: #f5f5f7;
+  --cws-ui-surface: #ffffff;
+  --cws-ui-border: rgba(0, 0, 0, 0.08);
+  --cws-ui-btn-fill: #1d1d1f;
+  --cws-ui-btn-fill-hover: #333336;
+  --cws-ui-btn-blue: #1d1d1f;
+  --cws-ui-btn-blue-hover: #333336;
+  --cws-ui-radius-pill: 980px;
+  --cws-ui-text-base: 1.0625rem;
+  --cws-ui-text-small: 0.875rem;
+  --cws-ui-text-caption: 0.75rem;
+  --cws-ui-leading: 1.47059;
+  --cws-ui-tracking-tight: -0.022em;
+  --cws-ui-tracking-headline: -0.035em;
 
   /* Align legacy tokens */
   --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto,
@@ -35,14 +35,14 @@
 /* —— Base typography —— */
 body {
   font-family: var(--font-body) !important;
-  font-size: var(--apple-text-base);
-  line-height: var(--apple-leading);
-  color: var(--apple-text) !important;
+  font-size: var(--cws-ui-text-base);
+  line-height: var(--cws-ui-leading);
+  color: var(--cws-ui-text) !important;
   letter-spacing: -0.011em;
 }
 
 main.site-main {
-  color: var(--apple-text);
+  color: var(--cws-ui-text);
 }
 
 p,
@@ -56,22 +56,22 @@ p,
 .blog-card p,
 .lead,
 .text-muted {
-  font-size: var(--apple-text-base);
-  line-height: var(--apple-leading);
-  color: var(--apple-text-secondary);
+  font-size: var(--cws-ui-text-base);
+  line-height: var(--cws-ui-leading);
+  color: var(--cws-ui-text-secondary);
 }
 
 small,
 .form-text,
 .caption {
-  font-size: var(--apple-text-small);
-  color: var(--apple-text-tertiary);
+  font-size: var(--cws-ui-text-small);
+  color: var(--cws-ui-text-tertiary);
 }
 
 a:not(.btn):not(.home-hero__btn):not(.home-btn):not(.nav-link):not(.social-link):not(
     .footer-social-link
   ):not(.home-marquee-pill):not(.topbar-link):not(.portfolio-showcase__view-all) {
-  color: var(--apple-link);
+  color: var(--cws-ui-link);
   text-decoration: none;
 }
 
@@ -86,7 +86,7 @@ a:not(.btn):not(.home-hero__btn):not(.home-btn):not(.nav-link):not(.social-link)
     .portfolio-showcase__view-all
   ):not(.portfolio-showcase__nav):focus-visible {
   text-decoration: none !important;
-  color: var(--apple-link-hover);
+  color: var(--cws-ui-link-hover);
 }
 
 /* CTA buttons — never show link underline on hover */
@@ -118,7 +118,7 @@ a:not(.btn):not(.home-hero__btn):not(.home-btn):not(.nav-link):not(.social-link)
   text-decoration: none !important;
 }
 
-/* —— Headings (single SF stack, Apple weights) —— */
+/* —— Headings (single SF stack, semibold weights) —— */
 h1,
 h2,
 h3,
@@ -134,8 +134,8 @@ h6,
 .corp-section-head h2 {
   font-family: var(--font-body) !important;
   font-weight: 600 !important;
-  color: var(--apple-text) !important;
-  letter-spacing: var(--apple-tracking-headline);
+  color: var(--cws-ui-text) !important;
+  letter-spacing: var(--cws-ui-tracking-headline);
   line-height: 1.08;
 }
 
@@ -183,33 +183,33 @@ h3,
 .home-portfolio-item__name {
   font-size: 1.125rem !important;
   font-weight: 600 !important;
-  letter-spacing: var(--apple-tracking-tight);
+  letter-spacing: var(--cws-ui-tracking-tight);
   line-height: 1.3;
-  color: var(--apple-text) !important;
+  color: var(--cws-ui-text) !important;
 }
 
 h4 {
   font-size: 1.0625rem !important;
   font-weight: 600 !important;
-  letter-spacing: var(--apple-tracking-tight);
+  letter-spacing: var(--cws-ui-tracking-tight);
   line-height: 1.35;
-  color: var(--apple-text) !important;
+  color: var(--cws-ui-text) !important;
 }
 
 h5 {
   font-size: 0.9375rem !important;
   font-weight: 600 !important;
-  letter-spacing: var(--apple-tracking-tight);
+  letter-spacing: var(--cws-ui-tracking-tight);
   line-height: 1.35;
-  color: var(--apple-text) !important;
+  color: var(--cws-ui-text) !important;
 }
 
 h6 {
   font-size: 0.875rem !important;
   font-weight: 600 !important;
-  letter-spacing: var(--apple-tracking-tight);
+  letter-spacing: var(--cws-ui-tracking-tight);
   line-height: 1.35;
-  color: var(--apple-text) !important;
+  color: var(--cws-ui-text) !important;
 }
 
 .home-page .home-section-head h2::after,
@@ -224,27 +224,27 @@ h6 {
 .home-page .home-section-head p,
 .home-section-head p,
 .corp-section-head p {
-  font-size: var(--apple-text-base) !important;
-  line-height: var(--apple-leading) !important;
-  color: var(--apple-text-secondary) !important;
+  font-size: var(--cws-ui-text-base) !important;
+  line-height: var(--cws-ui-leading) !important;
+  color: var(--cws-ui-text-secondary) !important;
   font-weight: 400 !important;
   max-width: 42rem;
 }
 
-/* Eyebrows / badges — Apple subtle pill */
+/* Eyebrows / badges — subtle pill */
 .section-badge,
 .home-eyebrow,
 .home-page .home-eyebrow {
   font-family: var(--font-body) !important;
-  font-size: var(--apple-text-caption) !important;
+  font-size: var(--cws-ui-text-caption) !important;
   font-weight: 500 !important;
   letter-spacing: 0.04em !important;
   text-transform: none !important;
-  color: var(--apple-text-secondary) !important;
+  color: var(--cws-ui-text-secondary) !important;
   background: rgba(0, 0, 0, 0.05) !important;
   border: none !important;
   padding: 4px 10px !important;
-  border-radius: var(--apple-radius-pill) !important;
+  border-radius: var(--cws-ui-radius-pill) !important;
 }
 
 .home-page .home-eyebrow .dot {
@@ -265,15 +265,15 @@ h6 {
   justify-content: center !important;
   gap: 0.35rem;
   font-family: var(--font-body) !important;
-  font-size: var(--apple-text-base) !important;
+  font-size: var(--cws-ui-text-base) !important;
   font-weight: 500 !important;
   letter-spacing: -0.01em !important;
   text-transform: none !important;
   line-height: 1.2 !important;
   padding: 0.55rem 1.35rem !important;
-  border-radius: var(--apple-radius-pill) !important;
+  border-radius: var(--cws-ui-radius-pill) !important;
   border: none !important;
-  background: var(--apple-btn-fill) !important;
+  background: var(--cws-ui-btn-fill) !important;
   color: #fff !important;
   box-shadow: none !important;
   transition:
@@ -289,7 +289,7 @@ h6 {
 .btn-cta-navbar:hover,
 .home-btn--primary:hover,
 .home-hero__btn--primary:hover {
-  background: var(--apple-btn-fill-hover) !important;
+  background: var(--cws-ui-btn-fill-hover) !important;
   color: #fff !important;
   transform: translateY(-1px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12) !important;
@@ -302,8 +302,8 @@ h6 {
 .cta-section .btn-outline-custom,
 .home-cta-band .home-hero__btn--ghost {
   background: transparent !important;
-  color: var(--apple-text) !important;
-  border: 1px solid var(--apple-border) !important;
+  color: var(--cws-ui-text) !important;
+  border: 1px solid var(--cws-ui-border) !important;
   box-shadow: none !important;
 }
 
@@ -312,7 +312,7 @@ h6 {
 .home-hero__btn--ghost:hover,
 .home-btn:not(.home-btn--primary):hover {
   background: rgba(0, 0, 0, 0.04) !important;
-  color: var(--apple-text) !important;
+  color: var(--cws-ui-text) !important;
   border-color: rgba(0, 0, 0, 0.12) !important;
   transform: none;
   box-shadow: none !important;
@@ -322,20 +322,20 @@ h6 {
 .btn-sm.btn-primary-custom,
 .btn-sm.btn-outline-custom,
 .btn.btn-sm {
-  font-size: var(--apple-text-small) !important;
+  font-size: var(--cws-ui-text-small) !important;
   padding: 0.4rem 1rem !important;
 }
 
 /* Nav CTA — ink pill (not blue) */
 .header .btn-cta-navbar.btn-cta {
-  font-size: var(--apple-text-small) !important;
+  font-size: var(--cws-ui-text-small) !important;
   padding: 0.45rem 1rem !important;
-  background: var(--apple-btn-fill) !important;
+  background: var(--cws-ui-btn-fill) !important;
   color: #fff !important;
 }
 
 .header .btn-cta-navbar.btn-cta:hover {
-  background: var(--apple-btn-fill-hover) !important;
+  background: var(--cws-ui-btn-fill-hover) !important;
   color: #fff !important;
 }
 
@@ -343,30 +343,30 @@ h6 {
 .nav-link,
 .navbar-nav .nav-link {
   font-family: var(--font-body) !important;
-  font-size: var(--apple-text-small) !important;
+  font-size: var(--cws-ui-text-small) !important;
   font-weight: 400 !important;
   letter-spacing: -0.01em;
-  color: var(--apple-text) !important;
+  color: var(--cws-ui-text) !important;
 }
 
 .nav-link:hover,
 .navbar-nav .nav-link:hover {
-  color: var(--apple-text) !important;
+  color: var(--cws-ui-text) !important;
 }
 
 /* Service links */
 .service-link,
 .home-service-card .service-link,
 .home-type-link {
-  font-size: var(--apple-text-small) !important;
+  font-size: var(--cws-ui-text-small) !important;
   font-weight: 500 !important;
-  color: var(--apple-text) !important;
+  color: var(--cws-ui-text) !important;
 }
 
 .service-link:hover,
 .home-service-card .service-link:hover,
 .home-type-link:hover {
-  color: var(--apple-link-hover) !important;
+  color: var(--cws-ui-link-hover) !important;
 }
 
 /* Hero headline */
@@ -374,13 +374,13 @@ h6 {
 .hero-pro-title {
   font-family: var(--font-body) !important;
   font-weight: 600 !important;
-  letter-spacing: var(--apple-tracking-headline) !important;
-  color: var(--apple-text) !important;
+  letter-spacing: var(--cws-ui-tracking-headline) !important;
+  color: var(--cws-ui-text) !important;
 }
 
 .home-hero__eyebrow {
-  font-size: var(--apple-text-small) !important;
-  color: var(--apple-text-secondary) !important;
+  font-size: var(--cws-ui-text-small) !important;
+  color: var(--cws-ui-text-secondary) !important;
 }
 
 /* Stats / numbers */
@@ -394,27 +394,27 @@ h6 {
 /* Breadcrumbs */
 .breadcrumb-nav,
 .breadcrumb-item {
-  font-size: var(--apple-text-small);
-  color: var(--apple-text-tertiary);
+  font-size: var(--cws-ui-text-small);
+  color: var(--cws-ui-text-tertiary);
 }
 
-/* Forms — Apple-like inputs */
+/* Forms — refined inputs */
 .form-control,
 .form-select,
 .cms-input,
 .cms-textarea {
   font-family: var(--font-body);
-  font-size: var(--apple-text-base);
+  font-size: var(--cws-ui-text-base);
   border-radius: 12px;
-  border-color: var(--apple-border);
-  color: var(--apple-text);
+  border-color: var(--cws-ui-border);
+  color: var(--cws-ui-text);
 }
 
 .form-label,
 label {
-  font-size: var(--apple-text-small);
+  font-size: var(--cws-ui-text-small);
   font-weight: 500;
-  color: var(--apple-text);
+  color: var(--cws-ui-text);
   letter-spacing: -0.01em;
 }
 
@@ -426,57 +426,54 @@ label {
 .cta-section h2,
 .home-cta-band h2 {
   font-weight: 600 !important;
-  letter-spacing: var(--apple-tracking-headline) !important;
-  color: var(--apple-text) !important;
+  letter-spacing: var(--cws-ui-tracking-headline) !important;
+  color: var(--cws-ui-text) !important;
 }
 
 .cta-section p {
-  color: var(--apple-text-secondary) !important;
+  color: var(--cws-ui-text-secondary) !important;
 }
 
 .cta-section .btn-green-custom,
-.page-conversion-band__actions .btn-green-custom {
-  background: linear-gradient(135deg, #34c759 0%, #00a86b 100%) !important;
-  color: #fff !important;
-}
-
+.page-conversion-band__actions .btn-green-custom,
 .cta-section .btn-accent-custom,
 .page-conversion-band__actions .btn-accent-custom {
-  background: linear-gradient(135deg, #ff9f0a 0%, #ff7a00 100%) !important;
+  background: #1d1d1f !important;
   color: #fff !important;
+  border: none !important;
 }
 
 /* Remove gradient text on marketing headings */
 .gradient-text {
   background: none !important;
-  -webkit-text-fill-color: var(--apple-text) !important;
-  color: var(--apple-text) !important;
+  -webkit-text-fill-color: var(--cws-ui-text) !important;
+  color: var(--cws-ui-text) !important;
 }
 
-/* Bootstrap defaults → Apple */
+/* Bootstrap defaults — theme ink buttons */
 .btn-primary {
-  background: var(--apple-btn-fill) !important;
-  border-color: var(--apple-btn-fill) !important;
-  border-radius: var(--apple-radius-pill) !important;
+  background: var(--cws-ui-btn-fill) !important;
+  border-color: var(--cws-ui-btn-fill) !important;
+  border-radius: var(--cws-ui-radius-pill) !important;
   font-weight: 500 !important;
 }
 
 .btn-primary:hover {
-  background: var(--apple-btn-fill-hover) !important;
-  border-color: var(--apple-btn-fill-hover) !important;
+  background: var(--cws-ui-btn-fill-hover) !important;
+  border-color: var(--cws-ui-btn-fill-hover) !important;
 }
 
 .btn-outline-primary {
-  color: var(--apple-link) !important;
-  border-color: var(--apple-border) !important;
-  border-radius: var(--apple-radius-pill) !important;
+  color: var(--cws-ui-link) !important;
+  border-color: var(--cws-ui-border) !important;
+  border-radius: var(--cws-ui-radius-pill) !important;
 }
 
 /* Footer — site max-width content, pro monochrome */
 .site-footer,
 .footer {
   font-family: var(--font-body);
-  background: var(--cws-footer-bg, #1d1d1f) !important;
+  background: var(--cws-footer-bg, #012174) !important;
   color: rgba(255, 255, 255, 0.78) !important;
   border: none !important;
 }
@@ -504,20 +501,11 @@ label {
   color: #fff !important;
 }
 
-.footer-title-text--neutral {
-  color: rgba(255, 255, 255, 0.92) !important;
-}
-
-.footer-title-text--company {
-  color: #8ec5ff !important;
-}
-
-.footer-title-text--services {
-  color: #7ddea8 !important;
-}
-
+.footer-title-text--neutral,
+.footer-title-text--company,
+.footer-title-text--services,
 .footer-title-text--products {
-  color: #ffc48a !important;
+  color: rgba(255, 255, 255, 0.92) !important;
 }
 
 .footer-title-icon,
@@ -561,7 +549,7 @@ label {
   display: none !important;
 }
 
-/* Testimonials — white Apple cards, dark copy (overrides legacy style.css) */
+/* Testimonials — white white cards, dark copy (overrides legacy style.css) */
 .home-page .testimonials-section,
 .home-page .home-testimonials {
   background: transparent !important;
@@ -610,7 +598,7 @@ label {
   background-image: none !important;
 }
 
-/* Homepage dark bands — light text (overrides apple-text above; also in public copy) */
+/* Homepage dark bands — light text (overrides cws-ui-text above; also in public copy) */
 .home-page .home-section-band--dark,
 .home-page .home-section-band--dark .home-section-band__content {
   color: #e8e8ed !important;
@@ -709,15 +697,42 @@ label {
   background: rgba(255, 255, 255, 0.1) !important;
 }
 
-/* Dark surfaces — links & text buttons white, not blue */
-.home-page .home-section-band--dark a:not(.btn):not(.home-btn):not(.home-hero__btn):not(.nav-link):not(
-    .home-service-card a
-  ):not(.testimonial-card a):not(.portfolio-apple-card__btn) {
+/* Dark band — section chrome links only (not inside white cards) */
+.home-page .home-section-band--dark .home-section-head a[href],
+.home-page .home-section-band--dark .home-portfolio .home-section-head a[href],
+.home-page .home-section-band--dark .testimonials-section .home-section-head a[href],
+.home-page .home-section-band--dark .home-cta-band a[href]:not(.home-btn):not(.btn) {
   color: rgba(255, 255, 255, 0.88) !important;
 }
 
-.home-page .home-section-band--dark a:not(.btn):not(.home-btn):not(.home-hero__btn):not(.nav-link):hover {
+.home-page .home-section-band--dark .home-section-head a[href]:hover,
+.home-page .home-section-band--dark .home-portfolio .home-section-head a[href]:hover,
+.home-page .home-section-band--dark .testimonials-section .home-section-head a[href]:hover,
+.home-page .home-section-band--dark .home-cta-band a[href]:not(.home-btn):not(.btn):hover {
   color: #fff !important;
+}
+
+/* Light boxes/cards — links stay blue on hover (never white) */
+.home-page .home-section-band--light a[href]:hover:not(.btn):not(.home-btn):not(.home-hero__btn),
+.home-page
+  :is(.home-service-card, .testimonial-card, .portfolio-feature-card, .home-process__step)
+  :is(a[href], .service-link, .home-type-link):hover,
+.site-main
+  :is(.corp-section, .content-page-section, .page-section-pastel, .service-card, .why-card, .blog-card)
+  a[href]:hover:not(.btn):not(.home-btn),
+.service-link:hover,
+.home-type-link:hover,
+.home-page .home-service-card .service-link:hover,
+.home-page .home-service-card a.service-link:hover {
+  color: #0077ed !important;
+  -webkit-text-fill-color: #0077ed !important;
+}
+
+.home-page
+  :is(.home-service-card, .testimonial-card, .portfolio-feature-card)
+  :is(.service-link, a.service-link) {
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
 }
 
 .footer a:not(.btn):not(.footer-social-link) {

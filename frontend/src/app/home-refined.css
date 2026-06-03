@@ -1,4 +1,4 @@
-/* Apple-inspired homepage — off-white, soft cards, minimal blue */
+/* Refined homepage — off-white, soft cards, minimal blue */
 
 .home-page {
   background: #f5f5f7;
@@ -790,13 +790,16 @@ main.site-main:has(> .home-page) {
   flex: 1;
 }
 
-.home-page .home-service-card__body .service-link {
+.home-page .home-service-card__body .service-link,
+.home-page .home-service-card__body .service-link:hover,
+.home-page .home-service-card:hover .service-link {
   color: #0071e3 !important;
-  font-weight: 500;
-  font-size: 0.875rem;
-  text-decoration: none;
-  margin-top: auto;
-  transition: color 0.2s ease;
+  -webkit-text-fill-color: #0071e3 !important;
+}
+
+.home-page .home-service-card:hover .service-link {
+  color: #0077ed !important;
+  -webkit-text-fill-color: #0077ed !important;
 }
 
 /* Icon fallback colors when no image uploaded */
@@ -823,10 +826,6 @@ main.site-main:has(> .home-page) {
 .home-page .home-service-card[data-tone="grey"] .home-service-card__icon-fallback {
   background: #ececee;
   color: #424245;
-}
-
-.home-page .home-service-card:hover .service-link {
-  color: #0077ed !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1062,7 +1061,7 @@ main.site-main:has(> .home-page) {
   border-top: 3px solid #ff9500 !important;
 }
 
-/* Light Apple hover on white cards */
+/* Light card hover on white cards */
 .home-page .home-process .home-process__step:hover,
 .home-section-band--dark .home-process .home-process__step:hover,
 .home-section-band--light .home-process .home-process__step:hover {
@@ -1111,7 +1110,7 @@ main.site-main:has(> .home-page) {
   }
 }
 
-/* Testimonials — see testimonials-apple.css */
+/* Testimonials — see testimonials-refined.css */
 
 /* Buttons (services footer, etc.) */
 .home-btn {

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
-import { PortfolioAppleCard } from "@/components/portfolio/PortfolioAppleCard";
+import { PortfolioFeatureCard } from "@/components/portfolio/PortfolioFeatureCard";
 import { useHorizontalScrollDrag } from "@/hooks/useHorizontalScrollDrag";
 import { buildPortfolioTabs, filterPortfolioByTab, limitPortfolioTabItems } from "@/lib/portfolio/tabs";
 import type { PortfolioItem } from "@/lib/wordpress/portfolio-types";
@@ -205,7 +205,7 @@ export function PortfolioTabbedShowcase({
                   className="portfolio-showcase__grid-item"
                   style={{ animationDelay: `${i * 45}ms` }}
                 >
-                  <PortfolioAppleCard item={item} />
+                  <PortfolioFeatureCard item={item} />
                 </div>
               ))}
             </div>
@@ -247,7 +247,7 @@ export function PortfolioTabbedShowcase({
               >
                 {filtered.map((item) => (
                   <SwiperSlide key={item.id} className="portfolio-showcase__slide">
-                    <PortfolioAppleCard item={item} />
+                    <PortfolioFeatureCard item={item} />
                   </SwiperSlide>
                 ))}
               </Swiper>

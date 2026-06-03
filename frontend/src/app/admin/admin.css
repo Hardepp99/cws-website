@@ -21,7 +21,7 @@
   font-weight: 600 !important;
 }
 
-.cms-admin-root--apple {
+.cms-admin-root--refined {
   background: var(--admin-mac-bg, #f5f5f7);
   color: var(--admin-mac-ink, #1d1d1f);
   font-family:
@@ -51,7 +51,7 @@
   z-index: 100;
 }
 
-.cms-admin-root--apple .cms-admin-sidebar {
+.cms-admin-root--refined .cms-admin-sidebar {
   width: 252px;
   background: var(--admin-sidebar-bg, rgba(255, 255, 255, 0.78));
   backdrop-filter: var(--admin-glass, blur(20px) saturate(180%));
@@ -67,7 +67,7 @@
   text-align: center;
 }
 
-.cms-admin-root--apple .cms-admin-brand {
+.cms-admin-root--refined .cms-admin-brand {
   padding: 22px 18px 16px;
   border-bottom: 1px solid var(--admin-mac-line, rgba(0, 0, 0, 0.08));
 }
@@ -103,7 +103,7 @@
   opacity: 0.85;
 }
 
-.cms-admin-root--apple .cms-admin-brand span {
+.cms-admin-root--refined .cms-admin-brand span {
   font-size: 12px;
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -118,7 +118,7 @@
   overflow: hidden;
 }
 
-.cms-admin-root--apple .cms-admin-nav {
+.cms-admin-root--refined .cms-admin-nav {
   padding: 10px 12px 18px;
   overflow-x: hidden;
   overflow-y: auto;
@@ -138,7 +138,7 @@
   transition: background 0.15s ease, border-color 0.15s ease;
 }
 
-.cms-admin-root--apple .cms-admin-nav a {
+.cms-admin-root--refined .cms-admin-nav a {
   margin-bottom: 2px;
   padding: 9px 12px;
   border-radius: 10px;
@@ -161,7 +161,7 @@
   flex-shrink: 0;
 }
 
-.cms-admin-root--apple .cms-admin-nav a i {
+.cms-admin-root--refined .cms-admin-nav a i {
   width: 20px;
   font-size: 15px;
   color: var(--admin-mac-muted, #6e6e73);
@@ -174,12 +174,12 @@
   color: #fff;
 }
 
-.cms-admin-root--apple .cms-admin-nav a:hover:not(.active) {
+.cms-admin-root--refined .cms-admin-nav a:hover:not(.active) {
   background: var(--admin-sidebar-hover, rgba(0, 0, 0, 0.05));
   color: var(--admin-sidebar-link-hover, #aeaeb2);
 }
 
-.cms-admin-root--apple .cms-admin-nav a:hover:not(.active) i {
+.cms-admin-root--refined .cms-admin-nav a:hover:not(.active) i {
   color: var(--admin-sidebar-link-hover, #aeaeb2);
 }
 
@@ -189,9 +189,9 @@
   color: #fff;
 }
 
-.cms-admin-root--apple .cms-admin-nav a.active,
-.cms-admin-root--apple .cms-admin-nav a.active:hover,
-.cms-admin-root--apple .cms-admin-nav a.active:visited {
+.cms-admin-root--refined .cms-admin-nav a.active,
+.cms-admin-root--refined .cms-admin-nav a.active:hover,
+.cms-admin-root--refined .cms-admin-nav a.active:visited {
   background: var(--admin-sidebar-active, #1d1d1f);
   color: #fff !important;
   box-shadow:
@@ -199,8 +199,8 @@
     0 0 0 1px rgba(0, 0, 0, 0.04);
 }
 
-.cms-admin-root--apple .cms-admin-nav a.active i,
-.cms-admin-root--apple .cms-admin-nav a.active:hover i {
+.cms-admin-root--refined .cms-admin-nav a.active i,
+.cms-admin-root--refined .cms-admin-nav a.active:hover i {
   color: #fff !important;
 }
 
@@ -215,7 +215,7 @@
   overflow: hidden;
 }
 
-.cms-admin-root--apple .cms-admin-main {
+.cms-admin-root--refined .cms-admin-main {
   margin-left: 252px;
 }
 
@@ -233,7 +233,7 @@
   min-height: 56px;
 }
 
-.cms-admin-root--apple .cms-admin-topbar {
+.cms-admin-root--refined .cms-admin-topbar {
   background: rgba(255, 255, 255, 0.72);
   backdrop-filter: var(--admin-glass, blur(20px) saturate(180%));
   -webkit-backdrop-filter: var(--admin-glass, blur(20px) saturate(180%));
@@ -264,7 +264,7 @@
   letter-spacing: -0.01em;
 }
 
-.cms-admin-root--apple .cms-admin-topbar-title {
+.cms-admin-root--refined .cms-admin-topbar-title {
   font-weight: 600;
   color: var(--admin-mac-ink, #1d1d1f);
   letter-spacing: -0.02em;
@@ -280,7 +280,7 @@
   text-overflow: ellipsis;
 }
 
-.cms-admin-root--apple .cms-admin-topbar-page {
+.cms-admin-root--refined .cms-admin-topbar-page {
   color: var(--admin-mac-muted, #6e6e73);
 }
 
@@ -311,13 +311,13 @@
   color: var(--admin-royal, #0057ff);
 }
 
-.cms-admin-root--apple .cms-admin-menu-toggle {
+.cms-admin-root--refined .cms-admin-menu-toggle {
   border-color: var(--admin-mac-line, rgba(0, 0, 0, 0.08));
   border-radius: 10px;
   color: var(--admin-mac-ink, #1d1d1f);
 }
 
-.cms-admin-root--apple .cms-admin-menu-toggle:hover {
+.cms-admin-root--refined .cms-admin-menu-toggle:hover {
   background: rgba(0, 0, 0, 0.05);
   border-color: rgba(0, 0, 0, 0.12);
   color: var(--admin-mac-ink, #1d1d1f);
@@ -338,7 +338,7 @@
   transition: opacity 0.2s ease;
 }
 
-.cms-admin-root--apple .cms-admin-overlay {
+.cms-admin-root--refined .cms-admin-overlay {
   background: rgba(0, 0, 0, 0.32);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
@@ -360,7 +360,7 @@
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.cms-admin-root--apple .cms-admin-profile-btn {
+.cms-admin-root--refined .cms-admin-profile-btn {
   border-color: var(--admin-mac-line, rgba(0, 0, 0, 0.08));
   background: rgba(255, 255, 255, 0.9);
   color: var(--admin-mac-ink, #1d1d1f);
@@ -373,8 +373,8 @@
   box-shadow: 0 0 0 3px rgba(0, 87, 255, 0.12);
 }
 
-.cms-admin-root--apple .cms-admin-profile-btn:hover,
-.cms-admin-root--apple .cms-admin-profile-btn[aria-expanded="true"] {
+.cms-admin-root--refined .cms-admin-profile-btn:hover,
+.cms-admin-root--refined .cms-admin-profile-btn[aria-expanded="true"] {
   border-color: rgba(0, 0, 0, 0.14);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
@@ -391,7 +391,7 @@
   font-size: 14px;
 }
 
-.cms-admin-root--apple .cms-admin-profile-avatar {
+.cms-admin-root--refined .cms-admin-profile-avatar {
   background: var(--admin-sidebar-active, #1d1d1f);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
 }
@@ -423,7 +423,7 @@
   z-index: 120;
 }
 
-.cms-admin-root--apple .cms-admin-profile-menu {
+.cms-admin-root--refined .cms-admin-profile-menu {
   border: 1px solid var(--admin-mac-line, rgba(0, 0, 0, 0.08));
   border-radius: 14px;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14);
@@ -701,7 +701,7 @@
   text-decoration: none;
 }
 
-/* Login page — Apple-style shell (matches admin sidebar) */
+/* Login page — Premium shell (matches admin sidebar) */
 .cms-login-page {
   min-height: 100vh;
   display: flex;
@@ -2489,8 +2489,8 @@ button.row-action-btn {
   color: #202124;
 }
 
-.cms-admin-root--apple .gsc-dashboard h1,
-.cms-admin-root--apple .gsc-dashboard h2 {
+.cms-admin-root--refined .gsc-dashboard h1,
+.cms-admin-root--refined .gsc-dashboard h2 {
   color: var(--admin-mac-ink, #1d1d1f);
 }
 
@@ -2502,7 +2502,7 @@ button.row-action-btn {
   color: #202124;
 }
 
-.cms-admin-root--apple .gsc-dash-title {
+.cms-admin-root--refined .gsc-dash-title {
   color: var(--admin-mac-ink, #1d1d1f);
 }
 
@@ -2578,10 +2578,10 @@ button.row-action-btn {
   color: #424245;
 }
 
-.cms-admin-root--apple .gsc-panel h2,
-.cms-admin-root--apple .gsc-panel__heading,
-.cms-admin-root--apple .gsc-quick-links h2,
-.cms-admin-root--apple .gsc-dashboard .cms-card h2 {
+.cms-admin-root--refined .gsc-panel h2,
+.cms-admin-root--refined .gsc-panel__heading,
+.cms-admin-root--refined .gsc-quick-links h2,
+.cms-admin-root--refined .gsc-dashboard .cms-card h2 {
   color: var(--admin-mac-muted, #6e6e73);
 }
 
@@ -2747,7 +2747,7 @@ button.row-action-btn {
     -webkit-backdrop-filter: none !important;
   }
 
-  .cms-admin-root--apple .cms-admin-sidebar {
+  .cms-admin-root--refined .cms-admin-sidebar {
     background: #ffffff !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
@@ -2759,7 +2759,7 @@ button.row-action-btn {
     transform: translateX(0);
   }
 
-  .cms-admin-root--apple .cms-admin-main {
+  .cms-admin-root--refined .cms-admin-main {
     margin-left: 0;
   }
 
@@ -2875,61 +2875,61 @@ button.row-action-btn {
 }
 
 /* Ink links in admin — no blue text (exclude action pills) */
-.cms-admin-root--apple .cms-table a:not(.row-action-btn),
-.cms-admin-root--apple .wp-list-table a.row-title,
-.cms-admin-root--apple .wp-list-table a:not(.row-action-btn),
-.cms-admin-root--apple .wp-pagination a,
-.cms-admin-root--apple .cms-dash-admin-links a,
-.cms-admin-root--apple .entity-editor-mode a,
-.cms-admin-root--apple .gsc-panel a:not(.row-action-btn) {
+.cms-admin-root--refined .cms-table a:not(.row-action-btn),
+.cms-admin-root--refined .wp-list-table a.row-title,
+.cms-admin-root--refined .wp-list-table a:not(.row-action-btn),
+.cms-admin-root--refined .wp-pagination a,
+.cms-admin-root--refined .cms-dash-admin-links a,
+.cms-admin-root--refined .entity-editor-mode a,
+.cms-admin-root--refined .gsc-panel a:not(.row-action-btn) {
   color: var(--admin-mac-ink, #1d1d1f) !important;
   font-weight: 600;
 }
 
-.cms-admin-root--apple .cms-table a:not(.row-action-btn):hover,
-.cms-admin-root--apple .wp-list-table a.row-title:hover,
-.cms-admin-root--apple .wp-list-table a:not(.row-action-btn):hover,
-.cms-admin-root--apple .cms-dash-admin-links a:hover,
-.cms-admin-root--apple .gsc-panel a:not(.row-action-btn):hover {
+.cms-admin-root--refined .cms-table a:not(.row-action-btn):hover,
+.cms-admin-root--refined .wp-list-table a.row-title:hover,
+.cms-admin-root--refined .wp-list-table a:not(.row-action-btn):hover,
+.cms-admin-root--refined .cms-dash-admin-links a:hover,
+.cms-admin-root--refined .gsc-panel a:not(.row-action-btn):hover {
   color: #424245 !important;
 }
 
-.cms-admin-root--apple .row-action-btn--edit {
+.cms-admin-root--refined .row-action-btn--edit {
   background: #fff !important;
   color: #1d1d1f !important;
 }
 
-.cms-admin-root--apple .row-action-btn--desimentor {
+.cms-admin-root--refined .row-action-btn--desimentor {
   background: #1d1d1f !important;
   color: #fff !important;
 }
 
-.cms-admin-root--apple .cms-admin-profile-menu a:hover {
+.cms-admin-root--refined .cms-admin-profile-menu a:hover {
   color: var(--admin-mac-ink, #1d1d1f) !important;
   background: rgba(0, 0, 0, 0.05);
 }
 
-.cms-admin-root--apple .cms-btn-ghost {
+.cms-admin-root--refined .cms-btn-ghost {
   color: var(--admin-mac-ink, #1d1d1f) !important;
   border-color: var(--admin-mac-line, rgba(0, 0, 0, 0.12)) !important;
 }
 
-.cms-admin-root--apple .desimentor-edit-link {
+.cms-admin-root--refined .desimentor-edit-link {
   color: #fff !important;
 }
 
 /* Sidebar nav — active white, hover light grey (override ink link rules) */
-.cms-admin-root--apple .cms-admin-nav a.active,
-.cms-admin-root--apple .cms-admin-nav a.active:hover,
-.cms-admin-root--apple .cms-admin-nav a.active:visited {
+.cms-admin-root--refined .cms-admin-nav a.active,
+.cms-admin-root--refined .cms-admin-nav a.active:hover,
+.cms-admin-root--refined .cms-admin-nav a.active:visited {
   color: #fff !important;
 }
 
-.cms-admin-root--apple .cms-admin-nav a:hover:not(.active) {
+.cms-admin-root--refined .cms-admin-nav a:hover:not(.active) {
   color: var(--admin-sidebar-link-hover, #aeaeb2) !important;
 }
 
-.cms-admin-root--apple .cms-admin-nav a:hover:not(.active) i {
+.cms-admin-root--refined .cms-admin-nav a:hover:not(.active) i {
   color: var(--admin-sidebar-link-hover, #aeaeb2) !important;
 }
 

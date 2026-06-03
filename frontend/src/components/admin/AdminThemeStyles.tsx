@@ -26,7 +26,7 @@ export async function AdminThemeStyles() {
       --admin-gradient-green: linear-gradient(90deg, ${CWS_BRAND.greenDark} 0%, ${green} 55%, #00c17a 100%);
       --admin-accent: ${royal};
       --admin-accent-hover: ${CWS_BRAND.navy};
-      /* Apple-style admin chrome (sidebar + shell) */
+      /* Premium admin chrome (sidebar + shell) */
       --admin-mac-bg: #f5f5f7;
       --admin-mac-ink: #1d1d1f;
       --admin-mac-muted: #6e6e73;

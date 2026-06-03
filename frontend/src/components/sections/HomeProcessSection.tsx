@@ -2,7 +2,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { filterPublishedItems } from "@/lib/homepage/item-status";
 import type { HomepageSection } from "@/lib/wordpress/types";
 
-/** Apple system accent colors — one per step (01–04). */
+/** System accent colors — one per step (01–04). */
 const PROCESS_MAC_TONES = ["blue", "purple", "green", "orange"] as const;
 
 function ProcessSectionHead({

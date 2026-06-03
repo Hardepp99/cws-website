@@ -33,16 +33,6 @@ export const SITE_SETTINGS_SECTIONS: SettingsSectionDef[] = [
     ],
   },
   {
-    id: "colors",
-    label: "Colors",
-    icon: "fa-palette",
-    description: "Brand colors applied across the public site.",
-    fields: [
-      { key: "primaryColor", label: "Primary color", type: "color" },
-      { key: "secondaryColor", label: "Secondary color", type: "color" },
-    ],
-  },
-  {
     id: "contact",
     label: "Contact Information",
     icon: "fa-address-book",

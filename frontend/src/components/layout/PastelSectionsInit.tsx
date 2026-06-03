@@ -1,21 +1,12 @@
 /**
- * Assigns a random pastel `data-tint` to each eligible section in <main>.
- * Runs synchronously at end of main (after sections are parsed) to avoid a white flash.
+ * Neutral section backgrounds only — all tints map to light grey.
  */
 export function PastelSectionsInit() {
   const script = `(function(){
-  var pool=["yellow","pink","sky","green","yellow","pink","sky","green","white"];
-  function pick(){return pool[Math.floor(Math.random()*pool.length)];}
-  function hasCustomBg(el){
-    var s=el.style;
-    if(s.background||s.backgroundColor||s.backgroundImage)return true;
-    return false;
-  }
   function apply(el){
     if(el.getAttribute("data-tint"))return;
-    if(hasCustomBg(el))return;
     el.classList.add("page-section-pastel");
-    el.setAttribute("data-tint",pick());
+    el.setAttribute("data-tint","white");
   }
   var main=document.querySelector("main.site-main");
   if(!main)return;

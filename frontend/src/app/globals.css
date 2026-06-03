@@ -2,17 +2,18 @@
 @import "./desimentor-pages.css";
 @import "./animations.css";
 @import "./home.css";
-@import "./home-apple.css";
-@import "./glass-bubbles.css";
-@import "./apple-theme.css";
+@import "./home-refined.css";
+@import "./mac-cursor.css";
+@import "./cws-ui-theme.css";
+@import "./cws-ui-surfaces.css";
 @import "./home-section-bands.css";
 @import "./page-section-pastel.css";
 @import "./page-faq.css";
-@import "./cws-modal-apple.css";
+@import "./cws-modal-refined.css";
 @import "./modal-layer.css";
 @import "./portfolio-showcase.css";
 @import "./hero-illustration.css";
-@import "./testimonials-apple.css";
+@import "./testimonials-refined.css";
 @import "./scrollbar-silver.css";
 
 @tailwind base;
@@ -20,10 +21,10 @@
 @tailwind utilities;
 
 :root {
-  --primary-color: #0057ff;
-  --secondary-color: #0088ff;
-  --accent-color: #00a86b;
-  --highlight-color: #ff7a00;
+  --primary-color: #1d1d1f;
+  --secondary-color: #0071e3;
+  --accent-color: #1d1d1f;
+  --highlight-color: #86868b;
   --cws-h1: 1.375rem;
   --cws-h2: 1.1875rem;
   --cws-h3: 1.0625rem;
@@ -72,14 +73,15 @@ body {
   }
 }
 
-/* Member & community — CWS buttons (apple .btn uses ink fill + can clash with Bootstrap) */
+/* Member & community — CWS buttons (theme .btn uses ink fill + can clash with Bootstrap) */
 .site-main .btn.btn-primary,
 .site-main a.btn.btn-primary,
 .site-main button.btn.btn-primary {
-  background: linear-gradient(135deg, #0057ff 0%, #0088ff 100%) !important;
+  background: #1d1d1f !important;
   border: none !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 14px rgba(0, 87, 255, 0.22) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+  border-radius: 980px !important;
 }
 
 .site-main .btn.btn-primary:hover,
@@ -88,7 +90,7 @@ body {
 .site-main a.btn.btn-primary:focus-visible,
 .site-main button.btn.btn-primary:hover,
 .site-main button.btn.btn-primary:focus-visible {
-  background: #0057ff !important;
+  background: #333336 !important;
   color: #ffffff !important;
   border: none !important;
 }
@@ -97,9 +99,10 @@ body {
 .site-main a.btn.btn-outline-primary,
 .site-main button.btn.btn-outline-primary {
   background: transparent !important;
-  border: 2px solid var(--cws-royal, #0057ff) !important;
-  color: var(--cws-royal, #0057ff) !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  color: #1d1d1f !important;
   box-shadow: none !important;
+  border-radius: 980px !important;
 }
 
 .site-main .btn.btn-outline-primary:hover,
@@ -108,9 +111,9 @@ body {
 .site-main a.btn.btn-outline-primary:focus-visible,
 .site-main button.btn.btn-outline-primary:hover,
 .site-main button.btn.btn-outline-primary:focus-visible {
-  background: var(--cws-royal, #0057ff) !important;
-  border-color: var(--cws-royal, #0057ff) !important;
-  color: #ffffff !important;
+  background: rgba(0, 0, 0, 0.04) !important;
+  border-color: rgba(0, 0, 0, 0.16) !important;
+  color: #1d1d1f !important;
 }
 
 .site-main .account-actions {
@@ -135,7 +138,7 @@ body {
   font-weight: 600 !important;
   line-height: 1.3 !important;
   letter-spacing: -0.02em !important;
-  color: #0a1e5e !important;
+  color: #1d1d1f !important;
   text-transform: none !important;
   text-shadow: none !important;
   animation: none !important;
@@ -157,7 +160,7 @@ body {
   font-weight: 600 !important;
   line-height: 1.35 !important;
   letter-spacing: -0.015em !important;
-  color: #0a1e5e !important;
+  color: #1d1d1f !important;
   text-transform: none !important;
   text-shadow: none !important;
 }

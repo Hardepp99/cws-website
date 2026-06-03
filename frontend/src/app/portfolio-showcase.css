@@ -90,7 +90,7 @@
   gap: 1.25rem;
 }
 
-/* Apple-style portfolio — capsule tabs + horizontal product cards */
+/* Premium portfolio — capsule tabs + horizontal product cards */
 
 .portfolio-showcase {
   width: 100%;
@@ -278,7 +278,7 @@
   box-sizing: border-box;
 }
 
-.portfolio-showcase__slide .portfolio-apple-card {
+.portfolio-showcase__slide .portfolio-feature-card {
   height: 100%;
 }
 
@@ -358,27 +358,27 @@
   }
 }
 
-.portfolio-apple-card {
+.portfolio-feature-card {
   display: flex;
   flex-direction: column;
   background: #fff;
-  border-radius: 20px;
+  border-radius: 22px;
   border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
   overflow: hidden;
   transition:
     transform 0.35s cubic-bezier(0.25, 0.1, 0.25, 1),
     box-shadow 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
-.portfolio-apple-card:hover {
+.portfolio-feature-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 14px 36px rgba(0, 0, 0, 0.1);
 }
 
-.portfolio-apple-card__media {
+.portfolio-feature-card__media {
   margin: 0.65rem 0.65rem 0;
-  border-radius: 14px;
+  border-radius: 18px;
   background: #f5f5f7;
   aspect-ratio: 4 / 3;
   overflow: hidden;
@@ -387,18 +387,18 @@
   justify-content: center;
 }
 
-.portfolio-apple-card__img {
+.portfolio-feature-card__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.portfolio-apple-card__placeholder {
+.portfolio-feature-card__placeholder {
   font-size: 2rem;
   color: #86868b;
 }
 
-.portfolio-apple-card__body {
+.portfolio-feature-card__body {
   padding: 1rem 1.15rem 1.35rem;
   display: flex;
   flex-direction: column;
@@ -407,14 +407,14 @@
   align-items: center;
 }
 
-.portfolio-apple-card__eyebrow {
+.portfolio-feature-card__eyebrow {
   font-size: 0.75rem;
   font-weight: 500;
   color: #bf4800;
   margin-bottom: 0.25rem;
 }
 
-.portfolio-apple-card__title {
+.portfolio-feature-card__title {
   margin: 0 0 0.35rem;
   font-size: 1.25rem;
   font-weight: 600;
@@ -423,7 +423,7 @@
   color: #1d1d1f;
 }
 
-.portfolio-apple-card__desc {
+.portfolio-feature-card__desc {
   margin: 0 0 0.35rem;
   font-size: 0.9375rem;
   line-height: 1.45;
@@ -431,18 +431,18 @@
   max-width: 26ch;
 }
 
-.portfolio-apple-card__meta {
+.portfolio-feature-card__meta {
   margin: 0 0 0.65rem;
   font-size: 0.8125rem;
   color: #86868b;
 }
 
-.portfolio-apple-card__actions {
+.portfolio-feature-card__actions {
   margin-top: auto;
   padding-top: 0.35rem;
 }
 
-.portfolio-apple-card__btn {
+.portfolio-feature-card__btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -459,16 +459,16 @@
     color 0.2s ease;
 }
 
-.portfolio-apple-card__btn:hover {
+.portfolio-feature-card__btn:hover {
   background: rgba(0, 0, 0, 0.06);
   color: #1d1d1f;
 }
 
-.home-section-band--dark .portfolio-apple-card__btn {
+.home-section-band--dark .portfolio-feature-card__btn {
   color: #fff;
 }
 
-.home-section-band--dark .portfolio-apple-card__btn:hover {
+.home-section-band--dark .portfolio-feature-card__btn:hover {
   background: rgba(255, 255, 255, 0.12);
   color: #fff;
 }
@@ -653,7 +653,7 @@
 @media (prefers-reduced-motion: reduce) {
   .portfolio-showcase__panel,
   .portfolio-showcase__grid-item,
-  .portfolio-apple-card,
+  .portfolio-feature-card,
   .portfolio-capsule__tab,
   .portfolio-capsule__indicator,
   .portfolio-showcase__nav {
@@ -661,7 +661,7 @@
     transition: none !important;
   }
 
-  .portfolio-apple-card:hover,
+  .portfolio-feature-card:hover,
   .portfolio-showcase__nav:hover:not(:disabled) {
     transform: none;
   }

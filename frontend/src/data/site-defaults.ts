@@ -10,8 +10,8 @@ export const defaultSiteSettings: SiteSettings = {
   address: "#313, 3rd Floor, D & E Block\nVIP Road, Zirakpur\nPunjab 140603, India",
   logoUrl: "/assets/images/cws-logo.svg",
   logoWhiteUrl: "/assets/images/cws-logo.svg",
-  primaryColor: "#0057FF",
-  secondaryColor: "#0088FF",
+  primaryColor: "#1D1D1F",
+  secondaryColor: "#0071E3",
   footerText:
     "We are a leading web development company in India, providing innovative digital solutions to businesses worldwide.",
   facebook: "https://www.facebook.com/profile.php?id=61565017048983",

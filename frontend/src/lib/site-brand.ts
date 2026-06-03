@@ -1,4 +1,4 @@
-/** Brand assets and colors — lucky palette (70% blue / 20% green / 10% orange) */
+/** Neutral brand tokens — public site uses fixed CSS, not admin color pickers. */
 export const CWS_LOGO_PATH = "/assets/images/cws-logo.svg";
 export const CWS_LOGO_LIGHT_PATH = "/assets/images/cws-logo-light.svg";
 
@@ -6,28 +6,28 @@ export const CWS_LOGO_LIGHT_PATH = "/assets/images/cws-logo-light.svg";
 export const CWS_LOGO_ASPECT = 450 / 344.37;
 
 export const CWS_BRAND = {
-  navy: "#0A1E5E",
-  royal: "#0057FF",
-  blue: "#0088FF",
-  green: "#00A86B",
-  greenDark: "#008C5E",
-  orange: "#FF7A00",
-  orangeLight: "#FF8C1A",
-  slate: "#64748B",
-  logoGrey: "#4E5051",
-  ink: "#1A2D4D",
-  gradient: "linear-gradient(135deg, #0088FF 0%, #0057FF 55%, #0A1E5E 100%)",
-  gradientCta: "linear-gradient(135deg, #0057FF 0%, #0088FF 100%)",
-  gradientGreen: "linear-gradient(135deg, #00A86B 0%, #008C5E 100%)",
+  navy: "#012174",
+  royal: "#0A78ED",
+  blue: "#0A78ED",
+  green: "#34C759",
+  greenDark: "#248A3D",
+  orange: "#FF9500",
+  orangeLight: "#FFB340",
+  slate: "#86868B",
+  logoGrey: "#6E6E73",
+  ink: "#1D1D1F",
+  gradient: "linear-gradient(180deg, #FAFAFA 0%, #F5F5F7 100%)",
+  gradientCta: "linear-gradient(180deg, #333336 0%, #1D1D1F 100%)",
+  gradientGreen: "linear-gradient(180deg, #333336 0%, #1D1D1F 100%)",
 } as const;
 
 /** Lighter tints for dark backgrounds (footer) */
 export const CWS_BRAND_LIGHT = {
-  navy: "#7EB2FF",
-  royal: "#8BC4FF",
-  blue: "#8FD4FF",
-  slate: "#C5CAD1",
-  ink: "#9AAFBF",
+  navy: "#F5F5F7",
+  royal: "#E8E8ED",
+  blue: "#2997FF",
+  slate: "#AEAEB2",
+  ink: "#D2D2D7",
 } as const;
 
 export function logoDimensions(height: number) {

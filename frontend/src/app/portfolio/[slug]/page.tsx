@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteLayout } from "@/components/layout/SiteLayout";
-import { PortfolioAppleCard } from "@/components/portfolio/PortfolioAppleCard";
+import { PortfolioFeatureCard } from "@/components/portfolio/PortfolioFeatureCard";
 import { PageFaq } from "@/components/faq/PageFaq";
 import { PageConversionBand } from "@/components/engagement/PageConversionBand";
 import { PageHeader } from "@/components/ui/PageHeader";
@@ -145,7 +145,7 @@ export default async function PortfolioProjectPage({ params }: Props) {
               </h2>
               <div className="portfolio-detail__related-grid">
                 {related.map((item) => (
-                  <PortfolioAppleCard key={item.id} item={item} />
+                  <PortfolioFeatureCard key={item.id} item={item} />
                 ))}
               </div>
             </section>

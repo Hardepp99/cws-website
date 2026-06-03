@@ -29,7 +29,6 @@ body.cws-modal-open .promo-offer-bar,
 body.cws-modal-open .cws-mobile-tab-bar,
 body.cws-modal-open .cws-float-wa,
 body.cws-modal-open .cws-float-dock,
-body.cws-modal-open .cws-glass-bubble-layer,
 body.cws-modal-open .mobile-menu-overlay {
   z-index: auto !important;
 }
@@ -84,7 +83,7 @@ body.cws-modal-open .footer {
   -webkit-overflow-scrolling: touch;
 }
 
-.cws-modal-root--apple .cws-modal--apple.cws-modal-dialog {
+.cws-modal-root--refined .cws-modal--refined.cws-modal-dialog {
   max-height: min(92dvh, calc(100dvh - 32px));
 }
 

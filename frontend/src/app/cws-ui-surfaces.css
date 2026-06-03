@@ -1,0 +1,206 @@
+/**
+ * site-wide surfaces — neutral cards, rounded media, soft shadows, floor reflections.
+ * Loaded after cws-ui-theme.css; does not use admin primary/secondary colors.
+ */
+
+:root {
+  --cws-ui-radius-sm: 12px;
+  --cws-ui-radius-md: 18px;
+  --cws-ui-radius-lg: 22px;
+  --cws-ui-radius-xl: 28px;
+  --cws-ui-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --cws-ui-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --cws-ui-shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
+  --cws-ui-shadow-hover: 0 20px 48px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.05);
+  --cws-ui-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* —— Floor reflection (product-style) —— */
+.cws-surface-reflect,
+.home-service-card__media,
+.portfolio-feature-card__media,
+.home-portfolio-item__thumb,
+.home-about__visual,
+.home-hero__visual img,
+.hero-illustration-wrap {
+  position: relative;
+  isolation: isolate;
+}
+
+.cws-surface-reflect::after,
+.home-service-card__media::after,
+.portfolio-feature-card__media::after,
+.home-portfolio-item__thumb::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -6%;
+  height: 28%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.07), transparent 72%);
+  transform: scaleY(-1);
+  opacity: 0.55;
+  filter: blur(1px);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.45), transparent);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.45), transparent);
+  pointer-events: none;
+  z-index: 0;
+  border-radius: inherit;
+}
+
+/* —— Cards —— */
+.service-card,
+.home-service-card,
+.testimonial-card,
+.blog-card,
+.why-card,
+.process-card,
+.home-process__step,
+.home-hero-gmb__card,
+.portfolio-feature-card,
+.home-portfolio-item,
+.blog-archive__item,
+.blog-sidebar__widget,
+.page-faq__item,
+.corp-card,
+.contact-info-card {
+  border-radius: var(--cws-ui-radius-lg) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  background: #fff !important;
+  box-shadow: var(--cws-ui-shadow-sm) !important;
+  overflow: hidden;
+  transition:
+    transform 0.35s var(--cws-ui-ease),
+    box-shadow 0.35s var(--cws-ui-ease),
+    border-color 0.35s var(--cws-ui-ease);
+}
+
+.service-card:hover,
+.home-service-card:hover,
+.testimonial-card:hover,
+.blog-card:hover,
+.portfolio-feature-card:hover,
+.home-portfolio-item:hover,
+.blog-archive__item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--cws-ui-shadow-hover) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* —— Images —— */
+.site-main img:not(.footer-logo):not([class*="icon"]):not(.social-link img),
+.home-service-card__img,
+.portfolio-feature-card__img,
+.home-portfolio-item__img,
+.blog-card__img,
+.blog-archive__thumb img,
+.service-detail-intro__img,
+.content-article__body img {
+  border-radius: var(--cws-ui-radius-md);
+}
+
+.home-service-card__media,
+.portfolio-feature-card__media,
+.home-portfolio-item__thumb,
+.blog-card__media {
+  border-radius: var(--cws-ui-radius-md) var(--cws-ui-radius-md) 0 0;
+  overflow: hidden;
+}
+
+/* —— Sections —— */
+.corp-section,
+.content-page-section,
+.page-trust-strip,
+.page-conversion-band,
+.cta-section,
+.desimentor-section {
+  border-radius: 0;
+}
+
+.home-section-band--light .home-section-band__content > section,
+.home-section-band--light .home-section-band__content > div > section {
+  border-radius: 0;
+}
+
+/* Inner elevated panels */
+.home-about__panel,
+.home-hero-gmb,
+.home-cta-band__inner {
+  border-radius: var(--cws-ui-radius-xl);
+  box-shadow: var(--cws-ui-shadow-md);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: #fff;
+}
+
+/* —— Dropdowns & mobile drawer —— */
+.dropdown-menu {
+  border-radius: var(--cws-ui-radius-md) !important;
+  box-shadow: var(--cws-ui-shadow-lg) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+@media (max-width: 991.98px) {
+  .header .navbar-collapse.collapsing,
+  .header .navbar-collapse.show {
+    border-radius: var(--cws-ui-radius-lg) 0 0 var(--cws-ui-radius-lg) !important;
+    box-shadow: var(--cws-ui-shadow-lg) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background: rgba(255, 255, 255, 0.96) !important;
+  }
+
+  .header .navbar-collapse .nav-link {
+    border-radius: var(--cws-ui-radius-sm) !important;
+  }
+
+  .header .nav-mobile-submenu-toggle {
+    border-radius: 10px !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    color: #1d1d1f !important;
+    background: rgba(0, 0, 0, 0.04) !important;
+    box-shadow: none !important;
+  }
+
+  .header .nav-mobile-parent-label.is-active-trail {
+    color: #1d1d1f !important;
+  }
+}
+
+/* —— Forms —— */
+.form-control,
+.form-select,
+.cms-input,
+.cms-textarea {
+  border-radius: var(--cws-ui-radius-sm) !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition:
+    border-color 0.2s var(--cws-ui-ease),
+    box-shadow 0.2s var(--cws-ui-ease);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: rgba(0, 0, 0, 0.2) !important;
+  box-shadow:
+    0 0 0 3px rgba(0, 0, 0, 0.06),
+    inset 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* —— Neutralize tone-colored hovers on service cards —— */
+.home-page .home-service-card[data-tone]:hover {
+  box-shadow: var(--cws-ui-shadow-hover) !important;
+}
+
+.home-page .home-service-card[data-tone] .service-icon {
+  background: #f5f5f7 !important;
+  color: #1d1d1f !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .service-card:hover,
+  .home-service-card:hover,
+  .portfolio-feature-card:hover {
+    transform: none;
+  }
+}

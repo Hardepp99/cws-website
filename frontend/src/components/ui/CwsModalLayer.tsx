@@ -8,7 +8,7 @@ type CwsModalLayerProps = {
   open: boolean;
   onClose: () => void;
   children: ReactNode;
-  /** Extra classes on `.cws-modal-root` (e.g. `cws-modal-root--apple is-visible`) */
+  /** Extra classes on `.cws-modal-root` (e.g. `cws-modal-root--refined is-visible`) */
   rootClassName?: string;
 };
 

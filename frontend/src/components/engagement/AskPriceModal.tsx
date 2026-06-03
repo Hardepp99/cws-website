@@ -107,10 +107,10 @@ export function AskPriceModal({ open, onClose, settings, pricingOptions }: AskPr
     <CwsModalLayer
       open={open}
       onClose={onClose}
-      rootClassName={`cws-modal-root--apple${visible ? " is-visible" : ""}`}
+      rootClassName={`cws-modal-root--refined${visible ? " is-visible" : ""}`}
     >
       <div
-        className="cws-modal-dialog cws-modal-dialog--pricing cws-modal--apple"
+        className="cws-modal-dialog cws-modal-dialog--pricing cws-modal--refined"
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}

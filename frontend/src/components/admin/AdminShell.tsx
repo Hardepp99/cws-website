@@ -97,7 +97,7 @@ export function AdminShell({
   }
 
   return (
-    <div className={`cms-admin-root cms-admin-root--apple${sidebarOpen ? " cms-admin-root--nav-open" : ""}`}>
+    <div className={`cms-admin-root cms-admin-root--refined${sidebarOpen ? " cms-admin-root--nav-open" : ""}`}>
       <button
         type="button"
         className="cms-admin-overlay"

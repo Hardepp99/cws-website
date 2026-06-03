@@ -1,5 +1,3 @@
-import { CWS_BRAND } from "@/lib/site-brand";
-import { GlassBubbleCursor } from "@/components/effects/GlassBubbleCursor";
 import { SiteFloatWidgets } from "@/components/engagement/SiteFloatWidgets";
 import { FooterAskPriceTrigger } from "@/components/engagement/FooterAskPriceTrigger";
 import { SitePromoQuote } from "@/components/engagement/SitePromoQuote";
@@ -27,18 +25,6 @@ export async function SiteLayout({ children, currentPath = "/" }: SiteLayoutProp
   return (
     <MemberSessionProvider>
     <SiteMapsProvider mapsUrl={gmbMapsUrl}>
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `:root {
-            --primary-color: ${settings.primaryColor || CWS_BRAND.royal};
-            --secondary-color: ${settings.secondaryColor || CWS_BRAND.blue};
-            --accent-color: ${CWS_BRAND.green};
-            --highlight-color: ${CWS_BRAND.orange};
-            --cws-royal: ${settings.primaryColor || CWS_BRAND.royal};
-            --cws-blue: ${settings.secondaryColor || CWS_BRAND.blue};
-          }`,
-        }}
-      />
       <Preloader />
       <SitePromoQuote settings={settings} pricingOptions={pricingOptions} />
       <Topbar settings={settings} />
@@ -54,7 +40,6 @@ export async function SiteLayout({ children, currentPath = "/" }: SiteLayoutProp
         footerProductsMenu={menus.footerProducts}
       />
       <FooterAskPriceTrigger />
-      <GlassBubbleCursor />
       <SiteFloatWidgets settings={settings} />
       <SiteScripts />
     </SiteMapsProvider>

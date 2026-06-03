@@ -21,14 +21,6 @@ function setHtml(selector: string, value: string) {
 }
 
 function applySettings(settings: Record<string, string>) {
-  const primary = settings.primaryColor || "#0057FF";
-  const secondary = settings.secondaryColor || "#0088FF";
-  const root = document.documentElement;
-  root.style.setProperty("--primary-color", primary);
-  root.style.setProperty("--secondary-color", secondary);
-  root.style.setProperty("--cws-royal", primary);
-  root.style.setProperty("--cws-blue", secondary);
-
   setText('[data-customize="phone"]', settings.phone ?? "");
   setText('[data-customize="email"]', settings.email ?? "");
   setHtml('[data-customize="address-topbar"]', (settings.address ?? "").replace(/\n+/g, ", "));
