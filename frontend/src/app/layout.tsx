@@ -3,9 +3,9 @@ import Script from "next/script";
 import { AnalyticsProvider } from "@/components/analytics/AnalyticsProvider";
 import "./globals.css";
 import { buildMetadata, organizationJsonLd, webSiteJsonLd } from "@/lib/seo/metadata";
-import { SITE_INTRO_MAX_MS } from "@/lib/site-intro";
+import { SITE_INTRO_FAILSAFE_MS } from "@/lib/site-intro";
 
-const siteIntroFailsafeScript = `(function(){var M=${SITE_INTRO_MAX_MS};function d(){var e=document.documentElement,b=document.body,p=document.getElementById("preloader");e.classList.remove("is-intro-pending");b.classList.add("site-ready");if(p){p.classList.add("loaded");p.style.pointerEvents="none";p.style.display="none"}}window.addEventListener("site-intro-ready",d,{once:true});setTimeout(d,M)})();`;
+const siteIntroFailsafeScript = `(function(){var M=${SITE_INTRO_FAILSAFE_MS};function d(){var e=document.documentElement,b=document.body,p=document.getElementById("preloader");e.classList.remove("is-intro-pending");b.classList.add("site-ready");if(p){p.classList.add("loaded");p.style.pointerEvents="none";p.style.display="none"}}window.addEventListener("site-intro-ready",d,{once:true});setTimeout(d,M)})();`;
 
 /** Every page reads fresh content from MySQL on each request (no static HTML at build time). */
 export const dynamic = "force-dynamic";

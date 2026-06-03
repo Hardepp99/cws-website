@@ -6,6 +6,7 @@
   --site-intro-ease: cubic-bezier(0.4, 0, 0.2, 1);
   --site-intro-duration: 0.55s;
   --preloader-exit-duration: 0.68s;
+  --site-intro-failsafe-delay: 4.5s;
 }
 
 html.is-intro-pending body {
@@ -222,7 +223,7 @@ html.is-intro-pending body:not(.site-ready) .site-float-widgets,
 html.is-intro-pending body:not(.site-ready) .footer,
 html.is-intro-pending body:not(.site-ready) .promo-offer-bar,
 html.is-intro-pending body:not(.site-ready) .cws-mobile-tab-bar {
-  animation: siteIntroFailsafeUnhide 0s linear 20s forwards;
+  animation: siteIntroFailsafeUnhide 0s linear var(--site-intro-failsafe-delay) forwards;
 }
 
 html.is-intro-pending body:not(.site-ready) .header-premium .navbar-toggler,
@@ -230,11 +231,11 @@ html.is-intro-pending body:not(.site-ready) .header-premium .navbar-mobile-chrom
 html.is-intro-pending body:not(.site-ready) .header-premium .navbar-brand,
 html.is-intro-pending body:not(.site-ready) .header-premium .navbar-sticky-call,
 html.is-intro-pending body:not(.site-ready) .header-premium .navbar-collapse {
-  animation: siteIntroFailsafeUnhide 0s linear 20s forwards;
+  animation: siteIntroFailsafeUnhide 0s linear var(--site-intro-failsafe-delay) forwards;
 }
 
 html.is-intro-pending body:not(.site-ready) .preloader-premium {
-  animation: siteIntroFailsafeHidePreloader 0.55s var(--site-intro-ease) 20s forwards;
+  animation: siteIntroFailsafeHidePreloader 0.55s var(--site-intro-ease) var(--site-intro-failsafe-delay) forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {

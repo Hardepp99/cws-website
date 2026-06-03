@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import {
   SITE_INTRO_EXIT_MS,
   SITE_INTRO_READY_EVENT,
-  waitForSiteIntroGate,
+  waitForSiteIntroDuration,
 } from "@/lib/site-intro";
 
 export function SiteScripts() {
@@ -12,7 +12,6 @@ export function SiteScripts() {
     let finished = false;
     let exitTimer: number | undefined;
     let hideTimer: number | undefined;
-    const introStarted = performance.now();
 
     const resetIntroState = () => {
       document.body.classList.remove("site-ready");
@@ -56,7 +55,7 @@ export function SiteScripts() {
         }, exitMs);
       };
 
-      void waitForSiteIntroGate(introStarted).then(runExit);
+      void waitForSiteIntroDuration().then(runExit);
     };
 
     resetIntroState();
