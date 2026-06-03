@@ -5,42 +5,49 @@ export { pickRandomLightPastelTint } from "@/lib/page-section-tint";
 
 export type SectionTheme = "light" | "dark";
 
-/**
- * Fixed light: hero, about, footer.
- * After about: DARK → LIGHT → DARK → LIGHT → DARK (strict alternation).
- */
+/** Alternating bands for conversion-focused homepage sequence */
 export const HOMEPAGE_SECTION_THEMES: Record<string, SectionTheme> = {
-  about: "light",
+  trust_badges: "light",
   services_grid: "dark",
+  portfolio: "dark",
+  why_codify: "light",
   process: "light",
   testimonials: "dark",
-  portfolio: "light",
+  guarantees: "light",
+  industries: "dark",
+  tech_stack: "light",
+  pricing_packages: "dark",
+  faq: "light",
   cta: "dark",
+  about: "light",
 };
 
-/** Curated Unsplash URLs — IT / workspace themed (replace per section in admin). */
 export const DEFAULT_SECTION_BACKDROPS: Record<string, string> = {
   services_grid:
     "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1920&q=80",
-  services_marquee:
-    "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1920&q=80",
+  portfolio:
+    "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1920&q=80",
+  why_codify:
+    "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1920&q=80",
   process: "/assets/images/process-hero-mac-students.jpg",
   testimonials:
     "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1920&q=80",
-  portfolio:
-    "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1920&q=80",
+  guarantees:
+    "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1920&q=80",
+  industries:
+    "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1920&q=80",
+  tech_stack:
+    "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&q=80",
+  pricing_packages:
+    "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1920&q=80",
+  faq: "https://images.unsplash.com/photo-1521737711862-e3b97375f902?auto=format&fit=crop&w=1920&q=80",
   cta: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80",
   trust_badges:
     "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1920&q=80",
-  industries:
-    "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1920&q=80",
+  services_marquee:
+    "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1920&q=80",
   website_types:
     "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1920&q=80",
-  tech_stack:
-    "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&q=80",
-  why_codify:
-    "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1920&q=80",
-  faq: "https://images.unsplash.com/photo-1521737711862-e3b97375f902?auto=format&fit=crop&w=1920&q=80",
   courses:
     "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1920&q=80",
   blog_preview:
@@ -69,7 +76,6 @@ export function resolveSectionTheme(section: HomepageSection, bandIndex: number)
   return bandIndex % 2 === 0 ? "light" : "dark";
 }
 
-/** Enforce canonical homepage band sequence (overrides CMS auto/wrong theme). */
 export function applyCanonicalSectionTheme(section: HomepageSection): HomepageSection {
   const layout = String(section.acfFcLayout ?? "");
   const theme = HOMEPAGE_SECTION_THEMES[layout];
@@ -94,5 +100,5 @@ export function resolveSectionBackdropStrength(section: HomepageSection, theme: 
     const n = parseInt(raw, 10);
     if (Number.isFinite(n)) return Math.min(100, Math.max(0, n));
   }
-  return theme === "dark" ? 38 : 24;
+  return theme === "dark" ? 42 : 22;
 }

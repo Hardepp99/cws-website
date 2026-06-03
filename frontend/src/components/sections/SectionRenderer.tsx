@@ -198,7 +198,7 @@ function HomeSectionHead({
   if (!title && !subtitle && !badge) return null;
   return (
     <Reveal variant="fade-up">
-      <div className={`home-section-head${center ? " home-section-head--center" : ""}`}>
+      <div className={`home-section-head home-agency-head${center ? " home-section-head--center" : ""}`}>
         {badge && <span className="home-eyebrow home-eyebrow--mac">{badge}</span>}
         {title && <h2>{title}</h2>}
         {subtitle && <p>{subtitle}</p>}
@@ -212,7 +212,7 @@ function WhyCodifySection({ section }: { section: HomepageSection }) {
     (section.cards as { icon: string; title: string; description: string; number: string; status?: string }[]) || []
   );
   return (
-    <section className="why-codify-section corp-section corp-section-alt" id="why-codify">
+    <section className="why-codify-section home-agency-why corp-section corp-section-alt" id="why-codify">
       <div className="container">
         <HomeSectionHead badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
         <div className="row g-3">
@@ -247,7 +247,7 @@ function ServicesGridSection({ section }: { section: HomepageSection }) {
       : DEFAULT_SERVICES_GRID_SUBTITLE;
 
   return (
-    <section className="services-section home-services corp-section" id="services">
+    <section className="services-section home-services home-agency-section corp-section" id="services">
       <div className="corp-container">
         <HomeSectionHead badge={section.badge as string} title={section.title as string} subtitle={subtitle} />
         <div className="row g-3 home-services__grid">
@@ -259,10 +259,16 @@ function ServicesGridSection({ section }: { section: HomepageSection }) {
             </div>
           ))}
         </div>
-        <Reveal variant="zoom-in" delay={300}>
-        <div className="text-center mt-4">
-          <Link href="/services" className="home-btn home-btn--primary">
-            All services
+        <Reveal variant="zoom-in">
+        <div className="home-agency-services-cta">
+          <div className="home-agency-strip">
+            <p>Not sure where to start? We will map the right mix of design, build, and growth on a free call.</p>
+            <CtaLink href="#ask-price" className="home-hero__btn home-hero__btn--primary">
+              Get free proposal
+            </CtaLink>
+          </div>
+          <Link href="/services" className="home-hero__btn home-hero__btn--ghost">
+            Browse all services
           </Link>
         </div>
         </Reveal>
@@ -358,19 +364,33 @@ function BlogPreviewSection({
 }
 
 function CtaSection({ section }: { section: HomepageSection }) {
+  const primary = (section.ctaPrimary as { label?: string; href?: string }) || {};
+  const secondary = (section.ctaSecondary as { label?: string; href?: string }) || {};
+  const primaryHref = String(primary.href ?? section.ctaHref ?? "#ask-price").trim() || "#ask-price";
+  const primaryLabel = String(primary.label ?? section.ctaLabel ?? "Book free consultation").trim();
+  const secondaryHref = String(secondary.href ?? "/contact#contact-form").trim();
+  const secondaryLabel = String(secondary.label ?? "Contact us").trim();
+
   return (
-    <section className="cta-section home-cta-band">
+    <section className="cta-section home-cta-band home-agency-final-cta">
       <div className="corp-container text-center">
         <Reveal variant="fade-up">
           <h2>{section.title}</h2>
         </Reveal>
-        <Reveal variant="fade-in" delay={180}>
+        <Reveal variant="fade-in">
           <p>{section.subtitle}</p>
         </Reveal>
-        <Reveal variant="zoom-in" delay={360}>
-          <CtaLink href={(section.ctaHref as string) || "/contact"} className="home-hero__btn home-hero__btn--ghost">
-            {(section.ctaLabel as string) || "Contact us"}
-          </CtaLink>
+        <Reveal variant="zoom-in">
+          <div className="page-conversion-band__actions home-cta-band__actions">
+            <CtaLink href={primaryHref} className="home-hero__btn home-hero__btn--primary">
+              {primaryLabel}
+            </CtaLink>
+            {secondaryHref ? (
+              <Link href={secondaryHref} className="home-hero__btn home-hero__btn--ghost">
+                {secondaryLabel}
+              </Link>
+            ) : null}
+          </div>
         </Reveal>
       </div>
     </section>

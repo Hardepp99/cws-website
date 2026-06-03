@@ -18,7 +18,8 @@ export function SectionRepeaterNav({
     <div className="section-repeater-nav">
       <h2 className="section-repeater-nav__title">Lists in this section</h2>
       <p className="cms-field-hint">
-        {layoutLabel(layout)} — edit each {repeaters.length === 1 ? "item" : "list"} one at a time (add, draft, publish, trash).
+        {layoutLabel(layout)} — quick edits are in <strong>Section items</strong> above. Use these links for
+        full-screen item editing, trash, and bulk list view.
       </p>
       <ul className="section-repeater-nav__list">
         {repeaters.map((rep) => {

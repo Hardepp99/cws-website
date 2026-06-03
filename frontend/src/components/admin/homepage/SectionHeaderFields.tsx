@@ -124,6 +124,8 @@ export function SectionHeaderFields({
   }
 
   if (layout === "cta" || layout === "contact_preview") {
+    const ctaPrimary = (section.ctaPrimary as SectionRecord) || {};
+    const ctaSecondary = (section.ctaSecondary as SectionRecord) || {};
     return (
       <SectionFieldsWrap layout={layout} section={section} onChange={onChange}>
         {layout === "contact_preview" ? (
@@ -131,7 +133,33 @@ export function SectionHeaderFields({
         ) : null}
         <Field label="Title" value={String(section.title ?? "")} onChange={(v) => set("title", v)} />
         <Field label="Subtitle" value={String(section.subtitle ?? "")} onChange={(v) => set("subtitle", v)} type="textarea" />
-        <CtaFields section={section} onChange={onChange} />
+        {layout === "cta" ? (
+          <>
+            <Field
+              label="Primary button label"
+              value={String(ctaPrimary.label ?? section.ctaLabel ?? "")}
+              onChange={(v) => set("ctaPrimary", { ...ctaPrimary, label: v })}
+            />
+            <Field
+              label="Primary button link"
+              value={String(ctaPrimary.href ?? section.ctaHref ?? "#ask-price")}
+              onChange={(v) => set("ctaPrimary", { ...ctaPrimary, href: v })}
+              hint="#ask-price opens Ask price modal"
+            />
+            <Field
+              label="Secondary button label"
+              value={String(ctaSecondary.label ?? "")}
+              onChange={(v) => set("ctaSecondary", { ...ctaSecondary, label: v })}
+            />
+            <Field
+              label="Secondary button link"
+              value={String(ctaSecondary.href ?? "")}
+              onChange={(v) => set("ctaSecondary", { ...ctaSecondary, href: v })}
+            />
+          </>
+        ) : (
+          <CtaFields section={section} onChange={onChange} />
+        )}
       </SectionFieldsWrap>
     );
   }

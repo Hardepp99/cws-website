@@ -38,7 +38,7 @@ export function emptySiteSettings(): SiteSettings {
     gmbReviewsJson: serializeGmbReviews(DEFAULT_GMB_REVIEWS),
     portfolioBadge: "Local work",
     portfolioTitle: "Clients we have worked with",
-    portfolioSubtitle: "Real projects for businesses in Zirakpur, Chandigarh, Mohali & Punjab.",
+    portfolioSubtitle: "Real websites, apps, and campaigns for brands selling worldwide.",
     portfolioHomeMax: "5",
     portfolioCtaLabel: "View all work",
     portfolioCtaHref: "/portfolio",

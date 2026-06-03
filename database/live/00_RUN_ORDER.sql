@@ -1,0 +1,41 @@
+-- =============================================================================
+-- CWS — phpMyAdmin live update order (read-only instructions)
+-- =============================================================================
+--
+-- Run these files IN ORDER on database `cws_cms`:
+--
+--   1) 01_schema_pending_migrations.sql
+--      → Adds columns/tables from migrations 003–016 if missing.
+--      → Ignore errors like "Duplicate column name" (already applied).
+--
+--   2) 02_fix_menu_db_keys.sql
+--      → Fixes footer_services / footer_products menu keys.
+--
+--   3) 03_homepage_agency_sections.sql
+--      → Trashes old homepage layouts, sets sort_order, adds guarantees row.
+--
+--   4) 04_homepage_worldwide_content.sql
+--      → Partial copy patches (optional if using 05 instead).
+--
+--   ★ 5) 05_homepage_ONLY_full_update.sql  (RECOMMENDED)
+--      → Full homepage + all 13 sections in one transaction.
+--      → Does NOT touch blog, services, menus, or other pages.
+--
+--   OR run section-by-section:
+--      database/live/homepage-sections/00_page_setup.sql
+--      then 01_hero_slider.sql … 12_cta.sql
+--
+-- Regenerate from code: node frontend/scripts/export-homepage-live-sql.mjs
+--
+-- Optional (only if you use that feature):
+--   database/migrations/015_community.sql  (members, forums)
+--   database/migrations/005_blog_sidebar.sql
+--   database/migrations/006_media_seo_paths.sql
+--   (see database/migrations/ folder for full history)
+--
+-- Agency homepage content defaults ship in application code; DB script only
+-- syncs structure. Full text/images: Admin → Homepage sections after deploy.
+--
+-- =============================================================================
+
+SELECT 'Open 01, 02, 03 SQL files in this folder — do not execute this file alone' AS info;

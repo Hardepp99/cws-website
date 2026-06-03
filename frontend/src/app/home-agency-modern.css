@@ -1,0 +1,380 @@
+/**
+ * Agency homepage — modern section styling (conversion-focused layout).
+ */
+
+.home-page {
+  --agency-radius: 16px;
+  --agency-radius-lg: 22px;
+  --agency-shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
+  --agency-shadow-hover: 0 20px 48px rgba(15, 23, 42, 0.14);
+  --agency-accent: var(--cws-royal, #0057ff);
+  --agency-accent-soft: rgba(0, 87, 255, 0.1);
+}
+
+/* —— Section headers —— */
+.home-page .home-agency-head,
+.home-page .home-section-head.home-agency-head {
+  max-width: 46rem;
+  margin-inline: auto;
+  text-align: center;
+  margin-bottom: clamp(1.75rem, 4vw, 2.75rem);
+}
+
+.home-page .home-agency-head .home-eyebrow,
+.home-page .home-section-head.home-agency-head .home-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--agency-accent-soft);
+  border: 1px solid rgba(0, 87, 255, 0.15);
+  margin-bottom: 0.85rem;
+}
+
+.home-page .home-section-band--dark .home-agency-head .home-eyebrow {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.home-page .home-agency-head h2 {
+  font-size: clamp(1.65rem, 3.8vw, 2.35rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin: 0 0 0.65rem;
+}
+
+.home-page .home-agency-head p {
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  line-height: 1.65;
+  margin: 0;
+  opacity: 0.88;
+}
+
+/* —— Trust grid —— */
+.home-page .home-trust.corp-section {
+  padding-block: clamp(2.5rem, 6vw, 4rem);
+}
+
+.home-page .home-trust-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: 1rem 1.15rem;
+}
+
+.home-page .home-trust-card {
+  border-radius: var(--agency-radius);
+  padding: 1.35rem 1.25rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: linear-gradient(165deg, #fff 0%, #f8fafc 100%);
+  box-shadow: var(--agency-shadow);
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+}
+
+.home-page .home-trust-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--agency-shadow-hover);
+  border-color: rgba(0, 87, 255, 0.2);
+}
+
+.home-page .home-trust-card h3 {
+  font-size: 1.05rem;
+  margin: 0.65rem 0 0.35rem;
+}
+
+.home-page .home-trust-card p {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin: 0;
+  color: #475569;
+}
+
+/* —— Services —— */
+.home-page .home-services.corp-section {
+  padding-block: clamp(2.75rem, 6vw, 4.25rem);
+}
+
+.home-page .home-agency-services-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+/* —— Why cards —— */
+.home-page .why-codify-section.home-agency-why {
+  padding-block: clamp(2.5rem, 6vw, 4rem);
+}
+
+.home-page .why-codify-section .why-card {
+  border-radius: var(--agency-radius-lg);
+  padding: 1.5rem 1.35rem 1.25rem;
+  border: 1px solid rgba(15, 23, 42, 0.07);
+  background: #fff;
+  box-shadow: var(--agency-shadow);
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.home-page .why-codify-section .why-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--agency-shadow-hover);
+}
+
+.home-page .why-codify-section .why-number {
+  position: absolute;
+  top: 0.75rem;
+  right: 1rem;
+  font-size: 2.5rem;
+  font-weight: 800;
+  opacity: 0.06;
+  line-height: 1;
+}
+
+.home-page .why-codify-section .why-card h3 {
+  font-size: 1.1rem;
+  margin: 0.75rem 0 0.4rem;
+}
+
+.home-page .why-codify-section .why-card p {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #475569;
+  margin: 0;
+}
+
+/* —— Guarantees —— */
+.home-page .home-guarantees.corp-section {
+  padding-block: clamp(2.5rem, 6vw, 4rem);
+}
+
+.home-page .home-guarantee-card {
+  border-radius: var(--agency-radius);
+  padding: 1.4rem 1.25rem;
+  border: 1px solid rgba(0, 87, 255, 0.12);
+  background: linear-gradient(145deg, #fff 0%, #f0f7ff 100%);
+  box-shadow: var(--agency-shadow);
+  height: 100%;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.home-page .home-guarantee-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--agency-shadow-hover);
+}
+
+.home-page .home-guarantee-card h3 {
+  font-size: 1.05rem;
+  margin: 0.6rem 0 0.35rem;
+}
+
+.home-page .home-guarantee-card p {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin: 0;
+  color: #475569;
+}
+
+/* —— Tech pills —— */
+.home-page .home-tech-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 0.75rem;
+  justify-content: center;
+  max-width: 56rem;
+  margin-inline: auto;
+}
+
+.home-page .home-tech-pill {
+  border-radius: 999px;
+  padding: 0.55rem 1rem 0.55rem 0.65rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.home-page .home-tech-pill:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 87, 255, 0.35);
+}
+
+/* —— Industries —— */
+.home-page .home-industries-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 140px), 1fr));
+  gap: 0.75rem;
+  max-width: 52rem;
+  margin-inline: auto;
+}
+
+.home-page .home-industry-chip {
+  border-radius: var(--agency-radius);
+  padding: 0.85rem 0.65rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.88rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.home-page .home-section-band--light .home-industry-chip {
+  background: #fff;
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+}
+
+.home-page .home-industry-chip:hover {
+  transform: translateY(-2px);
+}
+
+/* —— Pricing —— */
+.home-page .home-package-card {
+  border-radius: var(--agency-radius-lg);
+  padding: 1.5rem 1.35rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: #fff;
+  box-shadow: var(--agency-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.home-page .home-section-band--dark .home-package-card {
+  background: rgba(255, 255, 255, 0.97);
+}
+
+.home-page .home-package-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--agency-shadow-hover);
+}
+
+.home-page .home-package-card h3 {
+  font-size: 1.08rem;
+  margin: 0.5rem 0 0;
+}
+
+.home-page .home-package-card p {
+  flex: 1;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: #475569;
+}
+
+.home-page .home-package-card .btn {
+  align-self: flex-start;
+  margin-top: 0.5rem;
+}
+
+/* —— FAQ —— */
+.home-page .home-faq-list {
+  max-width: 44rem;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.home-page .home-faq-item {
+  border-radius: var(--agency-radius);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
+  overflow: hidden;
+}
+
+.home-page .home-faq-item summary {
+  cursor: pointer;
+  padding: 1rem 1.15rem;
+  font-weight: 650;
+  font-size: 1rem;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.home-page .home-faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.home-page .home-faq-item[open] summary {
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.home-page .home-faq-item p {
+  padding: 0 1.15rem 1.1rem 3.25rem;
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #475569;
+}
+
+/* —— Final CTA —— */
+.home-page .cta-section.home-agency-final-cta {
+  padding-block: clamp(3rem, 8vw, 5rem);
+}
+
+.home-page .home-agency-final-cta h2 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  max-width: 20ch;
+  margin-inline: auto;
+  letter-spacing: -0.03em;
+}
+
+.home-page .home-agency-final-cta p {
+  max-width: 42rem;
+  margin-inline: auto;
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.home-page .home-agency-final-cta .home-cta-band__actions {
+  margin-top: 1.75rem;
+}
+
+/* —— Mid-page conversion strip (after services) —— */
+.home-page .home-agency-strip {
+  margin-top: 2.25rem;
+  padding: 1.35rem 1.5rem;
+  border-radius: var(--agency-radius-lg);
+  text-align: center;
+  background: linear-gradient(135deg, rgba(0, 87, 255, 0.12) 0%, rgba(0, 136, 255, 0.06) 100%);
+  border: 1px solid rgba(0, 87, 255, 0.18);
+}
+
+.home-page .home-section-band--dark .home-agency-strip {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.home-page .home-agency-strip p {
+  margin: 0 0 1rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+@media (max-width: 767px) {
+  .home-page .home-trust-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-page .home-agency-services-cta .home-hero__btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

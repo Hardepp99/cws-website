@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CtaLink } from "@/components/engagement/CtaLink";
 import { ServicesMarqueeStrip } from "@/components/sections/ServicesMarqueeStrip";
 import { HomeMacIcon } from "@/components/ui/HomeMacIcon";
 import { Reveal } from "@/components/ui/Reveal";
@@ -19,7 +20,7 @@ function Head({
   if (!badge && !title && !subtitle) return null;
   return (
     <Reveal variant="fade-up">
-      <div className="home-section-head home-section-head--center">
+      <div className="home-section-head home-section-head--center home-agency-head">
         {badge ? <span className="home-eyebrow home-eyebrow--mac">{badge}</span> : null}
         {title ? <h2>{title}</h2> : null}
         {subtitle ? <p>{subtitle}</p> : null}
@@ -50,7 +51,7 @@ export function TrustBadgesSection({
   const heroPublished = filterPublishedItems(heroStats || []);
   const items = filterTrustItemsNotInHeroStats(published, heroPublished);
   return (
-    <section className="home-trust corp-section corp-section-alt">
+    <section className="home-trust home-agency-section corp-section corp-section-alt">
       <div className="corp-container">
         <Head badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
         <div className="home-trust-grid">
@@ -178,9 +179,9 @@ export function PricingPackagesSection({ section }: { section: HomepageSection }
                     <HomeMacIcon icon={item.icon || "fas fa-box"} tone={tone} index={i} size="lg" />
                     <h3>{item.title}</h3>
                     <p>{item.desc || item.description}</p>
-                    <Link href="/contact" className="btn btn-outline-custom btn-sm">
-                      View rate
-                    </Link>
+                    <CtaLink href="#ask-price" className="btn btn-outline-custom btn-sm">
+                      Get estimate
+                    </CtaLink>
                   </article>
                 </Reveal>
               </div>
@@ -195,7 +196,7 @@ export function PricingPackagesSection({ section }: { section: HomepageSection }
 export function GuaranteesSection({ section }: { section: HomepageSection }) {
   const items = filterPublishedItems((section.items as Item[]) || []);
   return (
-    <section className="home-guarantees corp-section">
+    <section className="home-guarantees home-agency-section corp-section">
       <div className="corp-container">
         <Head badge={section.badge as string} title={section.title as string} subtitle={section.subtitle as string} />
         <div className="row g-3">

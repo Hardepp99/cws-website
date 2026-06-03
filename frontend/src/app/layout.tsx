@@ -36,7 +36,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body>
+      {/* Inline site-intro script may set body class before hydration (session / path). */}
+      <body suppressHydrationWarning>
         <script dangerouslySetInnerHTML={{ __html: siteIntroBootstrapScript }} />
         <AnalyticsProvider />
         {children}

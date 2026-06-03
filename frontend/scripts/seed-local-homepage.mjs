@@ -71,16 +71,20 @@ const menus = {
   footer_products: [],
 };
 
+/** Agency homepage order — sync with src/data/cws-homepage-modern-sections.ts */
 const homepageSections = [
   {
     acfFcLayout: "hero_slider",
-    eyebrow: "Creative Web Solutions · Zirakpur, Chandigarh & Mohali",
-    headline: "What we do for you",
+    eyebrow: "Global Web · Mobile · Digital Marketing Agency",
+    headline: "Turn visitors into paying customers",
     subheadline:
-      "We build websites, mobile apps, and digital marketing that turn visitors into real enquiries.",
-    headlineParts: [],
-    ctaPrimary: { label: "Get a quote", href: "#ask-price" },
-    ctaSecondary: { label: "Call +91-7015969967", href: "tel:+917015969967" },
+      "Creative Web Solutions designs, builds, and markets high-performing websites and apps for brands that sell worldwide — one team from first sketch to measurable growth.",
+    headlineParts: [
+      { text: "paying", tone: "green" },
+      { text: "customers", tone: "blue" },
+    ],
+    ctaPrimary: { label: "Get free proposal", href: "#ask-price" },
+    ctaSecondary: { label: "View our work", href: "/portfolio" },
     slides: [
       { image: { url: "/assets/images/hero1.png" } },
       { image: { url: "/assets/images/hero2.png" } },
@@ -89,7 +93,11 @@ const homepageSections = [
     heroVisual: "svg",
     personImage: "/assets/images/hero2.png",
     personImageAlt: "Designer building websites and digital products",
-    stats: [],
+    stats: [
+      { icon: "fas fa-project-diagram", count: 549, label: "Projects delivered", tone: "blue" },
+      { icon: "fas fa-users", count: 320, label: "Clients worldwide", tone: "green" },
+      { icon: "fas fa-award", count: 15, label: "Years in business", tone: "royal" },
+    ],
     gmbRating: 4.9,
     gmbReviewCount: "120+",
     gmbReviews: [
@@ -102,7 +110,7 @@ const homepageSections = [
       {
         author: "Priya Sharma",
         rating: 5,
-        text: "SEO ke baad Google pe ranking better hai. Team Zirakpur se, seedhi baat, time pe kaam.",
+        text: "SEO and paid campaigns aligned — we see which pages drive leads.",
         ago: "1 month ago",
       },
       {
@@ -121,33 +129,50 @@ const homepageSections = [
     ],
   },
   {
-    acfFcLayout: "about",
+    acfFcLayout: "trust_badges",
     sectionTheme: "light",
-    badge: "About us",
-    title: "Technology partner for ambitious businesses",
-    subtitle:
-      "Creative Web Solutions combines product thinking, engineering discipline, and marketing expertise. From corporate websites to custom applications, we help teams in Zirakpur, Chandigarh, and Mohali launch faster and operate with confidence.",
-    image: "/assets/images/about-office.jpg",
-    imageAlt: "Creative Web Solutions office — modern workspace for web design and development",
-    features: [
-      { title: "Expert team", description: "15+ years delivering websites, apps, and campaigns" },
-      { title: "Local support", description: "Fast replies and clear updates in English and Hindi" },
-      { title: "Quality delivery", description: "Clean code, tested launches, and honest timelines" },
+    badge: "Trusted by businesses",
+    title: "Proof you can plan around",
+    subtitle: "Local delivery, clear communication, and results you can measure.",
+    items: [
+      { icon: "fab fa-google", title: "4.9★ client rating", desc: "Rated for delivery, communication, and results", tone: "blue" },
+      { icon: "fas fa-project-diagram", title: "549+ projects", desc: "Websites, apps, and campaigns shipped", tone: "green" },
+      { icon: "fas fa-globe-asia", title: "10+ regions", desc: "India and international clients", tone: "purple" },
+      { icon: "fas fa-headset", title: "Dedicated support", desc: "English & Hindi — fast replies", tone: "orange" },
     ],
-    ctaLabel: "Learn more about us",
-    ctaHref: "/about",
   },
   {
     acfFcLayout: "services_grid",
     sectionTheme: "dark",
     badge: "Services",
-    title: "What we do",
-    subtitle: "From first wireframe to launch day — one team for design, build, and measurable growth across Punjab.",
+    title: "What we deliver",
+    subtitle: "Design, engineering, and growth under one roof — turn traffic into qualified enquiries anywhere you sell.",
     items: [
       { icon: "fas fa-paint-brush", title: "Web design", href: "/ui-ux-design-zirakpur", tone: "pink" },
       { icon: "fas fa-code", title: "Website development", href: "/website-development-zirakpur", tone: "blue" },
       { icon: "fas fa-mobile-alt", title: "Mobile apps", href: "/mobile-app-development-zirakpur", tone: "green" },
       { icon: "fas fa-bullhorn", title: "Digital marketing", href: "/digital-marketing-zirakpur", tone: "orange" },
+    ],
+  },
+  {
+    acfFcLayout: "portfolio",
+    sectionTheme: "dark",
+    badge: "Results",
+    title: "Work that earns trust before the first call",
+    subtitle: "Websites, apps, and campaigns for healthcare, retail, B2B, and startups worldwide.",
+    ctaLabel: "See all case studies",
+    ctaHref: "/portfolio",
+  },
+  {
+    acfFcLayout: "why_codify",
+    sectionTheme: "light",
+    badge: "Why Creative Web Solutions",
+    title: "Built to convert visitors into enquiries",
+    subtitle: "One team for design, development, and marketing.",
+    cards: [
+      { icon: "fas fa-bullseye", title: "Strategy first", description: "User journeys and CTAs before pixels.", number: "01" },
+      { icon: "fas fa-laptop-code", title: "Modern engineering", description: "React, Next.js, WordPress, Flutter.", number: "02" },
+      { icon: "fas fa-bullhorn", title: "Marketing included", description: "SEO, ads, and landing pages aligned.", number: "03" },
     ],
   },
   {
@@ -166,23 +191,83 @@ const homepageSections = [
   {
     acfFcLayout: "testimonials",
     sectionTheme: "dark",
-    badge: "Clients",
-    title: "Trusted by local businesses",
-    subtitle: "Clear communication and delivery you can plan around.",
+    badge: "Client stories",
+    title: "Teams that stayed — and scaled",
+    subtitle: "Retention starts with delivery.",
     testimonials: [
-      { name: "Retail brand, Chandigarh", text: "Mobile site fast hai, forms finally use ho rahe hain. Updates bina drama ke.", role: "Ecommerce" },
-      { name: "Clinic, Mohali", text: "SEO structure aur appointment flow — team ne khud follow-up kiya.", role: "Healthcare" },
-      { name: "B2B supplier, Punjab", text: "Corporate website + Google Ads landing — enquiries track ho rahi hain.", role: "Manufacturing" },
+      { name: "Ecommerce director", text: "Store feels premium on mobile. Speed and checkout levelled up in one project.", role: "Retail" },
+      { name: "Healthcare operations lead", text: "Booking and SEO work together — steady enquiries for our team.", role: "Healthcare" },
+      { name: "B2B sales manager", text: "Site plus paid landing pages — we attribute leads to campaigns.", role: "Manufacturing" },
     ],
   },
   {
-    acfFcLayout: "portfolio",
+    acfFcLayout: "guarantees",
     sectionTheme: "light",
-    badge: "Local work",
-    title: "Explore the line-up.",
-    subtitle: "Real projects for businesses in Zirakpur, Chandigarh, Mohali & Punjab.",
-    ctaLabel: "View all work",
-    ctaHref: "/portfolio",
+    badge: "Your investment, protected",
+    title: "Commitments on every project",
+    subtitle: "Standard on our engagements.",
+    items: [
+      { icon: "fas fa-file-contract", title: "Scope in writing", desc: "Deliverables and timeline documented.", tone: "blue" },
+      { icon: "fas fa-eye", title: "Staging previews", desc: "Approve on a test link before launch.", tone: "green" },
+      { icon: "fas fa-key", title: "You own assets", desc: "Code and admin access at go-live.", tone: "purple" },
+    ],
+  },
+  {
+    acfFcLayout: "industries",
+    sectionTheme: "dark",
+    badge: "Industries",
+    title: "Sector experience",
+    subtitle: "Messaging tailored to how you sell.",
+    items: [
+      { icon: "fas fa-heartbeat", title: "Healthcare", tone: "pink" },
+      { icon: "fas fa-shopping-bag", title: "Retail", tone: "purple" },
+      { icon: "fas fa-rocket", title: "Startups", tone: "blue" },
+    ],
+  },
+  {
+    acfFcLayout: "tech_stack",
+    sectionTheme: "light",
+    badge: "Technology",
+    title: "Stacks we ship",
+    subtitle: "Production-ready tools.",
+    items: [
+      { icon: "fab fa-react", title: "React", tone: "blue" },
+      { icon: "fas fa-bolt", title: "Next.js", tone: "grey" },
+      { icon: "fab fa-wordpress", title: "WordPress", tone: "blue" },
+    ],
+  },
+  {
+    acfFcLayout: "pricing_packages",
+    sectionTheme: "light",
+    badge: "Engagement models",
+    title: "Flexible ways to work together",
+    subtitle: "Fixed-scope launches, dedicated developers, or monthly retainers.",
+    items: [
+      { icon: "fas fa-file-contract", title: "Fixed-scope projects", desc: "Defined deliverables and milestone billing.", tone: "blue" },
+      { icon: "fas fa-user-clock", title: "Dedicated developers", desc: "Embedded capacity for sprints and backlogs.", tone: "green" },
+      { icon: "fas fa-calendar-check", title: "Monthly retainers", desc: "Ongoing design, dev, SEO, or support.", tone: "orange" },
+    ],
+  },
+  {
+    acfFcLayout: "faq",
+    sectionTheme: "dark",
+    badge: "FAQ",
+    title: "Common questions",
+    subtitle: "Straight answers before you book a call.",
+    items: [
+      { icon: "fas fa-rupee-sign", title: "How much does a website cost?", desc: "We give a written estimate after discovery — use Ask price for a ballpark.", tone: "green" },
+      { icon: "fas fa-clock", title: "How long does delivery take?", desc: "Typical corporate sites: 3–6 weeks. Apps vary by scope.", tone: "blue" },
+    ],
+  },
+  {
+    acfFcLayout: "cta",
+    sectionTheme: "dark",
+    title: "Ready to grow with a team that stays?",
+    subtitle: "Book a free consultation — reply within one business day with scope and estimate.",
+    ctaLabel: "Get free proposal",
+    ctaHref: "#ask-price",
+    ctaPrimary: { label: "Get free proposal", href: "#ask-price" },
+    ctaSecondary: { label: "Talk to our team", href: "/contact#contact-form" },
   },
 ];
 

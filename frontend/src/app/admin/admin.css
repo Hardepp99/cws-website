@@ -2113,6 +2113,64 @@ button.row-action-btn {
   color: var(--cws-royal, #0057ff);
 }
 
+.cms-menu-children {
+  grid-column: 1 / -1;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.cms-repeater-row--menu-child {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 8px 10px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.section-inline-repeaters {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.section-inline-repeater {
+  margin-bottom: 1.25rem;
+}
+
+.section-inline-repeater__title {
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+}
+
+.section-inline-repeater__item {
+  margin-bottom: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.section-inline-repeater__summary {
+  cursor: pointer;
+  padding: 10px 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  list-style: none;
+}
+
+.section-inline-repeater__summary::-webkit-details-marker {
+  display: none;
+}
+
+.section-inline-repeater__body {
+  padding: 0 14px 14px;
+  border-top: 1px solid #f1f5f9;
+}
+
 @media (max-width: 900px) {
   .cms-repeater-row--menu-item {
     grid-template-columns: 1fr 1fr;

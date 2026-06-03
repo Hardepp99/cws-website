@@ -84,13 +84,30 @@ export class ContentRepository {
     this.siteSettingsCachedAt = Date.now();
   }
 
-  async getMenus(): Promise<Record<string, unknown[]>> {
+  /** DB menu_key → admin API key */
+  private menuDbToAdminKey(dbKey: string): string | null {
     const map: Record<string, string> = {
       primary: "primary",
       footer: "footer",
       footer_services: "footerServices",
       footer_products: "footerProducts",
+      footerServices: "footerServices",
+      footerProducts: "footerProducts",
     };
+    return map[dbKey] ?? null;
+  }
+
+  private menuAdminToDbKey(adminKey: string): string {
+    const map: Record<string, string> = {
+      primary: "primary",
+      footer: "footer",
+      footerServices: "footer_services",
+      footerProducts: "footer_products",
+    };
+    return map[adminKey] ?? adminKey;
+  }
+
+  async getMenus(): Promise<Record<string, unknown[]>> {
     const out: Record<string, unknown[]> = {
       primary: [],
       footer: [],
@@ -104,7 +121,7 @@ export class ContentRepository {
       try {
         const [rows] = await this.pool.query<Row[]>("SELECT menu_key, payload FROM menus");
         for (const row of rows) {
-          const key = map[String(row.menu_key)];
+          const key = this.menuDbToAdminKey(String(row.menu_key));
           if (key) out[key] = decodeJsonArray(row.payload);
         }
         this.menusCache = out;
@@ -123,11 +140,13 @@ export class ContentRepository {
   }
 
   async saveMenu(menuKey: string, items: unknown[]): Promise<void> {
+    const dbKey = this.menuAdminToDbKey(menuKey);
     const json = encodeJson(items);
     await this.pool.query(
       "INSERT INTO menus (menu_key, payload) VALUES (?, ?) ON DUPLICATE KEY UPDATE payload = ?",
-      [menuKey, json, json],
+      [dbKey, json, json],
     );
+    this.menusCache = null;
     this.menusCachedAt = 0;
   }
 

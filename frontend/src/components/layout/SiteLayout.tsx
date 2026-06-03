@@ -1,5 +1,4 @@
 import { SiteFloatWidgets } from "@/components/engagement/SiteFloatWidgets";
-import { FooterAskPriceTrigger } from "@/components/engagement/FooterAskPriceTrigger";
 import { SitePromoQuote } from "@/components/engagement/SitePromoQuote";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
@@ -43,7 +42,6 @@ export async function SiteLayout({ children, currentPath = "/" }: SiteLayoutProp
         footerServicesMenu={menus.footerServices}
         footerProductsMenu={menus.footerProducts}
       />
-      <FooterAskPriceTrigger />
       <SiteFloatWidgets settings={settings} />
       <SiteScripts />
     </SiteMapsProvider>

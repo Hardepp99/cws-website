@@ -63,9 +63,23 @@ export function emptySection(layout: string): Record<string, unknown> {
       ...base,
       title: "",
       subtitle: "",
-      ctaLabel: layout === "cta" ? "Ask price" : "Contact us",
+      ctaLabel: layout === "cta" ? "Book free consultation" : "Contact us",
       ctaHref: layout === "cta" ? "#ask-price" : "/contact",
+      ctaPrimary: { label: "Book free consultation", href: "#ask-price" },
+      ctaSecondary: { label: "Contact our team", href: "/contact#contact-form" },
     };
+  }
+  if (layout === "why_codify") {
+    return { ...base, badge: "", title: "", subtitle: "", cards: [] };
+  }
+  if (layout === "process") {
+    return { ...base, badge: "", title: "", subtitle: "", steps: [] };
+  }
+  if (layout === "testimonials") {
+    return { ...base, badge: "", title: "", subtitle: "", testimonials: [] };
+  }
+  if (layout === "about") {
+    return { ...base, badge: "", title: "", subtitle: "", features: [], content: "" };
   }
   if (isGridLayout(layout)) {
     return { ...base, badge: "", title: "", subtitle: "", items: [] };

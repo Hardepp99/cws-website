@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { SectionCommonFields } from "@/components/admin/homepage/SectionCommonFields";
 import type { SectionRecord } from "@/components/admin/homepage/SectionEditor";
 import { SectionHeaderFields } from "@/components/admin/homepage/SectionHeaderFields";
+import { SectionInlineRepeaters } from "@/components/admin/homepage/SectionInlineRepeaters";
 import { SectionRepeaterNav } from "@/components/admin/homepage/SectionRepeaterNav";
 import { sectionHasRepeaters } from "@/components/admin/homepage/section-repeaters";
 import { HOMEPAGE_LAYOUTS, emptySection, layoutLabel } from "@/components/admin/homepage/layouts";
@@ -135,6 +136,7 @@ export function HomepageSectionForm({ sectionId, isNew }: { sectionId?: number; 
       {section ? (
         <>
           <SectionHeaderFields section={section} onChange={setSection} />
+          {sectionHasRepeaters(layout) ? <SectionInlineRepeaters section={section} onChange={setSection} /> : null}
           {!isNew && sectionId && sectionHasRepeaters(layout) ? (
             <SectionRepeaterNav sectionId={sectionId} section={section} />
           ) : null}

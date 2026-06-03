@@ -486,6 +486,15 @@ async function dispatchAdmin(ctx: CmsDispatchContext, path: string): Promise<Cms
   if (method === "GET" && path === "/menus/list") {
     return { status: 200, data: await listMenusMeta() };
   }
+  if (method === "GET" && path.match(/^\/menus\/([a-zA-Z0-9_]+)$/)) {
+    const key = path.slice("/menus/".length);
+    const menus = await repo.getMenus();
+    const items = menus[key];
+    if (!Array.isArray(items)) {
+      return { status: 404, data: { error: "Menu not found" } };
+    }
+    return { status: 200, data: { items } };
+  }
   if (method === "PUT" && path.startsWith("/menus/")) {
     const key = path.slice("/menus/".length);
     const items = (body.items as unknown[]) ?? body;

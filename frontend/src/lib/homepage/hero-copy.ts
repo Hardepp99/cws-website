@@ -1,11 +1,11 @@
 import type { HomepageSection } from "@/lib/wordpress/types";
 
 export const HERO_TAGLINE =
-  "We build websites, mobile apps, and digital marketing that turn visitors into real enquiries.";
+  "Creative Web Solutions designs, builds, and markets high-performing websites and apps for brands that sell worldwide — one team from first sketch to measurable growth.";
 
-const TAGLINE_END = "real enquiries.";
+const TAGLINE_END = "measurable growth.";
 
-export const HERO_HEADLINE_FALLBACK = "What we do for you";
+export const HERO_HEADLINE_FALLBACK = "Turn visitors into paying customers";
 
 /** Strip em-dash “description” tail from CMS subheadlines. */
 export function normalizeHeroTagline(text: string): string {
@@ -26,15 +26,27 @@ export function normalizeHeroTagline(text: string): string {
   if (base.startsWith("We build websites") && base.includes("real enquiries")) {
     return HERO_TAGLINE;
   }
+  if (base.startsWith("Creative Web Solutions") && base.includes("worldwide")) {
+    return HERO_TAGLINE;
+  }
 
   return base || HERO_TAGLINE;
 }
 
+const HERO_SHORT_HEADLINES = new Set([
+  "build faster. scale smarter.",
+  "what we do for you",
+  "websites & apps that win you more customers",
+  "turn visitors into paying customers",
+]);
+
 export function isHeroTaglineHeadline(text: string): boolean {
   const t = text.trim();
   if (!t) return false;
+  if (HERO_SHORT_HEADLINES.has(t.toLowerCase())) return false;
   if (t === HERO_TAGLINE) return true;
   if (t.startsWith("We build websites") && t.includes("real enquiries")) return true;
+  if (t.startsWith("Creative Web Solutions") && t.includes("worldwide")) return true;
   return normalizeHeroTagline(t) === HERO_TAGLINE;
 }
 
