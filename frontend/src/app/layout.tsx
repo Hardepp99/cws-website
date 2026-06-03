@@ -3,9 +3,9 @@ import Script from "next/script";
 import { AnalyticsProvider } from "@/components/analytics/AnalyticsProvider";
 import "./globals.css";
 import { buildMetadata, organizationJsonLd, webSiteJsonLd } from "@/lib/seo/metadata";
-import { SITE_INTRO_FAILSAFE_MS } from "@/lib/site-intro";
+import { buildSiteIntroBootstrapScript } from "@/lib/site-intro";
 
-const siteIntroFailsafeScript = `(function(){var M=${SITE_INTRO_FAILSAFE_MS};function d(){var e=document.documentElement,b=document.body,p=document.getElementById("preloader");e.classList.remove("is-intro-pending");b.classList.add("site-ready");if(p){p.classList.add("loaded");p.style.pointerEvents="none";p.style.display="none"}}window.addEventListener("site-intro-ready",d,{once:true});setTimeout(d,M)})();`;
+const siteIntroBootstrapScript = buildSiteIntroBootstrapScript();
 
 /** Every page reads fresh content from MySQL on each request (no static HTML at build time). */
 export const dynamic = "force-dynamic";
@@ -21,7 +21,7 @@ export const metadata: Metadata = buildMetadata({
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="is-intro-pending" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -37,7 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <script dangerouslySetInnerHTML={{ __html: siteIntroFailsafeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: siteIntroBootstrapScript }} />
         <AnalyticsProvider />
         {children}
       </body>

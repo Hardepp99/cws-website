@@ -1,17 +1,23 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import {
+  markHomeIntroShown,
   SITE_INTRO_EXIT_MS,
   SITE_INTRO_READY_EVENT,
+  shouldShowHomeIntro,
+  skipSiteIntro,
   waitForSiteIntroDuration,
 } from "@/lib/site-intro";
 
 export function SiteScripts() {
+  const pathname = usePathname() ?? "/";
+
   useEffect(() => {
     let finished = false;
-    let exitTimer: number | undefined;
     let hideTimer: number | undefined;
+    const runIntro = shouldShowHomeIntro(pathname);
 
     const resetIntroState = () => {
       document.body.classList.remove("site-ready");
@@ -42,6 +48,7 @@ export function SiteScripts() {
 
         document.documentElement.classList.remove("is-intro-pending");
         document.body.classList.add("site-ready");
+        markHomeIntroShown();
         window.dispatchEvent(new CustomEvent(SITE_INTRO_READY_EVENT));
 
         hideTimer = window.setTimeout(() => {
@@ -58,13 +65,20 @@ export function SiteScripts() {
       void waitForSiteIntroDuration().then(runExit);
     };
 
-    resetIntroState();
-    finishIntro();
+    if (!runIntro) {
+      skipSiteIntro();
+    } else {
+      resetIntroState();
+      finishIntro();
+    }
 
     const onPageShow = (event: PageTransitionEvent) => {
       if (!event.persisted) return;
+      if (!shouldShowHomeIntro(pathname)) {
+        skipSiteIntro();
+        return;
+      }
       finished = false;
-      if (exitTimer !== undefined) window.clearTimeout(exitTimer);
       if (hideTimer !== undefined) window.clearTimeout(hideTimer);
       resetIntroState();
       finishIntro();
@@ -105,13 +119,12 @@ export function SiteScripts() {
     counters.forEach((c) => counterObserver.observe(c));
 
     return () => {
-      if (exitTimer !== undefined) window.clearTimeout(exitTimer);
       if (hideTimer !== undefined) window.clearTimeout(hideTimer);
       window.removeEventListener("pageshow", onPageShow);
       window.removeEventListener("scroll", onScroll);
       counterObserver.disconnect();
     };
-  }, []);
+  }, [pathname]);
 
   return null;
 }
