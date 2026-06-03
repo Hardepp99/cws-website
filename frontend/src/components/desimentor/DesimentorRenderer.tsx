@@ -11,11 +11,6 @@ function sectionVariant(index: number): RevealVariant {
   return SECTION_VARIANTS[index % SECTION_VARIANTS.length];
 }
 
-/** Cap stagger so long pages do not feel sluggish */
-function sectionDelay(index: number): number {
-  return Math.min(index * 55, 220);
-}
-
 export function DesimentorRenderer({ document }: { document: DesimentorDocument }) {
   if (!document?.sections?.length) return null;
 
@@ -35,7 +30,6 @@ export function DesimentorRenderer({ document }: { document: DesimentorDocument 
           <Reveal
             key={section.id}
             variant={sectionVariant(index)}
-            delay={sectionDelay(index)}
             trigger={index < 2 ? "load" : "scroll"}
             className="desimentor-section-reveal"
           >

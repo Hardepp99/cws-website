@@ -108,24 +108,24 @@ export function HeroSlider({
           <div className="corp-container home-hero__grid home-hero__banner">
             <div className="home-hero__copy">
               {taglineOnly ? (
-                <Reveal variant="fade-up" trigger="load" delay={80}>
+                <Reveal variant="fade-up" trigger="load">
                   <h1 className="home-hero__title home-hero__title--tagline home-hero__lead--multicolor">
                     <HeroMulticolorLead text={tagline} />
                   </h1>
                 </Reveal>
               ) : (
                 <>
-                  <Reveal variant="fade-up" trigger="load" delay={80}>
+                  <Reveal variant="fade-up" trigger="load">
                     <h1 className="home-hero__title">{headline}</h1>
                   </Reveal>
-                  <Reveal variant="fade-up" trigger="load" delay={180}>
+                  <Reveal variant="fade-up" trigger="load">
                     <p className="home-hero__lead home-hero__lead--multicolor">
                       <HeroMulticolorLead text={tagline} />
                     </p>
                   </Reveal>
                 </>
               )}
-              <Reveal variant="fade-up" trigger="load" delay={260}>
+              <Reveal variant="fade-up" trigger="load">
                 <div className="home-hero__actions">
                   <CtaLink href={ctaPrimary.href} className="home-hero__btn home-hero__btn--primary">
                     {ctaPrimary.label}
@@ -137,7 +137,7 @@ export function HeroSlider({
               </Reveal>
             </div>
 
-            <Reveal variant="zoom-in" trigger="load" delay={180} className="home-hero__photo-wrap">
+            <Reveal variant="zoom-in" trigger="load" className="home-hero__photo-wrap">
               {heroVisual === "svg" ? (
                 <div className="home-hero__visual home-hero__visual--svg" aria-hidden={false}>
                   <HeroWebBuilderIllustration />

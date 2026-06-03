@@ -8,7 +8,7 @@ export type RevealVariant = "fade-up" | "zoom-in" | "fade-in" | "slide-left" | "
 interface RevealProps {
   children: ReactNode;
   variant?: RevealVariant;
-  /** Extra delay in ms (on top of stagger) */
+  /** @deprecated Delays are disabled — animations run immediately with no stagger */
   delay?: number;
   /** scroll = when in viewport; load = on page load (hero) */
   trigger?: "scroll" | "load";
@@ -20,7 +20,6 @@ interface RevealProps {
 export function Reveal({
   children,
   variant = "fade-up",
-  delay = 0,
   trigger = "scroll",
   repeat: repeatProp,
   className = "",
@@ -33,43 +32,26 @@ export function Reveal({
     const el = ref.current;
     if (!el) return;
 
-    let timeoutId: number | undefined;
     let observer: IntersectionObserver | undefined;
 
     const show = () => setVisible(true);
     const hide = () => setVisible(false);
 
-    const scheduleShow = () => {
-      if (delay > 0) {
-        timeoutId = window.setTimeout(show, delay);
-      } else {
-        show();
-      }
-    };
-
-    const clearScheduled = () => {
-      if (timeoutId !== undefined) {
-        clearTimeout(timeoutId);
-        timeoutId = undefined;
-      }
-    };
-
     const start = () => {
       if (trigger === "load") {
-        timeoutId = window.setTimeout(show, delay + 48);
+        show();
         return;
       }
 
       observer = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) {
-            scheduleShow();
+            show();
           } else if (repeat) {
-            clearScheduled();
             hide();
           }
         },
-        { threshold: 0.12, rootMargin: "0px 0px 4% 0px" },
+        { threshold: 0.08, rootMargin: "0px 0px 6% 0px" },
       );
       observer.observe(el);
     };
@@ -78,16 +60,14 @@ export function Reveal({
 
     return () => {
       cancelIntro();
-      clearScheduled();
       observer?.disconnect();
     };
-  }, [trigger, delay, repeat]);
+  }, [trigger, repeat]);
 
   return (
     <div
       ref={ref}
       className={`reveal reveal--${variant}${visible ? " is-visible" : ""}${className ? ` ${className}` : ""}`}
-      style={{ transitionDelay: visible ? `${delay}ms` : "0ms" }}
     >
       {children}
     </div>

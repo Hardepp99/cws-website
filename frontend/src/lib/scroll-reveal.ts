@@ -55,8 +55,8 @@ export const SCROLL_REVEAL_FOOTER_SELECTORS = [
 ] as const;
 
 export const SCROLL_REVEAL_OBSERVER = {
-  threshold: 0.12,
-  rootMargin: "0px 0px 4% 0px",
+  threshold: 0.08,
+  rootMargin: "0px 0px 6% 0px",
 } as const;
 
 export function shouldSkipScrollReveal(el: Element): boolean {
@@ -79,49 +79,41 @@ function nextVariant(): ScrollRevealVariant {
   return variant;
 }
 
-function markScrollReveal(el: HTMLElement, delayMs: number): void {
+function markScrollReveal(el: HTMLElement): void {
   const variant = nextVariant();
   el.classList.add("scroll-reveal", `scroll-reveal--${variant}`);
-  el.style.setProperty("--scroll-reveal-delay", `${delayMs}ms`);
-  el.style.setProperty("--scroll-reveal-duration", "720ms");
+  el.style.setProperty("--scroll-reveal-delay", "0ms");
 }
 
 export function applyScrollRevealClasses(root: ParentNode = document): void {
   const seen = new Set<Element>();
   variantCursor = 0;
 
-  const register = (el: Element, delayMs: number) => {
+  const register = (el: Element) => {
     if (!(el instanceof HTMLElement)) return;
     if (seen.has(el)) return;
     if (shouldSkipScrollReveal(el)) return;
 
-    markScrollReveal(el, delayMs);
+    markScrollReveal(el);
     seen.add(el);
   };
 
-  const registerGroup = (selector: string, staggerMs: number, baseDelayMs = 0) => {
-    root.querySelectorAll(selector).forEach((el, index) => {
-      register(el, baseDelayMs + index * staggerMs);
-    });
+  const registerGroup = (selector: string) => {
+    root.querySelectorAll(selector).forEach((el) => register(el));
   };
 
   for (const selector of SCROLL_REVEAL_SECTION_SELECTORS) {
-    root.querySelectorAll(selector).forEach((el, index) => {
+    root.querySelectorAll(selector).forEach((el) => {
       if (sectionHasRevealContent(el)) return;
-      register(el, index * 100);
+      register(el);
     });
   }
 
   for (const selector of SCROLL_REVEAL_BLOCK_SELECTORS) {
-    registerGroup(selector, 120, 80);
+    registerGroup(selector);
   }
 
-  let footerBase = 60;
   for (const selector of SCROLL_REVEAL_FOOTER_SELECTORS) {
-    const nodes = root.querySelectorAll(selector);
-    nodes.forEach((el, index) => {
-      register(el, footerBase + index * 105);
-    });
-    footerBase += nodes.length * 48;
+    registerGroup(selector);
   }
 }

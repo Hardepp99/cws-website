@@ -1,0 +1,160 @@
+/**
+ * Mobile header bar — one row: logo (left), phone (center when scrolled), menu (right).
+ * All items vertically centered in the navbar strip; no wrap under the menu icon.
+ */
+
+@media (max-width: 991.98px) {
+  .header .navbar > .container {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+
+  .header .navbar-mobile-chrome,
+  .header-premium .navbar-mobile-chrome {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px;
+    width: 100%;
+    min-height: 56px;
+    height: 56px;
+    padding: 0 2px;
+    position: relative;
+    z-index: 100108;
+    background: #ffffff;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .header .navbar-mobile-chrome .navbar-brand,
+  .header-premium .navbar-mobile-chrome .navbar-brand {
+    flex: 0 1 auto;
+    order: 1;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start;
+    align-self: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 42%;
+    min-width: 0;
+    height: 100%;
+    z-index: 3;
+  }
+
+  .header .navbar-mobile-chrome .navbar-sticky-call,
+  .header-premium .navbar-mobile-chrome .navbar-sticky-call {
+    order: 2;
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    display: none;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: center;
+    align-self: center !important;
+    margin: 0 !important;
+    max-width: min(10.5rem, 36vw);
+    min-width: 0;
+    height: auto;
+    z-index: 2;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .header.is-stuck .navbar-mobile-chrome .navbar-sticky-call,
+  .header-premium.is-stuck .navbar-mobile-chrome .navbar-sticky-call {
+    display: inline-flex !important;
+    pointer-events: auto;
+  }
+
+  body.mobile-nav-open .navbar-mobile-chrome .navbar-sticky-call {
+    display: none !important;
+    pointer-events: none;
+  }
+
+  .header .navbar-mobile-chrome .navbar-toggler.d-lg-none,
+  .header-premium .navbar-mobile-chrome .navbar-toggler.d-lg-none {
+    order: 3;
+    flex: 0 0 auto;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-self: center !important;
+    margin: 0 0 0 auto !important;
+    height: 44px;
+    width: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    z-index: 3;
+  }
+
+  .header .navbar-mobile-chrome .site-logo--header,
+  .header .navbar-mobile-chrome .logo-img,
+  .header-premium .navbar-mobile-chrome .site-logo--header,
+  .header-premium .navbar-mobile-chrome .logo-img {
+    display: block;
+    width: auto;
+    max-width: 100% !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  .header.is-stuck .navbar-mobile-chrome .site-logo--header,
+  .header.is-stuck .navbar-mobile-chrome .logo-img,
+  .header-premium.is-stuck .navbar-mobile-chrome .site-logo--header,
+  .header-premium.is-stuck .navbar-mobile-chrome .logo-img {
+    height: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+  }
+
+  .header .navbar-mobile-chrome .navbar-sticky-call span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+    line-height: 1.2;
+  }
+
+  .header .navbar-mobile-chrome .navbar-sticky-call i {
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  /* Intro animation must not shift the call pill off the row */
+  body.site-ready .header-premium .navbar-mobile-chrome .navbar-sticky-call {
+    animation: none !important;
+    opacity: 1;
+  }
+
+  .header-premium .navbar {
+    min-height: 56px;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .header .navbar {
+    padding: 0 !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .header .navbar-mobile-chrome .navbar-sticky-call span,
+  .header-premium .navbar-mobile-chrome .navbar-sticky-call span {
+    display: none;
+  }
+
+  .header .navbar-mobile-chrome .navbar-sticky-call,
+  .header-premium .navbar-mobile-chrome .navbar-sticky-call {
+    max-width: none;
+    padding: 0.45rem 0.55rem;
+  }
+}

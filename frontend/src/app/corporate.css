@@ -2242,6 +2242,11 @@ main.site-main .rounded-4.border.shadow-sm {
     flex-direction: column;
   }
 
+  .header .navbar > .container > .navbar-mobile-chrome {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
   .navbar-sticky-sentinel {
     display: block;
     height: 1px;
@@ -2252,28 +2257,11 @@ main.site-main .rounded-4.border.shadow-sm {
     visibility: hidden;
   }
 
-  .navbar-mobile-chrome {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    flex: 0 0 auto;
-    position: relative;
-    z-index: 100105 !important;
-    background: #ffffff !important;
-    min-height: 52px;
-  }
-
+  /* Mobile chrome grid — mobile-header-chrome.css */
   .navbar-sticky-call {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    display: none;
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
-    max-width: calc(100% - 7.5rem);
     padding: 0.35rem 0.65rem;
     border-radius: 999px;
     background: linear-gradient(135deg, #0057ff 0%, #0088ff 100%);
@@ -2284,32 +2272,11 @@ main.site-main .rounded-4.border.shadow-sm {
     text-decoration: none !important;
     white-space: nowrap;
     box-shadow: 0 2px 10px rgba(0, 87, 255, 0.28);
-    z-index: 100106;
-  }
-
-  .navbar-sticky-call span {
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
   .navbar-sticky-call i {
     font-size: 0.75rem;
     flex-shrink: 0;
-  }
-
-  .header.is-stuck .navbar-sticky-call {
-    display: inline-flex;
-  }
-
-  body.mobile-nav-open .navbar-sticky-call {
-    display: none !important;
-  }
-
-  .header.is-stuck .navbar-brand .site-logo--header,
-  .header.is-stuck .navbar-brand .logo-img {
-    max-width: min(108px, 32vw) !important;
-    height: 40px !important;
-    min-height: 40px !important;
   }
 
   body.mobile-nav-open .navbar-mobile-chrome {
@@ -2378,17 +2345,10 @@ main.site-main .rounded-4.border.shadow-sm {
     padding: 8px 0 !important;
   }
 
-  .header .navbar-brand {
-    margin-right: auto;
-    position: relative;
-    z-index: 100103 !important;
-  }
-
   .header .navbar-toggler {
     width: 36px !important;
     height: 36px !important;
     padding: 6px !important;
-    margin-left: auto;
     position: relative;
     z-index: 100107 !important;
     flex-shrink: 0;
@@ -2414,13 +2374,6 @@ main.site-main .rounded-4.border.shadow-sm {
 
   .header .navbar-toggler[aria-expanded="true"] {
     background: rgba(0, 87, 255, 0.12) !important;
-  }
-
-  .site-logo--header,
-  .header .logo-img {
-    min-height: 44px !important;
-    height: 44px !important;
-    max-width: min(160px, 48vw) !important;
   }
 
   main {

@@ -29,7 +29,6 @@ export function HeroStatsCounters({ section }: { section: HomepageSection }) {
               className="home-hero-stats__cell"
               variant="fade-up"
               trigger="load"
-              delay={400 + i * 110}
             >
               <article className={`home-hero-stats__card home-hero-stats__card--${tone}`}>
                 {item.icon ? (
