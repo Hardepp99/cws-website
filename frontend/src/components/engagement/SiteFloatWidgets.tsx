@@ -29,6 +29,7 @@ interface SiteFloatWidgetsProps {
 export function SiteFloatWidgets({ settings }: SiteFloatWidgetsProps) {
   const [scrolled, setScrolled] = useState(false);
   const [callbackOpen, setCallbackOpen] = useState(false);
+  const [callbackVisible, setCallbackVisible] = useState(false);
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -56,8 +57,18 @@ export function SiteFloatWidgets({ settings }: SiteFloatWidgetsProps) {
     return () => window.clearTimeout(t);
   }, []);
 
+  useEffect(() => {
+    if (!callbackOpen) {
+      setCallbackVisible(false);
+      return;
+    }
+    const frame = requestAnimationFrame(() => setCallbackVisible(true));
+    return () => cancelAnimationFrame(frame);
+  }, [callbackOpen]);
+
   const closeCallback = useCallback(() => {
     setCallbackOpen(false);
+    setCallbackVisible(false);
     setStatus("idle");
     setErrorMessage("");
   }, []);
@@ -140,8 +151,16 @@ export function SiteFloatWidgets({ settings }: SiteFloatWidgetsProps) {
       </div>
 
       {/* 3-minute callback + offers */}
-      <CwsModalLayer open={callbackOpen} onClose={closeCallback}>
-          <div className="cws-modal-dialog cws-modal-dialog--narrow" role="dialog" aria-modal="true">
+      <CwsModalLayer
+        open={callbackOpen}
+        onClose={closeCallback}
+        rootClassName={`cws-modal-root--refined${callbackVisible ? " is-visible" : ""}`}
+      >
+          <div
+            className="cws-modal-dialog cws-modal-dialog--narrow cws-modal--refined"
+            role="dialog"
+            aria-modal="true"
+          >
             <div className="cws-modal-header">
               <h2 className="cws-modal-title h6 mb-0">Get a call back + new offers</h2>
               <button type="button" className="cws-modal-close" onClick={closeCallback} aria-label="Close">

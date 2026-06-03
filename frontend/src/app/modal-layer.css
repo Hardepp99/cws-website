@@ -10,16 +10,7 @@
 html.cws-modal-open,
 body.cws-modal-open {
   overflow: hidden !important;
-  height: 100%;
   overscroll-behavior: none;
-}
-
-body.cws-modal-open {
-  position: fixed;
-  width: 100%;
-  top: var(--cws-scroll-lock-y, 0);
-  left: 0;
-  right: 0;
 }
 
 /* Site chrome stays under open modals */
@@ -49,6 +40,8 @@ body.cws-modal-open .footer {
   overflow: hidden !important;
   overscroll-behavior: none;
   touch-action: none;
+  background: transparent !important;
+  pointer-events: none;
 }
 
 .cws-modal-backdrop {
@@ -56,6 +49,12 @@ body.cws-modal-open .footer {
   inset: 0 !important;
   z-index: 0;
   touch-action: none;
+  pointer-events: auto;
+  cursor: pointer;
+  border: none;
+  margin: 0;
+  padding: 0;
+  background: rgba(15, 17, 23, 0.32);
 }
 
 .cws-modal-dialog {
@@ -67,6 +66,7 @@ body.cws-modal-open .footer {
   overflow: hidden;
   overscroll-behavior: contain;
   touch-action: pan-y;
+  pointer-events: auto;
 }
 
 .cws-modal-header {
@@ -87,8 +87,3 @@ body.cws-modal-open .footer {
   max-height: min(92dvh, calc(100dvh - 32px));
 }
 
-@media (prefers-reduced-motion: reduce) {
-  body.cws-modal-open {
-    position: fixed;
-  }
-}

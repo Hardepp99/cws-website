@@ -13,7 +13,8 @@ type CwsModalLayerProps = {
 };
 
 /**
- * Portals modals to `document.body`, locks page scroll, keeps scroll inside dialog only.
+ * Portals modals to `document.documentElement` (outside scroll-locked body) so the page
+ * stays visible through the dimmed backdrop. Locks page scroll via overflow only.
  */
 export function CwsModalLayer({ open, onClose, children, rootClassName = "" }: CwsModalLayerProps) {
   const [mounted, setMounted] = useState(false);
@@ -41,11 +42,13 @@ export function CwsModalLayer({ open, onClose, children, rootClassName = "" }: C
 
   const rootClass = ["cws-modal-root", rootClassName].filter(Boolean).join(" ");
 
+  const portalTarget = document.documentElement;
+
   return createPortal(
     <div className={rootClass} role="presentation" data-cws-modal-layer="">
       <button type="button" className="cws-modal-backdrop" aria-label="Close dialog" onClick={onClose} />
       {children}
     </div>,
-    document.body,
+    portalTarget,
   );
 }

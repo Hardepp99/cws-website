@@ -7,11 +7,13 @@
 }
 
 .cws-modal-root--refined .cws-modal-backdrop {
-  background: rgba(0, 0, 0, 0.42);
-  backdrop-filter: blur(14px) saturate(1.2);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  background: rgba(15, 17, 23, 0.34);
+  backdrop-filter: blur(6px) saturate(1.1);
+  -webkit-backdrop-filter: blur(6px) saturate(1.1);
   opacity: 0;
-  transition: opacity 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition:
+    opacity 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
+    background 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .cws-modal-root--refined.is-visible .cws-modal-backdrop {

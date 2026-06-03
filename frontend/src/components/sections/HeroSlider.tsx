@@ -9,25 +9,15 @@ import { Reveal } from "@/components/ui/Reveal";
 import { HeroStatsCounters } from "@/components/sections/HeroStatsCounters";
 import { ServicesMarqueeRail } from "@/components/sections/ServicesMarqueeRail";
 import type { MarqueeItem } from "@/components/sections/ServicesMarqueeStrip";
+import {
+  heroShowsTaglineOnly,
+  resolveHeroHeadline,
+  resolveHeroTagline,
+} from "@/lib/homepage/hero-copy";
 import type { HomepageSection } from "@/lib/wordpress/types";
 
 const DEFAULT_PERSON_IMAGE = "/assets/images/hero2.png";
 const CONTACT_FORM_HREF = "/contact#contact-form";
-
-const DEFAULT_SUBHEADLINE =
-  "We build websites, mobile apps, and digital marketing that turn visitors into real enquiries — with clear communication, on-time delivery, and long-term support.";
-
-const SHORT_SUBHEADLINE =
-  "We build websites, mobile apps, and digital marketing that turn visitors into real enquiries.";
-
-function resolveHeroSubheadline(section: HomepageSection): string {
-  const raw = String(section.subheadline ?? "").trim();
-  if (!raw) return DEFAULT_SUBHEADLINE;
-  if (raw === SHORT_SUBHEADLINE || (raw.endsWith("real enquiries.") && !raw.includes("—"))) {
-    return DEFAULT_SUBHEADLINE;
-  }
-  return raw;
-}
 
 function resolveHeroVisualMode(section: HomepageSection): "svg" | "photo" {
   const raw = String(section.heroVisual ?? section.hero_visual ?? "svg").toLowerCase();
@@ -86,10 +76,9 @@ export function HeroSlider({
     section.personImageAlt ?? section.person_image_alt ?? "Designer building a website",
   );
 
-  const headline =
-    (section.headline as string) ||
-    "What we do for you";
-  const subheadline = resolveHeroSubheadline(section);
+  const headline = resolveHeroHeadline(section);
+  const tagline = resolveHeroTagline(section);
+  const taglineOnly = heroShowsTaglineOnly(section);
 
   const { primary: ctaPrimary, secondary: ctaSecondary } = resolveHeroCtas(section);
 
@@ -118,14 +107,24 @@ export function HeroSlider({
         <div className="home-hero__inner">
           <div className="corp-container home-hero__grid home-hero__banner">
             <div className="home-hero__copy">
-              <Reveal variant="fade-up" trigger="load" delay={80}>
-                <h1 className="home-hero__title">{headline}</h1>
-              </Reveal>
-              <Reveal variant="fade-up" trigger="load" delay={180}>
-                <p className="home-hero__lead home-hero__lead--multicolor">
-                  <HeroMulticolorLead text={subheadline} />
-                </p>
-              </Reveal>
+              {taglineOnly ? (
+                <Reveal variant="fade-up" trigger="load" delay={80}>
+                  <h1 className="home-hero__title home-hero__title--tagline home-hero__lead--multicolor">
+                    <HeroMulticolorLead text={tagline} />
+                  </h1>
+                </Reveal>
+              ) : (
+                <>
+                  <Reveal variant="fade-up" trigger="load" delay={80}>
+                    <h1 className="home-hero__title">{headline}</h1>
+                  </Reveal>
+                  <Reveal variant="fade-up" trigger="load" delay={180}>
+                    <p className="home-hero__lead home-hero__lead--multicolor">
+                      <HeroMulticolorLead text={tagline} />
+                    </p>
+                  </Reveal>
+                </>
+              )}
               <Reveal variant="fade-up" trigger="load" delay={260}>
                 <div className="home-hero__actions">
                   <CtaLink href={ctaPrimary.href} className="home-hero__btn home-hero__btn--primary">

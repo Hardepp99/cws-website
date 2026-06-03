@@ -75,8 +75,9 @@ const homepageSections = [
   {
     acfFcLayout: "hero_slider",
     eyebrow: "Creative Web Solutions · Zirakpur, Chandigarh & Mohali",
-    headline: "We build websites, mobile apps, and digital marketing that turn visitors into real enquiries.",
-    subheadline: "",
+    headline: "What we do for you",
+    subheadline:
+      "We build websites, mobile apps, and digital marketing that turn visitors into real enquiries.",
     headlineParts: [],
     ctaPrimary: { label: "Get a quote", href: "#ask-price" },
     ctaSecondary: { label: "Call +91-7015969967", href: "tel:+917015969967" },

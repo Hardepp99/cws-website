@@ -17,7 +17,7 @@ export const CWS_MODERN_HOMEPAGE_SECTIONS: HomepageSection[] = [
     eyebrow: "",
     headline: "What we do for you",
     subheadline:
-      "We build websites, mobile apps, and digital marketing that turn visitors into real enquiries — with clear communication, on-time delivery, and long-term support.",
+      "We build websites, mobile apps, and digital marketing that turn visitors into real enquiries.",
     headlineParts: [],
     ctaPrimary: { label: "Book consultation", href: "#ask-price" },
     ctaSecondary: { label: "Contact us", href: "/contact#contact-form" },

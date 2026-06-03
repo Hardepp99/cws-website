@@ -2712,13 +2712,7 @@ main.site-main .rounded-4.border.shadow-sm {
 }
 
 .cws-modal-backdrop {
-  position: absolute;
-  inset: 0;
-  border: none;
-  margin: 0;
-  padding: 0;
-  background: rgba(15, 17, 23, 0.55);
-  cursor: pointer;
+  /* position/background: modal-layer.css — keep page visible through dim overlay */
 }
 
 .cws-modal-dialog {
