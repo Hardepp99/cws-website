@@ -33,6 +33,28 @@ export const SITE_SETTINGS_SECTIONS: SettingsSectionDef[] = [
     ],
   },
   {
+    id: "promo",
+    label: "Top promo offer bar",
+    icon: "fa-bullhorn",
+    description:
+      "Green strip above the header (limited-time offer). Use 0 under Enabled to hide the bar site-wide.",
+    fields: [
+      {
+        key: "promoOfferEnabled",
+        label: "Show promo bar",
+        hint: "1 = show, 0 = hide",
+      },
+      {
+        key: "promoOfferText",
+        label: "Offer message",
+        type: "textarea",
+        hint: "Shown in bold white on the green bar (e.g. written quote + reply time).",
+      },
+      { key: "promoOfferQuoteLabel", label: "Quote button label", hint: "Opens Ask price modal" },
+      { key: "promoOfferCallLabel", label: "Call button label" },
+    ],
+  },
+  {
     id: "contact",
     label: "Contact Information",
     icon: "fa-address-book",

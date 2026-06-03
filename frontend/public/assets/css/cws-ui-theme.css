@@ -105,6 +105,17 @@ a:not(.btn):not(.home-hero__btn):not(.home-btn):not(.nav-link):not(.social-link)
 .btn-cta,
 .btn-cta:hover,
 .btn-cta:focus-visible,
+/* Promo bar — override global grey `p` text on green strip */
+.promo-offer-bar .promo-offer-text,
+.promo-offer-bar .promo-offer-text span {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.promo-offer-bar .promo-offer-text__icon {
+  color: #ffe566 !important;
+}
+
 .promo-offer-btn,
 .promo-offer-btn:hover,
 .promo-offer-btn:focus-visible,

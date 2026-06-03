@@ -6,6 +6,7 @@ import {
   CUSTOMIZE_SETTINGS_MESSAGE,
   type CustomizeSettingsMessage,
 } from "@/lib/customize/preview-messages";
+import { DEFAULT_PROMO_OFFER_TEXT } from "@/lib/wordpress/fallback";
 import { resolveLogoSrc } from "@/lib/site-brand";
 
 function setText(selector: string, value: string) {
@@ -83,6 +84,18 @@ function applySettings(settings: Record<string, string>) {
       wrap.style.display = "none";
     }
   });
+
+  const promoEnabled = settings.promoOfferEnabled !== "0";
+  const promoText = settings.promoOfferText?.trim() || DEFAULT_PROMO_OFFER_TEXT;
+  const promoQuote = settings.promoOfferQuoteLabel?.trim() || "Ask price";
+  const promoCall = settings.promoOfferCallLabel?.trim() || "Call now";
+  const promoBar = document.getElementById("promoOfferBar");
+  if (promoBar) {
+    promoBar.style.display = promoEnabled ? "" : "none";
+  }
+  setText('[data-customize="promo-offer-text"]', promoText);
+  setText('[data-customize="promo-offer-quote-label"]', promoQuote);
+  setText('[data-customize="promo-offer-call-label"]', promoCall);
 }
 
 export function CustomizePreviewListener() {

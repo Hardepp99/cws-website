@@ -13,6 +13,9 @@ import { serializeGmbReviews } from "@/lib/gmb/resolve";
 import { decodeHtmlEntities } from "@/lib/text";
 import type { BlogPost, MenuItem, SiteSettings } from "./types";
 
+export const DEFAULT_PROMO_OFFER_TEXT =
+  "Limited-time: written quote on website & app packages — reply within one business day";
+
 export function emptySiteSettings(): SiteSettings {
   return {
     phone: "",
@@ -42,6 +45,10 @@ export function emptySiteSettings(): SiteSettings {
     portfolioHomeMax: "5",
     portfolioCtaLabel: "View all work",
     portfolioCtaHref: "/portfolio",
+    promoOfferEnabled: "1",
+    promoOfferText: DEFAULT_PROMO_OFFER_TEXT,
+    promoOfferQuoteLabel: "Ask price",
+    promoOfferCallLabel: "Call now",
   };
 }
 
@@ -80,6 +87,14 @@ export function normalizeSiteSettings(input: Partial<SiteSettings> | null | unde
     portfolioHomeMax: input.portfolioHomeMax ?? defaults.portfolioHomeMax,
     portfolioCtaLabel: input.portfolioCtaLabel ?? defaults.portfolioCtaLabel,
     portfolioCtaHref: input.portfolioCtaHref ?? defaults.portfolioCtaHref,
+    promoOfferEnabled: input.promoOfferEnabled ?? defaults.promoOfferEnabled,
+    promoOfferText: input.promoOfferText?.trim() ? input.promoOfferText : defaults.promoOfferText,
+    promoOfferQuoteLabel: input.promoOfferQuoteLabel?.trim()
+      ? input.promoOfferQuoteLabel
+      : defaults.promoOfferQuoteLabel,
+    promoOfferCallLabel: input.promoOfferCallLabel?.trim()
+      ? input.promoOfferCallLabel
+      : defaults.promoOfferCallLabel,
   };
 }
 

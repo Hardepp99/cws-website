@@ -34,6 +34,11 @@ export interface SiteSettings {
   portfolioHomeMax?: string;
   portfolioCtaLabel?: string;
   portfolioCtaHref?: string;
+  /** Top green promo strip — set to 0 to hide */
+  promoOfferEnabled?: string;
+  promoOfferText?: string;
+  promoOfferQuoteLabel?: string;
+  promoOfferCallLabel?: string;
 }
 
 export interface SiteMenus {
