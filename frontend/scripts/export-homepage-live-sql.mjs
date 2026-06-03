@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /**
- * Generates database/live/05_homepage_ONLY_full_update.sql from embedded section data.
+ * Generates database/live SQL from frontend/src/data/cws-homepage-sections-defaults.json
  * Run: node frontend/scripts/export-homepage-live-sql.mjs
  */
-import { mkdirSync, writeFileSync } from "fs";
+import { readFileSync, mkdirSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 
@@ -11,7 +11,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..", "..");
 
 const SERVICES_SUBTITLE =
-  "Design, engineering, and growth under one roof — launch faster, look sharper, and turn traffic into qualified enquiries anywhere you sell.";
+  "Strategy, design, engineering, and growth in one partner — each service links to a dedicated SEO landing page.";
 
 const SERVICE_ITEMS = [
   {
@@ -49,8 +49,8 @@ const SERVICE_ITEMS = [
   {
     icon: "fas fa-robot",
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=960&h=540&q=85",
-    title: "Custom software",
-    desc: "Dashboards, portals, booking engines, and APIs that replace spreadsheets — shaped around how your team really works.",
+    title: "Custom software & AI",
+    desc: "Dashboards, portals, automation, and AI features that replace manual work — shaped around how your team operates.",
     href: "/custom-software-development-zirakpur",
     tone: "grey",
   },
@@ -80,294 +80,39 @@ const SERVICE_ITEMS = [
   },
 ];
 
-const SECTIONS = [
-  {
-    layout: "hero_slider",
-    sort_order: 0,
-    admin_title: "Hero",
-    payload: {
-      acfFcLayout: "hero_slider",
-      eyebrow: "Global Web · Mobile · Digital Marketing Agency",
-      headline: "Turn visitors into paying customers",
-      subheadline:
-        "Creative Web Solutions designs, builds, and markets high-performing websites and apps for brands that sell worldwide — one team from first sketch to measurable growth.",
-      headlineParts: [
-        { text: "paying", tone: "green" },
-        { text: "customers", tone: "blue" },
-      ],
-      ctaPrimary: { label: "Get free proposal", href: "#ask-price" },
-      ctaSecondary: { label: "See our work", href: "/portfolio" },
-      slides: [
-        { image: { url: "/assets/images/hero1.png" } },
-        { image: { url: "/assets/images/hero2.png" } },
-        { image: { url: "/assets/images/hero3.png" } },
-      ],
-      heroVisual: "svg",
-      personImage: "/assets/images/hero2.png",
-      personImageAlt: "Creative Web Solutions — website and mobile product team",
-      stats: [
-        { icon: "fas fa-project-diagram", count: 549, label: "Projects shipped", tone: "blue" },
-        { icon: "fas fa-users", count: 320, label: "Clients worldwide", tone: "green" },
-        { icon: "fas fa-award", count: 15, label: "Years crafting digital", tone: "royal" },
-      ],
-      gmbRating: 4.9,
-      gmbReviewCount: "120+",
-      gmbReviews: [
-        {
-          author: "Amit K.",
-          rating: 5,
-          text: "Lightning-fast site, premium feel. Our enquiry form finally gets used every day.",
-          ago: "3 weeks ago",
-        },
-        {
-          author: "Priya Sharma",
-          rating: 5,
-          text: "SEO and paid campaigns are aligned — we see which pages actually drive leads.",
-          ago: "1 month ago",
-        },
-        {
-          author: "Vikram S.",
-          rating: 5,
-          text: "Ecommerce launch was smooth. Checkout, payments, and handover were pro end-to-end.",
-          ago: "2 months ago",
-        },
-      ],
-      marqueeItems: [
-        { letter: "W", title: "Website development", href: "/website-development-zirakpur" },
-        { letter: "M", title: "Mobile apps", href: "/mobile-app-development-zirakpur" },
-        { letter: "S", title: "SEO & growth", href: "/seo-services-zirakpur" },
-        { letter: "A", title: "Digital marketing", href: "/digital-marketing-zirakpur" },
-        { letter: "U", title: "UI/UX design", href: "/ui-ux-design-zirakpur" },
-        { letter: "E", title: "Ecommerce", href: "/ecommerce-website-zirakpur" },
-      ],
-    },
-  },
-  {
-    layout: "trust_badges",
-    sort_order: 1,
-    admin_title: "Trust badges",
-    payload: {
-      acfFcLayout: "trust_badges",
-      sectionTheme: "light",
-      badge: "Why brands choose us",
-      title: "One partner. Full stack. Zero guesswork.",
-      subtitle:
-        "Stop coordinating separate designers, developers, and marketers. We own the full journey — strategy, build, launch, and growth — with clear milestones and honest updates.",
-      items: [
-        { icon: "fab fa-google", title: "4.9★ client rating", desc: "Consistently rated for delivery, communication, and results", tone: "blue" },
-        { icon: "fas fa-globe", title: "Remote-first, global-ready", desc: "Async collaboration across time zones — your pace, your tools", tone: "green" },
-        { icon: "fas fa-mobile-alt", title: "Mobile-first quality", desc: "Every experience tuned for thumb-friendly UX and speed", tone: "purple" },
-        { icon: "fas fa-chart-line", title: "Growth by design", desc: "Tracking, forms, and campaigns wired to real conversions", tone: "orange" },
-        { icon: "fas fa-file-signature", title: "Scope you can trust", desc: "Written deliverables, timelines, and revision rules upfront", tone: "grey" },
-        { icon: "fas fa-headset", title: "Support after launch", desc: "Maintenance, iterations, and retainers when you need a long-term team", tone: "pink" },
-      ],
-    },
-  },
-  {
-    layout: "services_grid",
-    sort_order: 2,
-    admin_title: "Services",
-    payload: {
-      acfFcLayout: "services_grid",
-      sectionTheme: "dark",
-      badge: "Core services",
-      title: "Everything you need to launch and scale online",
-      subtitle: SERVICES_SUBTITLE,
-      items: SERVICE_ITEMS,
-    },
-  },
-  {
-    layout: "portfolio",
-    sort_order: 3,
-    admin_title: "Portfolio",
-    payload: {
-      acfFcLayout: "portfolio",
-      sectionTheme: "dark",
-      badge: "Proof",
-      title: "Products that look premium and perform",
-      subtitle:
-        "Browse websites, apps, and campaigns built for healthcare, retail, B2B, and fast-growing startups — crafted to impress buyers and drive action.",
-      ctaLabel: "Explore case studies",
-      ctaHref: "/portfolio",
-    },
-  },
-  {
-    layout: "why_codify",
-    sort_order: 4,
-    admin_title: "Why choose us",
-    payload: {
-      acfFcLayout: "why_codify",
-      sectionTheme: "light",
-      badge: "The CWS difference",
-      title: "Agency craft. Product discipline. Marketing impact.",
-      subtitle:
-        "We think like founders: every page, screen, and ad should earn its place in your revenue story — not just fill a template.",
-      cards: [
-        { icon: "fas fa-bullseye", title: "Conversion-led strategy", description: "Offers, funnels, and CTAs mapped before design — so traffic has somewhere profitable to land.", number: "01" },
-        { icon: "fas fa-laptop-code", title: "Engineering that scales", description: "Modern stacks, clean architecture, and APIs ready for the next feature — not a fragile one-off.", number: "02" },
-        { icon: "fas fa-bullhorn", title: "Marketing in sync", description: "SEO, paid media, and landing pages built on the same message your product delivers.", number: "03" },
-        { icon: "fas fa-tachometer-alt", title: "Speed that ranks", description: "Performance, accessibility, and Core Web Vitals treated as business metrics, not checkboxes.", number: "04" },
-        { icon: "fas fa-comments", title: "Radical clarity", description: "Staging links, Loom walkthroughs, and written status — you always know what shipped and what is next.", number: "05" },
-        { icon: "fas fa-handshake", title: "Partners, not vendors", description: "Post-launch iterations, feature roadmaps, and growth experiments with the same accountable team.", number: "06" },
-      ],
-    },
-  },
-  {
-    layout: "process",
-    sort_order: 5,
-    admin_title: "Process",
-    payload: {
-      acfFcLayout: "process",
-      sectionTheme: "light",
-      backdropImage: "/assets/images/process-hero-mac-students.jpg",
-      backdropStrength: 40,
-      badge: "Simple process",
-      title: "From kickoff to live in four confident steps",
-      subtitle: "No black boxes. Most engagements start with a focused discovery call and a clear proposal within days.",
-      steps: [
-        { icon: "fas fa-comments", title: "Discover & define", description: "We unpack goals, users, integrations, and success metrics — then send a written scope and investment range." },
-        { icon: "fas fa-pencil-ruler", title: "Design to approve", description: "Wireframes or high-fidelity UI you sign off on — brand, UX, and mobile views included." },
-        { icon: "fas fa-code", title: "Build in the open", description: "Real staging URLs on phone and desktop; structured feedback until the experience feels right." },
-        { icon: "fas fa-rocket", title: "Launch & optimise", description: "Go-live, analytics, training, and optional SEO, ads, or maintenance — keep momentum after day one." },
-      ],
-    },
-  },
-  {
-    layout: "testimonials",
-    sort_order: 6,
-    admin_title: "Testimonials",
-    payload: {
-      acfFcLayout: "testimonials",
-      sectionTheme: "dark",
-      badge: "Client voices",
-      title: "Trusted by teams who expect more than a facelift",
-      subtitle: "Straight talk from founders and marketing leads who needed revenue-ready digital — not slide decks.",
-      testimonials: [
-        { name: "Ecommerce director", text: "Our store finally feels premium on mobile. Speed, checkout, and merchandising all levelled up in one engagement.", role: "Retail · Shopify + CRO" },
-        { name: "Healthcare operations lead", text: "Patient booking and content SEO now work together. Enquiries are steady and the admin is easy for staff.", role: "Healthcare · Web + SEO" },
-        { name: "B2B sales manager", text: "Corporate site plus paid landing pages — we finally attribute leads to campaigns instead of guessing.", role: "Manufacturing · Web + Ads" },
-        { name: "SaaS founder", text: "MVP app, admin dashboard, and API delivered in milestones. Communication was crisp the whole way.", role: "Startup · Mobile + Backend" },
-      ],
-    },
-  },
-  {
-    layout: "guarantees",
-    sort_order: 7,
-    admin_title: "Guarantees",
-    payload: {
-      acfFcLayout: "guarantees",
-      sectionTheme: "light",
-      badge: "Peace of mind",
-      title: "Promises we put in every contract",
-      subtitle: "Confidence should not be optional — these standards apply whether you are launching or scaling.",
-      items: [
-        { icon: "fas fa-file-contract", title: "Crystal-clear scope", desc: "Deliverables, owners, timelines, and revision rounds documented before a single line of code.", tone: "blue" },
-        { icon: "fas fa-eye", title: "See before you sign off", desc: "Approve on staging — desktop, tablet, and phone — so launch day feels predictable.", tone: "green" },
-        { icon: "fas fa-key", title: "Full ownership", desc: "Repositories, design files, domains, and admin credentials belong to you at go-live.", tone: "purple" },
-        { icon: "fas fa-life-ring", title: "Care after launch", desc: "Security updates, content tweaks, and optional retainers so you are never stranded.", tone: "orange" },
-      ],
-    },
-  },
-  {
-    layout: "industries",
-    sort_order: 8,
-    admin_title: "Industries",
-    payload: {
-      acfFcLayout: "industries",
-      sectionTheme: "dark",
-      badge: "Sectors we know",
-      title: "Fluent in your market — fluent in digital",
-      subtitle: "Sector-specific UX patterns, compliance cues, and messaging that speaks to how your buyers decide.",
-      items: [
-        { icon: "fas fa-heartbeat", title: "Healthcare", tone: "pink" },
-        { icon: "fas fa-graduation-cap", title: "Education", tone: "blue" },
-        { icon: "fas fa-building", title: "Real estate", tone: "green" },
-        { icon: "fas fa-hotel", title: "Hospitality", tone: "orange" },
-        { icon: "fas fa-shopping-bag", title: "Retail & ecommerce", tone: "purple" },
-        { icon: "fas fa-industry", title: "Manufacturing", tone: "grey" },
-        { icon: "fas fa-seedling", title: "Agriculture", tone: "green" },
-        { icon: "fas fa-rocket", title: "Startups & SaaS", tone: "blue" },
-      ],
-    },
-  },
-  {
-    layout: "tech_stack",
-    sort_order: 9,
-    admin_title: "Tech stack",
-    payload: {
-      acfFcLayout: "tech_stack",
-      sectionTheme: "light",
-      badge: "Technology",
-      title: "Right stack. Right budget. Right timeline.",
-      subtitle: "Battle-tested tools our engineers ship every week — chosen for maintainability, not hype.",
-      items: [
-        { icon: "fab fa-react", title: "React", tone: "blue" },
-        { icon: "fas fa-bolt", title: "Next.js", tone: "grey" },
-        { icon: "fab fa-node-js", title: "Node.js", tone: "green" },
-        { icon: "fab fa-wordpress", title: "WordPress", tone: "blue" },
-        { icon: "fab fa-android", title: "Flutter", tone: "green" },
-        { icon: "fab fa-php", title: "PHP / Laravel", tone: "purple" },
-        { icon: "fab fa-aws", title: "AWS / Cloud", tone: "orange" },
-        { icon: "fas fa-database", title: "MySQL", tone: "grey" },
-        { icon: "fas fa-robot", title: "AI integrations", tone: "pink" },
-        { icon: "fab fa-shopify", title: "Shopify", tone: "green" },
-      ],
-    },
-  },
-  {
-    layout: "pricing_packages",
-    sort_order: 10,
-    admin_title: "Pricing models",
-    payload: {
-      acfFcLayout: "pricing_packages",
-      sectionTheme: "dark",
-      badge: "How we engage",
-      title: "Models that match your ambition",
-      subtitle: "From a sharp launch to an embedded product squad — flexible structures, transparent pricing after discovery.",
-      items: [
-        { icon: "fas fa-rocket", title: "Launch packages", desc: "Fixed-scope websites, product sites, or app MVPs with milestone payments and a clear finish line.", tone: "blue" },
-        { icon: "fas fa-user-clock", title: "Dedicated developers", desc: "Senior engineers embedded in your rhythm — sprints, backlog grooming, and production releases.", tone: "green" },
-        { icon: "fas fa-calendar-check", title: "Growth retainers", desc: "Ongoing SEO, paid media, CRO, and content — report on leads and revenue, not impressions alone.", tone: "orange" },
-        { icon: "fas fa-people-arrows", title: "Team augmentation", desc: "Plug in designers, developers, or marketers to accelerate without a long hiring cycle.", tone: "purple" },
-      ],
-    },
-  },
-  {
-    layout: "faq",
-    sort_order: 11,
-    admin_title: "FAQ",
-    payload: {
-      acfFcLayout: "faq",
-      sectionTheme: "light",
-      badge: "FAQ",
-      title: "Straight answers. No sales pressure.",
-      subtitle: "Still exploring? These are the questions founders ask us most — or open Ask price for a quick ballpark.",
-      items: [
-        { icon: "fas fa-rupee-sign", title: "What should I budget for a business website?", desc: "Scope drives investment — pages, integrations, content, and languages. After discovery you receive a written estimate with options, not a vague range.", tone: "green" },
-        { icon: "fas fa-clock", title: "How fast can you go live?", desc: "Marketing sites often land in 3–6 weeks. Apps and custom platforms follow a milestone plan shared before kickoff.", tone: "blue" },
-        { icon: "fas fa-mobile-alt", title: "Do you build iOS, Android, and cross-platform apps?", desc: "Yes — native and cross-platform, with admin panels, APIs, and store submission support when you need it.", tone: "purple" },
-        { icon: "fas fa-bullhorn", title: "Can you own SEO and paid acquisition?", desc: "Yes. Landing pages, tracking, and campaigns are built together so you know which channel pays for itself.", tone: "orange" },
-        { icon: "fas fa-globe", title: "Do you work with international clients?", desc: "Every day. Video workshops, async updates, staging reviews, and contracts in English — aligned to your timezone.", tone: "grey" },
-      ],
-    },
-  },
-  {
-    layout: "cta",
-    sort_order: 12,
-    admin_title: "Final CTA",
-    payload: {
-      acfFcLayout: "cta",
-      sectionTheme: "dark",
-      title: "Ready for digital that actually sells?",
-      subtitle:
-        "Tell us what you are building — we will respond within one business day with scope, timeline, and a transparent estimate for your website, app, or growth program.",
-      ctaLabel: "Get free proposal",
-      ctaHref: "#ask-price",
-      ctaPrimary: { label: "Get free proposal", href: "#ask-price" },
-      ctaSecondary: { label: "Book a call", href: "/contact#contact-form" },
-    },
-  },
-];
+const ADMIN_TITLES = {
+  hero_slider: "Hero",
+  trust_badges: "Client trust",
+  why_codify: "Why choose us",
+  services_grid: "Services",
+  tech_stack: "Technologies",
+  industries: "Industries",
+  portfolio: "Case studies",
+  process: "Process",
+  testimonials: "Testimonials",
+  guarantees: "Guarantees",
+  pricing_packages: "Pricing models",
+  faq: "FAQ",
+  cta: "Final CTA",
+};
+
+const defaultsPath = join(root, "frontend", "src", "data", "cws-homepage-sections-defaults.json");
+const rawSections = JSON.parse(readFileSync(defaultsPath, "utf8"));
+
+const SECTIONS = rawSections.map((payload, sort_order) => {
+  const layout = payload.acfFcLayout;
+  const p = { ...payload };
+  if (layout === "services_grid") {
+    p.subtitle = p.subtitle || SERVICES_SUBTITLE;
+    p.items = SERVICE_ITEMS;
+  }
+  return {
+    layout,
+    sort_order,
+    admin_title: ADMIN_TITLES[layout] || layout,
+    payload: p,
+  };
+});
 
 /** MariaDB / older MySQL: assign JSON string directly (no CAST … AS JSON). */
 function sqlEscapeJson(obj) {
@@ -385,14 +130,14 @@ function payloadAssignment(jsonEscaped) {
 
 const layoutsList = SECTIONS.map((s) => s.layout).join(",");
 
-let sql = `-- =============================================================================
--- CWS LIVE — HOMEPAGE ONLY (full section content update)
+function buildHomepageSql(filename, title) {
+  let sql = `-- =============================================================================
+-- ${title}
 -- =============================================================================
 -- MariaDB-safe: JSON assigned as quoted string (no CAST AS JSON).
--- If phpMyAdmin truncates long lines, use homepage-sections/*.sql one file each.
---
--- Generated: ${new Date().toISOString()}
+-- Source: frontend/src/data/cws-homepage-sections-defaults.json
 -- Regenerate: node frontend/scripts/export-homepage-live-sql.mjs
+-- Generated: ${new Date().toISOString()}
 -- =============================================================================
 
 USE cws_cms;
@@ -401,7 +146,6 @@ SET NAMES utf8mb4;
 
 START TRANSACTION;
 
--- Homepage page record (keeps your existing page id; only flags + display mode)
 UPDATE pages
 SET
   slug = 'home',
@@ -414,16 +158,13 @@ WHERE is_homepage = 1
 
 SET @page_id := (SELECT id FROM pages WHERE is_homepage = 1 LIMIT 1);
 
--- If no homepage flag, use slug home
 UPDATE pages SET is_homepage = 1 WHERE slug = 'home' AND @page_id IS NULL LIMIT 1;
 SET @page_id := IFNULL(@page_id, (SELECT id FROM pages WHERE slug = 'home' LIMIT 1));
 
--- Ensure only one homepage
 UPDATE pages SET is_homepage = 0 WHERE id <> @page_id AND is_homepage = 1;
 
 SELECT @page_id AS homepage_page_id;
 
--- Archive homepage sections that are NOT in the new agency layout set
 UPDATE homepage_sections
 SET status = 'trash',
     admin_title = CONCAT(COALESCE(NULLIF(admin_title, ''), layout), ' (archived)')
@@ -433,10 +174,10 @@ WHERE page_id = @page_id
 
 `;
 
-for (const sec of SECTIONS) {
-  const json = sqlEscapeJson(sec.payload);
-  const titleEsc = sec.admin_title.replace(/'/g, "''");
-  sql += `
+  for (const sec of SECTIONS) {
+    const json = sqlEscapeJson(sec.payload);
+    const titleEsc = sec.admin_title.replace(/'/g, "''");
+    sql += `
 -- ---------- ${sec.layout} (sort ${sec.sort_order}) ----------
 UPDATE homepage_sections
 SET
@@ -457,25 +198,83 @@ WHERE @page_id IS NOT NULL
   );
 
 `;
-}
+  }
 
-sql += `
--- Optional: Desimentor document for homepage (only if you use builder — leaves other entities alone)
--- DELETE FROM desimentor_documents WHERE entity_type = 'homepage' AND entity_id = @page_id;
-
+  sql += `
 COMMIT;
 
--- Verify
 SELECT id, layout, status, sort_order, admin_title,
        JSON_UNQUOTE(JSON_EXTRACT(payload, '$.title')) AS section_title
 FROM homepage_sections
 WHERE page_id = @page_id
 ORDER BY sort_order ASC, id ASC;
 `;
+  return sql;
+}
 
-const outPath = join(root, "database", "live", "05_homepage_ONLY_full_update.sql");
-writeFileSync(outPath, sql, "utf8");
-console.log("Wrote", outPath);
+const promoSql = `-- =============================================================================
+-- CWS LIVE — site_settings promo bar (plan2 announcement bar)
+-- =============================================================================
+-- Run after homepage update. Safe to re-run.
+-- =============================================================================
+
+USE cws_cms;
+
+SET NAMES utf8mb4;
+
+START TRANSACTION;
+
+INSERT INTO site_settings (id, payload)
+VALUES (
+  1,
+  '{"promoOfferEnabled":"1","promoOfferText":"Limited-time: written quote on website & app packages — reply within one business day","promoOfferQuoteLabel":"Ask price","promoOfferCallLabel":"Call now"}'
+)
+ON DUPLICATE KEY UPDATE payload = JSON_MERGE_PATCH(
+  COALESCE(payload, JSON_OBJECT()),
+  JSON_OBJECT(
+    'promoOfferEnabled', '1',
+    'promoOfferText', 'Limited-time: written quote on website & app packages — reply within one business day',
+    'promoOfferQuoteLabel', 'Ask price',
+    'promoOfferCallLabel', 'Call now'
+  )
+);
+
+COMMIT;
+
+SELECT JSON_UNQUOTE(JSON_EXTRACT(payload, '$.promoOfferText')) AS promo_text FROM site_settings WHERE id = 1;
+`;
+
+const finalSql = `-- =============================================================================
+-- CWS LIVE — FINAL POST TO SERVER (plan2)
+-- =============================================================================
+-- Run in phpMyAdmin on database cws_cms IN ORDER:
+--
+--   1) database/live/01_schema_pending_migrations.sql  (ignore duplicate column errors)
+--   2) database/live/02_fix_menu_db_keys.sql
+--   3) database/live/07_plan2_homepage_full_update.sql   (this file's sibling — homepage)
+--   4) database/live/08_plan2_site_settings_promo.sql
+--
+-- Or import ONLY steps 3+4 if schema/menus already applied.
+-- Does NOT overwrite blog, service pages, or staff-edited non-home content.
+-- =============================================================================
+
+SELECT 'Run 07_plan2_homepage_full_update.sql then 08_plan2_site_settings_promo.sql' AS next_step;
+`;
+
+writeFileSync(
+  join(root, "database", "live", "05_homepage_ONLY_full_update.sql"),
+  buildHomepageSql("05", "CWS LIVE — HOMEPAGE ONLY (full section content update)"),
+  "utf8",
+);
+writeFileSync(
+  join(root, "database", "live", "07_plan2_homepage_full_update.sql"),
+  buildHomepageSql("07", "CWS LIVE — PLAN2 homepage (full section content + order)"),
+  "utf8",
+);
+writeFileSync(join(root, "database", "live", "08_plan2_site_settings_promo.sql"), promoSql, "utf8");
+writeFileSync(join(root, "database", "live", "09_FINAL_server_run_order.sql"), finalSql, "utf8");
+
+console.log("Wrote 05, 07, 08, 09 SQL files");
 
 const perDir = join(root, "database", "live", "homepage-sections");
 mkdirSync(perDir, { recursive: true });
@@ -491,7 +290,6 @@ for (const sec of SECTIONS) {
   const json = sqlEscapeJson(sec.payload);
   const titleEsc = sec.admin_title.replace(/'/g, "''");
   const one = `${pagePreamble}
-SET NAMES utf8mb4;
 -- Section: ${sec.layout}
 UPDATE homepage_sections
 SET sort_order = ${sec.sort_order}, layout = '${sec.layout}', status = 'published',
@@ -514,9 +312,10 @@ WHERE @page_id IS NOT NULL
 
 writeFileSync(
   join(perDir, "00_README.txt"),
-  `Homepage section SQL files (one layout per file).
-Run 00_page_setup.sql first, then 01-12 in order, OR use ../05_homepage_ONLY_full_update.sql for all at once.
-Does NOT touch other pages or site_settings.
+  `Plan2 homepage section SQL (one layout per file).
+Run 00_page_setup.sql first, then files 00-12 in sort order.
+OR use ../07_plan2_homepage_full_update.sql for all sections at once.
+Promo bar: ../08_plan2_site_settings_promo.sql
 `,
   "utf8",
 );

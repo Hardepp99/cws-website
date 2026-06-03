@@ -1,41 +1,39 @@
 -- =============================================================================
--- CWS — phpMyAdmin live update order (read-only instructions)
+-- CWS — phpMyAdmin live update order (plan2)
 -- =============================================================================
 --
--- Run these files IN ORDER on database `cws_cms`:
+-- Run on database `cws_cms` IN ORDER:
 --
 --   1) 01_schema_pending_migrations.sql
---      → Adds columns/tables from migrations 003–016 if missing.
---      → Ignore errors like "Duplicate column name" (already applied).
+--      → Columns/tables from migrations 003–016 if missing.
+--      → Ignore "Duplicate column name" if already applied.
 --
 --   2) 02_fix_menu_db_keys.sql
---      → Fixes footer_services / footer_products menu keys.
+--      → footer_services / footer_products menu keys.
 --
---   3) 03_homepage_agency_sections.sql
---      → Trashes old homepage layouts, sets sort_order, adds guarantees row.
---
---   4) 04_homepage_worldwide_content.sql
---      → Partial copy patches (optional if using 05 instead).
---
---   ★ 5) 05_homepage_ONLY_full_update.sql  (RECOMMENDED)
---      → Full homepage + all 13 sections in one transaction.
+--   ★ 3) 07_plan2_homepage_full_update.sql  (RECOMMENDED)
+--      → Plan2 homepage: 13 sections, new order, full JSON payloads.
 --      → Does NOT touch blog, services, menus, or other pages.
 --
---   OR run section-by-section:
---      database/live/homepage-sections/00_page_setup.sql
---      then 01_hero_slider.sql … 12_cta.sql
+--   ★ 4) 08_plan2_site_settings_promo.sql
+--      → Top announcement / promo bar (admin-editable fields).
 --
--- Regenerate from code: node frontend/scripts/export-homepage-live-sql.mjs
+--   (Optional legacy) 05_homepage_ONLY_full_update.sql — same content as 07 if regenerated
 --
--- Optional (only if you use that feature):
---   database/migrations/015_community.sql  (members, forums)
---   database/migrations/005_blog_sidebar.sql
---   database/migrations/006_media_seo_paths.sql
---   (see database/migrations/ folder for full history)
+--   OR section-by-section: database/live/homepage-sections/
+--      00_page_setup.sql → 00_hero_slider.sql … 12_cta.sql
 --
--- Agency homepage content defaults ship in application code; DB script only
--- syncs structure. Full text/images: Admin → Homepage sections after deploy.
+-- Regenerate from code:
+--   node frontend/scripts/export-homepage-live-sql.mjs
+--
+-- Local WAMP apply:
+--   node database/scripts/apply-local.mjs
+--
+-- NOT in this bundle (future plan2 phases — use existing admin):
+--   /case-studies/[slug], /industries/[slug], /technologies/[slug] routes
+--   Video testimonials CMS module, dedicated cost-calculator table
+--   Full awards/certifications/logo library tables
 --
 -- =============================================================================
 
-SELECT 'Open 01, 02, 03 SQL files in this folder — do not execute this file alone' AS info;
+SELECT 'Run 01 → 02 → 07 → 08 on production' AS info;

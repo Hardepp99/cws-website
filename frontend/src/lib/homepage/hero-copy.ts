@@ -1,11 +1,11 @@
 import type { HomepageSection } from "@/lib/wordpress/types";
 
 export const HERO_TAGLINE =
-  "Creative Web Solutions designs, builds, and markets high-performing websites and apps for brands that sell worldwide — one team from first sketch to measurable growth.";
+  "Web development, mobile apps, AI integrations, and growth marketing for brands that compete globally — one accountable team from discovery to launch.";
 
 const TAGLINE_END = "measurable growth.";
 
-export const HERO_HEADLINE_FALLBACK = "Turn visitors into paying customers";
+export const HERO_HEADLINE_FALLBACK = "Transform ideas into scalable digital products";
 
 /** Strip em-dash “description” tail from CMS subheadlines. */
 export function normalizeHeroTagline(text: string): string {

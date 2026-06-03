@@ -41,8 +41,8 @@ export function MobileBottomNav({ settings }: { settings: SiteSettings }) {
     { id: "portfolio", label: "Portfolio", icon: "fas fa-briefcase", href: "/portfolio" },
     {
       id: "ask",
-      label: "Ask price",
-      icon: "fas fa-tags",
+      label: "Consult",
+      icon: "fas fa-calendar-check",
       onClick: openAskPriceModal,
       accent: "cta",
     },

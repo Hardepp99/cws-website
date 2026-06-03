@@ -1,10 +1,10 @@
 -- =============================================================================
--- CWS LIVE — HOMEPAGE ONLY (full section content update)
+-- CWS LIVE — PLAN2 homepage (full section content + order)
 -- =============================================================================
 -- MariaDB-safe: JSON assigned as quoted string (no CAST AS JSON).
 -- Source: frontend/src/data/cws-homepage-sections-defaults.json
 -- Regenerate: node frontend/scripts/export-homepage-live-sql.mjs
--- Generated: 2026-06-03T12:00:51.302Z
+-- Generated: 2026-06-03T12:00:51.311Z
 -- =============================================================================
 
 USE cws_cms;
