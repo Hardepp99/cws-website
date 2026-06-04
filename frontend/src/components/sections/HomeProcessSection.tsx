@@ -1,7 +1,5 @@
-import { HomeSectionItems } from "@/components/homepage/items/HomeSectionItems";
 import { HomeMacIcon } from "@/components/ui/HomeMacIcon";
 import { Reveal } from "@/components/ui/Reveal";
-import type { HomeDisplayItem } from "@/lib/homepage/home-display-item";
 import { filterPublishedItems } from "@/lib/homepage/item-status";
 import { resolveMacTone } from "@/lib/homepage/mac-tones";
 import type { HomepageSection } from "@/lib/wordpress/types";
@@ -27,22 +25,9 @@ function ProcessSectionHead({
   );
 }
 
-function sectionVisual(section: HomepageSection): string | undefined {
-  const v = section.itemsVisual ?? section.items_visual;
-  return typeof v === "string" ? v : undefined;
-}
-
 export function HomeProcessSection({ section }: { section: HomepageSection }) {
   const steps = filterPublishedItems(
     (section.steps as { icon: string; title: string; description: string; status?: string }[]) || [],
-  ).map(
-    (s, i): HomeDisplayItem => ({
-      title: s.title,
-      desc: s.description,
-      icon: s.icon || "fas fa-arrow-right",
-      number: String(i + 1).padStart(2, "0"),
-      tone: undefined,
-    }),
   );
   if (!steps.length) return null;
 
@@ -54,29 +39,29 @@ export function HomeProcessSection({ section }: { section: HomepageSection }) {
           title={section.title as string}
           subtitle={section.subtitle as string}
         />
-        <HomeSectionItems
-          items={steps}
-          columns={4}
-          visual={sectionVisual(section)}
-          gridExtraClass="home-process__grid"
-          renderItem={(item, i) => {
+        <div className="home-process__grid home-grid-balanced home-grid-balanced--4">
+          {steps.map((step, i) => {
             const tone = resolveMacTone(undefined, i);
             return (
-              <article className="home-process__step home-mac-card" data-tone={tone}>
-                <HomeMacIcon
-                  icon={item.icon || "fas fa-arrow-right"}
-                  tone={tone}
-                  index={i}
-                  size="md"
-                  className="home-process__step-icon"
-                />
-                <span className="home-process__index">{item.number}</span>
-                <h3 className="home-process__step-title">{item.title}</h3>
-                <p className="home-process__step-desc">{item.desc}</p>
-              </article>
+              <div key={step.title} className="home-grid-balanced__item">
+                <Reveal variant="fade-up" delay={i * 110}>
+                  <article className="home-process__step home-mac-card" data-tone={tone}>
+                  <HomeMacIcon
+                    icon={step.icon || "fas fa-arrow-right"}
+                    tone={tone}
+                    index={i}
+                    size="md"
+                    className="home-process__step-icon"
+                  />
+                  <span className="home-process__index">{String(i + 1).padStart(2, "0")}</span>
+                  <h3 className="home-process__step-title">{step.title}</h3>
+                  <p className="home-process__step-desc">{step.description}</p>
+                  </article>
+                </Reveal>
+              </div>
             );
-          }}
-        />
+          })}
+        </div>
       </div>
     </section>
   );

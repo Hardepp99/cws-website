@@ -2,7 +2,7 @@ import { organizationJsonLd, webSiteJsonLd } from "@/lib/seo/metadata";
 
 /** JSON-LD in body (valid for Google; avoids head inline-script dev noise in React 19). */
 export function JsonLdScripts() {
-  const payload = JSON.stringify([organizationJsonLd(), webSiteJsonLd()]);
+  const payload = JSON.stringify([organizationJsonLd(), webSiteJsonLd()]).replace(/</g, "\\u003c");
   return (
     <script
       type="application/ld+json"

@@ -18,10 +18,18 @@ export function isHomePath(pathname: string): boolean {
   return p === "/" || p === "/index";
 }
 
+export const HOME_INTRO_COOKIE_OPTS = "path=/; SameSite=Lax";
+
+function readIntroCookie(): boolean {
+  if (typeof document === "undefined") return false;
+  return document.cookie.split(";").some((c) => c.trim().startsWith(`${HOME_INTRO_SESSION_KEY}=1`));
+}
+
 export function hasHomeIntroBeenShown(): boolean {
   if (typeof window === "undefined") return false;
   try {
-    return sessionStorage.getItem(HOME_INTRO_SESSION_KEY) === "1";
+    if (sessionStorage.getItem(HOME_INTRO_SESSION_KEY) === "1") return true;
+    return readIntroCookie();
   } catch {
     return false;
   }
@@ -38,6 +46,19 @@ export function markHomeIntroShown(): void {
   } catch {
     /* private mode */
   }
+  try {
+    if (typeof document !== "undefined") {
+      document.cookie = `${HOME_INTRO_SESSION_KEY}=1; ${HOME_INTRO_COOKIE_OPTS}`;
+    }
+  } catch {
+    /* private mode */
+  }
+}
+
+/** Server/middleware: should the initial HTML skip the home intro overlay? */
+export function shouldSkipIntroOnServer(pathname: string, introCookieValue?: string): boolean {
+  if (!isHomePath(pathname)) return true;
+  return introCookieValue === "1";
 }
 
 export function isSiteIntroReady(): boolean {
@@ -79,9 +100,7 @@ export function waitForSiteIntroDuration(): Promise<void> {
   });
 }
 
-/** Runs before paint — skip intro on non-home or repeat home visit in session. */
+/** @deprecated Intro state is set in middleware + root layout; see SiteScripts for animation. */
 export function buildSiteIntroBootstrapScript(): string {
-  const key = HOME_INTRO_SESSION_KEY;
-  const failsafe = SITE_INTRO_FAILSAFE_MS;
-  return `(function(){var K=${JSON.stringify(key)},M=${failsafe},p=location.pathname||"/",h=p==="/"||p===""||p==="/index"||p==="/index.html",s=!h;try{if(sessionStorage.getItem(K)==="1")s=true}catch(e){}function d(){var e=document.documentElement,b=document.body,pl=document.getElementById("preloader");e.classList.remove("is-intro-pending");b.classList.add("site-ready");if(pl){pl.classList.add("loaded");pl.style.display="none";pl.style.pointerEvents="none"}}function m(){try{sessionStorage.setItem(K,"1")}catch(e){}}if(s){d();return}document.documentElement.classList.add("is-intro-pending");window.addEventListener("site-intro-ready",function(){m();d()},{once:true});setTimeout(function(){m();d()},M)})();`;
+  return "";
 }

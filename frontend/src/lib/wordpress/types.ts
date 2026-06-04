@@ -160,9 +160,6 @@ export interface HomepageSection {
   /** Service pills on hero bottom marquee */
   marqueeItems?: { title?: string; href?: string; letter?: string; status?: string }[];
   items?: Record<string, unknown>[];
-  /** Optional: force item layout (wheel | infographic | roadmap | tree | collage | grid) */
-  itemsVisual?: string;
-  items_visual?: string;
   [key: string]: unknown;
 }
 

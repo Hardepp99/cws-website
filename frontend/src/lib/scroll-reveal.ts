@@ -22,7 +22,6 @@ export const SCROLL_REVEAL_SECTION_SELECTORS = [
   "main.site-main section.portfolio-detail__related",
   "main.site-main .desimentor-section",
   "main.site-main .pro-page__section",
-  "main.site-main .home-section-items[data-item-layout]:not([data-item-layout='grid'])",
   "main.site-main .home-section-band__content > section",
 ] as const;
 

@@ -31,7 +31,6 @@
 @import "./home-cards-premium.css";
 @import "./home-agency-modern.css";
 @import "./home-grid-balanced.css";
-@import "./home-item-layouts.css";
 
 @tailwind base;
 @tailwind components;

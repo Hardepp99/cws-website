@@ -15,6 +15,14 @@ export function SiteScripts() {
   const pathname = usePathname() ?? "/";
 
   useEffect(() => {
+    if (!document.querySelector("script[data-cws-bootstrap]")) {
+      const el = document.createElement("script");
+      el.src = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js";
+      el.async = true;
+      el.dataset.cwsBootstrap = "1";
+      document.body.appendChild(el);
+    }
+
     let finished = false;
     let hideTimer: number | undefined;
     const runIntro = shouldShowHomeIntro(pathname);

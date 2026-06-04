@@ -1,6 +1,4 @@
-import { HomeSectionItems } from "@/components/homepage/items/HomeSectionItems";
 import { Reveal } from "@/components/ui/Reveal";
-import type { HomeDisplayItem } from "@/lib/homepage/home-display-item";
 import { filterPublishedItems } from "@/lib/homepage/item-status";
 import type { HomepageSection } from "@/lib/wordpress/types";
 
@@ -41,28 +39,27 @@ export function HomeTestimonialsSection({ section }: { section: HomepageSection 
             subtitle={section.subtitle as string}
           />
         </Reveal>
-        <HomeSectionItems
-          items={items.map((t) => ({ title: t.name, desc: t.text, description: t.role })) as HomeDisplayItem[]}
-          columns={3}
-          gridExtraClass="home-testimonials__grid"
-          visual={(section.itemsVisual ?? section.items_visual) as string}
-          renderItem={(item, i) => {
+        <div className="home-testimonials__grid home-grid-balanced home-grid-balanced--3">
+          {items.map((t, i) => {
             const tone = TESTIMONIAL_TONES[i % TESTIMONIAL_TONES.length];
-            const t = items[i];
             return (
-              <article className={`testimonial-card testimonial-card--${tone} home-mac-card`} data-tone={tone}>
-                <span className="testimonial-card__mark" aria-hidden="true">
-                  &ldquo;
-                </span>
-                <blockquote className="testimonial-card__text">{t.text}</blockquote>
-                <footer className="testimonial-card__footer">
-                  <cite className="testimonial-card__name">{t.name}</cite>
-                  {t.role ? <span className="testimonial-card__tag">{t.role}</span> : null}
-                </footer>
-              </article>
+              <div key={`${t.name}-${i}`} className="home-grid-balanced__item">
+                <Reveal variant="fade-up" delay={i * 120}>
+                  <article className={`testimonial-card testimonial-card--${tone} home-mac-card`} data-tone={tone}>
+                  <span className="testimonial-card__mark" aria-hidden="true">
+                    &ldquo;
+                  </span>
+                  <blockquote className="testimonial-card__text">{t.text}</blockquote>
+                  <footer className="testimonial-card__footer">
+                    <cite className="testimonial-card__name">{t.name}</cite>
+                    {t.role ? <span className="testimonial-card__tag">{t.role}</span> : null}
+                  </footer>
+                  </article>
+                </Reveal>
+              </div>
             );
-          }}
-        />
+          })}
+        </div>
       </div>
     </section>
   );
